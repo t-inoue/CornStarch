@@ -33,26 +33,30 @@ void CPaneMsg::displayMessages(const vector<CMessageData*>& messages,
     this->Clear();
     int size = (int)messages.size();
     for (int i = 0; i < size; i++){
-              int index =this->GetLastPosition();
+
+        int index =this->GetLastPosition();
+
         // 時刻
-        wxString date = wxString(messages[i]->getTime("%H:%M").c_str());
+        wxString date = messages[i]->getTime("%H:%M");
         this->AppendText(date);
-        this->SetStyle(index,index+date.length() ,wxTextAttr(*wxRED));
-        index+=date.size();
+        this->SetStyle(index, index+date.length(), wxTextAttr(*wxRED));
+        index += date.size();
+
         // 名前
         wxString nick = getNickName(messages[i]->m_username, nickTable);
-
         if (messages[i]->m_tempNick != ""){
-             nick +=" (" + messages[i]->m_tempNick + ") ";
+            nick +=" (" + messages[i]->m_tempNick + ") ";
         }
         nick = " (" + nick + "):";
         this->AppendText(nick);
-        this->SetStyle(index,index+ nick.size(), wxTextAttr(*wxBLUE));
+        this->SetStyle(index, index + nick.size(), wxTextAttr(*wxBLUE));
+        index += nick.size();
 
         //本文
-        wxString body(messages[i]->m_body.char_str(), wxConvUTF8);
+        wxString body = messages[i]->m_body;
         body.Replace("\r", "");
-        this->AppendText(body+ "\n");
+        this->AppendText(body + "\n");
+        this->SetStyle(index, index + body.size(), wxTextAttr(*wxBLACK));
     }
 }
 
