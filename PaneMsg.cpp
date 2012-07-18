@@ -34,7 +34,7 @@ void CPaneMsg::displayMessages(const vector<CMessageData*>& messages,
     int size = (int)messages.size();
     for (int i = 0; i < size; i++){
 
-        int index =this->GetLastPosition();
+        int index = this->GetLastPosition();
 
         // 時刻
         wxString date = messages[i]->getTime("%H:%M");
@@ -44,10 +44,10 @@ void CPaneMsg::displayMessages(const vector<CMessageData*>& messages,
 
         // 名前
         wxString nick = getNickName(messages[i]->m_username, nickTable);
+        nick = " (" + nick + "):";
         if (messages[i]->m_tempNick != ""){
             nick +=" (" + messages[i]->m_tempNick + ") ";
         }
-        nick = " (" + nick + "):";
         this->AppendText(nick);
         this->SetStyle(index, index + nick.size(), wxTextAttr(*wxBLUE));
         index += nick.size();
