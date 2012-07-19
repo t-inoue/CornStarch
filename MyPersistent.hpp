@@ -9,6 +9,7 @@
 #include <fstream>
 #include <sys/stat.h>
 #include <string>
+#include <stdlib.h>
 #endif
 
 // 永続化情報を管理するクラス
@@ -18,9 +19,6 @@ class CMyPersistent
     wxRegKey* m_regKey; // レジストリアクセス
     static const wxString KEY_PLACE; // Keyのフルパス
 #else
-    std::ifstream m_ifs;
-    std::ofstream m_ofs;
-    std::map<wxString, wxString> m_value;
     static const wxString FILE_PATH; // 保存するパス
 #endif
 
@@ -47,7 +45,7 @@ public:
 
 private:
     // ファイルをmapとして開く
-    std::map<string, string> loadFileAsMap(void) const;
+    std::map<std::string, std::string> loadFileAsMap(void) const;
 
 #endif
 
