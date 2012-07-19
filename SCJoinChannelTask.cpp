@@ -40,6 +40,6 @@ wxThreadEvent* CSCJoinChannelTask::parseHttpResponse(const string& responseBody)
     // イベントの初期化
     CJoinEvent* event = new CJoinEvent();
     event->SetEventType(myEVT_THREAD_PUT_JOIN); // イベントの種類をセット
-    event->SetString(m_channel.c_str()); // 新チャンネル名
+    event->SetString(m_channel); // 新チャンネル名
     return event;
 }
