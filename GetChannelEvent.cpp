@@ -12,7 +12,7 @@ CGetChannelEvent::~CGetChannelEvent(void)
     // チャンネル要素の削除
     int size = (int)m_channels.size();
     for (int i = 0; i < size; i++){
-        delete m_channels[i];
+       delete m_channels[i];
     }
 }
 

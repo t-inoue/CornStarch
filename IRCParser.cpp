@@ -68,8 +68,8 @@ wxThreadEvent* CIRCParser::createJoinMessageEvent(const string& host,
 	vector<string> names = CStringUtility::split(host, "!");
 	string name = names[0];
 
-	int index = param.find(" ");
-	string channel = param.substr(0, index);
+	int index = param.size();
+	string channel = param.substr(1, index -2);
 	CJoinStreamEvent* event = new CJoinStreamEvent();
 	event->SetEventType(myEVT_THREAD_STREAM_CH_JOIN);
 	event->setChannelName(channel);
