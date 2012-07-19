@@ -1,4 +1,4 @@
-#include "ConnectionContents.hpp"
+﻿#include "ConnectionContents.hpp"
 
 using namespace std;
 
@@ -22,222 +22,222 @@ CConnectionContents::~CConnectionContents(void)
 //////////////////////////////////////////////////////////////////////
 
 
-// ������s��
+// 初期化を行う
 void CConnectionContents::init(wxEvtHandler* handler)
 {
-    // �C�x���g�n���h���̓o�^
+    // イベントハンドラの登録
     m_handler = handler;
 
-    // �ʐM�̏���
+    // 通信の初期化
     m_connect = new CSCConnection();
     m_connect->init(m_handler);
 
-    // �f�[�^�ێ����̏���
-    m_channel = new CSCChannelHolder(); // �`�����l��
+    // データ保持部の初期化
+    m_channel = new CSCChannelHolder(); // チャンネル
     m_channel->init();
 
-    // ���[�U���̏���
+    // ユーザ情報の初期化
     m_user = new CSCUser();
     m_user->init();
     m_user->setChannel("");
 
-    // �j�b�N�l�[���e�[�u���̏���
+    // ニックネームテーブルの初期化
     m_nickTable = new CSCNickTable();
 
-    // �i�����������N���X�̏���
+    // 永続化を扱うクラスの初期化
     m_persist = new CMyPersistent();
     m_persist->init();
 
-    // �p�X���[�h��񂪕ۑ�����Ă����
+    // パスワード情報が保存されていれば
     wxString basicKey = m_user->getBasicKey();
     wxString nameKey = m_user->getNameKey();
     if (m_persist->isKeySaved(basicKey) && m_persist->isKeySaved(nameKey)){
 
-        // �p�X���[�h����ǂݍ���
+        // パスワード情報を読み込む
         m_user->setUserName(m_persist->loadInfo(nameKey));
         m_user->setBasic(m_persist->loadInfo(basicKey));
 
-        // �F�؃^�X�N���J�n����
+        // 認証タスクを開始する
         m_connect->startAuthTask(m_handler, m_user->getUserName(), m_user->getBasic());
     }
 }
 
-// ���[�U�����O�C�����Ă��邩
+// ユーザがログインしているか
 bool CConnectionContents::isUserLogin(void) const
 {
     return m_user->isLogin();
 }
 
-// ���[�U�o�^���s�����ۂ̃f�[�^�X�V
+// ユーザ登録を行った際のデータ更新
 void CConnectionContents::registerUser(const wxString& userName, const wxString& pass)
 {
-    // ���[�U�����Z�b�g
+    // ユーザ情報をセット
     m_user->setUserInfo(userName, pass);
 
-    // �F�؃^�X�N�̊J�n
+    // 認証タスクの開始
     m_connect->startAuthTask(m_handler, m_user->getUserName(), m_user->getBasic());
 }
 
-// ���O�A�E�g��
+// ログアウト時
 void CConnectionContents::logout(void)
 {
-    // ���O�C�����Ă���Ƃ��A�ۑ����Ă�������폜
+    // ログインしているとき、保存してある情報を削除
     if (isUserLogin()){
         m_persist->deleteInfo(m_user->getNameKey());
         m_persist->deleteInfo(m_user->getBasicKey());
     }
 }
 
-// �`�����l���ɎQ�����s����
+// チャンネルに参加を行う際
 void CConnectionContents::joinChannel(const wxString& channel)
 {
-    // �`�����l���Q���^�X�N�̊J�n
+    // チャンネル参加タスクの開始
     m_connect->startJoinTask(m_handler, channel, m_user->getUserName(), m_user->getBasic());
 }
 
-// �`�����l�����痣�E�����
+// チャンネルから離脱する際
 void CConnectionContents::partChannel(const wxString& channel)
 {
-    // �`�����l�����E�^�X�N���J�n
+    // チャンネル離脱タスクを開始
     m_connect->startPartTask(m_handler, channel, m_user->getUserName(), m_user->getBasic());
 }
 
-// �Đڑ����s��
+// 再接続を行う
 void CConnectionContents::reconnect(void)
 {
-    // �ʐM������
+    // 通信を初期化
     delete m_connect;
     m_connect = new CSCConnection();
     m_connect->init(m_handler);
     m_connect->startStreamTask(m_handler, m_user->getUserName(), m_user->getBasic());
 }
 
-// �e�`�����l���̏���j��
+// 各チャンネルの情報を破棄
 void CConnectionContents::clearChannels(void)
 {
     m_channel->deleteChannels();
 }
 
-// �j�b�N�l�[���e�[�u����j��
+// ニックネームテーブルを破棄
 void CConnectionContents::clearNickTable(void)
 {
     delete m_nickTable;
     m_nickTable = new CSCNickTable();
 }
 
-// ���݂̃`�����l�������擾
+// 現在のチャンネル名を取得
 wxString CConnectionContents::getCurrentChannel(void) const
 {
     return m_user->getChannelString();
 }
 
-// ���b�Z�[�W�𐶐�
+// メッセージを生成
 CMessageData CConnectionContents::generateMessage(const wxString& body)
 {
     return CMessageData(-1, m_user->getUserName(), body, m_user->getChannelString(), time(NULL));
 }
 
-// �j�b�N�l�[�����擾
+// ニックネームを取得
 wxString CConnectionContents::getNickName(void) const
 {
     return m_user->getNickName();
 }
 
-// ���b�Z�[�W�𓊍e������
+// メッセージを投稿した際
 void CConnectionContents::postMessage(const CMessageData& message)
 {
-    // ���b�Z�[�W���e�^�X�N�̊J�n
+    // メッセージ投稿タスクの開始
     wxString channel = m_user->getChannelString();
     m_connect->startPostMessageTask(m_handler, message.m_body, channel, m_user->getBasic());
 
-    // ���b�Z�[�W��ۑ�
+    // メッセージを保存
     CMessageData data(-1, m_user->getUserName(), message.m_body, channel, time(NULL));
     m_channel->pushMessage(data.m_channel, data);
 }
 
-// �`�����l����I��������
+// チャンネルを選択した際
 void CConnectionContents::selectChannel(const wxString& channel)
 {
     m_user->setChannel(channel);
 }
 
-// �`�����l���ꗗ���擾
+// チャンネル一覧を取得
 vector<wxString> CConnectionContents::getChannels(void) const
 {
     return m_channel->getChannels();
 }
 
-// ���b�Z�[�W�ꗗ���擾
+// メッセージ一覧を取得
 vector<CMessageData*> CConnectionContents::getMessages(const wxString& channel) const
 {
     return m_channel->getMessages(channel);
 }
 
-// �����o�[�ꗗ���擾
+// メンバー一覧を取得
 vector<CMemberData*> CConnectionContents::getMembers(const wxString& channel) const
 {
     return m_channel->getMembers(channel);
 }
 
-// �j�b�N�l�[���e�[�u�����擾
+// ニックネームテーブルを取得
 CSCNickTable CConnectionContents::getNickTable(void) const
 {
     return *m_nickTable;
 }
 
-// ���[�U���Ă΂ꂽ��
+// ユーザが呼ばれたか
 bool CConnectionContents::isUserCalled(const wxString& message)
 {
     return m_user->isCalled(message);
 }
 
-// �����o�[�̃j�b�N�l�[�����擾
+// メンバーのニックネームを取得
 wxString CConnectionContents::getMemberNick(const wxString& member)
 {
     return m_nickTable->getNickname(member);
 }
 
-// �`�����l���̃g�s�b�N���擾
+// チャンネルのトピックを取得
 wxString CConnectionContents::getTopic(const wxString& channel)
 {
     return m_channel->getTopic(channel);
 }
 
-// ���̃N���C�A���g���瓊�e���ꂽ���b�Z�[�W��
+// このクライアントから投稿されたメッセージか
 bool CConnectionContents::isPostedThisClient(const CMessageData& message)
 {
     return m_channel->hasSameMessage(message);
 }
 
-// 
+// メッセージ表示を行う際
 void CConnectionContents::onUpdateMessageView(const wxString& channel)
 {
-    // ���b�Z�[�W����M�ς�
+    // メッセージが受信済み
     if (!m_channel->hasReceivedMessage(channel)){
 
-        // ���b�Z�[�W�擾�^�X�N���J�n
+        // メッセージ取得タスクを開始
         m_connect->startGetMessageTask(m_handler, channel, m_user->getBasic());
     }
 }
 
-// 
+// メンバー表示を行う際
 void CConnectionContents::onUpdateMemberView(const wxString& channel)
 {
-    // �����o�[��M�ς�
+    // メンバー受信済み
     if (!m_channel->hasReceivedMember(channel)){
 
-        // �����o�[�擾�^�X�N���J�n
+        // メンバー取得タスクを開始
         m_connect->startGetMemberTask(m_handler, channel, m_user->getBasic());
     }
 }
 
-// 
+// チャンネル表示を行う際
 void CConnectionContents::onUpdateChannelView(void)
 {
-    // �`�����l����M�ς݂Ȃ�
+    // チャンネル受信済みなら
     if (!m_channel->hasReceivedChannel()){
 
-        // �`�����l���擾�^�X�N���J�n
+        // チャンネル取得タスクを開始
         m_connect->startGetChannelTask(m_handler, m_user->getUserName(), m_user->getBasic());
     }
 }
@@ -245,37 +245,38 @@ void CConnectionContents::onUpdateChannelView(void)
 
 /////////////////////////////////////////
 
-// �F�؂����������ꍇ
+
+// 認証が成功した場合
 void CConnectionContents::onAuthSucceeed(void)
 {
-    // ���[�U�����O�C����Ԃɂ���
+    // ユーザをログイン状態にする
     m_user->setLogin(true);
 
-    // �p�X���[�h�i����
+    // パスワード永続化
     m_persist->saveInfo(m_user->getNameKey(), m_user->getUserName());
     m_persist->saveInfo(m_user->getBasicKey(), m_user->getBasic());
 
-    // �j�b�N�l�[���擾�^�X�N
+    // ニックネーム取得タスク
     m_connect->startGetMemberInfoTask(m_handler, m_user->getUserName(), m_user->getBasic());
 
-    // �X�g���[����M�^�X�N
+    // ストリーム受信タスク
     m_connect->startStreamTask(m_handler, m_user->getUserName(), m_user->getBasic());
 }
 
-// ���b�Z�[�W�ꗗ���擾�����ꍇ
+// メッセージ一覧を取得した場合
 void CConnectionContents::onGetMessages(const vector<CMessageData*>& messages)
 {
     m_channel->setMessages(m_user->getChannelString(), messages);
 }
 
-// �����o�[�ꗗ���擾�����ꍇ
+// メンバー一覧を取得した場合
 void CConnectionContents::onGetMembers(const vector<CMemberData*>& members)
 {
     m_channel->setMembers(m_user->getChannelString(), members);
     m_nickTable->addTableFromMembers(members);
 }
 
-// �`�����l���ꗗ���擾�����ꍇ
+// チャンネル一覧を取得した場合
 void CConnectionContents::onGetChannels(const vector<CChannelData*>& channels)
 {
     m_channel->setChannels(channels);
@@ -285,31 +286,31 @@ void CConnectionContents::onGetChannels(const vector<CChannelData*>& channels)
     }
 }
 
-// �`�����l���Q��������
+// チャンネル参加成功時
 void CConnectionContents::onJoinChannel(const wxString& channel)
 {
-    // ���[�U�̌��݂̃`�����l����ύX
+    // ユーザの現在のチャンネルを変更
     m_user->setChannel(channel);
 
-    // �`�����l���ꗗ�擾�^�X�N�̊J�n
+    // チャンネル一覧取得タスクの開始
     m_connect->startGetChannelTask(m_handler,
         m_user->getUserName(), m_user->getBasic());
 }
 
-// �`�����l�����E������
+// チャンネル離脱成功時
 void CConnectionContents::onPartChannel(const wxString& channel)
 {
-    // �`�����l�������폜
+    // チャンネル情報を削除
     m_channel->popChannel(channel);
 
-    // ���[�U�̌��݂̃`�����l����ύX
+    // ユーザの現在のチャンネルを変更
     m_user->setChannel(m_channel->getFirstChannel());
 }
 
-// �����o�[�����擾�����ꍇ
+// メンバー情報を取得した場合
 void CConnectionContents::onGetMemberStatus(const CMemberData& member)
 {
-    // �����̏�񂾂�����
+    // 自分の情報だったら
     if (member.m_name == m_user->getUserName()){
         m_user->setNickName(member.m_nick);
         m_user->setKeywords(member.m_keywords);
@@ -319,75 +320,75 @@ void CConnectionContents::onGetMemberStatus(const CMemberData& member)
     (*m_nickTable)[member.m_name] = member.m_nick;
 }
 
-// ���b�Z�[�W�X�g���[�����擾�����ꍇ
+// メッセージストリームを取得した場合
 void CConnectionContents::onGetMessageStream(const CMessageData& message)
 {
-    // �ʃN���C�A���g����̃��b�Z�[�W��������A�f�[�^�X�V�̂�
+    // 別クライアントからのメッセージだったら、データ更新のみ
     if (m_channel->hasSameMessage(message)){
         m_channel->onUpdateMessageId(message);
         return;
     }
 
-    // �f�[�^�X�V
+    // データ更新
     wxString nick = m_nickTable->getNickname(message.m_username);
 
-    // �j�b�N�l�[�������m�̏ꍇ�A�����o�[���擾�^�X�N�̊J�n
+    // ニックネームが未知の場合、メンバー情報取得タスクの開始
     if (!m_nickTable->isExist(message.m_username)){
         m_connect->startGetMemberInfoTask(m_handler, message.m_username, m_user->getBasic());
     }
 
-    // �f�[�^�ǉ�
+    // データ追加
     m_channel->pushMessage(message.m_channel, message);
 }
 
-// �`�����l���Q���X�g���[������M
+// チャンネル参加ストリームを受信
 void CConnectionContents::onGetJoinStream(const wxString& channel, const wxString& name)
 {
-    // �����҂��ɒǉ�
+    // 処理待ちに追加
     CSubscribeData data (channel, name);
 
     wxString nick = m_nickTable->getNickname(data.m_username);
 
-    // �j�b�N�l�[�������m�̏ꍇ�A�����o�[���擾�^�X�N�̊J�n
+    // ニックネームが未知の場合、メンバー情報取得タスクの開始
     if (!m_nickTable->isExist(data.m_username)){
         m_connect->startGetMemberInfoTask(m_handler,
             name, m_user->getBasic());
     }
 
-    // �����o�[��ǉ�
+    // メンバーを追加
     m_channel->pushMember(data.m_channel, CMemberData(data.m_username, nick));
 
-    // �������Q�������Ƃ�(�ʃN���C�A���g�\�t�g����)
+    // 自分が参加したとき(別クライアントソフトから)
     if (data.m_username == m_user->getUserName()){
 
-        // �`�����l�����擾�^�X�N�̊J�n
+        // チャンネル情報取得タスクの開始
         m_connect->startGetChannelTask(
             m_handler, m_user->getUserName(), m_user->getBasic());
     }
 }
 
-// �`�����l�����E�X�g���[������M
+// チャンネル離脱ストリームを受信
 void CConnectionContents::onGetPartStream(const wxString& channel, const wxString& name)
 {
     CSubscribeData data (channel, name);
 
-    // �f�[�^�X�V
+    // データ更新
     wxString nick = m_nickTable->getNickname(name);
     m_channel->popMember(data.m_username);
 
-    // �j�b�N�l�[�������m�̎��A�����o�[���擾�^�X�N�̊J�n
+    // ニックネームが未知の時、メンバー情報取得タスクの開始
     if (!m_nickTable->isExist(name)){
         m_connect->startGetMemberInfoTask(m_handler, name, m_user->getBasic());
     }
 }
 
-// �`�����l�����X�V�X�g���[������M
+// チャンネル情報更新ストリームを受信
 void CConnectionContents::onGetChannelStream(const CChannelData& channel)
 {
     m_channel->setChannel(channel);
 }
 
-// ���[�U���X�V�X�g���[���̎�M
+// ユーザ情報更新ストリームの受信
 void CConnectionContents::onGetUserStream(const CMemberData& member)
 {
     m_channel->updateMember(member);

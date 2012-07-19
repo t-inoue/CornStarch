@@ -1,4 +1,4 @@
-//
+﻿//
 //  StringUtility.h
 //  testtest
 //
