@@ -1,4 +1,4 @@
-#ifndef IConnection_H_
+﻿#ifndef IConnection_H_
 #define IConnection_H_
 
 using namespace std;

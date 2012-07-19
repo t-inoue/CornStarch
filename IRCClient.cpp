@@ -1,4 +1,4 @@
-#include "IRCClient.h"
+﻿#include "IRCClient.h"
 #include "Thread.h"
 #include "GetMemberEvent.hpp"
 #include "IRCParser.h"

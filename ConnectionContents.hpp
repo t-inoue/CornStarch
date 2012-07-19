@@ -1,144 +1,143 @@
-#pragma once
+﻿#pragma once
 #include "SCConnection.hpp"
-#include "ChannelHolder.hpp"
+#include "SCChannelHolder.hpp"
 #include "SCUser.hpp"
 #include "NickTable.hpp"
 #include "MyPersistent.hpp"
 #include "IUser.h"
 #include "IConnection.hpp"
 
-// StarChat��Model�R���e���c�������N���X
+// StarChatのModelコンテンツを扱うクラス
 class CConnectionContents
 {
-protected:
-    // �C�x���g�n���h��
+private:
+    // イベントハンドラ
     wxEvtHandler* m_handler;
 
-    // StarChat�̃f�[�^��
-    IConnection* m_connect; // �ʐM���i��N���X
-    CChannelHolder* m_channel; // �`�����l������ێ�
-    IUser* m_user; // ���[�U���
-    CNickTable* m_nickTable; // �j�b�N�l�[���e�[�u��
+    // StarChatのデータ部
+    IConnection* m_connect; // 通信を司るクラス
+    CSCChannelHolder* m_channel; // チャンネル情報を保持
+    IUser* m_user; // ユーザ情報
+    CNickTable* m_nickTable; // ニックネームテーブル
 
-    // �ėp�N���X
-    CMyPersistent* m_persist; // �i����������
+    // 汎用クラス
+    CMyPersistent* m_persist; // 永続化を扱う
 
 public:
     CConnectionContents(void);
-    virtual ~CConnectionContents(void);
+    ~CConnectionContents(void);
 
-    // ������s��
-    virtual void init(wxEvtHandler* handler);
+    // 初期化を行う
+    void init(wxEvtHandler* handler);
 
-    // ���[�U�����O�C�����Ă��邩
+    // ユーザがログインしているか
     bool isUserLogin(void) const;
 
-    // ���[�U�o�^���s�����ۂ̃f�[�^�X�V
+    // ユーザ登録を行った際のデータ更新
     void registerUser(const wxString& userName, const wxString& pass);
 
-    // ���O�A�E�g��
+    // ログアウト時
     void logout(void);
 
-    // �`�����l���ɎQ�����s����
+    // チャンネルに参加を行う際
     void joinChannel(const wxString& channel);
 
-    // �`�����l�����痣�E�����
+    // チャンネルから離脱する際
     void partChannel(const wxString& channel);
 
-    // �Đڑ����s��
+    // 再接続を行う
     void reconnect(void);
 
-    // �e�`�����l���̏���j��
+    // 各チャンネルの情報を破棄
     void clearChannels(void);
 
-    // �j�b�N�l�[���e�[�u����j��
+    // ニックネームテーブルを破棄
     void clearNickTable(void);
 
-    // ���݂̃`�����l�������擾
+    // 現在のチャンネル名を取得
     wxString getCurrentChannel(void) const;
 
-    // ���b�Z�[�W�𐶐�
+    // メッセージを生成
     CMessageData generateMessage(const wxString& body);
 
-    // �j�b�N�l�[�����擾
+    // ニックネームを取得
     wxString getNickName(void) const;
 
-    // ���b�Z�[�W�𓊍e������
+    // メッセージを投稿した際
     void postMessage(const CMessageData& message);
 
-    // �`�����l����I��������
+    // チャンネルを選択した際
     void selectChannel(const wxString& channel);
 
-    // �`�����l���ꗗ���擾
+    // チャンネル一覧を取得
     std::vector<wxString> getChannels(void) const;
 
-    // ���b�Z�[�W�ꗗ���擾
+    // メッセージ一覧を取得
     std::vector<CMessageData*> getMessages(const wxString& channel) const;
 
-    // �����o�[�ꗗ���擾
+    // メンバー一覧を取得
     std::vector<CMemberData*> getMembers(const wxString& channel) const;
 
-    // �j�b�N�l�[���e�[�u�����擾
+    // ニックネームテーブルを取得
     CNickTable getNickTable(void) const;
 
-    // ���[�U���Ă΂ꂽ��
+    // ユーザが呼ばれたか
     bool isUserCalled(const wxString& message);
 
-    // �����o�[�̃j�b�N�l�[�����擾
+    // メンバーのニックネームを取得
     wxString getMemberNick(const wxString& member);
 
-    // �`�����l���̃g�s�b�N���擾
+    // チャンネルのトピックを取得
     wxString getTopic(const wxString& channel);
 
-    // ���̃N���C�A���g���瓊�e���ꂽ���b�Z�[�W��
+    // このクライアントから投稿されたメッセージか
     bool isPostedThisClient(const CMessageData& message);
-    // 
+
+    // メッセージ表示を行う際
     void onUpdateMessageView(const wxString& channel);
 
-    // 
+    // メンバー表示を行う際
     void onUpdateMemberView(const wxString& channel);
 
-    // 
+    // チャンネル表示を行う際
     void onUpdateChannelView(void);
-
-
 
     /////////////////////////////////////////
 
-    // �F�؂����������ꍇ
+    // 認証が成功した場合
     void onAuthSucceeed(void);
 
-    // ���b�Z�[�W�ꗗ���擾�����ꍇ
+    // メッセージ一覧を取得した場合
     void onGetMessages(const std::vector<CMessageData*>& messages);
 
-    // �����o�[�ꗗ���擾�����ꍇ
+    // メンバー一覧を取得した場合
     void onGetMembers(const std::vector<CMemberData*>& members);
 
-    // �`�����l���ꗗ���擾�����ꍇ
+    // チャンネル一覧を取得した場合
     void onGetChannels(const std::vector<CChannelData*>& channels);
 
-    // �`�����l���Q��������
+    // チャンネル参加成功時
     void onJoinChannel(const wxString& channel);
 
-    // �`�����l�����E������
+    // チャンネル離脱成功時
     void onPartChannel(const wxString& channel);
 
-    // �����o�[�����擾�����ꍇ
+    // メンバー情報を取得した場合
     void onGetMemberStatus(const CMemberData& member);
 
-    // ���b�Z�[�W�X�g���[�����擾�����ꍇ
+    // メッセージストリームを取得した場合
     void onGetMessageStream(const CMessageData& message);
 
-    // �`�����l���Q���X�g���[������M
+    // チャンネル参加ストリームを受信
     void onGetJoinStream(const wxString& channel, const wxString& name);
 
-    // �`�����l�����E�X�g���[������M
+    // チャンネル離脱ストリームを受信
     void onGetPartStream(const wxString& channel, const wxString& name);
 
-    // �`�����l�����X�V�X�g���[������M
+    // チャンネル情報更新ストリームを受信
     void onGetChannelStream(const CChannelData& channel);
 
-    // ���[�U���X�V�X�g���[���̎�M
+    // ユーザ情報更新ストリームの受信
     void onGetUserStream(const CMemberData& member);
 };
 

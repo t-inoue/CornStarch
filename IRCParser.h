@@ -1,4 +1,4 @@
-//
+﻿//
 //  IRCParser.h
 //  testtest
 //
