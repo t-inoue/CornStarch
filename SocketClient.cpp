@@ -101,7 +101,7 @@ void CSocketClient::send(const wxString& message)
 {
     int sendSize = 0; // 送信済みサイズ
     int result; // send関数の戻り値
-    string msg (message.c_str());//(message.mb_str(wxConvUTF8));
+    string msg(message.mb_str(wxConvUTF8));
 
     // 送信するデータ長
     int length = (int)msg.size();
