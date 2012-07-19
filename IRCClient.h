@@ -18,6 +18,7 @@ class CIRCClient: public CSocketClient {
 	CSocketClient* m_client;
 	wxString m_host;
 	wxString m_port;
+	int m_connectionId;
 	bool m_connected;
 	CIRCUser* m_userInfo;
 
@@ -26,7 +27,7 @@ class CIRCClient: public CSocketClient {
 public:
 	CIRCClient();
 	virtual ~CIRCClient(void);
-	void init(void);
+	void init(int connectionId);
 	void start(wxEvtHandler* handler);
 	void disconnect(void);
 	void sendMessage(wxString target, wxString content);

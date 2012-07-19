@@ -19,9 +19,9 @@ CIRCClient::~CIRCClient(void) {
 		delete m_userInfo;
 	}
 }
-void CIRCClient::init() {
+void CIRCClient::init(int connectionId) {
 	CSocketClient::init();
-
+	m_connectionId = connectionId;
 	//TEST
 	m_userInfo = new CIRCUser();
 	m_userInfo->setUserInfo("TEST", "");
@@ -69,8 +69,9 @@ void CIRCClient::receiveLoop() {
 					"\n");
 			for (int i = 0; i < messages.size(); i++) {
 				cout << messages[i].c_str();
-				wxThreadEvent* event = parser.parse(messages[i]);
+				CConnectionEventBase* event = parser.parse(messages[i]);
 				if (event != NULL) {
+					event->setConnectionId(m_connectionId);
 					wxQueueEvent(m_handler, event);
 				}
 			}
@@ -81,23 +82,19 @@ void CIRCClient::receiveLoop() {
 
 void CIRCClient::join(wxString channelName) {
 	wxString content(wxString::Format(wxT("JOIN %s\r\n"), channelName));
-	string contentString(content.c_str());
 	send(content);
 }
 void CIRCClient::part(wxString channelName) {
 	wxString content(wxString::Format(wxT("PART %s\r\n"), channelName));
-	string contentString(content.c_str());
 	send(content);
 }
 void CIRCClient::getTopicAsync(wxString channelName) {
 	wxString content(wxString::Format(wxT("TOPIC %s\r\n"), channelName));
-	string contentString(content.c_str());
-	send(contentString);
+	send(content);
 
 }
 void CIRCClient::getNamesAsync(wxString channelName) {
 	wxString content(wxString::Format(wxT("NAMES %s\r\n"), channelName));
-	string contentString(content.c_str());
 	send(content);
 
 }
@@ -105,14 +102,12 @@ void CIRCClient::getNamesAsync(wxString channelName) {
 void CIRCClient::sendMessage(wxString target, wxString content) {
 	wxString contentWxString(
 			wxString::Format(wxT("PRIVMSG %s %s\r\n"), target, content));
-	string contentString(contentWxString.c_str());
 	send(contentWxString);
 }
 void CIRCClient::sendNotice(wxString target, wxString content) {
 
 	wxString contentWxString(
 			wxString::Format(wxT("NOTICE %s %s\r\n"), target, content));
-	string contentString(contentWxString.c_str());
 	send(contentWxString);
 }
 }

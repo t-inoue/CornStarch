@@ -3,7 +3,7 @@
 using namespace std;
 
 CGetThreadEvent::CGetThreadEvent(wxEventType eventType, int id)
-    : wxThreadEvent(eventType, id)
+    : CConnectionEventBase(eventType, id)
 {
 }
 

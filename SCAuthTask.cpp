@@ -16,10 +16,10 @@ CSCAuthTask::~CSCAuthTask(void)
 
 
 // 初期化を行う
-void CSCAuthTask::init(wxEvtHandler* handler, const wxString& userName,
+void CSCAuthTask::init(int connectionId,wxEvtHandler* handler, const wxString& userName,
     const wxString& basic)
 {
-    CSCTask::init(handler, basic);
+    CSCTask::init(connectionId,handler, basic);
     m_userName = userName;
 }
 
@@ -35,7 +35,7 @@ void CSCAuthTask::sendRequestToSC(CSCClient* client)
 }
 
 // HTTPレスポンスを解析してイベントを作成する
-wxThreadEvent* CSCAuthTask::parseHttpResponse(const string& responseBody)
+CConnectionEventBase* CSCAuthTask::parseHttpResponse(const string& responseBody)
 {
     // レスポンスボディの内容を基に、イベントをセットする
     CSCJsonParser parser;

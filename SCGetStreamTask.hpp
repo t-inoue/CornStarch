@@ -27,7 +27,7 @@ public:
     ~CSCGetStreamTask(void);
 
     // 初期化を行う
-    void init(wxEvtHandler* handler, const wxString& userName,
+    void init(int connectionId,wxEvtHandler* handler, const wxString& userName,
         const wxString& basic);
 
 private:
@@ -36,6 +36,6 @@ private:
     ExitCode Entry(void);
 
     // Streamの内容からイベントを作成する
-    wxThreadEvent* parseStream(const std::string& json);
+    CConnectionEventBase* parseStream(const std::string& json);
 };
 

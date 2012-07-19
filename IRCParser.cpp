@@ -23,7 +23,7 @@ wxDECLARE_EVENT(myEVT_THREAD_STREAM_USER_UPDATE, CUserStreamEvent);
 
 namespace CornStarch {
 namespace IRC {
-wxThreadEvent* CIRCParser::parse(const std::string& content) {
+CConnectionEventBase* CIRCParser::parse(const std::string& content) {
 	if (content[0] == ':') {
 		int index = 1;
 		int nextIndex = content.find(" ");
@@ -59,11 +59,11 @@ wxThreadEvent* CIRCParser::parse(const std::string& content) {
 	return NULL;
 }
 
-wxThreadEvent* CIRCParser::createTopicMessageEvent(const string& host,
+CConnectionEventBase* CIRCParser::createTopicMessageEvent(const string& host,
 		const string& param) const {
 	return NULL;
 }
-wxThreadEvent* CIRCParser::createJoinMessageEvent(const string& host,
+CConnectionEventBase* CIRCParser::createJoinMessageEvent(const string& host,
 		const string& param) const {
 	vector<string> names = CStringUtility::split(host, "!");
 	string name = names[0];
@@ -76,7 +76,7 @@ wxThreadEvent* CIRCParser::createJoinMessageEvent(const string& host,
 	event->setUserName(name);
 	return event;
 }
-wxThreadEvent* CIRCParser::createPartMessageEvent(const string& host,
+CConnectionEventBase* CIRCParser::createPartMessageEvent(const string& host,
 		const string& param) const {
 	vector<string> names = CStringUtility::split(host, "!");
 	string name = names[0];
@@ -91,7 +91,7 @@ wxThreadEvent* CIRCParser::createPartMessageEvent(const string& host,
 	return event;
 
 }
-wxThreadEvent* CIRCParser::createPrivateMessageEvent(const string& host,
+CConnectionEventBase* CIRCParser::createPrivateMessageEvent(const string& host,
 		const string& param) const {
 	vector<string> names = CStringUtility::split(host, "!");
 	string name = names[0];
@@ -120,7 +120,7 @@ void CIRCParser::addNames(const string& param) {
 	string names = param.substr(index + 1);
 	m_buffer += names;
 }
-wxThreadEvent* CIRCParser::createNamesEvent(const string& param) {
+CConnectionEventBase* CIRCParser::createNamesEvent(const string& param) {
 	vector<CMemberData*> result;
 	vector<string> names = CStringUtility::split(m_buffer, " ");
 
@@ -144,7 +144,7 @@ wxThreadEvent* CIRCParser::createNamesEvent(const string& param) {
 	return event;
 }
 
-wxThreadEvent* CIRCParser::createTopicEvent(const string& param) const {
+CConnectionEventBase* CIRCParser::createTopicEvent(const string& param) const {
 
 	return NULL;
 }

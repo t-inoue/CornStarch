@@ -16,10 +16,10 @@ CSCGetStreamTask::~CSCGetStreamTask(void)
 
 
 // 初期化を行う
-void CSCGetStreamTask::init(wxEvtHandler* handler, const wxString& userName,
+void CSCGetStreamTask::init(int connectionId,wxEvtHandler* handler, const wxString& userName,
         const wxString& basic)
 {
-    CSCTask::init(handler, basic);
+    CSCTask::init(connectionId,handler, basic);
     m_userName = userName;
 }
 
@@ -71,7 +71,7 @@ wxThread::ExitCode CSCGetStreamTask::Entry()
 
 
 // Streamの内容からイベントを作成する
-wxThreadEvent* CSCGetStreamTask::parseStream(const string& json)
+CConnectionEventBase* CSCGetStreamTask::parseStream(const string& json)
 {
     // JSONのパース
     CSCJsonParser parser;

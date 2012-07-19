@@ -55,7 +55,7 @@ void CConnectionContents::registerUser(const wxString& userName, const wxString&
     m_user->setUserInfo(userName, pass);
 
     // 認証タスクの開始
-    m_connect->startAuthTask(m_handler, m_user->getUserName(), m_user->getBasic());
+    m_connect->startAuthTask(m_user);
 }
 
 // ログアウト時
@@ -72,14 +72,14 @@ void CConnectionContents::logout(void)
 void CConnectionContents::joinChannel(const wxString& channel)
 {
     // チャンネル参加タスクの開始
-    m_connect->startJoinTask(m_handler, channel, m_user->getUserName(), m_user->getBasic());
+    m_connect->startJoinTask(m_user, channel);
 }
 
 // チャンネルから離脱する際
 void CConnectionContents::partChannel(const wxString& channel)
 {
     // チャンネル離脱タスクを開始
-    m_connect->startPartTask(m_handler, channel, m_user->getUserName(), m_user->getBasic());
+    m_connect->startPartTask(m_user, channel);
 }
 
 // 再接続を行う
@@ -88,8 +88,8 @@ void CConnectionContents::reconnect(void)
     // 通信を初期化
     delete m_connect;
     m_connect = new CSCConnection();
-    m_connect->init(m_handler);
-    m_connect->startStreamTask(m_handler, m_user->getUserName(), m_user->getBasic());
+    m_connect->init(m_id, m_handler);
+    m_connect->startStreamTask( m_user);
 }
 
 // 各チャンネルの情報を破棄
@@ -128,7 +128,7 @@ void CConnectionContents::postMessage(const CMessageData& message)
 {
     // メッセージ投稿タスクの開始
     wxString channel = m_user->getChannelString();
-    m_connect->startPostMessageTask(m_handler, message.m_body, channel, m_user->getBasic());
+    m_connect->startPostMessageTask(m_user, message.m_body, channel );
 
     // メッセージを保存
     CMessageData data(-1, m_user->getUserName(), message.m_body, channel, time(NULL));
@@ -196,7 +196,7 @@ void CConnectionContents::onUpdateMessageView(const wxString& channel)
     if (!m_channel->hasReceivedMessage(channel)){
 
         // メッセージ取得タスクを開始
-        m_connect->startGetMessageTask(m_handler, channel, m_user->getBasic());
+        m_connect->startGetMessageTask(m_user, channel);
     }
 }
 
@@ -207,7 +207,7 @@ void CConnectionContents::onUpdateMemberView(const wxString& channel)
     if (!m_channel->hasReceivedMember(channel)){
 
         // メンバー取得タスクを開始
-        m_connect->startGetMemberTask(m_handler, channel, m_user->getBasic());
+        m_connect->startGetMemberTask(m_user, channel);
     }
 }
 
@@ -218,7 +218,7 @@ void CConnectionContents::onUpdateChannelView(void)
     if (!m_channel->hasReceivedChannel()){
 
         // チャンネル取得タスクを開始
-        m_connect->startGetChannelTask(m_handler, m_user->getUserName(), m_user->getBasic());
+        m_connect->startGetChannelTask( m_user);
     }
 }
 
@@ -237,10 +237,10 @@ void CConnectionContents::onAuthSucceeed(void)
     m_persist->saveValue(m_user->getBasicKey(), m_user->getBasic());
 
     // ニックネーム取得タスク
-    m_connect->startGetMemberInfoTask(m_handler, m_user->getUserName(), m_user->getBasic());
+    m_connect->startGetMemberInfoTask(m_user,m_user->getUserName());
 
     // ストリーム受信タスク
-    m_connect->startStreamTask(m_handler, m_user->getUserName(), m_user->getBasic());
+    m_connect->startStreamTask(m_user);
 }
 
 // メッセージ一覧を取得した場合
@@ -273,8 +273,8 @@ void CConnectionContents::onJoinChannel(const wxString& channel)
     m_user->setChannel(channel);
 
     // チャンネル一覧取得タスクの開始
-    m_connect->startGetChannelTask(m_handler,
-        m_user->getUserName(), m_user->getBasic());
+    m_connect->startGetChannelTask(
+    		m_user);
 }
 
 // チャンネル離脱成功時
@@ -314,7 +314,7 @@ void CConnectionContents::onGetMessageStream(const CMessageData& message)
 
     // ニックネームが未知の場合、メンバー情報取得タスクの開始
     if (!m_nickTable->isExist(message.m_username)){
-        m_connect->startGetMemberInfoTask(m_handler, message.m_username, m_user->getBasic());
+        m_connect->startGetMemberInfoTask(m_user, message.m_username);
     }
 
     // データ追加
@@ -331,8 +331,8 @@ void CConnectionContents::onGetJoinStream(const wxString& channel, const wxStrin
 
     // ニックネームが未知の場合、メンバー情報取得タスクの開始
     if (!m_nickTable->isExist(data.m_username)){
-        m_connect->startGetMemberInfoTask(m_handler,
-            name, m_user->getBasic());
+        m_connect->startGetMemberInfoTask(m_user,
+            name);
     }
 
     // メンバーを追加
@@ -343,7 +343,7 @@ void CConnectionContents::onGetJoinStream(const wxString& channel, const wxStrin
 
         // チャンネル情報取得タスクの開始
         m_connect->startGetChannelTask(
-            m_handler, m_user->getUserName(), m_user->getBasic());
+        		m_user);
     }
 }
 
@@ -358,7 +358,7 @@ void CConnectionContents::onGetPartStream(const wxString& channel, const wxStrin
 
     // ニックネームが未知の時、メンバー情報取得タスクの開始
     if (!m_nickTable->isExist(name)){
-        m_connect->startGetMemberInfoTask(m_handler, name, m_user->getBasic());
+        m_connect->startGetMemberInfoTask(m_user, name);
     }
 }
 

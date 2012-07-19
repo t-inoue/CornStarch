@@ -2,6 +2,7 @@
 #include "SCClient.hpp"
 #include "header.hpp"
 #include "SCJsonParser.hpp"
+#include "ConnectionEventBase.hpp"
 
 // スターチャットと通信を行うためのクラス
 class CSCTask : public wxThread
@@ -10,7 +11,7 @@ protected:
 
     wxEvtHandler* m_handler; // 処理終了を受け取るハンドラ
     wxString m_basic; // basic認証用文字列
-
+    int m_connectionId; // コネクションのID
 public:
     CSCTask(void);
     virtual ~CSCTask(void);
@@ -18,7 +19,7 @@ public:
 protected:
 
     // 初期化を行う
-    void init(wxEvtHandler* handler, const wxString& basic);
+    void init(int connectionId,wxEvtHandler* handler, const wxString& basic);
 
 protected:
 
@@ -26,8 +27,8 @@ protected:
     virtual ExitCode Entry(void);
 
     // StarChatに対してリクエストを送信する
-    virtual void sendRequestToSC(CSCClient* client){}
+    virtual void sendRequestToSC(CSCClient* client) {};
 
     // HTTPレスポンスを解析してイベントを作成する
-    virtual wxThreadEvent* parseHttpResponse(const std::string& responseBody){return NULL;}
+    virtual CConnectionEventBase* parseHttpResponse(const std::string& responseBody) {return NULL;};
 };

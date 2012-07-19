@@ -16,7 +16,7 @@ public:
     ~CSCGetMemberTask(void);
 
     // 初期化を行う
-    void init(wxEvtHandler* handler, const wxString& channel, 
+    void init(int connectionId,wxEvtHandler* handler, const wxString& channel,
         const wxString& basic);
 
 private:
@@ -25,6 +25,6 @@ private:
     void sendRequestToSC(CSCClient* client);
 
     // HTTPレスポンスを解析してイベントを作成する
-    wxThreadEvent* parseHttpResponse(const std::string& responseBody);
+    CConnectionEventBase* parseHttpResponse(const std::string& responseBody);
 };
 

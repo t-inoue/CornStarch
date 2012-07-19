@@ -11,6 +11,7 @@ class CConnectionEventBase:public wxThreadEvent
 	int m_connectionId;
 public:
 	CConnectionEventBase();
+	CConnectionEventBase(wxEventType eventType, int id );
 	virtual ~CConnectionEventBase();
 
 	// 通信IDを取得

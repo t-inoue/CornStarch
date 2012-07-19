@@ -16,7 +16,7 @@ void CIRCConnectionContents::init(wxEvtHandler* handler) {
 	CConnectionContents::init(handler);
 
 	m_connect = new CIRCConnection();
-	m_connect->init(m_handler);
+	m_connect->init(m_id, m_handler);
 
 	m_user = new CIRCUser();
 	m_user->init();

@@ -2,7 +2,7 @@
 
 
 CStreamEvent::CStreamEvent(wxEventType eventType, int id)
-    : wxThreadEvent(eventType, id)
+    : CConnectionEventBase(eventType, id)
 {
 }
 

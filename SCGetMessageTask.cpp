@@ -16,10 +16,10 @@ CSCGetMessageTask::~CSCGetMessageTask(void)
 
 
 // 初期化を行う
-void CSCGetMessageTask::init(wxEvtHandler* handler, const wxString& channel,
+void CSCGetMessageTask::init(int connectionId,wxEvtHandler* handler, const wxString& channel,
     const wxString& basic)
 {
-    CSCTask::init(handler, basic);
+    CSCTask::init(connectionId,handler, basic);
     m_channel = channel;
 }
 
@@ -35,7 +35,7 @@ void CSCGetMessageTask::sendRequestToSC(CSCClient* client)
 }
 
 // HTTPレスポンスを解析してイベントを作成する
-wxThreadEvent* CSCGetMessageTask::parseHttpResponse(const string& responseBody)
+CConnectionEventBase* CSCGetMessageTask::parseHttpResponse(const string& responseBody)
 {
     // イベントの初期化
     CGetMessageEvent* event = new CGetMessageEvent();

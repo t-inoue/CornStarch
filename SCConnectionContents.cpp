@@ -16,7 +16,7 @@ void CSCConnectionContents::init(wxEvtHandler* handler)
 
     // スターチャットの通信
     m_connect = new CSCConnection();
-    m_connect->init(m_handler);
+    m_connect->init(this->m_id,m_handler);
 
     // スターチャットのユーザー
     m_user = new CSCUser();
@@ -33,6 +33,6 @@ void CSCConnectionContents::init(wxEvtHandler* handler)
         m_user->setBasic(m_persist->loadValue(basicKey));
 
         // 認証を開始
-        m_connect->startAuthTask(m_handler, m_user->getUserName(), m_user->getBasic());
+        m_connect->startAuthTask( m_user);
     }
 }

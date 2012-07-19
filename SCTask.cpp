@@ -16,10 +16,11 @@ CSCTask::~CSCTask(void)
 
 
 // 初期化を行う
-void CSCTask::init(wxEvtHandler* handler, const wxString& basic)
+void CSCTask::init(int connectionId,wxEvtHandler* handler, const wxString& basic)
 {
     m_handler = handler;
     m_basic = basic;
+    m_connectionId = connectionId;
 }
 
 
@@ -65,8 +66,9 @@ wxThread::ExitCode CSCTask::Entry(void)
     }
 
     // HTTPレスポンスから(newされた)Eventを取得
-    wxThreadEvent* event = parseHttpResponse(body);
+    CConnectionEventBase* event = parseHttpResponse(body);
     if (event != NULL){
+    	event->setConnectionId(m_connectionId);
         // HTTPレスポンスを解析して、ハンドラにイベントを送る
         wxQueueEvent(m_handler, event);
     }

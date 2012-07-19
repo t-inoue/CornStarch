@@ -16,10 +16,10 @@ CSCJoinChannelTask::~CSCJoinChannelTask(void)
 
 
 // 行う処理をセット
-void CSCJoinChannelTask::init(wxEvtHandler* handler, const wxString& userName,
+void CSCJoinChannelTask::init(int connectionId,wxEvtHandler* handler, const wxString& userName,
     const wxString& channel, const wxString& basic)
 {
-    CSCTask::init(handler, basic);
+    CSCTask::init(connectionId,handler, basic);
     m_userName = userName;
     m_channel = channel;
 }
@@ -35,7 +35,7 @@ void CSCJoinChannelTask::sendRequestToSC(CSCClient* client)
 }
 
 // HTTPレスポンスを解析してイベントを作成する
-wxThreadEvent* CSCJoinChannelTask::parseHttpResponse(const string& responseBody)
+CConnectionEventBase* CSCJoinChannelTask::parseHttpResponse(const string& responseBody)
 {
     // イベントの初期化
     CJoinEvent* event = new CJoinEvent();

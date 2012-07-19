@@ -16,10 +16,10 @@ CSCPartChannelTask::~CSCPartChannelTask(void)
 
 
 // 行う処理をセット
-void CSCPartChannelTask::init(wxEvtHandler* handler, const wxString& userName,
+void CSCPartChannelTask::init(int connectionId,wxEvtHandler* handler, const wxString& userName,
     const wxString& channel, const wxString& basic)
 {
-    CSCTask::init(handler, basic);
+    CSCTask::init(connectionId,handler, basic);
     m_userName = userName;
     m_channel = channel;
 }
@@ -35,10 +35,10 @@ void CSCPartChannelTask::sendRequestToSC(CSCClient* client)
 }
 
 // HTTPレスポンスを解析してイベントを作成する
-wxThreadEvent* CSCPartChannelTask::parseHttpResponse(const string& responseBody)
+CConnectionEventBase* CSCPartChannelTask::parseHttpResponse(const string& responseBody)
 {
     // イベントの初期化
-    wxThreadEvent* event = new wxThreadEvent();
+	CConnectionEventBase* event = new CConnectionEventBase();
     event->SetEventType(myEVT_THREAD_DELETE_PART); // イベントの種類をセット
     event->SetString(m_channel);
     return event;

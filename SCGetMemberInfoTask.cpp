@@ -16,10 +16,10 @@ CSCGetMemberInfoTask::~CSCGetMemberInfoTask(void)
 
 
 // 初期化を行う
-void CSCGetMemberInfoTask::init(wxEvtHandler* handler, const wxString& username,
+void CSCGetMemberInfoTask::init(int connectionId,wxEvtHandler* handler, const wxString& username,
     const wxString& basic)
 {
-    CSCTask::init(handler, basic);
+    CSCTask::init(connectionId,handler, basic);
     m_username = username;
 }
 
@@ -35,7 +35,7 @@ void CSCGetMemberInfoTask::sendRequestToSC(CSCClient* client)
 }
 
 // HTTPレスポンスを解析してイベントを作成する
-wxThreadEvent* CSCGetMemberInfoTask::parseHttpResponse(const string& responseBody)
+CConnectionEventBase* CSCGetMemberInfoTask::parseHttpResponse(const string& responseBody)
 {
     // イベントの初期化
     CGetMemberInfoEvent* event = new CGetMemberInfoEvent();

@@ -10,6 +10,7 @@
 #define _IRCParser_h
 #include "StreamData.hpp"
 #include "header.hpp"
+#include "ConnectionEventBase.hpp"
 #include "string"
 
 using namespace std;
@@ -20,19 +21,18 @@ class CIRCParser {
 	string m_buffer;
 	void addNames(const string& param);
 
-	wxThreadEvent* createTopicMessageEvent(const string& host,
+	CConnectionEventBase* createTopicMessageEvent(const string& host,
 			const string& param) const;
-	wxThreadEvent* createJoinMessageEvent(const string& host,
+	CConnectionEventBase* createJoinMessageEvent(const string& host,
 			const string& param) const;
-	wxThreadEvent* createPartMessageEvent(const string& host,
+	CConnectionEventBase* createPartMessageEvent(const string& host,
 			const string& param) const;
-	wxThreadEvent* createPrivateMessageEvent(const string& host,
+	CConnectionEventBase* createPrivateMessageEvent(const string& host,
 			const string& param) const;
-	wxThreadEvent* createNamesEvent(const string& param);
-	wxThreadEvent* createTopicEvent(const string& param) const;
+	CConnectionEventBase* createNamesEvent(const string& param);
+	CConnectionEventBase* createTopicEvent(const string& param) const;
 public:
-	//CStreamData getStreamData(const std::string& content) const;
-	wxThreadEvent* parse(const std::string& content);
+	CConnectionEventBase* parse(const std::string& content);
 
 };
 }
