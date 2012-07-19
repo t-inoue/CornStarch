@@ -14,13 +14,18 @@
 
 namespace CornStarch {
 namespace IRC {
+// IRCと接続するためのクライントクラスです。
 class CIRCClient: public CSocketClient {
-	CSocketClient* m_client;
+
+	// ホスト名です。
 	wxString m_host;
+	// ポート番号です
 	wxString m_port;
+	// コネクションIDです。
 	int m_connectionId;
+	// 接続されているかを取得します。
 	bool m_connected;
-	CIRCUser* m_userInfo;
+
 
 	wxEvtHandler* m_handler;
 	void receiveLoop();
@@ -28,7 +33,7 @@ public:
 	CIRCClient();
 	virtual ~CIRCClient(void);
 	void init(int connectionId);
-	void start(wxEvtHandler* handler);
+	void start(wxEvtHandler* handler,wxString userName,wxString password);
 	void disconnect(void);
 	void sendMessage(wxString target, wxString content);
 	void sendNotice(wxString target, wxString content);

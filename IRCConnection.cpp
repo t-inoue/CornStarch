@@ -31,16 +31,20 @@ CIRCConnection::CIRCConnection()
 
 CIRCConnection::~CIRCConnection()
 {
+	int size = (int) m_channels.size();
+	for (int i = 0; i < size; i++)
+	{
+		delete m_channels[i];
+	}
 }
 
 // 初期化を行う
-void CIRCConnection::init(int connectionId,wxEvtHandler* handler)
+void CIRCConnection::init(int connectionId, wxEvtHandler* handler)
 {
 	m_connectionId = connectionId;
 	m_handler = handler;
 	m_client = new CIRCClient();
 	m_client->init(connectionId);
-	m_client->start(handler);
 }
 
 // メッセージを投稿するタスク(別スレッド)を開始する
@@ -99,16 +103,15 @@ void CIRCConnection::startGetChannelTask(const IUser* user)
 }
 
 // チャンネルから離脱するタスク(別スレッド)を開始する
-void CIRCConnection::startPartTask(const IUser* user,
-		const wxString& channel)
+void CIRCConnection::startPartTask(const IUser* user, const wxString& channel)
 {
 	m_client->part(channel);
 
 	vector<CChannelData*>::iterator it = m_channels.begin();
 	while (it != m_channels.end())
 	{
-		wxString channelName =(*it)->m_name ;
-		if (channelName== channel)
+		wxString channelName = (*it)->m_name;
+		if (channelName == channel)
 		{
 			m_channels.erase(it);
 			break;
@@ -124,8 +127,7 @@ void CIRCConnection::startPartTask(const IUser* user,
 }
 
 // チャンネルに参加するタスク(別スレッド)を開始する
-void CIRCConnection::startJoinTask(const IUser* user,
-		const wxString& channel)
+void CIRCConnection::startJoinTask(const IUser* user, const wxString& channel)
 {
 	m_client->join(channel);
 	m_client->getTopicAsync(channel);
@@ -157,35 +159,18 @@ void CIRCConnection::startGetMemberInfoTask(const IUser* user,
 // ユーザが正規の人かどうか判断するタスク(別スレッド)を開始する
 void CIRCConnection::startAuthTask(const IUser* user)
 {
-	// 初期化
-//        m_authTask = new CAuthTask();
-//        m_authTask->init(handler, userName, basic);
-//        
-//        // 別スレッドでの開始
-//        startThread(m_authTask);
+	m_client->start(m_handler,user->getUserName(),"");
 }
 
 // ストリーム通信タスク(別スレッド)を開始
 void CIRCConnection::startStreamTask(const IUser* user)
 {
-
-//        // 既に実行中だったら
-//        if (m_getStreamTask != NULL){
-//            
-//            return;
-//        }
-//        
-//        // ストリームの初期化
-//        m_getStreamTask = new CGetStreamTask();
-//        m_getStreamTask->init(handler, userName, basic);
-//        
-//        // 別スレッドでの実行
-//        startThread(m_getStreamTask);
 }
 
 // 認証用タスク(別スレッド)を削除する
 void CIRCConnection::deleteAuthTask(void)
-{}
+{
+}
 
 }
 } /* namespace CornStarch */

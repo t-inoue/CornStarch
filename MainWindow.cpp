@@ -39,7 +39,7 @@ void CMainWindow::init(void)
     m_logHolder = new CMainLogHolder();
 
 	// StarChatコンテンツの初期化
-	m_contents = new CSCConnectionContents();//
+	m_contents = new CSCConnectionContents();//new CornStarch::IRC::CIRCConnectionContents();//
 	m_contents->init(GetEventHandler());
 
     // イベントハンドラの初期化
