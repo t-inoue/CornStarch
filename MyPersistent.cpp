@@ -80,7 +80,7 @@ void CMyPersistent::deleteValue(const wxString& key)
 // linux
 #elif defined __linux
 const wxString CMyPersistent::FILE_PATH
-    = "~/.CornStarch";
+    = "/.CornStarch";
 
 CMyPersistent::CMyPersistent(void)
 {
@@ -99,13 +99,15 @@ CMyPersistent::~CMyPersistent(void)
 void CMyPersistent::init(void)
 {
     // ファイルが存在しない場合に作成
-    m_ifs.open(FILE_PATH);
-    if (m_ifs.fail()){
-        m_ofs.open(FILE_PATH);
-        chmod(FILE_PATH, S_IRUSR | S_IWUSR);
-        m_ofs.close();
+    ifstream ifs;
+    ifs.open(getenv("HOME") + FILE_PATH);
+    if (ifs.fail()){
+        ofstream ofs;
+        ofs.open(getenv("HOME") + FILE_PATH);
+        chmod(getenv("HOME") + FILE_PATH, S_IRUSR | S_IWUSR);
+        ofs.close();
     }
-    m_ifs.close();
+    ifs.close();
 }
 
 // 情報を保存する
@@ -115,15 +117,16 @@ void CMyPersistent::saveValue(const wxString& key, const wxString& value)
     map<string, string> data = loadFileAsMap();
 
     // mapに保存
-    m_value[(string)key.mb_str(wxConvUTF8)] = (string)key.mb_str(wxConvUTF8);
+    data[(string)key.mb_str(wxConvUTF8)] = (string)value.mb_str(wxConvUTF8);
 
     // mapからファイルに保存
-    m_ofs.open(FILE_PATH, ios::trunc);
+    ofstream ofs;
+    ofs.open(getenv("HOME") + FILE_PATH, ios::trunc);
     map<string, string>::iterator it;
-    for (it = m_value.begin(); it != m_value.end(); it++){
-        m_ofs << it.first << it.second;
+    for (it = data.begin(); it != data.end(); it++){
+        ofs << it->first << " " << it->second << endl;
     }
-    m_ofs.close();
+    ofs.close();
 }
 
 // キーから情報を読み込む
@@ -152,7 +155,8 @@ bool CMyPersistent::isKeySaved(const wxString& key) const
 // 保存情報を削除する
 void CMyPersistent::deleteValue(const wxString& key)
 {
-    m_ofs.open(FILE_PATH, ios::trunc);
+    ofstream ofs;
+    ofs.open(getenv("HOME") + FILE_PATH, ios::trunc);
 }
 
 // ファイルをmapとして開く
@@ -161,13 +165,14 @@ map<string, string> CMyPersistent::loadFileAsMap(void) const
     map<string, string> table;
 
     // 保存情報をmapで読み込む
-    m_ifs.open(FILE_PATH);
-    while (!m_ifs.eof()){
+    ifstream ifs;
+    ifs.open(getenv("HOME") + FILE_PATH);
+    while (!ifs.eof()){
         string key, value;
-        m_ifs >> key >> value;        
+        ifs >> key >> value;        
         table[key] = value;
     }
-    m_ifs.close();
+    ifs.close();
 
     return table;
 }
@@ -175,6 +180,9 @@ map<string, string> CMyPersistent::loadFileAsMap(void) const
 
 // mac
 #else
+const wxString CMyPersistent::FILE_PATH
+    = "/.CornStarch";
+
 CMyPersistent::CMyPersistent(void)
 {
 }
@@ -191,57 +199,83 @@ CMyPersistent::~CMyPersistent(void)
 // 初期化を行う
 void CMyPersistent::init(void)
 {
-    // ファイルが開けない(存在しない)
-    m_ifs.open("./.config");
-    if (m_ifs.fail()){
-
-        // ファイルを作成する
-        m_ofs.open("./.config");
-        chmod("./.config", S_IRUSR | S_IWUSR);
-    } else {
-
-        // ファイルが存在した場合
-//        while (!m_ifs.eof()){
-//            wxString key, value;
-//            m_ifs >> string(key.mb_str(wxConvUTF8)) >> string(value.mb_str(wxConvUTF8));
-//            m_value[key] = value;
-//        }
-        m_ifs.close();
-        m_ofs.open("./.config");
-    }}
+    // ファイルが存在しない場合に作成
+    ifstream ifs;
+    ifs.open(getenv("HOME") + FILE_PATH);
+    if (ifs.fail()){
+        ofstream ofs;
+        ofs.open(getenv("HOME") + FILE_PATH);
+        chmod(getenv("HOME") + FILE_PATH, S_IRUSR | S_IWUSR);
+        ofs.close();
+    }
+    ifs.close();
+}
 
 // 情報を保存する
 void CMyPersistent::saveValue(const wxString& key, const wxString& value)
 {
-    m_value[key] = value;
+    // ファイルからmapとして読み込み
+    map<string, string> data = loadFileAsMap();
+
+    // mapに保存
+    data[(string)key.mb_str(wxConvUTF8)] = (string)value.mb_str(wxConvUTF8);
+
+    // mapからファイルに保存
+    ofstream ofs;
+    ofs.open(getenv("HOME") + FILE_PATH, ios::trunc);
+    map<string, string>::iterator it;
+    for (it = data.begin(); it != data.end(); it++){
+        ofs << it->first << " " << it->second << endl;
+    }
+    ofs.close();
 }
 
 // キーから情報を読み込む
 wxString CMyPersistent::loadValue(const wxString& key)
 {
-    return m_value[key];
+    // ファイルからmapとして読み込み
+    map<string, string> table = loadFileAsMap();
+
+    return wxString(table[(string)key.mb_str(wxConvUTF8)].c_str(), wxConvUTF8);
 }
 
 // keyが保存されているか
 bool CMyPersistent::isKeySaved(const wxString& key) const
 {
-    if (m_value.find(key) == m_value.end()){
-        return false;
+    // ファイルからmapとして読み込み
+    map<string, string> table = loadFileAsMap();
+
+    // keyが保存されていたら
+    if (table[(string)key.mb_str(wxConvUTF8)] != ""){
+        return true;
     }
-    return true;
+
+    return false;
 }
 
 // 保存情報を削除する
 void CMyPersistent::deleteValue(const wxString& key)
 {
-    m_value.clear();
+    ofstream ofs;
+    ofs.open(getenv("HOME") + FILE_PATH, ios::trunc);
 }
 
 // ファイルをmapとして開く
 map<string, string> CMyPersistent::loadFileAsMap(void) const
 {
-    return map<string, string>();
-}
+    map<string, string> table;
 
+    // 保存情報をmapで読み込む
+    ifstream ifs;
+    ifs.open(getenv("HOME") + FILE_PATH);
+    while (!ifs.eof()){
+        string key, value;
+        ifs >> key >> value;        
+        table[key] = value;
+    }
+    ifs.close();
+
+    return table;
+}
 
 #endif
