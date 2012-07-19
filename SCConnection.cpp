@@ -23,7 +23,7 @@ CSCConnection::~CSCConnection(void)
 
 
     // 初期化を行う
-void CSCConnection::init(void)
+void CSCConnection::init(wxEvtHandler* handler)
 {
 }
 

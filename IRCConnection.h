@@ -27,40 +27,40 @@ public:
 	void init(wxEvtHandler* handler);
 
 	//override メッセージを投稿するタスク(別スレッド)を開始する
-	void startPostMessageTask(wxEvtHandler* handler, const std::string& message,
-			const std::string& channel, const std::string& basic);
+	void startPostMessageTask(wxEvtHandler* handler, const wxString& message,
+			const wxString& channel, const wxString& basic);
 
 	//override チャンネルのメッセージを取得するタスク(別スレッド)を開始する
-	void startGetMessageTask(wxEvtHandler* handler, const std::string& channel,
-			const std::string& basic);
+	void startGetMessageTask(wxEvtHandler* handler, const wxString& channel,
+			const wxString& basic);
 
 	//override チャンネルのメンバーを取得するタスク(別スレッド)を開始する
-	void startGetMemberTask(wxEvtHandler* handler, const std::string& channel,
-			const std::string& basic);
+	void startGetMemberTask(wxEvtHandler* handler, const wxString& channel,
+			const wxString& basic);
 
 	//override ユーザの所属するチャンネル一覧を取得するタスク(別スレッド)を開始する
-	void startGetChannelTask(wxEvtHandler* handler, const std::string& userName,
-			const std::string& basic);
+	void startGetChannelTask(wxEvtHandler* handler, const wxString& userName,
+			const wxString& basic);
 
 	//override チャンネルから離脱するタスク(別スレッド)を開始する
-	void startPartTask(wxEvtHandler* handler, const std::string& channel,
-			const std::string& userName, const std::string& basic);
+	void startPartTask(wxEvtHandler* handler, const wxString& channel,
+			const wxString& userName, const wxString& basic);
 
 	//override チャンネルに参加するタスク(別スレッド)を開始する
-	void startJoinTask(wxEvtHandler* handler, const std::string& channel,
-			const std::string& userName, const std::string& basic);
+	void startJoinTask(wxEvtHandler* handler, const wxString& channel,
+			const wxString& userName, const wxString& basic);
 
 	//override メンバーの情報を取得するタスク(別スレッド)を開始する
 	void startGetMemberInfoTask(wxEvtHandler* handler,
-			const std::string& userName, const std::string& basic);
+			const wxString& userName, const wxString& basic);
 
 	//override ユーザが正規の人かどうか判断するタスク(別スレッド)を開始する
-	void startAuthTask(wxEvtHandler* handler, const std::string& userName,
-			const std::string& basic);
+	void startAuthTask(wxEvtHandler* handler, const wxString& userName,
+			const wxString& basic);
 
 	//override ストリーム通信タスク(別スレッド)を開始
-	void startStreamTask(wxEvtHandler* handler, const std::string& userName,
-			const std::string& basic);
+	void startStreamTask(wxEvtHandler* handler, const wxString& userName,
+			const wxString& basic);
 
 	//override 認証用タスク(別スレッド)を削除する
 	void deleteAuthTask(void);

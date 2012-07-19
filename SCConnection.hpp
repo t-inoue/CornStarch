@@ -8,9 +8,10 @@
 #include "SCPartChannelTask.hpp"
 #include "SCGetMemberInfoTask.hpp"
 #include "SCGetStreamTask.hpp"
+#include "IConnection.hpp"
 
 // 通信部分を管理(通信結果をイベントとして返す)
-class CSCConnection
+class CSCConnection: public IConnection
 {
 private:
 
@@ -23,7 +24,7 @@ public:
     ~CSCConnection(void);
 
     // 初期化を行う
-    void init(void);
+    void init(wxEvtHandler* handler);
 
     // メッセージを投稿するタスク(別スレッド)を開始する
     void startPostMessageTask(wxEvtHandler* handler, const wxString& message,

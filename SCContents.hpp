@@ -4,91 +4,93 @@
 #include "SCUser.hpp"
 #include "SCNickTable.hpp"
 #include "MyPersistent.hpp"
+#include "IUser.h"
+#include "IConnection.hpp"
 
-// StarChat‚ÌModelƒRƒ“ƒeƒ“ƒc‚ğˆµ‚¤ƒNƒ‰ƒX
+// StarChatï¿½ï¿½Modelï¿½Rï¿½ï¿½ï¿½eï¿½ï¿½ï¿½cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½X
 class CSCContents
 {
 private:
-    // ƒCƒxƒ“ƒgƒnƒ“ƒhƒ‰
+    // ï¿½Cï¿½xï¿½ï¿½ï¿½gï¿½nï¿½ï¿½ï¿½hï¿½ï¿½
     wxEvtHandler* m_handler;
 
-    // StarChat‚Ìƒf[ƒ^•”
-    CSCConnection* m_connect; // ’ÊM‚ği‚éƒNƒ‰ƒX
-    CSCChannelHolder* m_channel; // ƒ`ƒƒƒ“ƒlƒ‹î•ñ‚ğ•Û
-    CSCUser* m_user; // ƒ†[ƒUî•ñ
-    CSCNickTable* m_nickTable; // ƒjƒbƒNƒl[ƒ€ƒe[ƒuƒ‹
+    // StarChatï¿½Ìƒfï¿½[ï¿½^ï¿½ï¿½
+    IConnection* m_connect; // ï¿½ÊMï¿½ï¿½ï¿½iï¿½ï¿½Nï¿½ï¿½ï¿½X
+    CSCChannelHolder* m_channel; // ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ûï¿½
+    IUser* m_user; // ï¿½ï¿½ï¿½[ï¿½Uï¿½ï¿½ï¿½
+    CSCNickTable* m_nickTable; // ï¿½jï¿½bï¿½Nï¿½lï¿½[ï¿½ï¿½ï¿½eï¿½[ï¿½uï¿½ï¿½
 
-    // ”Ä—pƒNƒ‰ƒX
-    CMyPersistent* m_persist; // ‰i‘±‰»‚ğˆµ‚¤
+    // ï¿½Ä—pï¿½Nï¿½ï¿½ï¿½X
+    CMyPersistent* m_persist; // ï¿½iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 public:
     CSCContents(void);
     ~CSCContents(void);
 
-    // ‰Šú‰»‚ğs‚¤
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½
     void init(wxEvtHandler* handler);
 
-    // ƒ†[ƒU‚ªƒƒOƒCƒ“‚µ‚Ä‚¢‚é‚©
+    // ï¿½ï¿½ï¿½[ï¿½Uï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é‚©
     bool isUserLogin(void) const;
 
-    // ƒ†[ƒU“o˜^‚ğs‚Á‚½Û‚Ìƒf[ƒ^XV
+    // ï¿½ï¿½ï¿½[ï¿½Uï¿½oï¿½^ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½ï¿½ï¿½Û‚Ìƒfï¿½[ï¿½^ï¿½Xï¿½V
     void registerUser(const wxString& userName, const wxString& pass);
 
-    // ƒƒOƒAƒEƒg
+    // ï¿½ï¿½ï¿½Oï¿½Aï¿½Eï¿½gï¿½ï¿½
     void logout(void);
 
-    // ƒ`ƒƒƒ“ƒlƒ‹‚ÉQ‰Á‚ğs‚¤Û
+    // ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½ÉQï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½ï¿½
     void joinChannel(const wxString& channel);
 
-    // ƒ`ƒƒƒ“ƒlƒ‹‚©‚ç—£’E‚·‚éÛ
+    // ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½ï¿½ï¿½ç—£ï¿½Eï¿½ï¿½ï¿½ï¿½ï¿½
     void partChannel(const wxString& channel);
 
-    // ÄÚ‘±‚ğs‚¤
+    // ï¿½ÄÚ‘ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½
     void reconnect(void);
 
-    // Šeƒ`ƒƒƒ“ƒlƒ‹‚Ìî•ñ‚ğ”jŠü
+    // ï¿½eï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½jï¿½ï¿½
     void clearChannels(void);
 
-    // ƒjƒbƒNƒl[ƒ€ƒe[ƒuƒ‹‚ğ”jŠü
+    // ï¿½jï¿½bï¿½Nï¿½lï¿½[ï¿½ï¿½ï¿½eï¿½[ï¿½uï¿½ï¿½ï¿½ï¿½jï¿½ï¿½
     void clearNickTable(void);
 
-    // Œ»İ‚Ìƒ`ƒƒƒ“ƒlƒ‹–¼‚ğæ“¾
+    // ï¿½ï¿½ï¿½İ‚Ìƒ`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ“¾
     wxString getCurrentChannel(void) const;
 
-    // ƒƒbƒZ[ƒW‚ğ¶¬
+    // ï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½Wï¿½ğ¶ï¿½
     CMessageData generateMessage(const wxString& body);
 
-    // ƒjƒbƒNƒl[ƒ€‚ğæ“¾
+    // ï¿½jï¿½bï¿½Nï¿½lï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½æ“¾
     wxString getNickName(void) const;
 
-    // ƒƒbƒZ[ƒW‚ğ“Še‚µ‚½Û
+    // ï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½Wï¿½ğ“Šeï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     void postMessage(const CMessageData& message);
 
-    // ƒ`ƒƒƒ“ƒlƒ‹‚ğ‘I‘ğ‚µ‚½Û
+    // ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     void selectChannel(const wxString& channel);
 
-    // ƒ`ƒƒƒ“ƒlƒ‹ˆê——‚ğæ“¾
+    // ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½ê——ï¿½ï¿½ï¿½æ“¾
     std::vector<wxString> getChannels(void) const;
 
-    // ƒƒbƒZ[ƒWˆê——‚ğæ“¾
+    // ï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½Wï¿½ê——ï¿½ï¿½ï¿½æ“¾
     std::vector<CMessageData*> getMessages(const wxString& channel) const;
 
-    // ƒƒ“ƒo[ˆê——‚ğæ“¾
+    // ï¿½ï¿½ï¿½ï¿½ï¿½oï¿½[ï¿½ê——ï¿½ï¿½ï¿½æ“¾
     std::vector<CMemberData*> getMembers(const wxString& channel) const;
 
-    // ƒjƒbƒNƒl[ƒ€ƒe[ƒuƒ‹‚ğæ“¾
+    // ï¿½jï¿½bï¿½Nï¿½lï¿½[ï¿½ï¿½ï¿½eï¿½[ï¿½uï¿½ï¿½ï¿½ï¿½ï¿½æ“¾
     CSCNickTable getNickTable(void) const;
 
-    // ƒ†[ƒU‚ªŒÄ‚Î‚ê‚½‚©
+    // ï¿½ï¿½ï¿½[ï¿½Uï¿½ï¿½ï¿½Ä‚Î‚ê‚½ï¿½ï¿½
     bool isUserCalled(const wxString& message);
 
-    // ƒƒ“ƒo[‚ÌƒjƒbƒNƒl[ƒ€‚ğæ“¾
+    // ï¿½ï¿½ï¿½ï¿½ï¿½oï¿½[ï¿½Ìƒjï¿½bï¿½Nï¿½lï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½æ“¾
     wxString getMemberNick(const wxString& member);
 
-    // ƒ`ƒƒƒ“ƒlƒ‹‚ÌƒgƒsƒbƒN‚ğæ“¾
+    // ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½Ìƒgï¿½sï¿½bï¿½Nï¿½ï¿½ï¿½æ“¾
     wxString getTopic(const wxString& channel);
 
-    // ‚±‚ÌƒNƒ‰ƒCƒAƒ“ƒg‚©‚ç“Še‚³‚ê‚½ƒƒbƒZ[ƒW‚©
+    // ï¿½ï¿½ï¿½ÌƒNï¿½ï¿½ï¿½Cï¿½Aï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ç“Šï¿½eï¿½ï¿½ï¿½ê‚½ï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½Wï¿½ï¿½
     bool isPostedThisClient(const CMessageData& message);
 
 
@@ -106,40 +108,40 @@ public:
 
     /////////////////////////////////////////
 
-    // ”FØ‚ª¬Œ÷‚µ‚½ê‡
+    // ï¿½Fï¿½Ø‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‡
     void onAuthSucceeed(void);
 
-    // ƒƒbƒZ[ƒWˆê——‚ğæ“¾‚µ‚½ê‡
+    // ï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½Wï¿½ê——ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½ï¿½ï¿½ê‡
     void onGetMessages(const std::vector<CMessageData*>& messages);
 
-    // ƒƒ“ƒo[ˆê——‚ğæ“¾‚µ‚½ê‡
+    // ï¿½ï¿½ï¿½ï¿½ï¿½oï¿½[ï¿½ê——ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½ï¿½ï¿½ê‡
     void onGetMembers(const std::vector<CMemberData*>& members);
 
-    // ƒ`ƒƒƒ“ƒlƒ‹ˆê——‚ğæ“¾‚µ‚½ê‡
+    // ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½ê——ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½ï¿½ï¿½ê‡
     void onGetChannels(const std::vector<CChannelData*>& channels);
 
-    // ƒ`ƒƒƒ“ƒlƒ‹Q‰Á¬Œ÷
+    // ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½Qï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     void onJoinChannel(const wxString& channel);
 
-    // ƒ`ƒƒƒ“ƒlƒ‹—£’E¬Œ÷
+    // ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½ï¿½ï¿½Eï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     void onPartChannel(const wxString& channel);
 
-    // ƒƒ“ƒo[î•ñ‚ğæ“¾‚µ‚½ê‡
+    // ï¿½ï¿½ï¿½ï¿½ï¿½oï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½ï¿½ï¿½ê‡
     void onGetMemberStatus(const CMemberData& member);
 
-    // ƒƒbƒZ[ƒWƒXƒgƒŠ[ƒ€‚ğæ“¾‚µ‚½ê‡
+    // ï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½Wï¿½Xï¿½gï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½ï¿½ï¿½ê‡
     void onGetMessageStream(const CMessageData& message);
 
-    // ƒ`ƒƒƒ“ƒlƒ‹Q‰ÁƒXƒgƒŠ[ƒ€‚ğóM
+    // ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½Qï¿½ï¿½ï¿½Xï¿½gï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½M
     void onGetJoinStream(const wxString& channel, const wxString& name);
 
-    // ƒ`ƒƒƒ“ƒlƒ‹—£’EƒXƒgƒŠ[ƒ€‚ğóM
+    // ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½ï¿½ï¿½Eï¿½Xï¿½gï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½M
     void onGetPartStream(const wxString& channel, const wxString& name);
 
-    // ƒ`ƒƒƒ“ƒlƒ‹î•ñXVƒXƒgƒŠ[ƒ€‚ğóM
+    // ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½Vï¿½Xï¿½gï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½M
     void onGetChannelStream(const CChannelData& channel);
 
-    // ƒ†[ƒUî•ñXVƒXƒgƒŠ[ƒ€‚ÌóM
+    // ï¿½ï¿½ï¿½[ï¿½Uï¿½ï¿½ï¿½Xï¿½Vï¿½Xï¿½gï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½Ìï¿½M
     void onGetUserStream(const CMemberData& member);
 };
 

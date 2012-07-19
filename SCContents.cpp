@@ -22,188 +22,188 @@ CSCContents::~CSCContents(void)
 //////////////////////////////////////////////////////////////////////
 
 
-// ‰Šú‰»‚ğs‚¤
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½
 void CSCContents::init(wxEvtHandler* handler)
 {
-    // ƒCƒxƒ“ƒgƒnƒ“ƒhƒ‰‚Ì“o˜^
+    // ï¿½Cï¿½xï¿½ï¿½ï¿½gï¿½nï¿½ï¿½ï¿½hï¿½ï¿½ï¿½Ì“oï¿½^
     m_handler = handler;
 
-    // ’ÊM‚Ì‰Šú‰»
+    // ï¿½ÊMï¿½Ìï¿½ï¿½ï¿½
     m_connect = new CSCConnection();
-    m_connect->init();
+    m_connect->init(m_handler);
 
-    // ƒf[ƒ^•Û•”‚Ì‰Šú‰»
-    m_channel = new CSCChannelHolder(); // ƒ`ƒƒƒ“ƒlƒ‹
+    // ï¿½fï¿½[ï¿½^ï¿½Ûï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½
+    m_channel = new CSCChannelHolder(); // ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½
     m_channel->init();
 
-    // ƒ†[ƒUî•ñ‚Ì‰Šú‰»
+    // ï¿½ï¿½ï¿½[ï¿½Uï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½
     m_user = new CSCUser();
     m_user->init();
     m_user->setChannel("");
 
-    // ƒjƒbƒNƒl[ƒ€ƒe[ƒuƒ‹‚Ì‰Šú‰»
+    // ï¿½jï¿½bï¿½Nï¿½lï¿½[ï¿½ï¿½ï¿½eï¿½[ï¿½uï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½
     m_nickTable = new CSCNickTable();
 
-    // ‰i‘±‰»‚ğˆµ‚¤ƒNƒ‰ƒX‚Ì‰Šú‰»
+    // ï¿½iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½Xï¿½Ìï¿½ï¿½ï¿½
     m_persist = new CMyPersistent();
     m_persist->init();
 
-    // ƒpƒXƒ[ƒhî•ñ‚ª•Û‘¶‚³‚ê‚Ä‚¢‚ê‚Î
+    // ï¿½pï¿½Xï¿½ï¿½ï¿½[ï¿½hï¿½ï¿½ñ‚ª•Û‘ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½
     wxString basicKey = m_user->getBasicKey();
     wxString nameKey = m_user->getNameKey();
     if (m_persist->isKeySaved(basicKey) && m_persist->isKeySaved(nameKey)){
 
-        // ƒpƒXƒ[ƒhî•ñ‚ğ“Ç‚İ‚Ş
+        // ï¿½pï¿½Xï¿½ï¿½ï¿½[ï¿½hï¿½ï¿½ï¿½ï¿½Ç‚İï¿½ï¿½ï¿½
         m_user->setUserName(m_persist->loadInfo(nameKey));
         m_user->setBasic(m_persist->loadInfo(basicKey));
 
-        // ”FØƒ^ƒXƒN‚ğŠJn‚·‚é
+        // ï¿½Fï¿½Øƒ^ï¿½Xï¿½Nï¿½ï¿½ï¿½Jï¿½nï¿½ï¿½ï¿½ï¿½
         m_connect->startAuthTask(m_handler, m_user->getUserName(), m_user->getBasic());
     }
 }
 
-// ƒ†[ƒU‚ªƒƒOƒCƒ“‚µ‚Ä‚¢‚é‚©
+// ï¿½ï¿½ï¿½[ï¿½Uï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é‚©
 bool CSCContents::isUserLogin(void) const
 {
     return m_user->isLogin();
 }
 
-// ƒ†[ƒU“o˜^‚ğs‚Á‚½Û‚Ìƒf[ƒ^XV
+// ï¿½ï¿½ï¿½[ï¿½Uï¿½oï¿½^ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½ï¿½ï¿½Û‚Ìƒfï¿½[ï¿½^ï¿½Xï¿½V
 void CSCContents::registerUser(const wxString& userName, const wxString& pass)
 {
-    // ƒ†[ƒUî•ñ‚ğƒZƒbƒg
+    // ï¿½ï¿½ï¿½[ï¿½Uï¿½ï¿½ï¿½ï¿½ï¿½Zï¿½bï¿½g
     m_user->setUserInfo(userName, pass);
 
-    // ”FØƒ^ƒXƒN‚ÌŠJn
+    // ï¿½Fï¿½Øƒ^ï¿½Xï¿½Nï¿½ÌŠJï¿½n
     m_connect->startAuthTask(m_handler, m_user->getUserName(), m_user->getBasic());
 }
 
-// ƒƒOƒAƒEƒg
+// ï¿½ï¿½ï¿½Oï¿½Aï¿½Eï¿½gï¿½ï¿½
 void CSCContents::logout(void)
 {
-    // ƒƒOƒCƒ“‚µ‚Ä‚¢‚é‚Æ‚«A•Û‘¶‚µ‚Ä‚ ‚éî•ñ‚ğíœ
+    // ï¿½ï¿½ï¿½Oï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½Aï¿½Û‘ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½íœ
     if (isUserLogin()){
         m_persist->deleteInfo(m_user->getNameKey());
         m_persist->deleteInfo(m_user->getBasicKey());
     }
 }
 
-// ƒ`ƒƒƒ“ƒlƒ‹‚ÉQ‰Á‚ğs‚¤Û
+// ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½ÉQï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½ï¿½
 void CSCContents::joinChannel(const wxString& channel)
 {
-    // ƒ`ƒƒƒ“ƒlƒ‹Q‰Áƒ^ƒXƒN‚ÌŠJn
+    // ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½Qï¿½ï¿½ï¿½^ï¿½Xï¿½Nï¿½ÌŠJï¿½n
     m_connect->startJoinTask(m_handler, channel, m_user->getUserName(), m_user->getBasic());
 }
 
-// ƒ`ƒƒƒ“ƒlƒ‹‚©‚ç—£’E‚·‚éÛ
+// ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½ï¿½ï¿½ç—£ï¿½Eï¿½ï¿½ï¿½ï¿½ï¿½
 void CSCContents::partChannel(const wxString& channel)
 {
-    // ƒ`ƒƒƒ“ƒlƒ‹—£’Eƒ^ƒXƒN‚ğŠJn
+    // ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½ï¿½ï¿½Eï¿½^ï¿½Xï¿½Nï¿½ï¿½ï¿½Jï¿½n
     m_connect->startPartTask(m_handler, channel, m_user->getUserName(), m_user->getBasic());
 }
 
-// ÄÚ‘±‚ğs‚¤
+// ï¿½ÄÚ‘ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½
 void CSCContents::reconnect(void)
 {
-    // ’ÊM‚ğ‰Šú‰»
+    // ï¿½ÊMï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     delete m_connect;
     m_connect = new CSCConnection();
-    m_connect->init();
+    m_connect->init(m_handler);
     m_connect->startStreamTask(m_handler, m_user->getUserName(), m_user->getBasic());
 }
 
-// Šeƒ`ƒƒƒ“ƒlƒ‹‚Ìî•ñ‚ğ”jŠü
+// ï¿½eï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½jï¿½ï¿½
 void CSCContents::clearChannels(void)
 {
     m_channel->deleteChannels();
 }
 
-// ƒjƒbƒNƒl[ƒ€ƒe[ƒuƒ‹‚ğ”jŠü
+// ï¿½jï¿½bï¿½Nï¿½lï¿½[ï¿½ï¿½ï¿½eï¿½[ï¿½uï¿½ï¿½ï¿½ï¿½jï¿½ï¿½
 void CSCContents::clearNickTable(void)
 {
     delete m_nickTable;
     m_nickTable = new CSCNickTable();
 }
 
-// Œ»İ‚Ìƒ`ƒƒƒ“ƒlƒ‹–¼‚ğæ“¾
+// ï¿½ï¿½ï¿½İ‚Ìƒ`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ“¾
 wxString CSCContents::getCurrentChannel(void) const
 {
     return m_user->getChannelString();
 }
 
-// ƒƒbƒZ[ƒW‚ğ¶¬
+// ï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½Wï¿½ğ¶ï¿½
 CMessageData CSCContents::generateMessage(const wxString& body)
 {
     return CMessageData(-1, m_user->getUserName(), body, m_user->getChannelString(), time(NULL));
 }
 
-// ƒjƒbƒNƒl[ƒ€‚ğæ“¾
+// ï¿½jï¿½bï¿½Nï¿½lï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½æ“¾
 wxString CSCContents::getNickName(void) const
 {
     return m_user->getNickName();
 }
 
-// ƒƒbƒZ[ƒW‚ğ“Še‚µ‚½Û
+// ï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½Wï¿½ğ“Šeï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void CSCContents::postMessage(const CMessageData& message)
 {
-    // ƒƒbƒZ[ƒW“Šeƒ^ƒXƒN‚ÌŠJn
+    // ï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½Wï¿½ï¿½ï¿½eï¿½^ï¿½Xï¿½Nï¿½ÌŠJï¿½n
     wxString channel = m_user->getChannelString();
     m_connect->startPostMessageTask(m_handler, message.m_body, channel, m_user->getBasic());
 
-    // ƒƒbƒZ[ƒW‚ğ•Û‘¶
+    // ï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½Wï¿½ï¿½Û‘ï¿½
     CMessageData data(-1, m_user->getUserName(), message.m_body, channel, time(NULL));
     m_channel->pushMessage(data.m_channel, data);
 }
 
-// ƒ`ƒƒƒ“ƒlƒ‹‚ğ‘I‘ğ‚µ‚½Û
+// ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void CSCContents::selectChannel(const wxString& channel)
 {
     m_user->setChannel(channel);
 }
 
-// ƒ`ƒƒƒ“ƒlƒ‹ˆê——‚ğæ“¾
+// ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½ê——ï¿½ï¿½ï¿½æ“¾
 vector<wxString> CSCContents::getChannels(void) const
 {
     return m_channel->getChannels();
 }
 
-// ƒƒbƒZ[ƒWˆê——‚ğæ“¾
+// ï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½Wï¿½ê——ï¿½ï¿½ï¿½æ“¾
 vector<CMessageData*> CSCContents::getMessages(const wxString& channel) const
 {
     return m_channel->getMessages(channel);
 }
 
-// ƒƒ“ƒo[ˆê——‚ğæ“¾
+// ï¿½ï¿½ï¿½ï¿½ï¿½oï¿½[ï¿½ê——ï¿½ï¿½ï¿½æ“¾
 vector<CMemberData*> CSCContents::getMembers(const wxString& channel) const
 {
     return m_channel->getMembers(channel);
 }
 
-// ƒjƒbƒNƒl[ƒ€ƒe[ƒuƒ‹‚ğæ“¾
+// ï¿½jï¿½bï¿½Nï¿½lï¿½[ï¿½ï¿½ï¿½eï¿½[ï¿½uï¿½ï¿½ï¿½ï¿½ï¿½æ“¾
 CSCNickTable CSCContents::getNickTable(void) const
 {
     return *m_nickTable;
 }
 
-// ƒ†[ƒU‚ªŒÄ‚Î‚ê‚½‚©
+// ï¿½ï¿½ï¿½[ï¿½Uï¿½ï¿½ï¿½Ä‚Î‚ê‚½ï¿½ï¿½
 bool CSCContents::isUserCalled(const wxString& message)
 {
     return m_user->isCalled(message);
 }
 
-// ƒƒ“ƒo[‚ÌƒjƒbƒNƒl[ƒ€‚ğæ“¾
+// ï¿½ï¿½ï¿½ï¿½ï¿½oï¿½[ï¿½Ìƒjï¿½bï¿½Nï¿½lï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½æ“¾
 wxString CSCContents::getMemberNick(const wxString& member)
 {
     return m_nickTable->getNickname(member);
 }
 
-// ƒ`ƒƒƒ“ƒlƒ‹‚ÌƒgƒsƒbƒN‚ğæ“¾
+// ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½Ìƒgï¿½sï¿½bï¿½Nï¿½ï¿½ï¿½æ“¾
 wxString CSCContents::getTopic(const wxString& channel)
 {
     return m_channel->getTopic(channel);
 }
 
-// ‚±‚ÌƒNƒ‰ƒCƒAƒ“ƒg‚©‚ç“Še‚³‚ê‚½ƒƒbƒZ[ƒW‚©
+// ï¿½ï¿½ï¿½ÌƒNï¿½ï¿½ï¿½Cï¿½Aï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ç“Šï¿½eï¿½ï¿½ï¿½ê‚½ï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½Wï¿½ï¿½
 bool CSCContents::isPostedThisClient(const CMessageData& message)
 {
     return m_channel->hasSameMessage(message);
@@ -212,10 +212,10 @@ bool CSCContents::isPostedThisClient(const CMessageData& message)
 // 
 void CSCContents::onUpdateMessageView(const wxString& channel)
 {
-    // ƒƒbƒZ[ƒW‚ªóMÏ‚İ
+    // ï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½Wï¿½ï¿½ï¿½ï¿½Mï¿½Ï‚ï¿½
     if (!m_channel->hasReceivedMessage(channel)){
 
-        // ƒƒbƒZ[ƒWæ“¾ƒ^ƒXƒN‚ğŠJn
+        // ï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½Wï¿½æ“¾ï¿½^ï¿½Xï¿½Nï¿½ï¿½ï¿½Jï¿½n
         m_connect->startGetMessageTask(m_handler, channel, m_user->getBasic());
     }
 }
@@ -223,10 +223,10 @@ void CSCContents::onUpdateMessageView(const wxString& channel)
 // 
 void CSCContents::onUpdateMemberView(const wxString& channel)
 {
-    // ƒƒ“ƒo[óMÏ‚İ
+    // ï¿½ï¿½ï¿½ï¿½ï¿½oï¿½[ï¿½ï¿½Mï¿½Ï‚ï¿½
     if (!m_channel->hasReceivedMember(channel)){
 
-        // ƒƒ“ƒo[æ“¾ƒ^ƒXƒN‚ğŠJn
+        // ï¿½ï¿½ï¿½ï¿½ï¿½oï¿½[ï¿½æ“¾ï¿½^ï¿½Xï¿½Nï¿½ï¿½ï¿½Jï¿½n
         m_connect->startGetMemberTask(m_handler, channel, m_user->getBasic());
     }
 }
@@ -234,10 +234,10 @@ void CSCContents::onUpdateMemberView(const wxString& channel)
 // 
 void CSCContents::onUpdateChannelView(void)
 {
-    // ƒ`ƒƒƒ“ƒlƒ‹óMÏ‚İ‚È‚ç
+    // ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½ï¿½Mï¿½Ï‚İ‚È‚ï¿½
     if (!m_channel->hasReceivedChannel()){
 
-        // ƒ`ƒƒƒ“ƒlƒ‹æ“¾ƒ^ƒXƒN‚ğŠJn
+        // ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½æ“¾ï¿½^ï¿½Xï¿½Nï¿½ï¿½ï¿½Jï¿½n
         m_connect->startGetChannelTask(m_handler, m_user->getUserName(), m_user->getBasic());
     }
 }
@@ -245,37 +245,37 @@ void CSCContents::onUpdateChannelView(void)
 
 /////////////////////////////////////////
 
-// ”FØ‚ª¬Œ÷‚µ‚½ê‡
+// ï¿½Fï¿½Ø‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‡
 void CSCContents::onAuthSucceeed(void)
 {
-    // ƒ†[ƒU‚ğƒƒOƒCƒ“ó‘Ô‚É‚·‚é
+    // ï¿½ï¿½ï¿½[ï¿½Uï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½Cï¿½ï¿½ï¿½ï¿½Ô‚É‚ï¿½ï¿½ï¿½
     m_user->setLogin(true);
 
-    // ƒpƒXƒ[ƒh‰i‘±‰»
+    // ï¿½pï¿½Xï¿½ï¿½ï¿½[ï¿½hï¿½iï¿½ï¿½ï¿½ï¿½
     m_persist->saveInfo(m_user->getNameKey(), m_user->getUserName());
     m_persist->saveInfo(m_user->getBasicKey(), m_user->getBasic());
 
-    // ƒjƒbƒNƒl[ƒ€æ“¾ƒ^ƒXƒN
+    // ï¿½jï¿½bï¿½Nï¿½lï¿½[ï¿½ï¿½ï¿½æ“¾ï¿½^ï¿½Xï¿½N
     m_connect->startGetMemberInfoTask(m_handler, m_user->getUserName(), m_user->getBasic());
 
-    // ƒXƒgƒŠ[ƒ€óMƒ^ƒXƒN
+    // ï¿½Xï¿½gï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½Mï¿½^ï¿½Xï¿½N
     m_connect->startStreamTask(m_handler, m_user->getUserName(), m_user->getBasic());
 }
 
-// ƒƒbƒZ[ƒWˆê——‚ğæ“¾‚µ‚½ê‡
+// ï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½Wï¿½ê——ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½ï¿½ï¿½ê‡
 void CSCContents::onGetMessages(const vector<CMessageData*>& messages)
 {
     m_channel->setMessages(m_user->getChannelString(), messages);
 }
 
-// ƒƒ“ƒo[ˆê——‚ğæ“¾‚µ‚½ê‡
+// ï¿½ï¿½ï¿½ï¿½ï¿½oï¿½[ï¿½ê——ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½ï¿½ï¿½ê‡
 void CSCContents::onGetMembers(const vector<CMemberData*>& members)
 {
     m_channel->setMembers(m_user->getChannelString(), members);
     m_nickTable->addTableFromMembers(members);
 }
 
-// ƒ`ƒƒƒ“ƒlƒ‹ˆê——‚ğæ“¾‚µ‚½ê‡
+// ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½ê——ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½ï¿½ï¿½ê‡
 void CSCContents::onGetChannels(const vector<CChannelData*>& channels)
 {
     m_channel->setChannels(channels);
@@ -285,31 +285,31 @@ void CSCContents::onGetChannels(const vector<CChannelData*>& channels)
     }
 }
 
-// ƒ`ƒƒƒ“ƒlƒ‹Q‰Á¬Œ÷
+// ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½Qï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void CSCContents::onJoinChannel(const wxString& channel)
 {
-    // ƒ†[ƒU‚ÌŒ»İ‚Ìƒ`ƒƒƒ“ƒlƒ‹‚ğ•ÏX
+    // ï¿½ï¿½ï¿½[ï¿½Uï¿½ÌŒï¿½ï¿½İ‚Ìƒ`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½ï¿½ÏX
     m_user->setChannel(channel);
 
-    // ƒ`ƒƒƒ“ƒlƒ‹ˆê——æ“¾ƒ^ƒXƒN‚ÌŠJn
+    // ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½ê——ï¿½æ“¾ï¿½^ï¿½Xï¿½Nï¿½ÌŠJï¿½n
     m_connect->startGetChannelTask(m_handler,
         m_user->getUserName(), m_user->getBasic());
 }
 
-// ƒ`ƒƒƒ“ƒlƒ‹—£’E¬Œ÷
+// ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½ï¿½ï¿½Eï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void CSCContents::onPartChannel(const wxString& channel)
 {
-    // ƒ`ƒƒƒ“ƒlƒ‹î•ñ‚ğíœ
+    // ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½íœ
     m_channel->popChannel(channel);
 
-    // ƒ†[ƒU‚ÌŒ»İ‚Ìƒ`ƒƒƒ“ƒlƒ‹‚ğ•ÏX
+    // ï¿½ï¿½ï¿½[ï¿½Uï¿½ÌŒï¿½ï¿½İ‚Ìƒ`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½ï¿½ÏX
     m_user->setChannel(m_channel->getFirstChannel());
 }
 
-// ƒƒ“ƒo[î•ñ‚ğæ“¾‚µ‚½ê‡
+// ï¿½ï¿½ï¿½ï¿½ï¿½oï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½ï¿½ï¿½ê‡
 void CSCContents::onGetMemberStatus(const CMemberData& member)
 {
-    // ©•ª‚Ìî•ñ‚¾‚Á‚½‚ç
+    // ï¿½ï¿½ï¿½ï¿½ï¿½Ìï¿½ñ‚¾‚ï¿½ï¿½ï¿½ï¿½ï¿½
     if (member.m_name == m_user->getUserName()){
         m_user->setNickName(member.m_nick);
         m_user->setKeywords(member.m_keywords);
@@ -319,75 +319,75 @@ void CSCContents::onGetMemberStatus(const CMemberData& member)
     (*m_nickTable)[member.m_name] = member.m_nick;
 }
 
-// ƒƒbƒZ[ƒWƒXƒgƒŠ[ƒ€‚ğæ“¾‚µ‚½ê‡
+// ï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½Wï¿½Xï¿½gï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½ï¿½ï¿½ê‡
 void CSCContents::onGetMessageStream(const CMessageData& message)
 {
-    // •ÊƒNƒ‰ƒCƒAƒ“ƒg‚©‚ç‚ÌƒƒbƒZ[ƒW‚¾‚Á‚½‚çAƒf[ƒ^XV‚Ì‚İ
+    // ï¿½ÊƒNï¿½ï¿½ï¿½Cï¿½Aï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ï¿½Ìƒï¿½ï¿½bï¿½Zï¿½[ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Aï¿½fï¿½[ï¿½^ï¿½Xï¿½Vï¿½Ì‚ï¿½
     if (m_channel->hasSameMessage(message)){
         m_channel->onUpdateMessageId(message);
         return;
     }
 
-    // ƒf[ƒ^XV
+    // ï¿½fï¿½[ï¿½^ï¿½Xï¿½V
     wxString nick = m_nickTable->getNickname(message.m_username);
 
-    // ƒjƒbƒNƒl[ƒ€‚ª–¢’m‚Ìê‡Aƒƒ“ƒo[î•ñæ“¾ƒ^ƒXƒN‚ÌŠJn
+    // ï¿½jï¿½bï¿½Nï¿½lï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½mï¿½Ìê‡ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½oï¿½[ï¿½ï¿½ï¿½æ“¾ï¿½^ï¿½Xï¿½Nï¿½ÌŠJï¿½n
     if (!m_nickTable->isExist(message.m_username)){
         m_connect->startGetMemberInfoTask(m_handler, message.m_username, m_user->getBasic());
     }
 
-    // ƒf[ƒ^’Ç‰Á
+    // ï¿½fï¿½[ï¿½^ï¿½Ç‰ï¿½
     m_channel->pushMessage(message.m_channel, message);
 }
 
-// ƒ`ƒƒƒ“ƒlƒ‹Q‰ÁƒXƒgƒŠ[ƒ€‚ğóM
+// ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½Qï¿½ï¿½ï¿½Xï¿½gï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½M
 void CSCContents::onGetJoinStream(const wxString& channel, const wxString& name)
 {
-    // ˆ—‘Ò‚¿‚É’Ç‰Á
+    // ï¿½ï¿½ï¿½ï¿½ï¿½Ò‚ï¿½ï¿½É’Ç‰ï¿½
     CSubscribeData data (channel, name);
 
     wxString nick = m_nickTable->getNickname(data.m_username);
 
-    // ƒjƒbƒNƒl[ƒ€‚ª–¢’m‚Ìê‡Aƒƒ“ƒo[î•ñæ“¾ƒ^ƒXƒN‚ÌŠJn
+    // ï¿½jï¿½bï¿½Nï¿½lï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½mï¿½Ìê‡ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½oï¿½[ï¿½ï¿½ï¿½æ“¾ï¿½^ï¿½Xï¿½Nï¿½ÌŠJï¿½n
     if (!m_nickTable->isExist(data.m_username)){
         m_connect->startGetMemberInfoTask(m_handler,
             name, m_user->getBasic());
     }
 
-    // ƒƒ“ƒo[‚ğ’Ç‰Á
+    // ï¿½ï¿½ï¿½ï¿½ï¿½oï¿½[ï¿½ï¿½Ç‰ï¿½
     m_channel->pushMember(data.m_channel, CMemberData(data.m_username, nick));
 
-    // ©•ª‚ªQ‰Á‚µ‚½‚Æ‚«(•ÊƒNƒ‰ƒCƒAƒ“ƒgƒ\ƒtƒg‚©‚ç)
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Qï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½(ï¿½ÊƒNï¿½ï¿½ï¿½Cï¿½Aï¿½ï¿½ï¿½gï¿½\ï¿½tï¿½gï¿½ï¿½ï¿½ï¿½)
     if (data.m_username == m_user->getUserName()){
 
-        // ƒ`ƒƒƒ“ƒlƒ‹î•ñæ“¾ƒ^ƒXƒN‚ÌŠJn
+        // ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½ï¿½ï¿½æ“¾ï¿½^ï¿½Xï¿½Nï¿½ÌŠJï¿½n
         m_connect->startGetChannelTask(
             m_handler, m_user->getUserName(), m_user->getBasic());
     }
 }
 
-// ƒ`ƒƒƒ“ƒlƒ‹—£’EƒXƒgƒŠ[ƒ€‚ğóM
+// ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½ï¿½ï¿½Eï¿½Xï¿½gï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½M
 void CSCContents::onGetPartStream(const wxString& channel, const wxString& name)
 {
     CSubscribeData data (channel, name);
 
-    // ƒf[ƒ^XV
+    // ï¿½fï¿½[ï¿½^ï¿½Xï¿½V
     wxString nick = m_nickTable->getNickname(name);
     m_channel->popMember(data.m_username);
 
-    // ƒjƒbƒNƒl[ƒ€‚ª–¢’m‚ÌAƒƒ“ƒo[î•ñæ“¾ƒ^ƒXƒN‚ÌŠJn
+    // ï¿½jï¿½bï¿½Nï¿½lï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½mï¿½Ìï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½oï¿½[ï¿½ï¿½ï¿½æ“¾ï¿½^ï¿½Xï¿½Nï¿½ÌŠJï¿½n
     if (!m_nickTable->isExist(name)){
         m_connect->startGetMemberInfoTask(m_handler, name, m_user->getBasic());
     }
 }
 
-// ƒ`ƒƒƒ“ƒlƒ‹î•ñXVƒXƒgƒŠ[ƒ€‚ğóM
+// ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½Vï¿½Xï¿½gï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½M
 void CSCContents::onGetChannelStream(const CChannelData& channel)
 {
     m_channel->setChannel(channel);
 }
 
-// ƒ†[ƒUî•ñXVƒXƒgƒŠ[ƒ€‚ÌóM
+// ï¿½ï¿½ï¿½[ï¿½Uï¿½ï¿½ï¿½Xï¿½Vï¿½Xï¿½gï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½Ìï¿½M
 void CSCContents::onGetUserStream(const CMemberData& member)
 {
     m_channel->updateMember(member);

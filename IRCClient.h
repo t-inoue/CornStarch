@@ -10,7 +10,7 @@
 #define _IRCClient_h
 #include "header.hpp"
 #include "SocketClient.hpp"
-#include "IRCUserInfo.h"
+#include "IRCUser.hpp"
 
 namespace CornStarch {
 namespace IRC {
@@ -19,7 +19,7 @@ class CIRCClient: public CSocketClient {
 	wxString m_host;
 	wxString m_port;
 	bool m_connected;
-	CIRCUserInfo* m_userInfo;
+	CIRCUser* m_userInfo;
 
 	wxEvtHandler* m_handler;
 	void receiveLoop();

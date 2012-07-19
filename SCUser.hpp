@@ -2,9 +2,10 @@
 #include "header.hpp"
 #include <vector>
 #include <wx/base64.h>
+#include "IUser.h"
 
 // StarChatユーザの情報を格納
-class CSCUser
+class CSCUser:public IUser
 {
 private:
 

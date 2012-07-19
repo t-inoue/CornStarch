@@ -23,7 +23,7 @@ void CIRCClient::init() {
 	CSocketClient::init();
 
 	//TEST
-	m_userInfo = new CIRCUserInfo();
+	m_userInfo = new CIRCUser();
 	m_userInfo->setUserInfo("TEST", "");
 	m_userInfo->setNickName("TEST");
 
