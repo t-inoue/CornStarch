@@ -1,9 +1,10 @@
 ﻿#pragma once
 #include "header.hpp"
 #include "ChannelData.hpp"
+#include "ConnectionEventBase.hpp"
 
 // チャンネル参加時のイベント
-class CJoinEvent : public wxThreadEvent
+class CJoinEvent : public CConnectionEventBase
 {
 private:
     CChannelData* m_channel;

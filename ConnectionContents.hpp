@@ -7,7 +7,7 @@
 #include "IUser.h"
 #include "IConnection.hpp"
 
-// StarChatのModelコンテンツを扱うクラス
+// 通信のModelコンテンツを扱うクラス
 class CConnectionContents
 {
 protected:
@@ -22,10 +22,38 @@ protected:
 
     // 汎用クラス
     CMyPersistent* m_persist; // 永続化を扱う
+    // 名前
+    wxString m_name;
+    // ID
+    int m_id;
 
 public:
     CConnectionContents(void);
     virtual ~CConnectionContents(void);
+
+    // IDを取得
+	int getId() const
+	{
+		return m_id;
+	}
+	// IDを設定
+	void setId(int id)
+	{
+		m_id = id;
+	}
+
+	// 名前を取得
+	wxString getName() const
+	{
+		return m_name;
+	}
+
+	// 名前を設定
+	void setName(wxString name)
+	{
+		m_name = name;
+	}
+
 
     // 初期化を行う
     virtual void init(wxEvtHandler* handler);
@@ -139,5 +167,7 @@ public:
 
     // ユーザ情報更新ストリームの受信
     void onGetUserStream(const CMemberData& member);
-};
+}
+
+;
 

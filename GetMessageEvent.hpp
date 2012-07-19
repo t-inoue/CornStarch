@@ -2,9 +2,10 @@
 #include "header.hpp"
 #include "vector"
 #include "MessageData.hpp"
+#include "ConnectionEventBase.hpp"
 
 // メッセージ受信時のイベント
-class CGetMessageEvent : public wxThreadEvent
+class CGetMessageEvent : public CConnectionEventBase
 {
 private:
     std::vector<CMessageData*> m_messages; // メッセージ

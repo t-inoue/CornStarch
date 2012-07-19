@@ -3,10 +3,11 @@
 #include "ChannelData.hpp"
 #include "MessageData.hpp"
 #include "MemberData.hpp"
+#include "ConnectionEventBase.hpp"
 #include <vector>
 
 // GET時にハンドルさせるイベント
-class CGetThreadEvent : public wxThreadEvent
+class CGetThreadEvent : public CConnectionEventBase
 {
 
 private:

@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+//　ユーザーのインターフェース
 class IUser{
 public:
     IUser(void){};

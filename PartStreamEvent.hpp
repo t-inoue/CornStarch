@@ -1,9 +1,10 @@
 ﻿#pragma once
 #include "header.hpp"
+#include "ConnectionEventBase.hpp"
 #include <string>
 
 // チャンネルから誰かが離脱した際のイベント
-class CPartStreamEvent : public wxThreadEvent
+class CPartStreamEvent : public CConnectionEventBase
 {
 private:
     wxString m_channel; // チャンネル名

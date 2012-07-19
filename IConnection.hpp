@@ -3,6 +3,7 @@
 
 using namespace std;
 
+// 通信部分のインターフェース
 class IConnection {
 public:
 	IConnection() {

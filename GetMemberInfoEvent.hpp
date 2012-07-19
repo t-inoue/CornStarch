@@ -1,9 +1,10 @@
 ﻿#pragma once
 #include "header.hpp"
 #include "MemberData.hpp"
+#include "ConnectionEventBase.hpp"
 
 // メンバー情報取得時のイベント
-class CGetMemberInfoEvent : public wxThreadEvent
+class CGetMemberInfoEvent : public CConnectionEventBase
 {
 private:
     CMemberData* m_member; // メンバー

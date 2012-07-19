@@ -1,8 +1,9 @@
 ﻿#pragma once
 #include "header.hpp"
+#include "ConnectionEventBase.hpp"
 
 // ユーザ認証時のイベント
-class CAuthEvent : public wxThreadEvent
+class CAuthEvent : public CConnectionEventBase
 {
 private:
     bool m_auth; // 認証の成否

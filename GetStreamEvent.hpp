@@ -1,9 +1,10 @@
 ﻿#pragma once
 #include "header.hpp"
 #include "StreamData.hpp"
+#include "ConnectionEventBase.hpp"
 
 // ストリーム受信時のイベント
-class CGetStreamEvent : public wxThreadEvent
+class CGetStreamEvent : public CConnectionEventBase
 {
 private:
     CStreamData m_stream; // ストリームのデータ

@@ -2,9 +2,10 @@
 #include "header.hpp"
 #include "vector"
 #include "MemberData.hpp"
+#include "ConnectionEventBase.hpp"
 
 // メンバー受信時のイベント
-class CGetMemberEvent : public wxThreadEvent
+class CGetMemberEvent : public CConnectionEventBase
 {
 private:
     std::vector<CMemberData*> m_members; // メンバー

@@ -2,6 +2,7 @@
 #include "MainView.hpp"
 #include "MainLogHolder.hpp"
 #include "ConnectionContents.hpp"
+#include "vector"
 
 // ビューコントローラとなるウィンドウクラス
 class CMainWindow : public wxFrame
@@ -12,7 +13,7 @@ private:
     CMainView* m_view; // ビューの挙動を管理
     CMainLogHolder* m_logHolder; // チャットのログを保持
 
-    // StarChat
+    // 通信要素
     CConnectionContents* m_contents; // スターチャットのコンテンツを管理
 
     // wxWindowイベントを処理させたいクラスに利用するマクロ

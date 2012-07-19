@@ -1,9 +1,10 @@
 ﻿#pragma once
 #include "header.hpp"
 #include "MemberData.hpp"
+#include "ConnectionEventBase.hpp"
 
 // ユーザ情報更新時のイベント
-class CUserStreamEvent : public wxThreadEvent
+class CUserStreamEvent : public CConnectionEventBase
 {
 private:
     CMemberData* m_member;

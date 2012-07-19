@@ -2,9 +2,10 @@
 #include "header.hpp"
 #include "vector"
 #include "ChannelData.hpp"
+#include "ConnectionEventBase.hpp"
 
 // チャンネル受信時のイベント
-class CGetChannelEvent : public wxThreadEvent
+class CGetChannelEvent : public CConnectionEventBase
 {
 private:
     std::vector<CChannelData*> m_channels; // チャンネル

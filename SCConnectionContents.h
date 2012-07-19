@@ -1,9 +1,3 @@
-/*
- * SCConnectionContents.h
- *
- *  Created on: 2012/07/19
- *      Author: yasuo_tanaka
- */
 
 #ifndef SCCONNECTIONCONTENTS_H_
 #define SCCONNECTIONCONTENTS_H_
