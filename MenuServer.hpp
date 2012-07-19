@@ -2,11 +2,11 @@
 #include "MenuPart.hpp"
 
 // メニュー項目の【登録】
-class CMenuRegister : public CMenuPart
+class CMenuServer : public CMenuPart
 {
 public:
-    CMenuRegister(void);
-    ~CMenuRegister(void);
+    CMenuServer(void);
+    ~CMenuServer(void);
 
     // 初期化を行う
     void init(void);

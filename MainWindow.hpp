@@ -51,8 +51,11 @@ private: // メニュー系
     // 終了
     void onQuit(wxCommandEvent& event);
 
-    // ユーザ登録
-    void onRegister(wxCommandEvent& event);
+    // ユーザ登録(SC)
+    void onSCRegister(wxCommandEvent& event);
+
+    // ユーザ登録(IRC)
+    void onIRCRegister(wxCommandEvent& event);
 
     // ログアウトメニュー
     void onLogout(wxCommandEvent& event);

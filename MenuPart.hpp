@@ -8,7 +8,8 @@ public:
     enum MENU{
         MENU_FILE_QUIT = 100,
         MENU_HELP_ABOUT,
-        MENU_REGISTER_ADD,
+        MENU_SERVER_SC_ADD,
+        MENU_SERVER_IRC_ADD,
         MENU_FILE_LOGOUT,
         MENU_UPDATE,
         MENU_CHANNEL_JOIN,

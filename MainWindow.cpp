@@ -39,7 +39,7 @@ void CMainWindow::init(void)
     m_logHolder = new CMainLogHolder();
 
 	// StarChatコンテンツの初期化
-	m_contents = new CSCConnectionContents();//new CornStarch::IRC::CIRCConnectionContents();//
+	m_contents = new CSCConnectionContents();//
 	m_contents->init(GetEventHandler());
 
     // イベントハンドラの初期化
@@ -121,8 +121,8 @@ void CMainWindow::onQuit(wxCommandEvent& event)
     Close(true);
 }
 
-// ユーザ登録
-void CMainWindow::onRegister(wxCommandEvent& event)
+// ユーザ登録(SC)
+void CMainWindow::onSCRegister(wxCommandEvent& event)
 {
     // ログイン済みの時
     if (m_contents->isUserLogin()){
@@ -131,12 +131,27 @@ void CMainWindow::onRegister(wxCommandEvent& event)
     }
 
     // 認証ダイアログを表示
-    if (m_view->showModalAuthDlg() != wxID_OK){
+    if (m_view->showModalSCAuthDlg() != wxID_OK){
         return;
     }
 
     // コンテンツを更新
-    m_contents->registerUser(m_view->getDlgUserNameAsString(), m_view->getDlgPasswordAsString());
+    m_contents->registerUser(m_view->getDlgUserName(), m_view->getDlgPassword());
+}
+
+// ユーザ登録(IRC)
+void CMainWindow::onIRCRegister(wxCommandEvent& event)
+{
+    // 認証ダイアログを表示
+    if (m_view->showModalIRCAuthDlg() != wxID_OK){
+        return;
+    }
+
+    // ここでIRCサーバの追加を行う
+    wxMessageBox("ここでIRCサーバの追加を行う。\n"
+        + m_view->getDlgUserName() + "\n"
+        + m_view->getDlgHostName()
+        );
 }
 
 // ログアウトメニュー
@@ -161,7 +176,7 @@ void CMainWindow::onJoin(wxCommandEvent& event)
     }
 
     // チャンネル参加タスクの開始
-    m_contents->joinChannel(m_view->getDlgChannelNameAsString());
+    m_contents->joinChannel(m_view->getDlgChannelName());
 }
 
 // チャンネルから離脱メニュー
@@ -178,7 +193,7 @@ void CMainWindow::onPart(wxCommandEvent& event)
     }
 
     // チャンネル離脱タスクを開始
-    m_contents->partChannel(m_view->getDlgChannelNameAsString());
+    m_contents->partChannel(m_view->getDlgChannelName());
 }
 
 // 表示を更新

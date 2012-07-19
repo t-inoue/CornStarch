@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "header.hpp"
-#include "AuthDialog.hpp"
+#include "SCAuthDialog.hpp"
+#include "IRCAuthDialog.hpp"
 #include "ChannelDialog.hpp"
 
 // 表示するダイアログを管理
@@ -23,8 +24,11 @@ public:
     // チャンネル名指定用ダイアログを表示
     int showModalChannelDlg(void);
 
-    // ユーザ認証ダイアログを表示
-    int showModalAuthDlg(void);
+    // ユーザ認証ダイアログを表示(SC)
+    int showModalSCAuthDlg(void);
+
+    // ユーザ認証ダイアログを表示(IRC)
+    int showModalIRCAuthDlg(void);
 
     // ユーザ認証キャンセル用ダイアログを表示
     int showModalAuthCancelDlg(void);
@@ -40,5 +44,8 @@ public:
 
     // パスワードを取得
     wxString getPassword(void) const;
+
+    // ホスト名を取得
+    wxString getHostName(void) const;
 };
 

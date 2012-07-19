@@ -317,8 +317,10 @@ void CConnectionContents::onGetMessageStream(const CMessageData& message)
         m_connect->startGetMemberInfoTask(m_user, message.m_username);
     }
 
-    // データ追加
-    m_channel->pushMessage(message.m_channel, message);
+    // 既に受信を行っていたチャンネルであればデータ追加
+    if (m_channel->hasReceivedMessage(message.m_channel)){
+        m_channel->pushMessage(message.m_channel, message);
+    }
 }
 
 // チャンネル参加ストリームを受信
@@ -335,8 +337,10 @@ void CConnectionContents::onGetJoinStream(const wxString& channel, const wxStrin
             name);
     }
 
-    // メンバーを追加
-    m_channel->pushMember(data.m_channel, CMemberData(data.m_username, nick));
+    // 既に受信を行っていたチャンネルであればメンバーを追加
+    if (m_channel->hasReceivedMember(channel)){
+        m_channel->pushMember(data.m_channel, CMemberData(data.m_username, nick));
+    }
 
     // 自分が参加したとき(別クライアントソフトから)
     if (data.m_username == m_user->getUserName()){
