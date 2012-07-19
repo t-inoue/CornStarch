@@ -68,7 +68,7 @@ void CIRCClient::receiveLoop() {
 			vector<string> messages = CStringUtility::split(this->m_buffer,
 					"\n");
 			for (int i = 0; i < messages.size(); i++) {
-				printf("%s ", messages[i].c_str()); //this->m_buffer.c_str());
+				cout << messages[i].c_str();
 				wxThreadEvent* event = parser.parse(messages[i]);
 				if (event != NULL) {
 					wxQueueEvent(m_handler, event);
@@ -82,12 +82,12 @@ void CIRCClient::receiveLoop() {
 void CIRCClient::join(wxString channelName) {
 	wxString content(wxString::Format(wxT("JOIN %s\r\n"), channelName));
 	string contentString(content.c_str());
-	send(contentString);
+	send(content);
 }
 void CIRCClient::part(wxString channelName) {
 	wxString content(wxString::Format(wxT("PART %s\r\n"), channelName));
 	string contentString(content.c_str());
-	send(contentString);
+	send(content);
 }
 void CIRCClient::getTopicAsync(wxString channelName) {
 	wxString content(wxString::Format(wxT("TOPIC %s\r\n"), channelName));
@@ -98,7 +98,7 @@ void CIRCClient::getTopicAsync(wxString channelName) {
 void CIRCClient::getNamesAsync(wxString channelName) {
 	wxString content(wxString::Format(wxT("NAMES %s\r\n"), channelName));
 	string contentString(content.c_str());
-	send(contentString);
+	send(content);
 
 }
 
@@ -106,14 +106,14 @@ void CIRCClient::sendMessage(wxString target, wxString content) {
 	wxString contentWxString(
 			wxString::Format(wxT("PRIVMSG %s %s\r\n"), target, content));
 	string contentString(contentWxString.c_str());
-	send(contentString);
+	send(contentWxString);
 }
 void CIRCClient::sendNotice(wxString target, wxString content) {
 
 	wxString contentWxString(
 			wxString::Format(wxT("NOTICE %s %s\r\n"), target, content));
 	string contentString(contentWxString.c_str());
-	send(contentString);
+	send(contentWxString);
 }
 }
 } /* namespace CornStarch */

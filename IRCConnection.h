@@ -16,9 +16,6 @@ namespace IRC {
 class CIRCConnection: public IConnection {
 	CIRCClient *m_client;
 	vector<CChannelData*> m_channels;
-
-//        CAuthTask* m_authTask; // ユーザ認証用タスク
-//        CGetStreamTask* m_getStreamTask; // ストリーム受信タスク
 public:
 	CIRCConnection();
 	virtual ~CIRCConnection(void);
@@ -67,8 +64,6 @@ public:
 
 private:
 
-	// 別スレッドでタスクを開始する
-//        void startThread(CSCTask* task);  
 
 };
 }
