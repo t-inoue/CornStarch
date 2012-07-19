@@ -301,7 +301,7 @@ void CMainWindow::onGetChannels(CGetChannelEvent& event)
 // チャンネル参加時
 void CMainWindow::onJoinChannel(CJoinEvent& event)
 {
-    m_contents->onJoinChannel(event.getChannel().m_name);
+    m_contents->onJoinChannel(event.GetString());
 }
 
 // チャンネル離脱時

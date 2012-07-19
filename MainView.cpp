@@ -166,7 +166,5 @@ wxString CMainView::getDlgPasswordAsString(void) const
 // チャンネル名を取得する
 wxString CMainView::getDlgChannelNameAsString(void) const
 {
-    wxString channelName = m_dialog->getChannelName();
-    wxString str(channelName.mb_str(wxConvUTF8));
-    return str;
+    return m_dialog->getChannelName();
 }
