@@ -59,8 +59,11 @@ public: // ダイアログに関するメソッド
     // メッセージボックスを表示する
     void showMsgBox(const wxString& message);
 
-    // 認証ダイアログを表示する
-    int showModalAuthDlg(void);
+    // 認証ダイアログを表示する(SC)
+    int showModalSCAuthDlg(void);
+
+    // 認証ダイアログを表示する(IRC)
+    int showModalIRCAuthDlg(void);
 
     // チャンネル名指定用ダイアログを表示する
     int showModalChannelDlg(void);
@@ -72,13 +75,15 @@ public: // ダイアログに関するメソッド
     void clearAuthCancelDlg(void);
 
     // ユーザ名をwxStringで取得する
-    wxString getDlgUserNameAsString(void) const;
+    wxString getDlgUserName(void) const;
 
     // パスワードをwxStringで取得する
-    wxString getDlgPasswordAsString(void) const;
+    wxString getDlgPassword(void) const;
 
     // チャンネル名を取得する
-    wxString getDlgChannelNameAsString(void) const;
+    wxString getDlgChannelName(void) const;
 
+    // ホスト名を取得
+    wxString getDlgHostName(void) const;
 };
 

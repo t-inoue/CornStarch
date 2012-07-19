@@ -62,7 +62,8 @@ BEGIN_EVENT_TABLE(CMainWindow, wxFrame)
 
     // メニューバー
     EVT_MENU(CMenuPart::MENU_FILE_QUIT, CMainWindow::onQuit) // 終了
-    EVT_MENU(CMenuPart::MENU_REGISTER_ADD, CMainWindow::onRegister) // 登録
+    EVT_MENU(CMenuPart::MENU_SERVER_SC_ADD, CMainWindow::onSCRegister) // SCサーバの登録
+    EVT_MENU(CMenuPart::MENU_SERVER_IRC_ADD, CMainWindow::onIRCRegister) // IRCサーバの登録
     EVT_MENU(CMenuPart::MENU_FILE_LOGOUT, CMainWindow::onLogout) // ログアウトして終了
     EVT_MENU(CMenuPart::MENU_CHANNEL_JOIN, CMainWindow::onJoin) // チャンネルに参加
     EVT_MENU(CMenuPart::MENU_CHANNEL_PART, CMainWindow::onPart) // チャンネルから離脱

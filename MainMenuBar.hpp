@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "MenuFile.hpp"
-#include "MenuRegister.hpp"
+#include "MenuServer.hpp"
 #include "MenuChannel.hpp"
 #include "MenuUpdate.hpp"
 
@@ -9,7 +9,7 @@ class CMainMenuBar : public wxMenuBar
 private:
 
     CMenuFile* m_menuFile; // ファイル
-    CMenuRegister* m_menuRegister; // 登録
+    CMenuServer* m_menuServer; // サーバ
     CMenuChannel* m_menuChannel; // チャンネル
     CMenuUpdate* m_menuUpdate; // 更新
 

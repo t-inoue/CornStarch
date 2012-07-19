@@ -29,11 +29,19 @@ int CViewDialog::showModalChannelDlg(void)
     return m_channelDlg->ShowModal();
 }
 
-// ユーザ認証ダイアログを表示
-int CViewDialog::showModalAuthDlg(void)
+// ユーザ認証ダイアログを表示(SC)
+int CViewDialog::showModalSCAuthDlg(void)
 {
-    m_authDlg = new CAuthDialog();
-    m_authDlg->init(m_parent, "ユーザ認証");
+    m_authDlg = new CSCAuthDialog();
+    m_authDlg->init(m_parent, "ユーザ認証(SC)");
+    return m_authDlg->ShowModal();
+}
+
+// ユーザ認証ダイアログを表示(IRC)
+int CViewDialog::showModalIRCAuthDlg(void)
+{
+    m_authDlg = new CIRCAuthDialog();
+    m_authDlg->init(m_parent, "ユーザ認証(IRC)");
     return m_authDlg->ShowModal();
 }
 
@@ -69,4 +77,10 @@ wxString CViewDialog::getUserName(void) const
 wxString CViewDialog::getPassword(void) const
 {
     return m_authDlg->getPass();
+}
+
+// ホスト名を取得
+wxString CViewDialog::getHostName(void) const
+{
+    return m_authDlg->getHostName();
 }

@@ -2,7 +2,7 @@
 
 
 CMainMenuBar::CMainMenuBar(void)
-    : m_menuFile(NULL), m_menuRegister(NULL), m_menuChannel(NULL), m_menuUpdate(NULL)
+    : m_menuFile(NULL), m_menuServer(NULL), m_menuChannel(NULL), m_menuUpdate(NULL)
 {
 }
 
@@ -23,8 +23,8 @@ void CMainMenuBar::init(void)
     m_menuFile->init();
 
     // 【登録】
-    m_menuRegister = new CMenuRegister();
-    m_menuRegister->init();
+    m_menuServer = new CMenuServer();
+    m_menuServer->init();
 
     // 【チャンネル】
     m_menuChannel = new CMenuChannel();
@@ -36,7 +36,7 @@ void CMainMenuBar::init(void)
 
     // メニューバーに項目を追加する
     Append(m_menuFile, m_menuFile->getTitle());
-    Append(m_menuRegister, m_menuRegister->getTitle());
+    Append(m_menuServer, m_menuServer->getTitle());
     Append(m_menuChannel, m_menuChannel->getTitle());
     Append(m_menuUpdate, m_menuUpdate->getTitle());
 }

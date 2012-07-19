@@ -21,22 +21,26 @@ void CAuthDialog::init(wxWindow* parent, const wxString& title)
     wxDialog::Create(parent, wxID_ANY, title);
 
     // 自身に貼り付けるパネルを作成
-    wxPanel* panel = new wxPanel(this, wxID_ANY);
+    m_panel = new wxPanel(this, wxID_ANY);
 
     // パネル上のテキストボックス
     m_nameText = new wxTextCtrl(
-        panel, wxID_ANY, "", wxPoint(100, 10), wxSize(100, 30));
+        m_panel, wxID_ANY, "", wxPoint(100, 10), wxSize(200, 30));
     m_passText = new wxTextCtrl(
-        panel, wxID_ANY, "", wxPoint(100, 50), wxSize(100, 30), wxTE_PASSWORD);
+        m_panel, wxID_ANY, "", wxPoint(100, 50), wxSize(200, 30), wxTE_PASSWORD);
+    m_hostText = new wxTextCtrl(
+        m_panel, wxID_ANY, "", wxPoint(100, 90), wxSize(200, 30));
 
     // パネル上の文字
     wxStaticText* sName = new wxStaticText(
-        panel, wxID_ANY, "ユーザ名", wxPoint(10, 10));
+        m_panel, wxID_ANY, "ユーザ名", wxPoint(10, 10));
     wxStaticText* sPass = new wxStaticText(
-        panel, wxID_ANY, "パスワード", wxPoint(10, 50));
+        m_panel, wxID_ANY, "パスワード", wxPoint(10, 50));
+    wxStaticText* shost = new wxStaticText(
+        m_panel, wxID_ANY, "ホスト名", wxPoint(10, 90));
 
     // パネル上のボタン
-    wxButton* ok = new wxButton(panel, wxID_OK, "OK",  wxPoint(250, 150));
+    wxButton* ok = new wxButton(m_panel, wxID_OK, "OK",  wxPoint(250, 150));
 
     // タイトルバーで消した時の挙動
     SetEscapeId(wxID_CANCEL);
@@ -48,20 +52,17 @@ void CAuthDialog::init(wxWindow* parent, const wxString& title)
 // ユーザ名を取得する
 wxString CAuthDialog::getName(void) const
 {
-    if (m_nameText != NULL){
-        return m_nameText->GetValue();
-    }
-
-    return "";
+    return m_nameText->GetValue();
 }
 
 // パスワードを取得する
 wxString CAuthDialog::getPass(void) const
 {
-    if (m_passText != NULL){
-        return m_passText->GetValue();
-    }
-
-    return "";
+    return m_passText->GetValue();
 }
 
+// ホスト名を取得する
+wxString CAuthDialog::getHostName(void) const
+{
+    return m_hostText->GetValue();
+}
