@@ -33,14 +33,14 @@ void CMyPersistent::init(void)
 }
 
 // keyとvalueを永続化する
-void CMyPersistent::saveInfo(const wxString& key, const wxString& value)
+void CMyPersistent::saveValue(const wxString& key, const wxString& value)
 {
     // 値の保存
     m_regKey->SetValue(key, value);
 }
 
 // keyの情報を取得する
-wxString CMyPersistent::loadInfo(const wxString& key)
+wxString CMyPersistent::loadValue(const wxString& key)
 {
     // 文字列の読み込み
     wxString result;
@@ -71,7 +71,7 @@ bool CMyPersistent::isKeySaved(const wxString& key) const
 }
 
 // 永続化された情報を消す
-void CMyPersistent::deleteInfo(const wxString& key)
+void CMyPersistent::deleteValue(const wxString& key)
 {
     m_regKey->DeleteValue(key);
 }
@@ -79,17 +79,16 @@ void CMyPersistent::deleteInfo(const wxString& key)
 
 // linux
 #elif defined __linux
-CPersistentInfoLinux::CPersistentInfoLinux(void)
+const wxString CMyPersistent::FILE_PATH
+    = "~/.CornStarch";
+
+CMyPersistent::CMyPersistent(void)
 {
 }
 
 
-CPersistentInfoLinux::~CPersistentInfoLinux(void)
+CMyPersistent::~CMyPersistent(void)
 {
-    map<wxString, wxString>::iterator it;
-    for (it = m_value.begin(); it != m_value.end(); it++){
-        m_ofs << it->first << " " << it->second << endl;;
-    }
 }
 
 
@@ -97,53 +96,80 @@ CPersistentInfoLinux::~CPersistentInfoLinux(void)
 
 
 // 初期化を行う
-void CPersistentInfoLinux::init(void)
+void CMyPersistent::init(void)
 {
-    // ファイルが開けない(存在しない)
-    m_ifs.open("./.config");
+    // ファイルが存在しない場合に作成
+    m_ifs.open(FILE_PATH);
     if (m_ifs.fail()){
-
-        // ファイルを作成する
-        m_ofs.open("./.config");
-        chmod("./.config", S_IRUSR | S_IWUSR);
-    } else {
-
-        // ファイルが存在した場合
-        while (!m_ifs.eof()){
-            wxString key, value;
-            m_ifs >> key >> value;
-            m_value[key] = value;
-        }
-        m_ifs.close();
-        m_ofs.open("./.config");
+        m_ofs.open(FILE_PATH);
+        chmod(FILE_PATH, S_IRUSR | S_IWUSR);
+        m_ofs.close();
     }
+    m_ifs.close();
 }
 
 // 情報を保存する
-void CPersistentInfoLinux::saveInfo(const wxString& key, const wxString& value)
+void CMyPersistent::saveValue(const wxString& key, const wxString& value)
 {
-    m_value[key] = value;
+    // ファイルからmapとして読み込み
+    map<string, string> data = loadFileAsMap();
+
+    // mapに保存
+    m_value[(string)key.mb_str(wxConvUTF8)] = (string)key.mb_str(wxConvUTF8);
+
+    // mapからファイルに保存
+    m_ofs.open(FILE_PATH, ios::trunc);
+    map<string, string>::iterator it;
+    for (it = m_value.begin(); it != m_value.end(); it++){
+        m_ofs << it.first << it.second;
+    }
+    m_ofs.close();
 }
 
 // キーから情報を読み込む
-wxString CPersistentInfoLinux::loadInfo(const wxString& key)
+wxString CMyPersistent::loadValue(const wxString& key)
 {
-    return m_value[key];
+    // ファイルからmapとして読み込み
+    map<string, string> table = loadFileAsMap();
+
+    return wxString(table[(string)key.mb_str(wxConvUTF8)].c_str(), wxConvUTF8);
 }
 
 // keyが保存されているか
-bool CPersistentInfoLinux::isKeySaved(const wxString& key) const
+bool CMyPersistent::isKeySaved(const wxString& key) const
 {
-    if (m_value.find(key) == m_value.end()){
-        return false;
+    // ファイルからmapとして読み込み
+    map<string, string> table = loadFileAsMap();
+
+    // keyが保存されていたら
+    if (table[(string)key.mb_str(wxConvUTF8)] != ""){
+        return true;
     }
-    return true;
+
+    return false;
 }
 
 // 保存情報を削除する
-void CPersistentInfoLinux::deleteInfo(const wxString& key)
+void CMyPersistent::deleteValue(const wxString& key)
 {
-    m_value.clear();
+    m_ofs.open(FILE_PATH, ios::trunc);
+}
+
+// ファイルをmapとして開く
+map<string, string> CMyPersistent::loadFileAsMap(void) const
+{
+    map<string, string> table;
+
+    // 保存情報をmapで読み込む
+    m_ifs.open(FILE_PATH);
+    while (!m_ifs.eof()){
+        string key, value;
+        m_ifs >> key >> value;        
+        table[key] = value;
+    }
+    m_ifs.close();
+
+    return table;
 }
 
 
@@ -210,5 +236,12 @@ void CMyPersistent::deleteInfo(const wxString& key)
 {
     m_value.clear();
 }
+
+// ファイルをmapとして開く
+map<string, string> CMyPersistent::loadFileAsMap(void) const
+{
+    return map<string, string>();
+}
+
 
 #endif
