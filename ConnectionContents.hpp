@@ -25,7 +25,7 @@ protected:
 
 public:
     CConnectionContents(void);
-    ~CConnectionContents(void);
+    virtual ~CConnectionContents(void);
 
     // ������s��
     virtual void init(wxEvtHandler* handler);
@@ -92,9 +92,6 @@ public:
 
     // ���̃N���C�A���g���瓊�e���ꂽ���b�Z�[�W��
     bool isPostedThisClient(const CMessageData& message);
-
-
-
     // 
     void onUpdateMessageView(const wxString& channel);
 

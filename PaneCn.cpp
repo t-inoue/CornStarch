@@ -26,7 +26,7 @@ void CPaneCn::init(wxWindow* parent)
 // 選択済み項目を決める
 void CPaneCn::setStringSelection(const wxString& channel)
 {
-    SetStringSelection(channel);
+   // SetStringSelection(channel);
 }
 
 // 所属チャンネル一覧を表示

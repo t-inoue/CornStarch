@@ -18,7 +18,6 @@
 wxDECLARE_EVENT(myEVT_THREAD_PUT_JOIN, CJoinEvent);
 wxDECLARE_EVENT(myEVT_THREAD_GET_CHANNEL, CGetChannelEvent);
 wxDECLARE_EVENT(myEVT_THREAD_POST_MESSAGE, wxThreadEvent);
-wxDECLARE_EVENT(myEVT_THREAD_STREAM_MSG_ADD, CMsgStreamEvent);
 wxDECLARE_EVENT(myEVT_THREAD_GET_MESSAGE, CGetMessageEvent);
 wxDECLARE_EVENT(myEVT_THREAD_GET_MEMBER_INFO, CGetMemberInfoEvent);
 namespace CornStarch {
@@ -91,12 +90,6 @@ void CIRCConnection::startGetChannelTask(wxEvtHandler* handler,
 	event->setChannels(m_channels); // 値取得
 	event->SetEventType(myEVT_THREAD_GET_CHANNEL); // イベントの種類をセット
 	wxQueueEvent(handler, event);
-
-//        CGetChannelTask* getChannelTask = new CGetChannelTask();
-//        getChannelTask->init(handler, userName, basic);
-//        
-//        // 別スレッドでの開始
-//        startThread(getChannelTask);
 }
 
 // チャンネルから離脱するタスク(別スレッド)を開始する
@@ -109,11 +102,6 @@ void CIRCConnection::startPartTask(wxEvtHandler* handler, const wxString& channe
 	event->SetString(channel); // 新チャンネル名
 	wxQueueEvent(handler, event);
 
-//        CPartChannelTask* partChannelTask = new CPartChannelTask();
-//        partChannelTask->init(handler, userName, channel, basic);
-//        
-//        // 別スレッドでの開始
-//        startThread(partChannelTask);
 }
 
 // チャンネルに参加するタスク(別スレッド)を開始する
@@ -129,6 +117,7 @@ void CIRCConnection::startJoinTask(wxEvtHandler* handler, const wxString& channe
 	CJoinEvent* event = new CJoinEvent();
 	event->SetEventType(myEVT_THREAD_PUT_JOIN); // イベントの種類をセット
 	event->SetString(channel); // 新チャンネル名
+	//event->setChannel()
 	wxQueueEvent(handler, event);
 //        CJoinChannelTask* joinChannelTask = new CJoinChannelTask();
 //        joinChannelTask->init(handler, userName, channel, basic);

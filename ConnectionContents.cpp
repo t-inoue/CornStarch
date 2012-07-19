@@ -27,9 +27,6 @@ void CConnectionContents::init(wxEvtHandler* handler)
 {
     // �C�x���g�n���h���̓o�^
     m_handler = handler;
-
-
-
     // �f�[�^�ێ����̏���
     m_channel = new CChannelHolder(); // �`�����l��
     m_channel->init();
