@@ -211,13 +211,13 @@ void CMyPersistent::init(void)
     }}
 
 // 情報を保存する
-void CMyPersistent::saveInfo(const wxString& key, const wxString& value)
+void CMyPersistent::saveValue(const wxString& key, const wxString& value)
 {
     m_value[key] = value;
 }
 
 // キーから情報を読み込む
-wxString CMyPersistent::loadInfo(const wxString& key)
+wxString CMyPersistent::loadValue(const wxString& key)
 {
     return m_value[key];
 }
@@ -232,7 +232,7 @@ bool CMyPersistent::isKeySaved(const wxString& key) const
 }
 
 // 保存情報を削除する
-void CMyPersistent::deleteInfo(const wxString& key)
+void CMyPersistent::deleteValue(const wxString& key)
 {
     m_value.clear();
 }

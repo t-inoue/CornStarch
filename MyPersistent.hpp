@@ -47,7 +47,7 @@ public:
 
 private:
     // ファイルをmapとして開く
-    std::map<string, string> loadFileAsMap(void) const;
+    std::map<std::string, std::string> loadFileAsMap(void) const;
 
 #endif
 
