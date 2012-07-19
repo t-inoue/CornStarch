@@ -1,6 +1,6 @@
 #ifndef IConnection_H_
 #define IConnection_H_
-#include "header.hpp"
+
 using namespace std;
 
 class IConnection {

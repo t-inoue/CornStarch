@@ -37,7 +37,7 @@ void CMainWindow::init(void)
     m_logHolder = new CMainLogHolder();
 
     // StarChatコンテンツの初期化
-    m_contents = new CSCContents();
+    m_contents = new CConnectionContents();
     m_contents->init(GetEventHandler());
 
     // イベントハンドラの初期化

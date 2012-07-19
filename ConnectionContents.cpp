@@ -1,14 +1,14 @@
-#include "SCContents.hpp"
+#include "ConnectionContents.hpp"
 
 using namespace std;
 
-CSCContents::CSCContents(void) : m_handler(NULL), m_persist(NULL), 
+CConnectionContents::CConnectionContents(void) : m_handler(NULL), m_persist(NULL), 
     m_channel(NULL), m_user(NULL), m_nickTable(NULL), m_connect(NULL)
 {
 }
 
 
-CSCContents::~CSCContents(void)
+CConnectionContents::~CConnectionContents(void)
 {
     delete m_connect;
     delete m_channel;
@@ -23,7 +23,7 @@ CSCContents::~CSCContents(void)
 
 
 // ������s��
-void CSCContents::init(wxEvtHandler* handler)
+void CConnectionContents::init(wxEvtHandler* handler)
 {
     // �C�x���g�n���h���̓o�^
     m_handler = handler;
@@ -63,13 +63,13 @@ void CSCContents::init(wxEvtHandler* handler)
 }
 
 // ���[�U�����O�C�����Ă��邩
-bool CSCContents::isUserLogin(void) const
+bool CConnectionContents::isUserLogin(void) const
 {
     return m_user->isLogin();
 }
 
 // ���[�U�o�^���s�����ۂ̃f�[�^�X�V
-void CSCContents::registerUser(const wxString& userName, const wxString& pass)
+void CConnectionContents::registerUser(const wxString& userName, const wxString& pass)
 {
     // ���[�U�����Z�b�g
     m_user->setUserInfo(userName, pass);
@@ -79,7 +79,7 @@ void CSCContents::registerUser(const wxString& userName, const wxString& pass)
 }
 
 // ���O�A�E�g��
-void CSCContents::logout(void)
+void CConnectionContents::logout(void)
 {
     // ���O�C�����Ă���Ƃ��A�ۑ����Ă�������폜
     if (isUserLogin()){
@@ -89,21 +89,21 @@ void CSCContents::logout(void)
 }
 
 // �`�����l���ɎQ�����s����
-void CSCContents::joinChannel(const wxString& channel)
+void CConnectionContents::joinChannel(const wxString& channel)
 {
     // �`�����l���Q���^�X�N�̊J�n
     m_connect->startJoinTask(m_handler, channel, m_user->getUserName(), m_user->getBasic());
 }
 
 // �`�����l�����痣�E�����
-void CSCContents::partChannel(const wxString& channel)
+void CConnectionContents::partChannel(const wxString& channel)
 {
     // �`�����l�����E�^�X�N���J�n
     m_connect->startPartTask(m_handler, channel, m_user->getUserName(), m_user->getBasic());
 }
 
 // �Đڑ����s��
-void CSCContents::reconnect(void)
+void CConnectionContents::reconnect(void)
 {
     // �ʐM������
     delete m_connect;
@@ -113,38 +113,38 @@ void CSCContents::reconnect(void)
 }
 
 // �e�`�����l���̏���j��
-void CSCContents::clearChannels(void)
+void CConnectionContents::clearChannels(void)
 {
     m_channel->deleteChannels();
 }
 
 // �j�b�N�l�[���e�[�u����j��
-void CSCContents::clearNickTable(void)
+void CConnectionContents::clearNickTable(void)
 {
     delete m_nickTable;
     m_nickTable = new CSCNickTable();
 }
 
 // ���݂̃`�����l�������擾
-wxString CSCContents::getCurrentChannel(void) const
+wxString CConnectionContents::getCurrentChannel(void) const
 {
     return m_user->getChannelString();
 }
 
 // ���b�Z�[�W�𐶐�
-CMessageData CSCContents::generateMessage(const wxString& body)
+CMessageData CConnectionContents::generateMessage(const wxString& body)
 {
     return CMessageData(-1, m_user->getUserName(), body, m_user->getChannelString(), time(NULL));
 }
 
 // �j�b�N�l�[�����擾
-wxString CSCContents::getNickName(void) const
+wxString CConnectionContents::getNickName(void) const
 {
     return m_user->getNickName();
 }
 
 // ���b�Z�[�W�𓊍e������
-void CSCContents::postMessage(const CMessageData& message)
+void CConnectionContents::postMessage(const CMessageData& message)
 {
     // ���b�Z�[�W���e�^�X�N�̊J�n
     wxString channel = m_user->getChannelString();
@@ -156,61 +156,61 @@ void CSCContents::postMessage(const CMessageData& message)
 }
 
 // �`�����l����I��������
-void CSCContents::selectChannel(const wxString& channel)
+void CConnectionContents::selectChannel(const wxString& channel)
 {
     m_user->setChannel(channel);
 }
 
 // �`�����l���ꗗ���擾
-vector<wxString> CSCContents::getChannels(void) const
+vector<wxString> CConnectionContents::getChannels(void) const
 {
     return m_channel->getChannels();
 }
 
 // ���b�Z�[�W�ꗗ���擾
-vector<CMessageData*> CSCContents::getMessages(const wxString& channel) const
+vector<CMessageData*> CConnectionContents::getMessages(const wxString& channel) const
 {
     return m_channel->getMessages(channel);
 }
 
 // �����o�[�ꗗ���擾
-vector<CMemberData*> CSCContents::getMembers(const wxString& channel) const
+vector<CMemberData*> CConnectionContents::getMembers(const wxString& channel) const
 {
     return m_channel->getMembers(channel);
 }
 
 // �j�b�N�l�[���e�[�u�����擾
-CSCNickTable CSCContents::getNickTable(void) const
+CSCNickTable CConnectionContents::getNickTable(void) const
 {
     return *m_nickTable;
 }
 
 // ���[�U���Ă΂ꂽ��
-bool CSCContents::isUserCalled(const wxString& message)
+bool CConnectionContents::isUserCalled(const wxString& message)
 {
     return m_user->isCalled(message);
 }
 
 // �����o�[�̃j�b�N�l�[�����擾
-wxString CSCContents::getMemberNick(const wxString& member)
+wxString CConnectionContents::getMemberNick(const wxString& member)
 {
     return m_nickTable->getNickname(member);
 }
 
 // �`�����l���̃g�s�b�N���擾
-wxString CSCContents::getTopic(const wxString& channel)
+wxString CConnectionContents::getTopic(const wxString& channel)
 {
     return m_channel->getTopic(channel);
 }
 
 // ���̃N���C�A���g���瓊�e���ꂽ���b�Z�[�W��
-bool CSCContents::isPostedThisClient(const CMessageData& message)
+bool CConnectionContents::isPostedThisClient(const CMessageData& message)
 {
     return m_channel->hasSameMessage(message);
 }
 
 // 
-void CSCContents::onUpdateMessageView(const wxString& channel)
+void CConnectionContents::onUpdateMessageView(const wxString& channel)
 {
     // ���b�Z�[�W����M�ς�
     if (!m_channel->hasReceivedMessage(channel)){
@@ -221,7 +221,7 @@ void CSCContents::onUpdateMessageView(const wxString& channel)
 }
 
 // 
-void CSCContents::onUpdateMemberView(const wxString& channel)
+void CConnectionContents::onUpdateMemberView(const wxString& channel)
 {
     // �����o�[��M�ς�
     if (!m_channel->hasReceivedMember(channel)){
@@ -232,7 +232,7 @@ void CSCContents::onUpdateMemberView(const wxString& channel)
 }
 
 // 
-void CSCContents::onUpdateChannelView(void)
+void CConnectionContents::onUpdateChannelView(void)
 {
     // �`�����l����M�ς݂Ȃ�
     if (!m_channel->hasReceivedChannel()){
@@ -246,7 +246,7 @@ void CSCContents::onUpdateChannelView(void)
 /////////////////////////////////////////
 
 // �F�؂����������ꍇ
-void CSCContents::onAuthSucceeed(void)
+void CConnectionContents::onAuthSucceeed(void)
 {
     // ���[�U�����O�C����Ԃɂ���
     m_user->setLogin(true);
@@ -263,20 +263,20 @@ void CSCContents::onAuthSucceeed(void)
 }
 
 // ���b�Z�[�W�ꗗ���擾�����ꍇ
-void CSCContents::onGetMessages(const vector<CMessageData*>& messages)
+void CConnectionContents::onGetMessages(const vector<CMessageData*>& messages)
 {
     m_channel->setMessages(m_user->getChannelString(), messages);
 }
 
 // �����o�[�ꗗ���擾�����ꍇ
-void CSCContents::onGetMembers(const vector<CMemberData*>& members)
+void CConnectionContents::onGetMembers(const vector<CMemberData*>& members)
 {
     m_channel->setMembers(m_user->getChannelString(), members);
     m_nickTable->addTableFromMembers(members);
 }
 
 // �`�����l���ꗗ���擾�����ꍇ
-void CSCContents::onGetChannels(const vector<CChannelData*>& channels)
+void CConnectionContents::onGetChannels(const vector<CChannelData*>& channels)
 {
     m_channel->setChannels(channels);
 
@@ -286,7 +286,7 @@ void CSCContents::onGetChannels(const vector<CChannelData*>& channels)
 }
 
 // �`�����l���Q��������
-void CSCContents::onJoinChannel(const wxString& channel)
+void CConnectionContents::onJoinChannel(const wxString& channel)
 {
     // ���[�U�̌��݂̃`�����l����ύX
     m_user->setChannel(channel);
@@ -297,7 +297,7 @@ void CSCContents::onJoinChannel(const wxString& channel)
 }
 
 // �`�����l�����E������
-void CSCContents::onPartChannel(const wxString& channel)
+void CConnectionContents::onPartChannel(const wxString& channel)
 {
     // �`�����l�������폜
     m_channel->popChannel(channel);
@@ -307,7 +307,7 @@ void CSCContents::onPartChannel(const wxString& channel)
 }
 
 // �����o�[�����擾�����ꍇ
-void CSCContents::onGetMemberStatus(const CMemberData& member)
+void CConnectionContents::onGetMemberStatus(const CMemberData& member)
 {
     // �����̏�񂾂�����
     if (member.m_name == m_user->getUserName()){
@@ -320,7 +320,7 @@ void CSCContents::onGetMemberStatus(const CMemberData& member)
 }
 
 // ���b�Z�[�W�X�g���[�����擾�����ꍇ
-void CSCContents::onGetMessageStream(const CMessageData& message)
+void CConnectionContents::onGetMessageStream(const CMessageData& message)
 {
     // �ʃN���C�A���g����̃��b�Z�[�W��������A�f�[�^�X�V�̂�
     if (m_channel->hasSameMessage(message)){
@@ -341,7 +341,7 @@ void CSCContents::onGetMessageStream(const CMessageData& message)
 }
 
 // �`�����l���Q���X�g���[������M
-void CSCContents::onGetJoinStream(const wxString& channel, const wxString& name)
+void CConnectionContents::onGetJoinStream(const wxString& channel, const wxString& name)
 {
     // �����҂��ɒǉ�
     CSubscribeData data (channel, name);
@@ -367,7 +367,7 @@ void CSCContents::onGetJoinStream(const wxString& channel, const wxString& name)
 }
 
 // �`�����l�����E�X�g���[������M
-void CSCContents::onGetPartStream(const wxString& channel, const wxString& name)
+void CConnectionContents::onGetPartStream(const wxString& channel, const wxString& name)
 {
     CSubscribeData data (channel, name);
 
@@ -382,13 +382,13 @@ void CSCContents::onGetPartStream(const wxString& channel, const wxString& name)
 }
 
 // �`�����l�����X�V�X�g���[������M
-void CSCContents::onGetChannelStream(const CChannelData& channel)
+void CConnectionContents::onGetChannelStream(const CChannelData& channel)
 {
     m_channel->setChannel(channel);
 }
 
 // ���[�U���X�V�X�g���[���̎�M
-void CSCContents::onGetUserStream(const CMemberData& member)
+void CConnectionContents::onGetUserStream(const CMemberData& member)
 {
     m_channel->updateMember(member);
     (*m_nickTable)[member.m_name] = member.m_nick;

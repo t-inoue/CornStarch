@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "MainView.hpp"
 #include "MainLogHolder.hpp"
-#include "SCContents.hpp"
+#include "ConnectionContents.hpp"
 
 // ビューコントローラとなるウィンドウクラス
 class CMainWindow : public wxFrame
@@ -13,7 +13,7 @@ private:
     CMainLogHolder* m_logHolder; // チャットのログを保持
 
     // StarChat
-    CSCContents* m_contents; // スターチャットのコンテンツを管理
+    CConnectionContents* m_contents; // スターチャットのコンテンツを管理
 
     // wxWindowイベントを処理させたいクラスに利用するマクロ
     DECLARE_EVENT_TABLE()

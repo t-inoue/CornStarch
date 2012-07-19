@@ -8,7 +8,7 @@
 #include "IConnection.hpp"
 
 // StarChat��Model�R���e���c�������N���X
-class CSCContents
+class CConnectionContents
 {
 private:
     // �C�x���g�n���h��
@@ -24,8 +24,8 @@ private:
     CMyPersistent* m_persist; // �i����������
 
 public:
-    CSCContents(void);
-    ~CSCContents(void);
+    CConnectionContents(void);
+    ~CConnectionContents(void);
 
     // ������s��
     void init(wxEvtHandler* handler);
