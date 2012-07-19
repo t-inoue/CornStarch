@@ -42,7 +42,7 @@ void CConnectionContents::init(wxEvtHandler* handler)
     m_user->setChannel("");
 
     // �j�b�N�l�[���e�[�u���̏���
-    m_nickTable = new CSCNickTable();
+    m_nickTable = new CNickTable();
 
     // �i�����������N���X�̏���
     m_persist = new CMyPersistent();
@@ -122,7 +122,7 @@ void CConnectionContents::clearChannels(void)
 void CConnectionContents::clearNickTable(void)
 {
     delete m_nickTable;
-    m_nickTable = new CSCNickTable();
+    m_nickTable = new CNickTable();
 }
 
 // ���݂̃`�����l�������擾
@@ -180,7 +180,7 @@ vector<CMemberData*> CConnectionContents::getMembers(const wxString& channel) co
 }
 
 // �j�b�N�l�[���e�[�u�����擾
-CSCNickTable CConnectionContents::getNickTable(void) const
+CNickTable CConnectionContents::getNickTable(void) const
 {
     return *m_nickTable;
 }

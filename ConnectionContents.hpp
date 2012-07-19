@@ -2,7 +2,7 @@
 #include "SCConnection.hpp"
 #include "SCChannelHolder.hpp"
 #include "SCUser.hpp"
-#include "SCNickTable.hpp"
+#include "NickTable.hpp"
 #include "MyPersistent.hpp"
 #include "IUser.h"
 #include "IConnection.hpp"
@@ -11,6 +11,7 @@
 class CConnectionContents
 {
 private:
+	//てすと
     // �C�x���g�n���h��
     wxEvtHandler* m_handler;
 
@@ -18,7 +19,7 @@ private:
     IConnection* m_connect; // �ʐM���i��N���X
     CSCChannelHolder* m_channel; // �`�����l������ێ�
     IUser* m_user; // ���[�U���
-    CSCNickTable* m_nickTable; // �j�b�N�l�[���e�[�u��
+    CNickTable* m_nickTable; // �j�b�N�l�[���e�[�u��
 
     // �ėp�N���X
     CMyPersistent* m_persist; // �i����������
@@ -79,7 +80,7 @@ public:
     std::vector<CMemberData*> getMembers(const wxString& channel) const;
 
     // �j�b�N�l�[���e�[�u�����擾
-    CSCNickTable getNickTable(void) const;
+    CNickTable getNickTable(void) const;
 
     // ���[�U���Ă΂ꂽ��
     bool isUserCalled(const wxString& message);

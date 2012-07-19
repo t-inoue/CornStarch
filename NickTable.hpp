@@ -4,11 +4,11 @@
 #include "MemberData.hpp"
 
 // 本名とニックネームの対応付けを行うためのテーブルクラス
-class CSCNickTable : public std::map<wxString, wxString>
+class CNickTable : public std::map<wxString, wxString>
 {
 public:
-    CSCNickTable(void);
-    ~CSCNickTable(void);
+    CNickTable(void);
+    ~CNickTable(void);
 
     // テーブルに追加する
     void addTableFromMembers(const std::vector<CMemberData*>& members);
