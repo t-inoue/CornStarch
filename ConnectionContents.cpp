@@ -28,18 +28,13 @@ void CConnectionContents::init(wxEvtHandler* handler)
     // �C�x���g�n���h���̓o�^
     m_handler = handler;
 
-    // �ʐM�̏���
-    m_connect = new CSCConnection();
-    m_connect->init(m_handler);
+
 
     // �f�[�^�ێ����̏���
-    m_channel = new CSCChannelHolder(); // �`�����l��
+    m_channel = new CChannelHolder(); // �`�����l��
     m_channel->init();
 
-    // ���[�U���̏���
-    m_user = new CSCUser();
-    m_user->init();
-    m_user->setChannel("");
+
 
     // �j�b�N�l�[���e�[�u���̏���
     m_nickTable = new CNickTable();
@@ -48,18 +43,27 @@ void CConnectionContents::init(wxEvtHandler* handler)
     m_persist = new CMyPersistent();
     m_persist->init();
 
-    // �p�X���[�h��񂪕ۑ�����Ă����
-    wxString basicKey = m_user->getBasicKey();
-    wxString nameKey = m_user->getNameKey();
-    if (m_persist->isKeySaved(basicKey) && m_persist->isKeySaved(nameKey)){
 
-        // �p�X���[�h����ǂݍ���
-        m_user->setUserName(m_persist->loadInfo(nameKey));
-        m_user->setBasic(m_persist->loadInfo(basicKey));
-
-        // �F�؃^�X�N���J�n����
-        m_connect->startAuthTask(m_handler, m_user->getUserName(), m_user->getBasic());
-    }
+//    // �ʐM�̏���
+//    m_connect = new CSCConnection();
+//    m_connect->init(m_handler);
+//    // ���[�U���̏���
+//    m_user = new CSCUser();
+//    m_user->init();
+//    m_user->setChannel("");
+//
+//    // �p�X���[�h��񂪕ۑ�����Ă����
+//    wxString basicKey = m_user->getBasicKey();
+//    wxString nameKey = m_user->getNameKey();
+//    if (m_persist->isKeySaved(basicKey) && m_persist->isKeySaved(nameKey)){
+//
+//        // �p�X���[�h����ǂݍ���
+//        m_user->setUserName(m_persist->loadInfo(nameKey));
+//        m_user->setBasic(m_persist->loadInfo(basicKey));
+//
+//        // �F�؃^�X�N���J�n����
+//        m_connect->startAuthTask(m_handler, m_user->getUserName(), m_user->getBasic());
+//    }
 }
 
 // ���[�U�����O�C�����Ă��邩

@@ -1,13 +1,13 @@
-﻿#include "SCChannelHolder.hpp"
+﻿#include "ChannelHolder.hpp"
 
 using namespace std;
 
-CSCChannelHolder::CSCChannelHolder(void)
+CChannelHolder::CChannelHolder(void)
 {
 }
 
 
-CSCChannelHolder::~CSCChannelHolder(void)
+CChannelHolder::~CChannelHolder(void)
 {
     deleteChannels();
 }
@@ -17,12 +17,12 @@ CSCChannelHolder::~CSCChannelHolder(void)
 
 
 // 初期化を行う
-void CSCChannelHolder::init(void)
+void CChannelHolder::init(void)
 {
 }
 
 // チャンネル一覧をセットする
-void CSCChannelHolder::setChannels(const vector<CChannelData*>& channels)
+void CChannelHolder::setChannels(const vector<CChannelData*>& channels)
 {
     // チャンネル一覧を空にする
     deleteChannels();
@@ -39,7 +39,7 @@ void CSCChannelHolder::setChannels(const vector<CChannelData*>& channels)
         } else {
 
             // メモリ領域を確保して挿入
-            CSCChannelStatus* data = new CSCChannelStatus();
+            CChannelStatus* data = new CChannelStatus();
             data->init();
             data->setTopic(topic);
             m_channels[channel] = data;
@@ -48,9 +48,9 @@ void CSCChannelHolder::setChannels(const vector<CChannelData*>& channels)
 }
 
 // チャンネル一覧を取得する
-vector<wxString> CSCChannelHolder::getChannels(void) const
+vector<wxString> CChannelHolder::getChannels(void) const
 {
-    map<wxString, CSCChannelStatus*>::const_iterator it;
+    map<wxString, CChannelStatus*>::const_iterator it;
     vector<wxString> result;
 
     // チャンネル一覧を作成
@@ -62,13 +62,13 @@ vector<wxString> CSCChannelHolder::getChannels(void) const
 }
 
 // 既にチャンネル一覧を取得したか
-bool CSCChannelHolder::hasReceivedChannel(void) const
+bool CChannelHolder::hasReceivedChannel(void) const
 {
     return !m_channels.empty();
 }
 
 // チャンネルを追加する
-void CSCChannelHolder::setChannel(const CChannelData& channel)
+void CChannelHolder::setChannel(const CChannelData& channel)
 {
     wxString name = channel.m_name;
     wxString topic = channel.m_topic;
@@ -80,21 +80,21 @@ void CSCChannelHolder::setChannel(const CChannelData& channel)
     }
 
     // チャンネルが存在しない時は追加を行う
-    CSCChannelStatus* data = new CSCChannelStatus();
+    CChannelStatus* data = new CChannelStatus();
     data->init();
     data->setTopic(topic);
     m_channels[name] = data;
 }
 
 // チャンネルを削除する
-void CSCChannelHolder::popChannel(const wxString& channel)
+void CChannelHolder::popChannel(const wxString& channel)
 {
     delete m_channels[channel];
     m_channels.erase(channel);
 }
 
 // チャンネル名からtopicを取得する
-wxString CSCChannelHolder::getTopic(const wxString& channel)
+wxString CChannelHolder::getTopic(const wxString& channel)
 {
     if (m_channels.find(channel) == m_channels.end()){
         return "";
@@ -104,9 +104,9 @@ wxString CSCChannelHolder::getTopic(const wxString& channel)
 }
 
 // チャンネル一覧のメモリ領域を削除する
-void CSCChannelHolder::deleteChannels(void)
+void CChannelHolder::deleteChannels(void)
 {
-    map<wxString, CSCChannelStatus*>::iterator it;
+    map<wxString, CChannelStatus*>::iterator it;
     for (it = m_channels.begin(); it != m_channels.end(); it++){
         delete m_channels[it->first];
     }
@@ -115,7 +115,7 @@ void CSCChannelHolder::deleteChannels(void)
 }
 
 // 一番頭のチャンネルを取得する
-wxString CSCChannelHolder::getFirstChannel(void)
+wxString CChannelHolder::getFirstChannel(void)
 {
     if (m_channels.size() == 0){
         return "";
@@ -129,7 +129,7 @@ wxString CSCChannelHolder::getFirstChannel(void)
 
 
 // チャンネルのメッセージ一覧を取得する
-vector<CMessageData*> CSCChannelHolder::getMessages(const wxString& channel)
+vector<CMessageData*> CChannelHolder::getMessages(const wxString& channel)
 {
     // チャンネルが存在しない
     if (m_channels.find(channel) == m_channels.end()){
@@ -140,7 +140,7 @@ vector<CMessageData*> CSCChannelHolder::getMessages(const wxString& channel)
 }
 
 // チャンネルのメンバー一覧を取得する
-vector<CMemberData*> CSCChannelHolder::getMembers(const wxString& channel)
+vector<CMemberData*> CChannelHolder::getMembers(const wxString& channel)
 {
     // チャンネルが存在しない
     if (m_channels.find(channel) == m_channels.end()){
@@ -151,7 +151,7 @@ vector<CMemberData*> CSCChannelHolder::getMembers(const wxString& channel)
 }
 
 // チャンネルのメッセージを追加する
-void CSCChannelHolder::pushMessage(const wxString& channel, const CMessageData& message)
+void CChannelHolder::pushMessage(const wxString& channel, const CMessageData& message)
 {
     // チャンネルが存在しない
     if (m_channels.find(channel) == m_channels.end()){
@@ -162,7 +162,7 @@ void CSCChannelHolder::pushMessage(const wxString& channel, const CMessageData& 
 }
 
 // チャンネルのメンバーを追加する
-void CSCChannelHolder::pushMember(const wxString& channel, const CMemberData& member)
+void CChannelHolder::pushMember(const wxString& channel, const CMemberData& member)
 {
     // チャンネルが存在しない
     if (m_channels.find(channel) == m_channels.end()){
@@ -173,7 +173,7 @@ void CSCChannelHolder::pushMember(const wxString& channel, const CMemberData& me
 }
 
 // チャンネルのメッセージ一覧をセットする
-void CSCChannelHolder::setMessages(const wxString& channel, const vector<CMessageData*>& messages)
+void CChannelHolder::setMessages(const wxString& channel, const vector<CMessageData*>& messages)
 {
     // チャンネルが存在しない
     if (m_channels.find(channel) == m_channels.end()){
@@ -184,7 +184,7 @@ void CSCChannelHolder::setMessages(const wxString& channel, const vector<CMessag
 }
 
 // チャンネルのメンバー一覧をセットする
-void CSCChannelHolder::setMembers(const wxString& channel, const vector<CMemberData*>& members)
+void CChannelHolder::setMembers(const wxString& channel, const vector<CMemberData*>& members)
 {
     // チャンネルが存在しない
     if (m_channels.find(channel) == m_channels.end()){
@@ -195,34 +195,34 @@ void CSCChannelHolder::setMembers(const wxString& channel, const vector<CMemberD
 }
 
 // メンバーを消す
-void CSCChannelHolder::popMember(const wxString& userName)
+void CChannelHolder::popMember(const wxString& userName)
 {
-    map<wxString, CSCChannelStatus*>::iterator it;
+    map<wxString, CChannelStatus*>::iterator it;
     for (it = m_channels.begin(); it != m_channels.end(); it++){
         it->second->popMember(userName);
     }
 }
 
 // メンバー情報を更新する
-void CSCChannelHolder::updateMember(const CMemberData& member)
+void CChannelHolder::updateMember(const CMemberData& member)
 {
-    map<wxString, CSCChannelStatus*>::iterator it;
+    map<wxString, CChannelStatus*>::iterator it;
     for (it = m_channels.begin(); it != m_channels.end(); it++){
         it->second->updateMember(member);
     }
 }
 
 // メッセージIDを更新する
-void CSCChannelHolder::onUpdateMessageId(const CMessageData& message)
+void CChannelHolder::onUpdateMessageId(const CMessageData& message)
 {
-    map<wxString, CSCChannelStatus*>::iterator it;
+    map<wxString, CChannelStatus*>::iterator it;
     for (it = m_channels.begin(); it != m_channels.end(); it++){
         it->second->updateMessageId(message);
     }
 }
 
 // チャンネルのメッセージ情報を収集したか
-bool CSCChannelHolder::hasReceivedMessage(const wxString& channel)
+bool CChannelHolder::hasReceivedMessage(const wxString& channel)
 {
     // チャンネルが存在しない
     if (m_channels.find(channel) == m_channels.end()){
@@ -233,7 +233,7 @@ bool CSCChannelHolder::hasReceivedMessage(const wxString& channel)
 }
 
 // チャンネルのメッセージ情報を収集したか
-bool CSCChannelHolder::hasReceivedMember(const wxString& channel)
+bool CChannelHolder::hasReceivedMember(const wxString& channel)
 {
     // チャンネルが存在しない
     if (m_channels.find(channel) == m_channels.end()){
@@ -244,7 +244,7 @@ bool CSCChannelHolder::hasReceivedMember(const wxString& channel)
 }
 
 // 同じメッセージ内容のものがあるか
-bool CSCChannelHolder::hasSameMessage(const CMessageData& message)
+bool CChannelHolder::hasSameMessage(const CMessageData& message)
 {
     // チャンネルが存在しない
     if (m_channels.find(message.m_channel) == m_channels.end()){

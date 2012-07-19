@@ -1,17 +1,17 @@
 ﻿#pragma once
 #include <map>
-#include "SCChannelStatus.hpp"
+#include "ChannelStatus.hpp"
 #include "ChannelData.hpp"
 
 // チャンネル一覧を保持する
-class CSCChannelHolder
+class CChannelHolder
 {
 private:
-    std::map<wxString, CSCChannelStatus*> m_channels; // チャンネル一覧
+    std::map<wxString, CChannelStatus*> m_channels; // チャンネル一覧
 
 public:
-    CSCChannelHolder(void);
-    ~CSCChannelHolder(void);
+    CChannelHolder(void);
+    ~CChannelHolder(void);
 
     // 初期化を行う
     void init(void);

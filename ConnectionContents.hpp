@@ -1,6 +1,6 @@
 #pragma once
 #include "SCConnection.hpp"
-#include "SCChannelHolder.hpp"
+#include "ChannelHolder.hpp"
 #include "SCUser.hpp"
 #include "NickTable.hpp"
 #include "MyPersistent.hpp"
@@ -10,14 +10,13 @@
 // StarChat��Model�R���e���c�������N���X
 class CConnectionContents
 {
-private:
-	//てすと
+protected:
     // �C�x���g�n���h��
     wxEvtHandler* m_handler;
 
     // StarChat�̃f�[�^��
     IConnection* m_connect; // �ʐM���i��N���X
-    CSCChannelHolder* m_channel; // �`�����l������ێ�
+    CChannelHolder* m_channel; // �`�����l������ێ�
     IUser* m_user; // ���[�U���
     CNickTable* m_nickTable; // �j�b�N�l�[���e�[�u��
 
@@ -29,7 +28,7 @@ public:
     ~CConnectionContents(void);
 
     // ������s��
-    void init(wxEvtHandler* handler);
+    virtual void init(wxEvtHandler* handler);
 
     // ���[�U�����O�C�����Ă��邩
     bool isUserLogin(void) const;

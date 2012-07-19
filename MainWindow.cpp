@@ -1,6 +1,6 @@
 ﻿#include "DefineEventTable.hpp" // イベントテーブル
 #include "MainWindow.hpp"
-
+#include "SCConnectionContents.h"
 using namespace std;
 
 
@@ -37,7 +37,7 @@ void CMainWindow::init(void)
     m_logHolder = new CMainLogHolder();
 
     // StarChatコンテンツの初期化
-    m_contents = new CConnectionContents();
+    m_contents = new CSCConnectionContents();
     m_contents->init(GetEventHandler());
 
     // イベントハンドラの初期化
