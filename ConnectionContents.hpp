@@ -2,7 +2,7 @@
 #include "SCConnection.hpp"
 #include "SCChannelHolder.hpp"
 #include "SCUser.hpp"
-#include "SCNickTable.hpp"
+#include "NickTable.hpp"
 #include "MyPersistent.hpp"
 #include "IUser.h"
 #include "IConnection.hpp"
@@ -18,7 +18,7 @@ private:
     IConnection* m_connect; // 通信を司るクラス
     CSCChannelHolder* m_channel; // チャンネル情報を保持
     IUser* m_user; // ユーザ情報
-    CSCNickTable* m_nickTable; // ニックネームテーブル
+    CNickTable* m_nickTable; // ニックネームテーブル
 
     // 汎用クラス
     CMyPersistent* m_persist; // 永続化を扱う
@@ -79,7 +79,7 @@ public:
     std::vector<CMemberData*> getMembers(const wxString& channel) const;
 
     // ニックネームテーブルを取得
-    CSCNickTable getNickTable(void) const;
+    CNickTable getNickTable(void) const;
 
     // ユーザが呼ばれたか
     bool isUserCalled(const wxString& message);

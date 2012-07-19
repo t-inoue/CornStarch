@@ -42,7 +42,7 @@ void CConnectionContents::init(wxEvtHandler* handler)
     m_user->setChannel("");
 
     // ニックネームテーブルの初期化
-    m_nickTable = new CSCNickTable();
+    m_nickTable = new CNickTable();
 
     // 永続化を扱うクラスの初期化
     m_persist = new CMyPersistent();
@@ -122,7 +122,7 @@ void CConnectionContents::clearChannels(void)
 void CConnectionContents::clearNickTable(void)
 {
     delete m_nickTable;
-    m_nickTable = new CSCNickTable();
+    m_nickTable = new CNickTable();
 }
 
 // 現在のチャンネル名を取得
@@ -180,7 +180,7 @@ vector<CMemberData*> CConnectionContents::getMembers(const wxString& channel) co
 }
 
 // ニックネームテーブルを取得
-CSCNickTable CConnectionContents::getNickTable(void) const
+CNickTable CConnectionContents::getNickTable(void) const
 {
     return *m_nickTable;
 }
