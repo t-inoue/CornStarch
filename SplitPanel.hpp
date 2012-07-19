@@ -29,9 +29,6 @@ public:
     // 初期化を行う
     void init(wxWindow* parent);
 
-    // sashの位置を更新する
-    void updateSashPos(const wxSize& size);
-
 protected:
 
     // 分割を行う際のパラメータを設定する

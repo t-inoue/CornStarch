@@ -60,12 +60,6 @@ wxString CMainView::getSelectedChannel(void) const
     return m_panel->getSelectedChannel();
 }
 
-// sashの位置を更新する
-void CMainView::updateSashPos(const wxSize& size)
-{
-    return m_panel->updateSashPos(size);
-}
-
 // 指定したチャンネルを選択済み項目にする
 void CMainView::setSelectedChannel(const wxString& channelName)
 {

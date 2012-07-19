@@ -82,8 +82,5 @@ BEGIN_EVENT_TABLE(CMainWindow, wxFrame)
     EVT_GET_PART_STREAM(myEVT_THREAD_STREAM_CH_PART, wxID_ANY, CMainWindow::onPartStream)
     EVT_PUT_JOIN(myEVT_THREAD_PUT_JOIN, wxID_ANY, CMainWindow::onJoinChannel)
         
-    // ウィンドウサイズ変更
-    EVT_SIZE(CMainWindow::OnSize)
-
 END_EVENT_TABLE();
 

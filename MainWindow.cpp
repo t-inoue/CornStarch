@@ -198,13 +198,6 @@ void CMainWindow::onUpdateDisplay(wxCommandEvent& event)
 //////////////////////////////////////////////////////////////////////
 
 
-// サイズ変更
-void CMainWindow::OnSize(wxSizeEvent& event)
-{
-    wxFrame::OnSize(event);
-    m_view->updateSashPos(this->GetSize());
-}
-
 // 投稿ペインでEnterキーを押下
 void CMainWindow::onEnter(wxCommandEvent& event)
 {
