@@ -28,18 +28,10 @@ void CConnectionContents::init(wxEvtHandler* handler)
     // イベントハンドラの登録
     m_handler = handler;
 
-    // 通信の初期化
-    m_connect = new CSCConnection();
-    m_connect->init(m_handler);
-
     // データ保持部の初期化
-    m_channel = new CSCChannelHolder(); // チャンネル
+    m_channel = new CChannelHolder(); // チャンネル
     m_channel->init();
 
-    // ユーザ情報の初期化
-    m_user = new CSCUser();
-    m_user->init();
-    m_user->setChannel("");
 
     // ニックネームテーブルの初期化
     m_nickTable = new CNickTable();
@@ -48,18 +40,6 @@ void CConnectionContents::init(wxEvtHandler* handler)
     m_persist = new CMyPersistent();
     m_persist->init();
 
-    // パスワード情報が保存されていれば
-    wxString basicKey = m_user->getBasicKey();
-    wxString nameKey = m_user->getNameKey();
-    if (m_persist->isKeySaved(basicKey) && m_persist->isKeySaved(nameKey)){
-
-        // パスワード情報を読み込む
-        m_user->setUserName(m_persist->loadInfo(nameKey));
-        m_user->setBasic(m_persist->loadInfo(basicKey));
-
-        // 認証タスクを開始する
-        m_connect->startAuthTask(m_handler, m_user->getUserName(), m_user->getBasic());
-    }
 }
 
 // ユーザがログインしているか

@@ -1,9 +1,4 @@
-/*
- * IRCConnectionContents.h
- *
- *  Created on: 2012/07/19
- *      Author: yasuo_tanaka
- */
+
 
 #ifndef IRCCONNECTIONCONTENTS_H_
 #define IRCCONNECTIONCONTENTS_H_
