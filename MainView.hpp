@@ -30,9 +30,6 @@ public: // 各ペインに関するメソッド
     // 選択されているチャンネル名を取得する
     wxString getSelectedChannel(void) const;
 
-    // sashの位置を更新する
-    void updateSashPos(const wxSize& size);
-
     // 指定したチャンネルを選択済み項目にする
     void setSelectedChannel(const wxString& channelName);
 

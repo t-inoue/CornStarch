@@ -36,8 +36,8 @@ void CSCConnectionContents::init(wxEvtHandler* handler)
     if (m_persist->isKeySaved(basicKey) && m_persist->isKeySaved(nameKey)){
 
         // �p�X���[�h����ǂݍ���
-        m_user->setUserName(m_persist->loadInfo(nameKey));
-        m_user->setBasic(m_persist->loadInfo(basicKey));
+        m_user->setUserName(m_persist->loadValue(nameKey));
+        m_user->setBasic(m_persist->loadValue(basicKey));
 
         // �F�؃^�X�N���J�n����
         m_connect->startAuthTask(m_handler, m_user->getUserName(), m_user->getBasic());

@@ -63,8 +63,8 @@ void CConnectionContents::logout(void)
 {
     // ログインしているとき、保存してある情報を削除
     if (isUserLogin()){
-        m_persist->deleteInfo(m_user->getNameKey());
-        m_persist->deleteInfo(m_user->getBasicKey());
+        m_persist->deleteValue(m_user->getNameKey());
+        m_persist->deleteValue(m_user->getBasicKey());
     }
 }
 
@@ -233,8 +233,8 @@ void CConnectionContents::onAuthSucceeed(void)
     m_user->setLogin(true);
 
     // パスワード永続化
-    m_persist->saveInfo(m_user->getNameKey(), m_user->getUserName());
-    m_persist->saveInfo(m_user->getBasicKey(), m_user->getBasic());
+    m_persist->saveValue(m_user->getNameKey(), m_user->getUserName());
+    m_persist->saveValue(m_user->getBasicKey(), m_user->getBasic());
 
     // ニックネーム取得タスク
     m_connect->startGetMemberInfoTask(m_handler, m_user->getUserName(), m_user->getBasic());

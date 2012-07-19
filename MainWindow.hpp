@@ -67,9 +67,6 @@ private: // メニュー系
 
 private: // 画面系
 
-    // サイズ変更
-    void OnSize(wxSizeEvent& event);
-
     // 投稿ペインでEnterキーを押下
     void onEnter(wxCommandEvent& event);
 

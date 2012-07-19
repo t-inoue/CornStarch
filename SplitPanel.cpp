@@ -42,14 +42,6 @@ void CSplitPanel::init(wxWindow* parent)
     setSplitParam();
 }
 
-// sashの位置を更新する
-void CSplitPanel::updateSashPos(const wxSize& size)
-{
-    // 左画面のsash位置を調整する
-    m_spMsg->SetSashPosition(350);
-    m_spHorL->SetSashPosition(m_spMsg->GetSashPosition() + 30);
-}
-
 
 //////////////////////////////////////////////////////////////////////
 
