@@ -24,7 +24,7 @@ class CIRCParser {
 	int m_messageId;
 
 	string m_buffer;
-	// 名前をバッファに追加します。
+	// 名前一覧の名前をバッファに追加します。
 	void addNames(const string& param);
 
 	// トピックイベントを生成します。

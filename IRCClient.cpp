@@ -6,7 +6,6 @@
 
 using namespace std;
 
-wxDECLARE_EVENT(myEVT_THREAD_GET_MEMBER, CGetMemberEvent);
 namespace CornStarch
 {
 namespace IRC
@@ -45,7 +44,7 @@ void CIRCClient::start(wxEvtHandler* handler, wxString userName,
 
 	m_connected = connect();
 	m_handler = handler;
-	//
+	//　IRCへの接続
 	string pass(wxString::Format(wxT( "PASS %s\r\n"), userName.c_str()));
 	send(pass);
 	string nick(wxString::Format(wxT("NICK %s\r\n"), userName.c_str()));
@@ -84,7 +83,11 @@ void CIRCClient::receiveLoop()
 		}
 	}
 }
-
+void CIRCClient::disconnect(void)
+{
+	wxString content("QUIT\r\n");
+	send(content);
+}
 void CIRCClient::join(wxString channelName)
 {
 	wxString content(wxString::Format(wxT("JOIN %s\r\n"), channelName));
