@@ -92,6 +92,7 @@ CConnectionEventBase* CIRCParser::createJoinMessageEvent(const string& host,
 
 	int index = param.size();
 	string channel = param.substr(1, index - 2);
+	// Eventの作成
 	CJoinStreamEvent* event = new CJoinStreamEvent();
 	event->SetEventType(myEVT_THREAD_STREAM_CH_JOIN);
 	event->setChannelName(channel);
@@ -107,6 +108,7 @@ CConnectionEventBase* CIRCParser::createPartMessageEvent(const string& host,
 	int index = param.find(" ");
 	string channel = param.substr(0, index);
 
+	// Eventの作成
 	CPartStreamEvent* event = new CPartStreamEvent();
 	event->SetEventType(myEVT_THREAD_STREAM_CH_PART);
 	event->setChannelName(channel);
@@ -126,6 +128,7 @@ CConnectionEventBase* CIRCParser::createPrivateMessageEvent(const string& host,
 	string content = param.substr(contentIndex,
 			param.size() - contentIndex - 1);
 
+	// Messagedataの作成。
 	CMessageData message;
 	message.m_id = m_messageId;
 	message.m_username = name;
@@ -133,6 +136,7 @@ CConnectionEventBase* CIRCParser::createPrivateMessageEvent(const string& host,
 	message.m_channel = channel;
 	message.m_time = time(NULL);
 
+	// Eventの作成
 	CMsgStreamEvent* event = new CMsgStreamEvent();
 	event->SetEventType(myEVT_THREAD_STREAM_MSG_ADD);
 	event->setMessage(message);
