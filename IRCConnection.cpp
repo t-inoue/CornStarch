@@ -13,6 +13,7 @@
 #include "StreamData.hpp"
 #include "GetMessageEvent.hpp"
 #include "GetMemberInfoEvent.hpp"
+#include "PartEvent.hpp"
 
 // イベントの宣言
 wxDECLARE_EVENT(myEVT_THREAD_PUT_JOIN, CJoinEvent);
@@ -20,6 +21,7 @@ wxDECLARE_EVENT(myEVT_THREAD_GET_CHANNEL, CGetChannelEvent);
 wxDECLARE_EVENT(myEVT_THREAD_POST_MESSAGE, wxThreadEvent);
 wxDECLARE_EVENT(myEVT_THREAD_GET_MESSAGE, CGetMessageEvent);
 wxDECLARE_EVENT(myEVT_THREAD_GET_MEMBER_INFO, CGetMemberInfoEvent);
+wxDECLARE_EVENT(myEVT_THREAD_DELETE_PART, CPartEvent);
 namespace CornStarch
 {
 namespace IRC
@@ -52,9 +54,8 @@ void CIRCConnection::startPostMessageTask(const IUser* user,
 		const wxString& message, const wxString& channel)
 {
 	m_client->sendMessage(channel, message);
-	CConnectionEventBase* event = new CConnectionEventBase();
+	wxThreadEvent* event = new wxThreadEvent();
 	event->SetEventType(myEVT_THREAD_POST_MESSAGE);
-	event->setConnectionId(m_connectionId);
 	wxQueueEvent(m_handler, event);
 
 }
@@ -119,9 +120,9 @@ void CIRCConnection::startPartTask(const IUser* user, const wxString& channel)
 		++it;
 	}
 
-	CJoinEvent* event = new CJoinEvent();
-	event->SetEventType(myEVT_THREAD_PUT_JOIN); // イベントの種類をセット
-	event->SetString(channel); // 新チャンネル名
+	CPartEvent* event = new CPartEvent();
+    event->SetEventType(myEVT_THREAD_DELETE_PART); // イベントの種類をセット
+    event->SetString(channel);
 	event->setConnectionId(m_connectionId);
 	wxQueueEvent(m_handler, event);
 }
@@ -160,6 +161,8 @@ void CIRCConnection::startGetMemberInfoTask(const IUser* user,
 void CIRCConnection::startAuthTask(const IUser* user)
 {
 	m_client->start(m_handler,user->getUserName(),"");
+	//Sample
+	startJoinTask(user,"#cc");
 }
 
 // ストリーム通信タスク(別スレッド)を開始

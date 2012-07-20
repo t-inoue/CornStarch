@@ -21,10 +21,6 @@ void CIRCConnectionContents::init(wxEvtHandler* handler) {
 	m_user = new CIRCUser();
 	m_user->init();
 	m_user->setChannel("");
-	m_user->setUserName("TEST");
-	m_user->setNickName("TEST");
-
-	m_connect->startAuthTask(m_user);
 }
 }
 }

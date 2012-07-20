@@ -80,9 +80,9 @@ void CMainView::displayMembers(const vector<CMemberData*>& members)
 }
 
 // チャンネル一覧を表示する
-void CMainView::displayChannels(const vector<wxString>& channels)
+void CMainView::displayChannels(const std::vector<CConnectionContents*>& connections)
 {
-    m_panel->displayChannels(channels);
+    m_panel->displayChannels(connections);
 }
 
 // 投稿用ペインの文字を消す

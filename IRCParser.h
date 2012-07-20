@@ -19,6 +19,10 @@ namespace CornStarch {
 namespace IRC {
 //IRC用のイベントから呼び出します。
 class CIRCParser {
+
+	// メッセージに設定するId
+	int m_messageId;
+
 	string m_buffer;
 	// 名前をバッファに追加します。
 	void addNames(const string& param);
@@ -40,6 +44,9 @@ class CIRCParser {
 	// トピック取得のイベントを作成します。
 	CConnectionEventBase* createTopicEvent(const string& param) const;
 public:
+
+	CIRCParser();
+	virtual ~CIRCParser(void);
 	CConnectionEventBase* parse(const std::string& content);
 
 };

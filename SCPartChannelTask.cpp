@@ -1,5 +1,5 @@
 ﻿#include "SCPartChannelTask.hpp"
-
+#include "PartEvent.hpp"
 using namespace std;
 
 CSCPartChannelTask::CSCPartChannelTask(void)
@@ -38,8 +38,9 @@ void CSCPartChannelTask::sendRequestToSC(CSCClient* client)
 CConnectionEventBase* CSCPartChannelTask::parseHttpResponse(const string& responseBody)
 {
     // イベントの初期化
-	CConnectionEventBase* event = new CConnectionEventBase();
+	CConnectionEventBase* event = new CPartEvent();
     event->SetEventType(myEVT_THREAD_DELETE_PART); // イベントの種類をセット
     event->SetString(m_channel);
+	event->setConnectionId(m_connectionId);
     return event;
 }

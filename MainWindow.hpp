@@ -3,6 +3,7 @@
 #include "MainLogHolder.hpp"
 #include "ConnectionContents.hpp"
 #include "vector"
+#include "PartEvent.hpp"
 
 // ビューコントローラとなるウィンドウクラス
 class CMainWindow : public wxFrame
@@ -12,10 +13,11 @@ private:
     // CornStarch全般
     CMainView* m_view; // ビューの挙動を管理
     CMainLogHolder* m_logHolder; // チャットのログを保持
-
+    int m_serverIdLog;
+    int m_currentServerId;
     // 通信要素
-    CConnectionContents* m_contents; // スターチャットのコンテンツを管理
-
+    vector<CConnectionContents*> m_contents; // スターチャットのコンテンツを管理
+    void addNewConneection(CConnectionContents* connnection);
     // wxWindowイベントを処理させたいクラスに利用するマクロ
     DECLARE_EVENT_TABLE()
 
@@ -32,20 +34,21 @@ private:
     void initHandle(void);
     
     // Modelがあれば画面を更新する
-    void updateAllView(const wxString& channel);
+    void updateAllView(int connectionId,const wxString& channel);
 
     // メッセージ画面を更新する(Modelがある場合)
-    void updateMessageView(const wxString& channel);
+    void updateMessageView(int connectionId,const wxString& channel);
 
     // メンバー画面を更新する(Modelがある場合)
-    void updateMemberView(const wxString& channel);
+    void updateMemberView(int connectionId,const wxString& channel);
 
     // チャンネル画面とタイトルバーを更新する(Modelがある場合)
-    void updateChannelView(const wxString& channel);
+    void updateChannelView(int connectionId,const wxString& channel);
 
     // タイトルバーにタイトルを表示する
     void displayTitle(const wxString& channel, const wxString& topic);
 
+    CConnectionContents* getConnectionContents(int connectionId);
 private: // メニュー系
 
     // 終了
@@ -98,7 +101,7 @@ private: // 通信系
     void onJoinChannel(CJoinEvent& event);
 
     // チャンネル離脱時
-    void onPartChannel(wxThreadEvent& event);
+    void onPartChannel(CPartEvent& event);
 
     // メンバー情報の受信時
     void onGetMemberInfo(CGetMemberInfoEvent& event);

@@ -1,8 +1,9 @@
 ﻿#pragma once
 #include "SCTask.hpp"
+#include "PartEvent.hpp"
 
 // イベントの宣言
-wxDECLARE_EVENT(myEVT_THREAD_DELETE_PART, wxThreadEvent);
+wxDECLARE_EVENT(myEVT_THREAD_DELETE_PART, CPartEvent);
 
 // チャンネルから離脱するためのタスク
 class CSCPartChannelTask : public CSCTask

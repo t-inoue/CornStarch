@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "ChannelData.hpp"
 #include <vector>
+#include "ConnectionContents.hpp"
 #include "header.hpp"
 #include "wx/listbox.h"
 
@@ -18,7 +19,7 @@ public:
     void setStringSelection(const wxString& channel);
 
     // 所属チャンネル一覧を表示
-    void displayChannels(const std::vector<wxString>& channels);
+    void displayChannels(const vector<CConnectionContents*>& connections);
 
 };
 

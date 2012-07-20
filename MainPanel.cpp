@@ -1,5 +1,6 @@
 ﻿#include "MainPanel.hpp"
-
+#include "vector"
+#include "ConnectionContents.hpp"
 using namespace std;
 
 
@@ -77,10 +78,10 @@ void CMainPanel::displayMembers(const vector<CMemberData*>& members)
 }
 
 // チャンネルペインにチャンネルを表示
-void CMainPanel::displayChannels(const vector<wxString>& channels)
+void CMainPanel::displayChannels(const std::vector<CConnectionContents*>& connections)
 {
     m_cnBox->Show(false);
-    m_cnBox->displayChannels(channels);
+    m_cnBox->displayChannels(connections);
     m_cnBox->Show(true);
 
 }

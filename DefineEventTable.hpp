@@ -3,7 +3,7 @@
 
 // typedef
 typedef void (wxEvtHandler::*MyEventFunction)(CAuthEvent&);
-typedef void (wxEvtHandler::*delPartEvtFunction)(wxThreadEvent&);
+typedef void (wxEvtHandler::*delPartEvtFunction)(CPartEvent&);
 typedef void (wxEvtHandler::*GetMemberEvtFunc)(CGetMemberEvent&);
 typedef void (wxEvtHandler::*GetChannelEvtFunc)(CGetChannelEvent&);
 typedef void (wxEvtHandler::*GetMessageEvtFunc)(CGetMessageEvent&);
@@ -17,7 +17,6 @@ typedef void (wxEvtHandler::*JoinEvtFunc)(CJoinEvent&);
 
 // define
 wxDEFINE_EVENT(myEVT_THREAD_GET_PING, CAuthEvent);
-wxDEFINE_EVENT(myEVT_THREAD_DELETE_PART, wxThreadEvent);
 wxDEFINE_EVENT(myEVT_THREAD_GET_CHANNEL, CGetChannelEvent);
 wxDEFINE_EVENT(myEVT_THREAD_GET_MESSAGE, CGetMessageEvent);
 wxDEFINE_EVENT(myEVT_THREAD_GET_MEMBER, CGetMemberEvent);
@@ -28,6 +27,7 @@ wxDEFINE_EVENT(myEVT_THREAD_STREAM_CH_PART, CPartStreamEvent);
 wxDEFINE_EVENT(myEVT_THREAD_STREAM_CH_UPDATE, CChannelStreamEvent);
 wxDEFINE_EVENT(myEVT_THREAD_STREAM_USER_UPDATE, CUserStreamEvent);
 wxDEFINE_EVENT(myEVT_THREAD_PUT_JOIN, CJoinEvent);
+wxDEFINE_EVENT(myEVT_THREAD_DELETE_PART, CPartEvent);
 wxDEFINE_EVENT(myEVT_THREAD_POST_MESSAGE, wxThreadEvent);
 
 // イベントハンドラ

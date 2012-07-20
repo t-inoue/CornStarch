@@ -2,61 +2,60 @@
 #include "MessageVec.hpp"
 #include "MemberVec.hpp"
 
-// �`�����l���̓������(�N�����邩�⃁�b�Z�[�W�Ȃ�)���Ǘ�
+// チャンネルの内部状態(誰がいるかやメッセージなど)を管理
 class CChannelStatus
 {
 private:
-    wxString m_topic; // �g�s�b�N
-    CMessageVec* m_messages; // ���b�Z�[�W�ꗗ
-    CMemberVec* m_members; // �����o�[�ꗗ
+    wxString m_topic; // トピック
+    CMessageVec* m_messages; // メッセージ一覧
+    CMemberVec* m_members; // メンバー一覧
 
 public:
     CChannelStatus(void);
     ~CChannelStatus(void);
 
-    // ������s��
+    // 初期化を行う
     void init(void);
 
-    // �g�s�b�N���Z�b�g����
+    // トピックをセットする
     void setTopic(const wxString& topic);
 
-    // �g�s�b�N���擾����
+    // トピックを取得する
     wxString getTopic(void) const;
 
-    // ���b�Z�[�W�ꗗ���擾����
+    // メッセージ一覧を取得する
     std::vector<CMessageData*> getMessages(void) const;
 
-    // �����o�[�ꗗ���擾����
+    // メンバー一覧を取得する
     std::vector<CMemberData*> getMembers(void) const;
 
-    // ���b�Z�[�W��ǉ�����
+    // メッセージを追加する
     void pushMessage(const CMessageData& message);
 
-    // �����o�[��ǉ�����
+    // メンバーを追加する
     void pushMember(const CMemberData& member);
 
-    // ���b�Z�[�W�ꗗ���Z�b�g����
+    // メッセージ一覧をセットする
     void setMessages(const std::vector<CMessageData*>& messages);
 
-    // �����o�[�ꗗ���Z�b�g����
+    // メンバー一覧をセットする
     void setMembers(const std::vector<CMemberData*>& members);
 
-    // ���b�Z�[�W���擾���I������
+    // メッセージを取得し終えたか
     bool hasReceivedMessage(void) const;
 
-    // �����o���擾���I������
+    // メンバを取得し終えたか
     bool hasReceivedMember(void) const;
 
-    // ID�s�����������e���e�̃��b�Z�[�W�����邩
+    // ID不明かつ同じ投稿内容のメッセージがあるか
     bool hasSameMessage(const CMessageData& message) const;
 
-    // �������e�̃��b�Z�[�W�ɂ���ID���X�V
+    // 同じ内容のメッセージについてIDを更新
     void updateMessageId(const CMessageData& message);
 
-    // �����o�[�����X�V����
+    // メンバー情報を更新する
     void updateMember(const CMemberData& member);
 
-    // �����o�[��������
+    // メンバー情報を消す
     void popMember(const wxString& userName);
 };
-

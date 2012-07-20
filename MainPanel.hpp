@@ -6,6 +6,7 @@
 #include "PaneCn.hpp"
 #include "PaneMember.hpp"
 #include <wx/sizer.h>
+#include "ConnectionContents.hpp"
 
 class CMainPanel : public CSplitPanel
 {
@@ -32,7 +33,7 @@ public:
     void displayMembers(const std::vector<CMemberData*>& members);
 
     // チャンネルペインにチャンネルを表示
-    void displayChannels(const std::vector<wxString>& channels);
+    void displayChannels(const std::vector<CConnectionContents*>& connections);
 
     // ログ一覧ペインにログを表示
     void displayLogs(const std::vector<CChatLog*>& logs);
