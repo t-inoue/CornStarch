@@ -2,6 +2,7 @@
 #include "ViewDialog.hpp"
 #include "MainMenuBar.hpp"
 #include "MainPanel.hpp"
+#include "MainNotifier.hpp"
 #include "ConnectionContents.hpp"
 #include <map>
 
@@ -12,6 +13,7 @@ private:
     CMainMenuBar* m_menuBar; // メニューバーを管理
     CViewDialog* m_dialog; // ダイアログを管理
     CMainPanel* m_panel; // 各ペインを管理
+    CMainNotifier* m_notifier; // 通知を行う
 
 public:
     CMainView(void);
@@ -83,5 +85,10 @@ public: // ダイアログに関するメソッド
 
     // ホスト名を取得
     wxString getDlgHostName(void) const;
+
+public: // 通知に関するメソッド
+
+    // メッセージを通知する
+    void messageNotify(const wxString& title, const wxString& message);
 };
 

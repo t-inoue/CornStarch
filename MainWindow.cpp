@@ -294,7 +294,9 @@ void CMainWindow::onChannelSelected(CChannelSelectEvent& event)
 	updateMemberView(m_currentServerId, contents->getCurrentChannel());
 }
 
+
 //////////////////////////////////////////////////////////////////////
+
 
 // メッセージ投稿終了時
 void CMainWindow::onFinishPostMessage(wxThreadEvent& event)
@@ -423,7 +425,7 @@ void CMainWindow::onMsgStream(CMsgStreamEvent& event)
 	// 通知があったとき && 自分以外の人から
 	if (contents->isUserCalled(data.m_body) && !myPost)
 	{
-		wxMessageBox("通知", "呼ばれました", wxOK);
+        m_view->messageNotify("通知", "呼ばれました");
 	}
 }
 

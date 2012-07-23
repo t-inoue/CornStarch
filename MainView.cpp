@@ -2,7 +2,7 @@
 
 using namespace std;
 
-CMainView::CMainView(void) : m_menuBar(NULL), m_panel(NULL), m_dialog(NULL)
+CMainView::CMainView(void) : m_menuBar(NULL), m_panel(NULL), m_dialog(NULL), m_notifier(NULL)
 {
 }
 
@@ -10,6 +10,7 @@ CMainView::CMainView(void) : m_menuBar(NULL), m_panel(NULL), m_dialog(NULL)
 CMainView::~CMainView(void)
 {
     delete m_dialog;
+    delete m_notifier;
 }
 
 
@@ -35,6 +36,12 @@ void CMainView::init(wxWindow* parent)
     if (m_dialog == NULL){
         m_dialog = new CViewDialog();
         m_dialog->init(parent);
+    }
+
+    // 通知クラスを初期化
+    if (m_notifier == NULL){
+        m_notifier = new CMainNotifier();
+        m_notifier->init();
     }
 }
 
@@ -167,4 +174,14 @@ wxString CMainView::getDlgChannelName(void) const
 wxString CMainView::getDlgHostName(void) const
 {
     return m_dialog->getHostName();
+}
+
+
+//////////////////////////////////////////////////////////////////////
+
+
+// メッセージを通知する
+void CMainView::messageNotify(const wxString& title, const wxString& message)
+{
+    m_notifier->messageNotify(title, message);
 }
