@@ -9,7 +9,7 @@ public:
 	CSCConnectionContents();
 	virtual ~CSCConnectionContents();
 
-
+    // ‰Šú‰»‚ğs‚¤
 	void init(wxEvtHandler* handler);
 };
 

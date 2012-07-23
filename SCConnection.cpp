@@ -111,6 +111,27 @@ void CSCConnection::startGetMemberInfoTask(const IUser* user,const wxString& nam
 	startThread(getInfoTask);
 }
 
+// ニックネームを変更するタスク(別スレッド)を開始する
+void CSCConnection::startNickChangeTask(const IUser* user, const wxString& nick)
+{
+    CSCNickChangeTask* changeNickTask = new CSCNickChangeTask();
+    changeNickTask->init(m_connetionId, m_handler, nick, user->getUserName(), user->getBasic());
+
+	// 別スレッドでの開始
+	startThread(changeNickTask);
+}
+
+// トピックを変更するタスク(別スレッド)を開始する
+void CSCConnection::startChangeTopicTask(const IUser* user, const wxString& topic)
+{
+    CSCTopicChangeTask* changeTopicTask = new CSCTopicChangeTask();
+    changeTopicTask->init(m_connetionId, m_handler, user->getChannelString(), 
+        topic, user->getBasic());
+
+	// 別スレッドでの開始
+	startThread(changeTopicTask);
+}
+
 // ユーザが正規の人かどうか判断するタスク(別スレッド)を開始する
 void CSCConnection::startAuthTask(const IUser* user)
 {

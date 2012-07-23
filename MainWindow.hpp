@@ -73,6 +73,12 @@ private: // メニュー系
     // 表示を更新
     void onUpdateDisplay(wxCommandEvent& event);
 
+    // ニックネーム変更
+    void onNickChange(wxCommandEvent& event);
+
+    // トピック変更
+    void onChangeTopic(wxCommandEvent& event);
+
 private: // 画面系
 
     // 投稿ペインでEnterキーを押下

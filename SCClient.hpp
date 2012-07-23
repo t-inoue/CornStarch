@@ -35,6 +35,14 @@ public:
     // メンバーの情報をJSON形式で取得するリクエストを投げる
     void sendGetMemInfoRequest(const wxString& userName, const wxString& basic);
 
+    // ニックネームを変更するリクエストを投げる
+    void sendChangeNickRequest(const wxString& name, const wxString& nick, 
+        const wxString& basic);
+
+    // トピックを変更するリクエストを投げる
+    void sendChangeTopicRequest(const wxString& channel, const wxString& topic,
+        const wxString& basic);
+
     // ストリームを取得するリクエストを送信する
     void sendGetStreamRequest(const wxString& userName, const wxString& basic);
 
@@ -77,6 +85,12 @@ private:
 
     // ストリーム取得用APIを叩く
     void sendStreamApi(const wxString& userName);
+
+    // ユーザ情報変更APIを叩く
+    void sendPutUserApi(const wxString& userName);
+
+    // チャンネル情報変更APIを叩く
+    void sendPutChannelApi(const wxString& channel);
 
 };
 

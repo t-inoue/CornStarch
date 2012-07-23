@@ -46,6 +46,10 @@ protected:
     // stream時のデフォルトリクエストヘッダ
     void sendStreamDefault(const wxString& basic);
 
+    // PUT時にキー名をvalueを指定するときのリクエストヘッダ
+    void sendPutParticular(const wxString& key, const wxString& value, 
+        const wxString& basic);
+
     // レスポンスがHTTPレスポンスとして完結しているかを判断する
     bool isCorrectHttpResponse(void) const;
 

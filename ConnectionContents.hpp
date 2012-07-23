@@ -130,6 +130,12 @@ public:
     // チャンネル表示を行う際
     void onUpdateChannelView(void);
 
+    // ニックネームの変更を行う際
+    void onNickChange(const wxString& nick);
+
+    // トピックの変更を行う際
+    void onChangeTopic(const wxString& topic);
+
     /////////////////////////////////////////
 
     // 認証が成功した場合

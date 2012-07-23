@@ -35,6 +35,12 @@ public:
 	// メンバーの情報を取得するタスク(別スレッド)を開始する
 	virtual void startGetMemberInfoTask(const IUser* user,const wxString& name)=0;
 
+    // ニックネームを変更するタスク(別スレッド)を開始する
+    virtual void startNickChangeTask(const IUser* user, const wxString& nick) = 0;
+
+    // トピックを変更するタスク(別スレッド)を開始する
+    virtual void startChangeTopicTask(const IUser* user, const wxString& topic) = 0;
+
 	// ユーザが正規の人かどうか判断するタスク(別スレッド)を開始する
 	virtual void startAuthTask(const IUser* user)=0;
 

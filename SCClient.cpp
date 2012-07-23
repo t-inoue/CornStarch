@@ -83,6 +83,22 @@ void CSCClient::sendGetMemInfoRequest(const wxString& userName, const wxString& 
     sendGetDefault(basic);
 }
 
+// ニックネームを変更するリクエストを投げる
+void CSCClient::sendChangeNickRequest(const wxString& name, const wxString& nick, 
+    const wxString& basic)
+{
+    sendPutUserApi(name);
+    sendPutParticular("nick", nick, basic);
+}
+
+// トピックを変更するリクエストを投げる
+void CSCClient::sendChangeTopicRequest(const wxString& channel, const wxString& topic,
+    const wxString& basic)
+{
+    sendPutChannelApi(channel);
+    sendPutParticular("topic%5Bbody%5D", topic, basic);
+}
+
 // ストリームを取得するリクエストを送る
 void CSCClient::sendGetStreamRequest(const wxString& userName, const wxString& basic)
 {
@@ -230,4 +246,16 @@ void CSCClient::sendGetMemInfoApi(const wxString& userName)
 void CSCClient::sendStreamApi(const wxString& userName)
 {
     sendRequestMethod("GET", "/users/" + userName + "/stream");
+}
+
+// ユーザ情報変更APIを叩く
+void CSCClient::sendPutUserApi(const wxString& userName)
+{
+    sendRequestMethod("PUT", "/users/" + userName);
+}
+
+// チャンネル情報変更APIを叩く
+void CSCClient::sendPutChannelApi(const wxString& channel)
+{
+    sendRequestMethod("PUT", "/channels/" + channel);
 }

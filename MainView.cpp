@@ -142,6 +142,18 @@ int CMainView::showModalAuthCancelDlg(void)
     return m_dialog->showModalAuthCancelDlg();
 }
 
+// ニックネーム変更ダイアログを表示
+int CMainView::showModalNickDlg(void)
+{
+    return m_dialog->showModalNickDlg();
+}
+
+// トピック変更ダイアログを表示
+int CMainView::showModalTopicDlg(void)
+{
+    return m_dialog->showModalTopicDlg();
+}
+
 // 認証中止ダイアログを消す
 void CMainView::clearAuthCancelDlg(void)
 {
@@ -174,6 +186,18 @@ wxString CMainView::getDlgChannelName(void) const
 wxString CMainView::getDlgHostName(void) const
 {
     return m_dialog->getHostName();
+}
+
+// ニックネームを取得
+wxString CMainView::getNickName(void) const
+{
+    return m_dialog->getNickName();
+}
+
+// トピック名を取得
+wxString CMainView::getTopic(void) const
+{
+    return m_dialog->getTopic();
 }
 
 

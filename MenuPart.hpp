@@ -7,13 +7,14 @@ public:
     // メニュー番号
     enum MENU{
         MENU_FILE_QUIT = 100,
-        MENU_HELP_ABOUT,
+        MENU_FILE_LOGOUT,
         MENU_SERVER_SC_ADD,
         MENU_SERVER_IRC_ADD,
-        MENU_FILE_LOGOUT,
+        MENU_SERVER_NICK_CHANGE,
         MENU_UPDATE,
         MENU_CHANNEL_JOIN,
         MENU_CHANNEL_PART,
+        MENU_CHANNEL_TOPIC_CHANGE,
     };
 
 protected:
