@@ -39,10 +39,6 @@ void CMainWindow::init(void)
 	// ログ保持部の初期化
 	m_logHolder = new CMainLogHolder();
 
-//	// StarChatコンテンツの初期化
-//	m_contents = new CSCConnectionContents();//new CornStarch::IRC::CIRCConnectionContents();//
-//	m_contents->init(GetEventHandler());
-
 	// イベントハンドラの初期化
 	initHandle();
 }
@@ -68,10 +64,6 @@ void CMainWindow::initHandle(void)
 	// エンターキー押下時
 	this->Connect(m_view->getPostPaneID(), wxEVT_COMMAND_TEXT_ENTER,
 			wxCommandEventHandler(CMainWindow::onEnter));
-
-	// チャンネルリスト選択時
-	this->Connect(m_view->getCnPaneID(), wxEVT_COMMAND_LISTBOX_SELECTED,
-			wxCommandEventHandler(CMainWindow::onChannel));
 }
 
 // Modelがあれば画面を更新する
@@ -278,26 +270,28 @@ void CMainWindow::onEnter(wxCommandEvent& event)
 }
 
 // チャンネル選択時
-void CMainWindow::onChannel(wxCommandEvent& event)
+void CMainWindow::onChannelSelected(CChannelSelectEvent& event)
 {
-	// サーバーIDとチャンネル名をテキストから取得。
-	wxString text = event.GetString();
-	string textString(text.c_str());
-	vector<string> texts = CornStarch::CStringUtility::split(textString, ":");
-	string serverIdString = texts[0];
-	string channel = texts[1];
-	int id = atoi(serverIdString.c_str());
-	m_currentServerId = id;
+    // 選択したのがサーバ名だったとき
+    if (event.isServerSelected()){
+        return;
+    }
 
+	// サーバーIDとチャンネル名を取得
+    wxString channel = event.getString();
+    m_currentServerId = event.getServerId();
+
+    // 選択したコンテンツを取得
 	CConnectionContents* contents = getConnectionContents(m_currentServerId);
-	// コンテンツの更新
+
+    // コンテンツの更新
 	contents->selectChannel(channel);
 
 	// 画面表示を更新
 	wxString ch = contents->getCurrentChannel();
 	displayTitle(ch, contents->getTopic(ch));
-	updateMessageView(id, contents->getCurrentChannel());
-	updateMemberView(id, contents->getCurrentChannel());
+	updateMessageView(m_currentServerId, contents->getCurrentChannel());
+	updateMemberView(m_currentServerId, contents->getCurrentChannel());
 }
 
 //////////////////////////////////////////////////////////////////////

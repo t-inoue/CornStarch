@@ -51,9 +51,6 @@ public:
     // チャンネルペインのIDを取得する
     wxWindowID getCnPaneID(void) const;
 
-    // チャンネルペインで選ばれている項目の名前を返す
-    wxString getSelectedChannel(void) const;
-
 private:
 
     // 画面分割を行う

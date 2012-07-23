@@ -54,12 +54,6 @@ wxWindowID CMainView::getCnPaneID(void) const
     return m_panel->getCnPaneID();
 }
 
-// 選択されているチャンネル名を取得する
-wxString CMainView::getSelectedChannel(void) const
-{
-    return m_panel->getSelectedChannel();
-}
-
 // 指定したチャンネルを選択済み項目にする
 void CMainView::setSelectedChannel(const wxString& channelName)
 {

@@ -3,10 +3,17 @@
 #include <vector>
 #include "ConnectionContents.hpp"
 #include "header.hpp"
-#include "wx/listbox.h"
+#include "wx/treectrl.h"
+#include "ChannelSelectEvent.hpp"
+#include "TreeServerItem.hpp"
 
-class CPaneCn : public wxListBox
+// イベントの宣言
+wxDECLARE_EVENT(myEVT_SELECt_TREE_NODE, CChannelSelectEvent);
+
+class CPaneCn : public wxTreeCtrl
 {
+    // wxWindowイベントを処理させたいクラスに利用するマクロ
+    DECLARE_EVENT_TABLE()
 
 public:
     CPaneCn(void);
@@ -21,5 +28,8 @@ public:
     // 所属チャンネル一覧を表示
     void displayChannels(const vector<CConnectionContents*>& connections);
 
-};
+private:
+    // チャンネルが選択された際のイベント処理
+    void onChannelSelected(wxTreeEvent& event);
 
+};

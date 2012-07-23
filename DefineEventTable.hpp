@@ -14,6 +14,7 @@ typedef void (wxEvtHandler::*GetChStreamEvtFunc)(CChannelStreamEvent&);
 typedef void (wxEvtHandler::*GetChPartStreamEvtFunc)(CPartStreamEvent&);
 typedef void (wxEvtHandler::*GetChJoinStreamEvtFunc)(CJoinStreamEvent&);
 typedef void (wxEvtHandler::*JoinEvtFunc)(CJoinEvent&);
+typedef void (wxEvtHandler::*SelectEvtFunc)(CChannelSelectEvent&);
 
 // define
 wxDEFINE_EVENT(myEVT_THREAD_GET_PING, CAuthEvent);
@@ -29,6 +30,7 @@ wxDEFINE_EVENT(myEVT_THREAD_STREAM_USER_UPDATE, CUserStreamEvent);
 wxDEFINE_EVENT(myEVT_THREAD_PUT_JOIN, CJoinEvent);
 wxDEFINE_EVENT(myEVT_THREAD_DELETE_PART, CPartEvent);
 wxDEFINE_EVENT(myEVT_THREAD_POST_MESSAGE, wxThreadEvent);
+wxDEFINE_EVENT(myEVT_SELECt_TREE_NODE, CChannelSelectEvent);
 
 // イベントハンドラ
 #define MyEventHandler(func) wxEVENT_HANDLER_CAST(MyEventFunction, func)
@@ -43,6 +45,7 @@ wxDEFINE_EVENT(myEVT_THREAD_POST_MESSAGE, wxThreadEvent);
 #define getChJoinStreamEventHandler(func) wxEVENT_HANDLER_CAST(GetChJoinStreamEvtFunc, func)
 #define getChPartStreamEventHandler(func) wxEVENT_HANDLER_CAST(GetChPartStreamEvtFunc, func)
 #define joinEventHandler(func) wxEVENT_HANDLER_CAST(JoinEvtFunc, func)
+#define selectEventHandler(func) wxEVENT_HANDLER_CAST(SelectEvtFunc, func)
 
 #define EVT_DEL_PART(evt, id, func) wx__DECLARE_EVT1(evt, id, delPartEventHandler(func))
 #define EVT_GET_AUTH(evt, id, func) wx__DECLARE_EVT1(evt, id, MyEventHandler(func))
@@ -56,6 +59,7 @@ wxDEFINE_EVENT(myEVT_THREAD_POST_MESSAGE, wxThreadEvent);
 #define EVT_GET_JOIN_STREAM(evt, id, func) wx__DECLARE_EVT1(evt, id, getChJoinStreamEventHandler(func))
 #define EVT_GET_PART_STREAM(evt, id, func) wx__DECLARE_EVT1(evt, id, getChPartStreamEventHandler(func))
 #define EVT_PUT_JOIN(evt, id, func) wx__DECLARE_EVT1(evt, id, joinEventHandler(func))
+#define EVT_SELECT_TREE_NODE(evt, id, func) wx__DECLARE_EVT1(evt, id, selectEventHandler(func))
 
 // イベントテーブルの登録
 BEGIN_EVENT_TABLE(CMainWindow, wxFrame)
@@ -83,5 +87,16 @@ BEGIN_EVENT_TABLE(CMainWindow, wxFrame)
     EVT_GET_PART_STREAM(myEVT_THREAD_STREAM_CH_PART, wxID_ANY, CMainWindow::onPartStream)
     EVT_PUT_JOIN(myEVT_THREAD_PUT_JOIN, wxID_ANY, CMainWindow::onJoinChannel)
         
+    // チャンネルツリーの項目を選択
+    EVT_SELECT_TREE_NODE(myEVT_SELECt_TREE_NODE, wxID_ANY, CMainWindow::onChannelSelected)
+
 END_EVENT_TABLE();
 
+
+// イベントテーブルの登録
+BEGIN_EVENT_TABLE(CPaneCn, wxTreeCtrl)
+
+    // チャンネルツリーの項目を選択
+    EVT_TREE_SEL_CHANGED(wxID_ANY, CPaneCn::onChannelSelected)
+
+END_EVENT_TABLE();

@@ -1,4 +1,4 @@
-
+﻿
 #include "SCConnectionContents.h"
 #include "SCConnection.hpp"
 #include "SCUser.hpp"
