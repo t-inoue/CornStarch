@@ -1,4 +1,4 @@
-#include "PartLog.hpp"
+ï»¿#include "PartLog.hpp"
 
 using namespace std;
 
@@ -16,7 +16,7 @@ CPartLog::~CPartLog(void)
 //////////////////////////////////////////////////////////////////////
 
 
-// ‰Šú‰»‚ğs‚¤
+// åˆæœŸåŒ–ã‚’è¡Œã†
 void CPartLog::init(const CSubscribeData& sub, const wxString& nick)
 {
     if (m_sub == NULL){
@@ -25,23 +25,23 @@ void CPartLog::init(const CSubscribeData& sub, const wxString& nick)
     *m_sub = sub;
     m_nick = nick;
 
-    // ƒ^ƒCƒv‚Ìw’è
+    // ã‚¿ã‚¤ãƒ—ã®æŒ‡å®š
     m_type = LOG_PART;
 }
 
-// ƒƒO‚ğæ“¾‚·‚é
+// ãƒ­ã‚°ã‚’å–å¾—ã™ã‚‹
 CSubscribeData CPartLog::getLog(void) const
 {
     return *m_sub;
 }
 
-// ƒjƒbƒNƒl[ƒ€‚ğæ“¾‚·‚é
+// ãƒ‹ãƒƒã‚¯ãƒãƒ¼ãƒ ã‚’å–å¾—ã™ã‚‹
 wxString CPartLog::getNickName(void) const
 {
     return m_nick;
 }
 
-// –{–¼‚É‘Î‰‚·‚éƒjƒbƒNƒl[ƒ€‚ª–¢’m‚©
+// æœ¬åã«å¯¾å¿œã™ã‚‹ãƒ‹ãƒƒã‚¯ãƒãƒ¼ãƒ ãŒæœªçŸ¥ã‹
 bool CPartLog::isUnknownNick(const wxString& name) const
 {
     if (m_nick == ""){
@@ -50,7 +50,7 @@ bool CPartLog::isUnknownNick(const wxString& name) const
     return false;
 }
 
-// ƒjƒbƒNƒl[ƒ€‚ğXV‚·‚é
+// ãƒ‹ãƒƒã‚¯ãƒãƒ¼ãƒ ã‚’æ›´æ–°ã™ã‚‹
 void CPartLog::updateNick(const wxString& nick)
 {
     m_nick = nick;

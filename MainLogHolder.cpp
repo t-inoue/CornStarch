@@ -1,4 +1,4 @@
-#include "MainLogHolder.hpp"
+ï»¿#include "MainLogHolder.hpp"
 
 using namespace std;
 
@@ -19,69 +19,69 @@ CMainLogHolder::~CMainLogHolder(void)
 //////////////////////////////////////////////////////////////////////
 
 
-// ƒƒOˆê——‚ğæ“¾‚·‚é
+// ãƒ­ã‚°ä¸€è¦§ã‚’å–å¾—ã™ã‚‹
 vector<CChatLog*> CMainLogHolder::getLogs(void) const
 {
     return m_logs;
 }
 
-// ƒƒbƒZ[ƒWƒƒO‚ğ’Ç‰Á‚·‚é
+// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒ­ã‚°ã‚’è¿½åŠ ã™ã‚‹
 void CMainLogHolder::pushMessageLog(const CMessageData& message, const wxString& nick)
 {
     CMessageLog* log = new CMessageLog();
     log->init(message, nick);
 
-    // ƒƒO‚Ì’Ç‰Á
+    // ãƒ­ã‚°ã®è¿½åŠ 
     pushLog(log);
 }
 
-// ƒ`ƒƒƒ“ƒlƒ‹Q‰ÁƒƒO‚ğ’Ç‰Á‚·‚é
+// ãƒãƒ£ãƒ³ãƒãƒ«å‚åŠ ãƒ­ã‚°ã‚’è¿½åŠ ã™ã‚‹
 void CMainLogHolder::pushJoinLog(const CSubscribeData& sub, const wxString& nick)
 {
     CJoinLog* log = new CJoinLog();
     log->init(sub, nick);
 
-    // ƒƒO‚Ì’Ç‰Á
+    // ãƒ­ã‚°ã®è¿½åŠ 
     pushLog(log);
 }
 
-// ƒ`ƒƒƒ“ƒlƒ‹‘ŞoƒƒO‚ğ’Ç‰Á‚·‚é
+// ãƒãƒ£ãƒ³ãƒãƒ«é€€å‡ºãƒ­ã‚°ã‚’è¿½åŠ ã™ã‚‹
 void CMainLogHolder::pushPartLog(const CSubscribeData& sub, const wxString& nick)
 {
     CPartLog* log = new CPartLog();
     log->init(sub, nick);
 
-    // ƒƒO‚Ì’Ç‰Á
+    // ãƒ­ã‚°ã®è¿½åŠ 
     pushLog(log);
 }
 
-// ƒjƒbƒNƒl[ƒ€•ÏXƒƒO‚ğ’Ç‰Á‚·‚é
+// ãƒ‹ãƒƒã‚¯ãƒãƒ¼ãƒ å¤‰æ›´ãƒ­ã‚°ã‚’è¿½åŠ ã™ã‚‹
 void CMainLogHolder::pushChangeNickLog(const CMemberData& member)
 {
     CMemberLog* log = new CMemberLog();
     log->init(member);
 
-    // ƒƒO‚Ì’Ç‰Á
+    // ãƒ­ã‚°ã®è¿½åŠ 
     pushLog(log);
 }
 
-// ƒgƒsƒbƒN•ÏXƒƒO‚ğ’Ç‰Á‚·‚é
+// ãƒˆãƒ”ãƒƒã‚¯å¤‰æ›´ãƒ­ã‚°ã‚’è¿½åŠ ã™ã‚‹
 void CMainLogHolder::pushTopicLog(const CChannelData& channel)
 {
     CTopicLog* log = new CTopicLog();
     log->init(channel);
 
-    // ƒƒO‚Ì’Ç‰Á
+    // ãƒ­ã‚°ã®è¿½åŠ 
     pushLog(log);
 }
 
-// ƒjƒbƒNƒl[ƒ€‚ÌXV‚ğs‚¤
+// ãƒ‹ãƒƒã‚¯ãƒãƒ¼ãƒ ã®æ›´æ–°ã‚’è¡Œã†
 void CMainLogHolder::onUpdateNickName(const CMemberData& member)
 {
     vector<CChatLog*>::iterator it = m_logs.begin();
     for (; it != m_logs.end(); it++){
 
-        // ƒjƒbƒNƒl[ƒ€‚ª–¢’m‚ÌAXV‚ğs‚¤
+        // ãƒ‹ãƒƒã‚¯ãƒãƒ¼ãƒ ãŒæœªçŸ¥ã®æ™‚ã€æ›´æ–°ã‚’è¡Œã†
         if ((*it)->isUnknownNick(member.m_name)){
             (*it)->updateNick(member.m_nick);
         }
@@ -92,13 +92,13 @@ void CMainLogHolder::onUpdateNickName(const CMemberData& member)
 //////////////////////////////////////////////////////////////////////
 
 
-// ƒƒO‚ğ’Ç‰Á‚·‚é
+// ãƒ­ã‚°ã‚’è¿½åŠ ã™ã‚‹
 void CMainLogHolder::pushLog(CChatLog* log)
 {
-    // ƒƒO‚Ì’Ç‰Á
+    // ãƒ­ã‚°ã®è¿½åŠ 
     m_logs.push_back(log);
 
-    // ‘½‚·‚¬‚½‚çæ“ªíœ
+    // å¤šã™ããŸã‚‰å…ˆé ­å‰Šé™¤
     if (m_logs.size() > MAX_LENGTH){
         vector<CChatLog*>::iterator it = m_logs.begin();
         m_logs.erase(it);
