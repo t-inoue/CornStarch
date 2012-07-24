@@ -67,7 +67,8 @@ string CHttpClient::getResponceBody(const string& str) const
 // POST時のデフォルトリクエストヘッダ
 void CHttpClient::sendPostDefault(const wxString& str, const wxString& basic)
 {
-    sendCommonHeader((int)str.size(), basic);
+    string s(str.mb_str(wxConvUTF8));
+    sendCommonHeader((int)s.size(), basic);
     send("");
     send("body=" + str);
     sendLF();

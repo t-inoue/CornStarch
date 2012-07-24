@@ -48,6 +48,7 @@ void CMainWindow::init(void)
     m_serialize = new CServiceSerializer();
     m_serialize->init();
     m_serialize->loadService(GetEventHandler(), m_contents);
+    m_currentServiceId = 1000;
 }
 
 //////////////////////////////////////////////////////////////////////
