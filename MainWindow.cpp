@@ -8,16 +8,19 @@ using namespace std;
 
 //////////////////////////////////////////////////////////////////////
 
-CMainWindow::CMainWindow(void) :
-		m_view(NULL), m_logHolder(NULL), m_contents(NULL), m_serverIdLog(0), m_currentServiceId(
-				0)
+CMainWindow::CMainWindow(void) : m_view(NULL), m_logHolder(NULL), m_contents(NULL),
+    m_serialize(NULL), m_serverIdLog(0), m_currentServiceId(0)
 {
 }
 
 CMainWindow::~CMainWindow(void)
 {
+    // ファイルに保存
+    m_serialize->saveService(m_contents);
+
 	delete m_view;
 	delete m_logHolder;
+    delete m_serialize;
 
 	int size = (int) m_contents.size();
 	for (int i = 0; i < size; i++){
@@ -38,12 +41,13 @@ void CMainWindow::init(void)
 	// ログ保持部の初期化
 	m_logHolder = new CMainLogHolder();
 
+    // イベントハンドラの初期化
+    initHandle();
+
     // サービスのシリアライズ
     m_serialize = new CServiceSerializer();
     m_serialize->init();
-
-    // イベントハンドラの初期化
-    initHandle();
+    m_serialize->loadService(GetEventHandler(), m_contents);
 }
 
 //////////////////////////////////////////////////////////////////////
