@@ -2,7 +2,7 @@
 
 using namespace std;
 
-const wxString CHttpClient::HOST_NAME = "sample";
+const wxString CHttpClient::HOST_NAME = "example";
 const wxString CHttpClient::HTTP_VER = "HTTP/1.1";
 const wxString CHttpClient::HTTP_PORT = "80";
 

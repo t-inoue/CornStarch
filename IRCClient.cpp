@@ -26,7 +26,7 @@ void CIRCClient::init(int connectionId)
 	m_connectionId = connectionId;
 
 	m_port = "6667";
-	m_host = "sample";
+	m_host = "example";
 
 }
 void CIRCClient::start(wxEvtHandler* handler, wxString userName,
