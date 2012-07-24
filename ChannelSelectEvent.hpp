@@ -1,41 +1,41 @@
-#pragma once
+ï»¿#pragma once
 #include "wx/treebase.h"
 
-// ƒ`ƒƒƒ“ƒlƒ‹ƒcƒŠ[ƒyƒCƒ“‚Å‘I‘ğ‚É”­¶‚·‚éƒCƒxƒ“ƒg
+// ãƒãƒ£ãƒ³ãƒãƒ«ãƒ„ãƒªãƒ¼ãƒšã‚¤ãƒ³ã§é¸æŠæ™‚ã«ç™ºç”Ÿã™ã‚‹ã‚¤ãƒ™ãƒ³ãƒˆ
 class CChannelSelectEvent : public wxTreeEvent
 {
 private:
-    wxString m_text; // €–Ú–¼
-    wxString m_server; // ƒT[ƒo–¼
-    int m_serverId; // ƒT[ƒoID
-    bool m_isServer; // ƒT[ƒo–¼‚©”Û‚©
+    wxString m_text; // é …ç›®å
+    wxString m_server; // ã‚µãƒ¼ãƒå
+    int m_serverId; // ã‚µãƒ¼ãƒID
+    bool m_isServer; // ã‚µãƒ¼ãƒåã‹å¦ã‹
 
 public:
     CChannelSelectEvent(void);
     ~CChannelSelectEvent(void);
 
-    // €–Ú–¼‚ğƒZƒbƒg
+    // é …ç›®åã‚’ã‚»ãƒƒãƒˆ
     void setText(const wxString& text);
 
-    // ƒT[ƒo–¼‚ğƒZƒbƒg
+    // ã‚µãƒ¼ãƒåã‚’ã‚»ãƒƒãƒˆ
     void setServer(const wxString& server);
 
-    // ƒT[ƒoID‚ğƒZƒbƒg
+    // ã‚µãƒ¼ãƒIDã‚’ã‚»ãƒƒãƒˆ
     void setServerId(int server);
 
-    // ƒT[ƒo–¼‚©”Û‚©‚ğƒZƒbƒg
+    // ã‚µãƒ¼ãƒåã‹å¦ã‹ã‚’ã‚»ãƒƒãƒˆ
     void setServerOrNot(bool isServer);
 
-    // €–Ú–¼‚ğæ“¾
+    // é …ç›®åã‚’å–å¾—
     wxString getString(void) const;
 
-    // ƒT[ƒo–¼‚ğæ“¾
+    // ã‚µãƒ¼ãƒåã‚’å–å¾—
     wxString getServer(void) const;
 
-    // ƒT[ƒoID‚ğæ“¾
+    // ã‚µãƒ¼ãƒIDã‚’å–å¾—
     int getServerId(void) const;
 
-    // ƒT[ƒo‚ğ‘I‘ğ‚µ‚½‚©”Û‚©‚ğæ“¾
+    // ã‚µãƒ¼ãƒã‚’é¸æŠã—ãŸã‹å¦ã‹ã‚’å–å¾—
     bool isServerSelected(void) const;
 };
 

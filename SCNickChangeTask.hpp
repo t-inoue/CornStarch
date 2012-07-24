@@ -1,27 +1,27 @@
-#pragma once
+ï»¿#pragma once
 #include "SCTask.hpp"
 
-// ƒjƒbƒNƒl[ƒ€•ÏX‚ğs‚¤‚½‚ß‚Ìƒ^ƒXƒN
+// ãƒ‹ãƒƒã‚¯ãƒãƒ¼ãƒ å¤‰æ›´ã‚’è¡Œã†ãŸã‚ã®ã‚¿ã‚¹ã‚¯
 class CSCNickChangeTask : public CSCTask
 {
 private:
-    wxString m_nick; // ƒjƒbƒNƒl[ƒ€
-    wxString m_name; // –{–¼
+    wxString m_nick; // ãƒ‹ãƒƒã‚¯ãƒãƒ¼ãƒ 
+    wxString m_name; // æœ¬å
 
 public:
     CSCNickChangeTask(void);
     ~CSCNickChangeTask(void);
 
-    // ‰Šú‰»‚ğs‚¤
+    // åˆæœŸåŒ–ã‚’è¡Œã†
     void init(int connectionId, wxEvtHandler* handler, const wxString& nick, 
         const wxString& name, const wxString& basic);
 
 private:
 
-    // StarChat‚É‘Î‚µ‚ÄƒŠƒNƒGƒXƒg‚ğ‘—M‚·‚é
+    // StarChatã«å¯¾ã—ã¦ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’é€ä¿¡ã™ã‚‹
     void sendRequestToSC(CSCClient* client);
 
-    // HTTPƒŒƒXƒ|ƒ“ƒX‚ğ‰ğÍ‚µ‚ÄƒCƒxƒ“ƒg‚ğì¬‚·‚é
+    // HTTPãƒ¬ã‚¹ãƒãƒ³ã‚¹ã‚’è§£æã—ã¦ã‚¤ãƒ™ãƒ³ãƒˆã‚’ä½œæˆã™ã‚‹
     CConnectionEventBase* parseHttpResponse(const std::string& responseBody);
 };
 

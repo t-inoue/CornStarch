@@ -1,4 +1,4 @@
-#include "NickChangeDialog.hpp"
+ï»¿#include "NickChangeDialog.hpp"
 
 
 CNickChangeDialog::CNickChangeDialog(void) : m_nickText(NULL)
@@ -14,33 +14,33 @@ CNickChangeDialog::~CNickChangeDialog(void)
 //////////////////////////////////////////////////////////////////////
 
 
-// ‰Šú‰»‚ğs‚¤
+// åˆæœŸåŒ–ã‚’è¡Œã†
 void CNickChangeDialog::init(wxWindow* parent, const wxString& title)
 {
     wxDialog::Create(parent, wxID_ANY, title);
 
-    // ©g‚É“\‚è•t‚¯‚éƒpƒlƒ‹‚ğì¬
+    // è‡ªèº«ã«è²¼ã‚Šä»˜ã‘ã‚‹ãƒ‘ãƒãƒ«ã‚’ä½œæˆ
     wxPanel* panel = new wxPanel(this, wxID_ANY);
 
-    // ƒpƒlƒ‹ã‚ÌƒeƒLƒXƒgƒ{ƒbƒNƒX
+    // ãƒ‘ãƒãƒ«ä¸Šã®ãƒ†ã‚­ã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹
     m_nickText = new wxTextCtrl(
         panel, wxID_ANY, "", wxPoint(100, 50), wxSize(100, 30));
 
-    // ƒpƒlƒ‹ã‚Ì•¶š
+    // ãƒ‘ãƒãƒ«ä¸Šã®æ–‡å­—
     wxStaticText* sChannel = new wxStaticText(
-        panel, wxID_ANY, "ƒjƒbƒNƒl[ƒ€", wxPoint(10, 50));
+        panel, wxID_ANY, "ãƒ‹ãƒƒã‚¯ãƒãƒ¼ãƒ ", wxPoint(10, 50));
 
-    // ƒpƒlƒ‹ã‚Ìƒ{ƒ^ƒ“
+    // ãƒ‘ãƒãƒ«ä¸Šã®ãƒœã‚¿ãƒ³
     wxButton* ok = new wxButton(panel, wxID_OK, "OK",  wxPoint(250, 150));
 
-    // Esc‚ÅÁ‚µ‚½‚Ì‹““®
+    // Escã§æ¶ˆã—ãŸæ™‚ã®æŒ™å‹•
     SetEscapeId(wxID_CANCEL);
 
-    // ƒGƒ“ƒ^[ƒL[‰Ÿ‰º‚Ì‹““®
+    // ã‚¨ãƒ³ã‚¿ãƒ¼ã‚­ãƒ¼æŠ¼ä¸‹æ™‚ã®æŒ™å‹•
     SetDefaultItem(ok);
 }
 
-// ƒ`ƒƒƒ“ƒlƒ‹–¼‚ğæ“¾‚·‚é
+// ãƒãƒ£ãƒ³ãƒãƒ«åã‚’å–å¾—ã™ã‚‹
 wxString CNickChangeDialog::getNickName(void) const
 {
     if (m_nickText != NULL){

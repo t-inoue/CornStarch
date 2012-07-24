@@ -1,20 +1,20 @@
-#pragma once
+ï»¿#pragma once
 #include "wx/treebase.h"
 
-// ƒcƒŠ[‚ÌƒT[ƒoî•ñ‚É“ü‚ê‚éƒf[ƒ^
+// ãƒ„ãƒªãƒ¼ã®ã‚µãƒ¼ãƒæƒ…å ±ã«å…¥ã‚Œã‚‹ãƒ‡ãƒ¼ã‚¿
 class CTreeServerItem : public wxTreeItemData
 {
 private:
-    int m_serverId; // ƒT[ƒoID
+    int m_serverId; // ã‚µãƒ¼ãƒID
 
 public:
     CTreeServerItem(void);
     ~CTreeServerItem(void);
 
-    // ƒT[ƒoID‚ğƒZƒbƒg
+    // ã‚µãƒ¼ãƒIDã‚’ã‚»ãƒƒãƒˆ
     void setServerId(int id);
 
-    // ƒT[ƒoID‚ğæ“¾
+    // ã‚µãƒ¼ãƒIDã‚’å–å¾—
     int getServerId(void) const;
 };
 

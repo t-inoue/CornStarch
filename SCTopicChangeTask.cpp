@@ -1,4 +1,4 @@
-#include "SCTopicChangeTask.hpp"
+ï»¿#include "SCTopicChangeTask.hpp"
 
 using namespace std;
 
@@ -15,7 +15,7 @@ CSCTopicChangeTask::~CSCTopicChangeTask(void)
 //////////////////////////////////////////////////////////////////////
 
 
-// ‰Šú‰»‚ğs‚¤
+// åˆæœŸåŒ–ã‚’è¡Œã†
 void CSCTopicChangeTask::init(int connectionId, wxEvtHandler* handler, const wxString& channel,
     const wxString& topic, const wxString& basic)
 {
@@ -28,14 +28,14 @@ void CSCTopicChangeTask::init(int connectionId, wxEvtHandler* handler, const wxS
 //////////////////////////////////////////////////////////////////////
 
 
-// StarChat‚É‘Î‚µ‚ÄƒŠƒNƒGƒXƒg‚ğ‘—M‚·‚é
+// StarChatã«å¯¾ã—ã¦ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’é€ä¿¡ã™ã‚‹
 void CSCTopicChangeTask::sendRequestToSC(CSCClient* client)
 {
-    // GETƒŠƒNƒGƒXƒg‚Ì‘—M
+    // GETãƒªã‚¯ã‚¨ã‚¹ãƒˆã®é€ä¿¡
     client->sendChangeTopicRequest(m_channel, m_topic, m_basic);
 }
 
-// HTTPƒŒƒXƒ|ƒ“ƒX‚ğ‰ğÍ‚µ‚ÄƒCƒxƒ“ƒg‚ğì¬‚·‚é
+// HTTPãƒ¬ã‚¹ãƒãƒ³ã‚¹ã‚’è§£æã—ã¦ã‚¤ãƒ™ãƒ³ãƒˆã‚’ä½œæˆã™ã‚‹
 CConnectionEventBase* CSCTopicChangeTask::parseHttpResponse(const string& responseBody)
 {
     return NULL;

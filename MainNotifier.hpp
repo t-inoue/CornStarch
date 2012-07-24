@@ -1,21 +1,21 @@
-#pragma once
+ï»¿#pragma once
 #include "header.hpp"
 #include <wx/taskbar.h>
 
-// ’Ê’m‚ğs‚¤
+// é€šçŸ¥ã‚’è¡Œã†
 class CMainNotifier
 {
 private:
-    wxTaskBarIcon* m_taskbar; // ƒ^ƒXƒNƒo[
+    wxTaskBarIcon* m_taskbar; // ã‚¿ã‚¹ã‚¯ãƒãƒ¼
 
 public:
     CMainNotifier(void);
     ~CMainNotifier(void);
 
-    // ‰Šú‰»‚ğs‚¤
+    // åˆæœŸåŒ–ã‚’è¡Œã†
     void init(void);
 
-    // ’Ê’m‚ğs‚¤
+    // é€šçŸ¥ã‚’è¡Œã†
     void messageNotify(const wxString& title, const wxString& message);
 };
 

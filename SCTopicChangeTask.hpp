@@ -1,27 +1,27 @@
-#pragma once
+ï»¿#pragma once
 #include "SCTask.hpp"
 
-// ƒgƒsƒbƒN‚ğ•ÏX‚·‚é‚½‚ß‚Ìƒ^ƒXƒN
+// ãƒˆãƒ”ãƒƒã‚¯ã‚’å¤‰æ›´ã™ã‚‹ãŸã‚ã®ã‚¿ã‚¹ã‚¯
 class CSCTopicChangeTask : public CSCTask
 {
 private:
-    wxString m_channel; // ƒ`ƒƒƒ“ƒlƒ‹–¼
-    wxString m_topic; // VƒgƒsƒbƒN
+    wxString m_channel; // ãƒãƒ£ãƒ³ãƒãƒ«å
+    wxString m_topic; // æ–°ãƒˆãƒ”ãƒƒã‚¯
 
 public:
     CSCTopicChangeTask(void);
     ~CSCTopicChangeTask(void);
 
-    // ‰Šú‰»‚ğs‚¤
+    // åˆæœŸåŒ–ã‚’è¡Œã†
     void init(int connectionId, wxEvtHandler* handler, const wxString& channel,
         const wxString& topic, const wxString& basic);
 
 private:
 
-    // StarChat‚É‘Î‚µ‚ÄƒŠƒNƒGƒXƒg‚ğ‘—M‚·‚é
+    // StarChatã«å¯¾ã—ã¦ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’é€ä¿¡ã™ã‚‹
     void sendRequestToSC(CSCClient* client);
 
-    // HTTPƒŒƒXƒ|ƒ“ƒX‚ğ‰ğÍ‚µ‚ÄƒCƒxƒ“ƒg‚ğì¬‚·‚é
+    // HTTPãƒ¬ã‚¹ãƒãƒ³ã‚¹ã‚’è§£æã—ã¦ã‚¤ãƒ™ãƒ³ãƒˆã‚’ä½œæˆã™ã‚‹
     CConnectionEventBase* parseHttpResponse(const std::string& responseBody);
 };
 

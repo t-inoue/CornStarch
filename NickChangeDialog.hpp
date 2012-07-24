@@ -1,19 +1,19 @@
-#pragma once
+ï»¿#pragma once
 #include "header.hpp"
 
-// ƒjƒbƒNƒl[ƒ€•ÏX—pƒ_ƒCƒAƒƒO
+// ãƒ‹ãƒƒã‚¯ãƒãƒ¼ãƒ å¤‰æ›´ç”¨ãƒ€ã‚¤ã‚¢ãƒ­ã‚°
 class CNickChangeDialog : public wxDialog
 {
 private:
-    wxTextCtrl* m_nickText; // ƒjƒbƒNƒl[ƒ€“ü—Í—“
+    wxTextCtrl* m_nickText; // ãƒ‹ãƒƒã‚¯ãƒãƒ¼ãƒ å…¥åŠ›æ¬„
 public:
     CNickChangeDialog(void);
     ~CNickChangeDialog(void);
 
-    // ‰Šú‰»‚ğs‚¤
+    // åˆæœŸåŒ–ã‚’è¡Œã†
     void init(wxWindow* parent, const wxString& title);
 
-    // ƒjƒbƒNƒl[ƒ€‚ğæ“¾‚·‚é
+    // ãƒ‹ãƒƒã‚¯ãƒãƒ¼ãƒ ã‚’å–å¾—ã™ã‚‹
     wxString getNickName(void) const;
 };
 

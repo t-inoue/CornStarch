@@ -1,4 +1,4 @@
-#include "SCNickChangeTask.hpp"
+ï»¿#include "SCNickChangeTask.hpp"
 
 using namespace std;
 
@@ -15,7 +15,7 @@ CSCNickChangeTask::~CSCNickChangeTask(void)
 //////////////////////////////////////////////////////////////////////
 
 
-// ‰Šú‰»‚ğs‚¤
+// åˆæœŸåŒ–ã‚’è¡Œã†
 void CSCNickChangeTask::init(int connectionId, wxEvtHandler* handler, const wxString& nick,
     const wxString& name, const wxString& basic)
 {
@@ -28,14 +28,14 @@ void CSCNickChangeTask::init(int connectionId, wxEvtHandler* handler, const wxSt
 //////////////////////////////////////////////////////////////////////
 
 
-// StarChat‚É‘Î‚µ‚ÄƒŠƒNƒGƒXƒg‚ğ‘—M‚·‚é
+// StarChatã«å¯¾ã—ã¦ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’é€ä¿¡ã™ã‚‹
 void CSCNickChangeTask::sendRequestToSC(CSCClient* client)
 {
-    // GETƒŠƒNƒGƒXƒg‚Ì‘—M
+    // GETãƒªã‚¯ã‚¨ã‚¹ãƒˆã®é€ä¿¡
     client->sendChangeNickRequest(m_name, m_nick, m_basic);
 }
 
-// HTTPƒŒƒXƒ|ƒ“ƒX‚ğ‰ğÍ‚µ‚ÄƒCƒxƒ“ƒg‚ğì¬‚·‚é
+// HTTPãƒ¬ã‚¹ãƒãƒ³ã‚¹ã‚’è§£æã—ã¦ã‚¤ãƒ™ãƒ³ãƒˆã‚’ä½œæˆã™ã‚‹
 CConnectionEventBase* CSCNickChangeTask::parseHttpResponse(const string& responseBody)
 {
     return NULL;

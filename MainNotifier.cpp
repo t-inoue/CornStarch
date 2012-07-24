@@ -1,4 +1,4 @@
-#include "MainNotifier.hpp"
+ï»¿#include "MainNotifier.hpp"
 
 
 CMainNotifier::CMainNotifier(void) : m_taskbar(NULL)
@@ -15,14 +15,14 @@ CMainNotifier::~CMainNotifier(void)
 //////////////////////////////////////////////////////////////////////
 
 
-// ‰Šú‰»‚ğs‚¤
+// åˆæœŸåŒ–ã‚’è¡Œã†
 void CMainNotifier::init(void)
 {
     m_taskbar = new wxTaskBarIcon();
     m_taskbar->SetIcon(wxIcon());
 }
 
-// ’Ê’m‚ğs‚¤
+// é€šçŸ¥ã‚’è¡Œã†
 void CMainNotifier::messageNotify(const wxString& title, const wxString& message)
 {
 #ifdef _WIN32

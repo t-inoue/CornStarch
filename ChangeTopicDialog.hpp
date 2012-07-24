@@ -1,20 +1,20 @@
-#pragma once
+ï»¿#pragma once
 #include "header.hpp"
 
-// ƒ`ƒƒƒ“ƒlƒ‹ƒgƒsƒbƒN•ÏX—pƒ_ƒCƒAƒƒO
+// ãƒãƒ£ãƒ³ãƒãƒ«ãƒˆãƒ”ãƒƒã‚¯å¤‰æ›´ç”¨ãƒ€ã‚¤ã‚¢ãƒ­ã‚°
 class CChangeTopicDialog : public wxDialog
 {
 private:
-    wxTextCtrl* m_topicText; // VƒgƒsƒbƒN“ü—Í—pƒ_ƒCƒAƒƒO
+    wxTextCtrl* m_topicText; // æ–°ãƒˆãƒ”ãƒƒã‚¯å…¥åŠ›ç”¨ãƒ€ã‚¤ã‚¢ãƒ­ã‚°
 
 public:
     CChangeTopicDialog(void);
     ~CChangeTopicDialog(void);
 
-    // ‰Šú‰»‚ğs‚¤
+    // åˆæœŸåŒ–ã‚’è¡Œã†
     void init(wxWindow* parent, const wxString& title);
 
-    // ƒgƒsƒbƒN‚ğæ“¾‚·‚é
+    // ãƒˆãƒ”ãƒƒã‚¯ã‚’å–å¾—ã™ã‚‹
     wxString getTopic(void) const;
 };
 

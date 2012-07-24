@@ -1,4 +1,4 @@
-#include "TreeServerItem.hpp"
+ï»¿#include "TreeServerItem.hpp"
 
 
 CTreeServerItem::CTreeServerItem(void)
@@ -14,13 +14,13 @@ CTreeServerItem::~CTreeServerItem(void)
 //////////////////////////////////////////////////////////////////////
 
 
-// ƒT[ƒoID‚ğƒZƒbƒg
+// ã‚µãƒ¼ãƒIDã‚’ã‚»ãƒƒãƒˆ
 void CTreeServerItem::setServerId(int id)
 {
     m_serverId = id;
 }
 
-// ƒT[ƒoID‚ğæ“¾
+// ã‚µãƒ¼ãƒIDã‚’å–å¾—
 int CTreeServerItem::getServerId(void) const
 {
     return m_serverId;

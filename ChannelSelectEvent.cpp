@@ -1,4 +1,4 @@
-#include "ChannelSelectEvent.hpp"
+ï»¿#include "ChannelSelectEvent.hpp"
 
 
 CChannelSelectEvent::CChannelSelectEvent(void)
@@ -14,49 +14,49 @@ CChannelSelectEvent::~CChannelSelectEvent(void)
 //////////////////////////////////////////////////////////////////////
 
 
-// €–Ú–¼‚ğƒZƒbƒg
+// é …ç›®åã‚’ã‚»ãƒƒãƒˆ
 void CChannelSelectEvent::setText(const wxString& text)
 {
     m_text = text;
 }
 
-// ƒT[ƒo–¼‚ğƒZƒbƒg
+// ã‚µãƒ¼ãƒåã‚’ã‚»ãƒƒãƒˆ
 void CChannelSelectEvent::setServer(const wxString& server)
 {
     m_server = server;
 }
 
-// ƒT[ƒoID‚ğƒZƒbƒg
+// ã‚µãƒ¼ãƒIDã‚’ã‚»ãƒƒãƒˆ
 void CChannelSelectEvent::setServerId(int server)
 {
     m_serverId = server;
 }
 
-// ƒT[ƒo–¼‚©”Û‚©‚ğƒZƒbƒg
+// ã‚µãƒ¼ãƒåã‹å¦ã‹ã‚’ã‚»ãƒƒãƒˆ
 void CChannelSelectEvent::setServerOrNot(bool isServer)
 {
     m_isServer = isServer;
 }
 
-// €–Ú–¼‚ğæ“¾
+// é …ç›®åã‚’å–å¾—
 wxString CChannelSelectEvent::getString(void) const
 {
     return m_text;
 }
 
-// ƒT[ƒo–¼‚ğæ“¾
+// ã‚µãƒ¼ãƒåã‚’å–å¾—
 wxString CChannelSelectEvent::getServer(void) const
 {
     return m_server;
 }
 
-// ƒT[ƒoID‚ğæ“¾
+// ã‚µãƒ¼ãƒIDã‚’å–å¾—
 int CChannelSelectEvent::getServerId(void) const
 {
     return m_serverId;
 }
 
-// ƒT[ƒo‚ğ‘I‘ğ‚µ‚½‚©”Û‚©‚ğæ“¾
+// ã‚µãƒ¼ãƒã‚’é¸æŠã—ãŸã‹å¦ã‹ã‚’å–å¾—
 bool CChannelSelectEvent::isServerSelected(void) const
 {
     return m_isServer;
