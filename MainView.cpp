@@ -61,6 +61,12 @@ wxWindowID CMainView::getCnPaneID(void) const
     return m_panel->getCnPaneID();
 }
 
+// メンバーペインのIDを取得する
+wxWindowID CMainView::getMemPaneID(void) const
+{
+    return m_panel->getMemPaneID();
+}
+
 // 指定したチャンネルを選択済み項目にする
 void CMainView::setSelectedChannel(const wxString& channelName)
 {

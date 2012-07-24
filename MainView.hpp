@@ -30,6 +30,9 @@ public: // 各ペインに関するメソッド
     // チャンネルペインのIDを取得する
     wxWindowID getCnPaneID(void) const;
 
+    // メンバーペインのIDを取得する
+    wxWindowID getMemPaneID(void) const;
+
     // 指定したチャンネルを選択済み項目にする
     void setSelectedChannel(const wxString& channelName);
 

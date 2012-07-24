@@ -120,6 +120,12 @@ wxWindowID CMainPanel::getCnPaneID(void) const
     return m_cnBox->GetId();
 }
 
+// メンバーペインのIDを取得する
+wxWindowID CMainPanel::getMemPaneID(void) const
+{
+    return m_memBox->GetId();
+}
+
 
 //////////////////////////////////////////////////////////////////////
 

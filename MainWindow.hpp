@@ -90,6 +90,9 @@ private:
 	// 投稿ペインでEnterキーを押下
 	void onEnter(wxCommandEvent& event);
 
+    // メンバーがダブルクリック
+    void onMemberSelected(wxCommandEvent& event);
+
 	// チャンネル選択時
 	void onChannelSelected(CChannelSelectEvent& event);
 

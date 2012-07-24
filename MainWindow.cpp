@@ -70,6 +70,10 @@ void CMainWindow::initHandle(void)
 	// エンターキー押下時
 	this->Connect(m_view->getPostPaneID(), wxEVT_COMMAND_TEXT_ENTER,
 			wxCommandEventHandler(CMainWindow::onEnter));
+
+    // メンバーがダブルクリックされたとき
+    this->Connect(m_view->getMemPaneID(), wxEVT_COMMAND_LISTBOX_DOUBLECLICKED,
+        wxCommandEventHandler(CMainWindow::onMemberSelected));
 }
 
 // Modelがあれば画面を更新する
@@ -299,6 +303,15 @@ void CMainWindow::onEnter(wxCommandEvent& event)
 	m_view->clearPostPaneText();
 	m_view->displayLogs(m_logHolder->getLogs());
 	updateMessageView(m_currentServiceId, contents->getCurrentChannel());
+}
+
+// メンバーがダブルクリック
+void CMainWindow::onMemberSelected(wxCommandEvent& event)
+{
+	CChatServiceBase* contents = getConnectionContents(m_currentServiceId);
+
+    wxString name = contents->getMemberRealName(event.GetString());
+    wxMessageBox("本名は" + name + "です");
 }
 
 // チャンネル選択時

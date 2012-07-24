@@ -177,6 +177,12 @@ wxString CChatServiceBase::getMemberNick(const wxString& member)
     return m_nickTable->getNickname(member);
 }
 
+// メンバーの本名を取得
+wxString CChatServiceBase::getMemberRealName(const wxString& nick) const
+{
+    return m_nickTable->getRealName(nick);
+}
+
 // チャンネルのトピックを取得
 wxString CChatServiceBase::getTopic(const wxString& channel)
 {

@@ -158,6 +158,9 @@ public:
     // メンバーのニックネームを取得
     wxString getMemberNick(const wxString& member);
 
+    // メンバーの本名を取得
+    wxString getMemberRealName(const wxString& nick) const;
+
     // チャンネルのトピックを取得
     wxString getTopic(const wxString& channel);
 

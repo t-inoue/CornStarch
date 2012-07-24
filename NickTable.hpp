@@ -18,5 +18,8 @@ public:
 
     // ニックネームが登録されているか
     bool isExist(const wxString& name);
+
+    // ニックネームから本名を検索する
+    wxString getRealName(const wxString& nick);
 };
 

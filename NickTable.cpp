@@ -39,3 +39,15 @@ bool CNickTable::isExist(const wxString& name)
 {
     return find(name) != end();
 }
+
+// ニックネームから本名を検索する
+wxString CNickTable::getRealName(const wxString& nick)
+{
+    map<wxString, wxString>::const_iterator it;
+    for (it = begin(); it != end(); it++){
+        if (it->second == nick){
+            return it->first;
+        }
+    }
+    return "";
+}

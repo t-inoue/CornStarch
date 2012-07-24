@@ -51,6 +51,9 @@ public:
     // チャンネルペインのIDを取得する
     wxWindowID getCnPaneID(void) const;
 
+    // メンバーペインのIDを取得する
+    wxWindowID getMemPaneID(void) const;
+
 private:
 
     // 画面分割を行う
