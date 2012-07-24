@@ -18,4 +18,3 @@ public:
     // 通知を行う
     void messageNotify(const wxString& title, const wxString& message);
 };
-
