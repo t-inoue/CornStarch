@@ -51,7 +51,7 @@ void CServiceSerializer::saveService(const vector<CChatServiceBase*>& services)
             wxXmlNode* server2 = new wxXmlNode(serverRoot, wxXML_ELEMENT_NODE, "name");
             wxXmlNode* child2 = new wxXmlNode(server2, wxXML_TEXT_NODE, "text", (*it)->getUserName());
             wxXmlNode* server3 = new wxXmlNode(serverRoot, wxXML_ELEMENT_NODE, "nick");
-            wxXmlNode* child3 = new wxXmlNode(server3, wxXML_TEXT_NODE, "text", (*it)->getNickName());
+            wxXmlNode* child3 = new wxXmlNode(server3, wxXML_TEXT_NODE, "text", (*it)->getUserName());
         }
     }
 
