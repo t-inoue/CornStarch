@@ -1,8 +1,8 @@
-#pragma once
+ï»¿#pragma once
 #include "ChatLog.hpp"
 #include "MemberData.hpp"
 
-// ƒƒ“ƒo[î•ñXVƒƒO
+// ãƒ¡ãƒ³ãƒãƒ¼æƒ…å ±æ›´æ–°ãƒ­ã‚°
 class CMemberLog : public CChatLog
 {
 private:
@@ -12,10 +12,10 @@ public:
     CMemberLog(void);
     ~CMemberLog(void);
 
-    // ‰Šú‰»‚ğs‚¤
+    // åˆæœŸåŒ–ã‚’è¡Œã†
     void init(const CMemberData& member);
 
-    // ƒƒO‚ğæ“¾‚·‚é
+    // ãƒ­ã‚°ã‚’å–å¾—ã™ã‚‹
     CMemberData getLog(void) const;
 };
 

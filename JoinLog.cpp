@@ -1,4 +1,4 @@
-#include "JoinLog.hpp"
+ï»¿#include "JoinLog.hpp"
 
 using namespace std;
 
@@ -16,7 +16,7 @@ CJoinLog::~CJoinLog(void)
 //////////////////////////////////////////////////////////////////////
 
 
-// ‰Šú‰»‚ğs‚¤
+// åˆæœŸåŒ–ã‚’è¡Œã†
 void CJoinLog::init(const CSubscribeData& sub, const wxString& nick)
 {
     if (m_sub == NULL){
@@ -25,23 +25,23 @@ void CJoinLog::init(const CSubscribeData& sub, const wxString& nick)
     *m_sub = sub;
     m_nick = nick;
 
-    // ƒ^ƒCƒv‚Ìw’è
+    // ã‚¿ã‚¤ãƒ—ã®æŒ‡å®š
     m_type = LOG_JOIN;
 }
 
-// ƒƒO‚ğæ“¾‚·‚é
+// ãƒ­ã‚°ã‚’å–å¾—ã™ã‚‹
 CSubscribeData CJoinLog::getLog(void) const
 {
     return *m_sub;
 }
 
-// ƒjƒbƒNƒl[ƒ€‚ğæ“¾‚·‚é
+// ãƒ‹ãƒƒã‚¯ãƒãƒ¼ãƒ ã‚’å–å¾—ã™ã‚‹
 wxString CJoinLog::getNickName(void) const
 {
     return m_nick;
 }
 
-// –{–¼‚É‘Î‰‚·‚éƒjƒbƒNƒl[ƒ€‚ª–¢’m‚©
+// æœ¬åã«å¯¾å¿œã™ã‚‹ãƒ‹ãƒƒã‚¯ãƒãƒ¼ãƒ ãŒæœªçŸ¥ã‹
 bool CJoinLog::isUnknownNick(const wxString& name) const
 {
     if (m_nick == ""){
@@ -50,7 +50,7 @@ bool CJoinLog::isUnknownNick(const wxString& name) const
     return false;
 }
 
-// ƒjƒbƒNƒl[ƒ€‚ğXV‚·‚é
+// ãƒ‹ãƒƒã‚¯ãƒãƒ¼ãƒ ã‚’æ›´æ–°ã™ã‚‹
 void CJoinLog::updateNick(const wxString& nick)
 {
     m_nick = nick;

@@ -1,11 +1,11 @@
-#pragma once
+ï»¿#pragma once
 #include <wx/string.h>
 
-// ƒ`ƒƒƒbƒg‚ÌƒƒO‚ğŠÇ—
+// ãƒãƒ£ãƒƒãƒˆã®ãƒ­ã‚°ã‚’ç®¡ç†
 class CChatLog
 {
 public:
-    // ƒ`ƒƒƒbƒgƒƒO‚Ìƒ^ƒCƒv
+    // ãƒãƒ£ãƒƒãƒˆãƒ­ã‚°ã®ã‚¿ã‚¤ãƒ—
     enum LOG_TYPE{
         LOG_MESSAGE,
         LOG_JOIN,
@@ -15,19 +15,19 @@ public:
     };
 
 protected:
-    LOG_TYPE m_type; // ƒƒO‚Ìƒ^ƒCƒv
+    LOG_TYPE m_type; // ãƒ­ã‚°ã®ã‚¿ã‚¤ãƒ—
 
 public:
     CChatLog(void);
     virtual ~CChatLog(void);
 
-    // ƒƒO‚Ìí—Ş‚ğæ“¾
+    // ãƒ­ã‚°ã®ç¨®é¡ã‚’å–å¾—
     LOG_TYPE getLogType(void) const;
 
-    // –{–¼‚É‘Î‰‚·‚éƒjƒbƒNƒl[ƒ€‚ª–¢’m‚©
+    // æœ¬åã«å¯¾å¿œã™ã‚‹ãƒ‹ãƒƒã‚¯ãƒãƒ¼ãƒ ãŒæœªçŸ¥ã‹
     virtual bool isUnknownNick(const wxString& name) const;
 
-    // ƒjƒbƒNƒl[ƒ€‚ğXV‚·‚é
+    // ãƒ‹ãƒƒã‚¯ãƒãƒ¼ãƒ ã‚’æ›´æ–°ã™ã‚‹
     virtual void updateNick(const wxString& nick);
 };
 

@@ -1,4 +1,4 @@
-#include "TopicLog.hpp"
+ï»¿#include "TopicLog.hpp"
 
 
 CTopicLog::CTopicLog(void) : m_channel(NULL)
@@ -15,7 +15,7 @@ CTopicLog::~CTopicLog(void)
 //////////////////////////////////////////////////////////////////////
 
 
-// ‰Šú‰»‚ğs‚¤
+// åˆæœŸåŒ–ã‚’è¡Œã†
 void CTopicLog::init(const CChannelData& channel)
 {
     if (m_channel == NULL){
@@ -23,11 +23,11 @@ void CTopicLog::init(const CChannelData& channel)
     }
     *m_channel = channel;
 
-    // ƒ^ƒCƒv‚Ìw’è
+    // ã‚¿ã‚¤ãƒ—ã®æŒ‡å®š
     m_type = LOG_TOPIC;
 }
 
-// ƒƒO‚ğæ“¾‚·‚é
+// ãƒ­ã‚°ã‚’å–å¾—ã™ã‚‹
 CChannelData CTopicLog::getLog(void) const
 {
     return *m_channel;
