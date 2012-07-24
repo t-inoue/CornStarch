@@ -105,6 +105,7 @@ public:
 	// ユーザ名をセット
 	virtual void setUserName(const wxString& name)
 	{
+        m_username = name;
 	}
 	;
 
