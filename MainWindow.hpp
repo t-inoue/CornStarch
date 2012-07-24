@@ -4,6 +4,7 @@
 #include "ChatService.hpp"
 #include "vector"
 #include "PartEvent.hpp"
+#include "ServiceSerializer.hpp"
 
 // ビューコントローラとなるウィンドウクラス
 class CMainWindow: public wxFrame
@@ -19,8 +20,11 @@ private:
 	vector<CChatServiceBase*> m_contents; // スターチャットのコンテンツを管理
 	void addNewConneection(CChatServiceBase* connnection);
 
-	// wxWindowイベントを処理させたいクラスに利用するマクロ
-DECLARE_EVENT_TABLE()
+    // サービスのシリアライズ
+    CServiceSerializer* m_serialize;
+
+    // wxWindowイベントを処理させたいクラスに利用するマクロ
+    DECLARE_EVENT_TABLE()
 
 public:
 	CMainWindow(void);

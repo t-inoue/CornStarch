@@ -1,4 +1,4 @@
-#include "IRCAuthDialog.hpp"
+ï»¿#include "IRCAuthDialog.hpp"
 
 
 CIRCAuthDialog::CIRCAuthDialog(void)
@@ -14,21 +14,21 @@ CIRCAuthDialog::~CIRCAuthDialog(void)
 //////////////////////////////////////////////////////////////////////
 
 
-// ‰Šú‰»‚ðs‚¤
+// åˆæœŸåŒ–ã‚’è¡Œã†
 void CIRCAuthDialog::init(wxWindow* parent, const wxString& title)
 {
     CAuthDialog::init(parent, title);
 
-    // ƒeƒLƒXƒgƒ{ƒbƒNƒX
+    // ãƒ†ã‚­ã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹
     m_nickText = new wxTextCtrl(
         m_panel, wxID_ANY, "", wxPoint(100, 90), wxSize(200, 30));
 
-    // •¶Žš
+    // æ–‡å­—
     wxStaticText* shost = new wxStaticText(
-        m_panel, wxID_ANY, "ƒjƒbƒNƒl[ƒ€", wxPoint(10, 90));
+        m_panel, wxID_ANY, "ãƒ‹ãƒƒã‚¯ãƒãƒ¼ãƒ ", wxPoint(10, 90));
 }
 
-// ƒjƒbƒNƒl[ƒ€‚ðŽæ“¾‚·‚é
+// ãƒ‹ãƒƒã‚¯ãƒãƒ¼ãƒ ã‚’å–å¾—ã™ã‚‹
 wxString CIRCAuthDialog::getNick(void) const
 {
     return m_nickText->GetValue();
