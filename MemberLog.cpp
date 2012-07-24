@@ -1,4 +1,4 @@
-#include "MemberLog.hpp"
+ï»¿#include "MemberLog.hpp"
 
 
 CMemberLog::CMemberLog(void) : m_member(NULL)
@@ -15,7 +15,7 @@ CMemberLog::~CMemberLog(void)
 //////////////////////////////////////////////////////////////////////
 
 
-// ‰Šú‰»‚ğs‚¤
+// åˆæœŸåŒ–ã‚’è¡Œã†
 void CMemberLog::init(const CMemberData& member)
 {
     if (m_member == NULL){
@@ -23,11 +23,11 @@ void CMemberLog::init(const CMemberData& member)
     }
     *m_member = member;
 
-    // ƒ^ƒCƒv‚Ìw’è
+    // ã‚¿ã‚¤ãƒ—ã®æŒ‡å®š
     m_type = LOG_USER;
 }
 
-// ƒƒO‚ğæ“¾‚·‚é
+// ãƒ­ã‚°ã‚’å–å¾—ã™ã‚‹
 CMemberData CMemberLog::getLog(void) const
 {
     return *m_member;

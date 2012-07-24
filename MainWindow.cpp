@@ -47,7 +47,8 @@ void CMainWindow::init(void)
     // サービスのシリアライズ
     m_serialize = new CServiceSerializer();
     m_serialize->init();
-   // m_serialize->loadService(GetEventHandler(), m_contents);
+    m_serialize->loadService(GetEventHandler(), m_contents);
+    m_currentServiceId = 1000;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -190,16 +191,12 @@ void CMainWindow::onJoin(wxCommandEvent& event)
 	if (!contents->isUserLogin()){
 		return;
 	}
+
 	// ダイアログを表示
 	if (m_view->showModalChannelDlg() != wxID_OK){
 		return;
 	}
 
-	if(m_view->getDlgChannelName() == "")
-	{
-		wxMessageBox("チャンネル名を入力してください。");
-		return;
-	}
 	// チャンネル参加タスクの開始
 	contents->joinChannel(m_view->getDlgChannelName());
 }
@@ -218,11 +215,6 @@ void CMainWindow::onPart(wxCommandEvent& event)
 		return;
 	}
 
-	if(m_view->getDlgChannelName() == "")
-	{
-		wxMessageBox("チャンネル名を入力してください。");
-		return;
-	}
 	// チャンネル離脱タスクを開始
 	contents->partChannel(m_view->getDlgChannelName());
 }

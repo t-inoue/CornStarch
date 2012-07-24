@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "MessageLog.hpp"
 #include "MemberLog.hpp"
 #include "JoinLog.hpp"
@@ -6,41 +6,41 @@
 #include "TopicLog.hpp"
 #include <vector>
 
-// ƒ`ƒƒƒbƒg‚ÌƒƒO‚ğ•Û‚·‚éƒNƒ‰ƒX
+// ãƒãƒ£ãƒƒãƒˆã®ãƒ­ã‚°ã‚’ä¿æŒã™ã‚‹ã‚¯ãƒ©ã‚¹
 class CMainLogHolder
 {
 private:
-    std::vector<CChatLog*> m_logs; // ƒƒO‚ğ•Û‘¶‚·‚é
-    static const int MAX_LENGTH = 200; //ƒƒO‚ÌÅ‘åŒÂ”
+    std::vector<CChatLog*> m_logs; // ãƒ­ã‚°ã‚’ä¿å­˜ã™ã‚‹
+    static const int MAX_LENGTH = 200; //ãƒ­ã‚°ã®æœ€å¤§å€‹æ•°
 
 public:
     CMainLogHolder(void);
     ~CMainLogHolder(void);
 
-    // ƒƒOˆê——‚ğæ“¾‚·‚é
+    // ãƒ­ã‚°ä¸€è¦§ã‚’å–å¾—ã™ã‚‹
     std::vector<CChatLog*> getLogs(void) const;
 
-    // ƒƒbƒZ[ƒWƒƒO‚ğ’Ç‰Á‚·‚é
+    // ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒ­ã‚°ã‚’è¿½åŠ ã™ã‚‹
     void pushMessageLog(const CMessageData& message, const wxString& nick = "");
 
-    // ƒ`ƒƒƒ“ƒlƒ‹Q‰ÁƒƒO‚ğ’Ç‰Á‚·‚é
+    // ãƒãƒ£ãƒ³ãƒãƒ«å‚åŠ ãƒ­ã‚°ã‚’è¿½åŠ ã™ã‚‹
     void pushJoinLog(const CSubscribeData& sub, const wxString& nick = "");
 
-    // ƒ`ƒƒƒ“ƒlƒ‹‘ŞoƒƒO‚ğ’Ç‰Á‚·‚é
+    // ãƒãƒ£ãƒ³ãƒãƒ«é€€å‡ºãƒ­ã‚°ã‚’è¿½åŠ ã™ã‚‹
     void pushPartLog(const CSubscribeData& sub, const wxString& nick = "");
 
-    // ƒjƒbƒNƒl[ƒ€•ÏXƒƒO‚ğ’Ç‰Á‚·‚é
+    // ãƒ‹ãƒƒã‚¯ãƒãƒ¼ãƒ å¤‰æ›´ãƒ­ã‚°ã‚’è¿½åŠ ã™ã‚‹
     void pushChangeNickLog(const CMemberData& member);
 
-    // ƒgƒsƒbƒN•ÏXƒƒO‚ğ’Ç‰Á‚·‚é
+    // ãƒˆãƒ”ãƒƒã‚¯å¤‰æ›´ãƒ­ã‚°ã‚’è¿½åŠ ã™ã‚‹
     void pushTopicLog(const CChannelData& channel);
 
-    // ƒjƒbƒNƒl[ƒ€‚ÌXV‚ğs‚¤
+    // ãƒ‹ãƒƒã‚¯ãƒãƒ¼ãƒ ã®æ›´æ–°ã‚’è¡Œã†
     void onUpdateNickName(const CMemberData& member);
 
 private:
 
-    // ƒƒO‚ğ’Ç‰Á‚·‚é
+    // ãƒ­ã‚°ã‚’è¿½åŠ ã™ã‚‹
     void pushLog(CChatLog* log);
 };
 

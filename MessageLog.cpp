@@ -1,4 +1,4 @@
-#include "MessageLog.hpp"
+ï»¿#include "MessageLog.hpp"
 
 using namespace std;
 
@@ -16,7 +16,7 @@ CMessageLog::~CMessageLog(void)
 //////////////////////////////////////////////////////////////////////
 
 
-// ‰Šú‰»‚ğs‚¤
+// åˆæœŸåŒ–ã‚’è¡Œã†
 void CMessageLog::init(const CMessageData& message, const wxString& nick)
 {
     if (m_message == NULL){
@@ -25,23 +25,23 @@ void CMessageLog::init(const CMessageData& message, const wxString& nick)
     *m_message = message;
     m_nick = nick;
 
-    // ƒ^ƒCƒv‚Ìw’è
+    // ã‚¿ã‚¤ãƒ—ã®æŒ‡å®š
     m_type = LOG_MESSAGE;
 }
 
-// ƒƒO‚ğæ“¾‚·‚é
+// ãƒ­ã‚°ã‚’å–å¾—ã™ã‚‹
 CMessageData CMessageLog::getLog(void) const
 {
     return *m_message;
 }
 
-// ƒjƒbƒNƒl[ƒ€‚ğæ“¾‚·‚é
+// ãƒ‹ãƒƒã‚¯ãƒãƒ¼ãƒ ã‚’å–å¾—ã™ã‚‹
 wxString CMessageLog::getNickName(void) const
 {
     return m_nick;
 }
 
-// –{–¼‚É‘Î‰‚·‚éƒjƒbƒNƒl[ƒ€‚ª–¢’m‚©
+// æœ¬åã«å¯¾å¿œã™ã‚‹ãƒ‹ãƒƒã‚¯ãƒãƒ¼ãƒ ãŒæœªçŸ¥ã‹
 bool CMessageLog::isUnknownNick(const wxString& name) const
 {
     if (m_nick == ""){
@@ -50,7 +50,7 @@ bool CMessageLog::isUnknownNick(const wxString& name) const
     return false;
 }
 
-// ƒjƒbƒNƒl[ƒ€‚ğXV‚·‚é
+// ãƒ‹ãƒƒã‚¯ãƒãƒ¼ãƒ ã‚’æ›´æ–°ã™ã‚‹
 void CMessageLog::updateNick(const wxString& nick)
 {
     m_nick = nick;

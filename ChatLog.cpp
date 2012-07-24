@@ -1,4 +1,4 @@
-#include "ChatLog.hpp"
+ï»¿#include "ChatLog.hpp"
 
 
 CChatLog::CChatLog(void)
@@ -14,19 +14,19 @@ CChatLog::~CChatLog(void)
 //////////////////////////////////////////////////////////////////////
 
 
-// ƒƒO‚Ìí—Ş‚ğæ“¾
+// ãƒ­ã‚°ã®ç¨®é¡ã‚’å–å¾—
 CChatLog::LOG_TYPE CChatLog::getLogType(void) const
 {
     return m_type;
 }
 
-// –{–¼‚É‘Î‰‚·‚éƒjƒbƒNƒl[ƒ€‚ª–¢’m‚©
+// æœ¬åã«å¯¾å¿œã™ã‚‹ãƒ‹ãƒƒã‚¯ãƒãƒ¼ãƒ ãŒæœªçŸ¥ã‹
 bool CChatLog::isUnknownNick(const wxString& name) const
 {
     return false;
 }
 
-// ƒjƒbƒNƒl[ƒ€‚ğXV‚·‚é
+// ãƒ‹ãƒƒã‚¯ãƒãƒ¼ãƒ ã‚’æ›´æ–°ã™ã‚‹
 void CChatLog::updateNick(const wxString& nick)
 {
 }

@@ -1,8 +1,8 @@
-#pragma once
+ï»¿#pragma once
 #include "ChatLog.hpp"
 #include "MessageData.hpp"
 
-// ƒƒbƒZ[ƒW‚ÌƒƒO
+// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®ãƒ­ã‚°
 class CMessageLog : public CChatLog
 {
 private:
@@ -13,19 +13,19 @@ public:
     CMessageLog(void);
     ~CMessageLog(void);
 
-    // ‰Šú‰»‚ğs‚¤
+    // åˆæœŸåŒ–ã‚’è¡Œã†
     void init(const CMessageData& message, const wxString& nick);
 
-    // ƒƒO‚ğæ“¾‚·‚é
+    // ãƒ­ã‚°ã‚’å–å¾—ã™ã‚‹
     CMessageData getLog(void) const;
 
-    // ƒjƒbƒNƒl[ƒ€‚ğæ“¾‚·‚é
+    // ãƒ‹ãƒƒã‚¯ãƒãƒ¼ãƒ ã‚’å–å¾—ã™ã‚‹
     wxString getNickName(void) const;
 
-    // –{–¼‚É‘Î‰‚·‚éƒjƒbƒNƒl[ƒ€‚ª–¢’m‚©
+    // æœ¬åã«å¯¾å¿œã™ã‚‹ãƒ‹ãƒƒã‚¯ãƒãƒ¼ãƒ ãŒæœªçŸ¥ã‹
     bool isUnknownNick(const wxString& name) const;
 
-    // ƒjƒbƒNƒl[ƒ€‚ğXV‚·‚é
+    // ãƒ‹ãƒƒã‚¯ãƒãƒ¼ãƒ ã‚’æ›´æ–°ã™ã‚‹
     void updateNick(const wxString& nick);
 };
 

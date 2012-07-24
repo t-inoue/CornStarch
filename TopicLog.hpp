@@ -1,8 +1,8 @@
-#pragma once
+ï»¿#pragma once
 #include "ChatLog.hpp"
 #include "ChannelData.hpp"
 
-// ƒgƒsƒbƒN•ÏX‚ÌƒƒO
+// ãƒˆãƒ”ãƒƒã‚¯å¤‰æ›´ã®ãƒ­ã‚°
 class CTopicLog : public CChatLog
 {
 private:
@@ -12,10 +12,10 @@ public:
     CTopicLog(void);
     ~CTopicLog(void);
 
-    // ‰Šú‰»‚ğs‚¤
+    // åˆæœŸåŒ–ã‚’è¡Œã†
     void init(const CChannelData& channel);
 
-    // ƒƒO‚ğæ“¾‚·‚é
+    // ãƒ­ã‚°ã‚’å–å¾—ã™ã‚‹
     CChannelData getLog(void) const;
 };
 
