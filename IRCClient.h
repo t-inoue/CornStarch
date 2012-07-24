@@ -30,7 +30,10 @@ class CIRCClient: public CSocketClient
 	bool m_connected;
 
 	wxEvtHandler* m_handler;
-	void receiveLoop();
+	// 受信ループです。
+	void receiveLoop(void);
+	// ハートビートへの反応です。
+	void pong(const wxString& value);
 public:
 	CIRCClient();
 	virtual ~CIRCClient(void);

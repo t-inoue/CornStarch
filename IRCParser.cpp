@@ -56,6 +56,9 @@ CConnectionEventBase* CIRCParser::parse(const std::string& content)
 		if (statusCode == "TOPIC"){
 			return createTopicMessageEvent(host, param);
 		}
+		if (statusCode == "NICK"){
+			return createNickMessageEvent(host, param);
+		}
 		if (statusCode == "353"){
 			addNames(param);
 		}
@@ -69,14 +72,50 @@ CConnectionEventBase* CIRCParser::parse(const std::string& content)
 	}
 	return NULL;
 }
-
-CConnectionEventBase* CIRCParser::createTopicMessageEvent(const string& host,
-		const string& param) const
+CConnectionEventBase* CIRCParser::createNickMessageEvent(const string& host,
+        const string& param) const
 {
-	return NULL;
+	vector<string> names = CStringUtility::split(host, "!");
+	string name = names[0];
+
+	int contentIndex = param.find(":") + 1;
+	string content = param.substr(contentIndex,
+	        param.size() - contentIndex - 1);
+
+	CMemberData member;
+	member.m_name = wxString(name);
+	member.m_nick = wxString(content);
+
+	CUserStreamEvent* event = new CUserStreamEvent();
+	event->SetEventType(myEVT_THREAD_STREAM_USER_UPDATE);
+	event->setMember(member);
+	return event;
+}
+CConnectionEventBase* CIRCParser::createTopicMessageEvent(const string& host,
+        const string& param) const
+{
+	vector<string> names = CStringUtility::split(host, "!");
+	string name = names[0];
+	int index = param.find(" ");
+
+	int contentIndex = param.find(":") + 1;
+	string content = param.substr(contentIndex,
+	        param.size() - contentIndex - 1);
+
+
+	string channelName = param.substr(0, index);
+
+	CChannelData channel;
+	channel.m_name = wxString(channelName);
+	channel.m_topic = wxString(content);
+
+	CChannelStreamEvent* event = new CChannelStreamEvent();
+	event->SetEventType(myEVT_THREAD_STREAM_CH_UPDATE);
+	event->setChannel(channel);
+	return event;
 }
 CConnectionEventBase* CIRCParser::createJoinMessageEvent(const string& host,
-		const string& param) const
+        const string& param) const
 {
 	vector<string> names = CStringUtility::split(host, "!");
 	string name = names[0];
@@ -91,7 +130,7 @@ CConnectionEventBase* CIRCParser::createJoinMessageEvent(const string& host,
 	return event;
 }
 CConnectionEventBase* CIRCParser::createPartMessageEvent(const string& host,
-		const string& param) const
+        const string& param) const
 {
 	vector<string> names = CStringUtility::split(host, "!");
 	string name = names[0];
@@ -108,7 +147,7 @@ CConnectionEventBase* CIRCParser::createPartMessageEvent(const string& host,
 
 }
 CConnectionEventBase* CIRCParser::createPrivateMessageEvent(const string& host,
-		const string& param) const
+        const string& param) const
 {
 	vector<string> names = CStringUtility::split(host, "!");
 	string name = names[0];
@@ -117,7 +156,7 @@ CConnectionEventBase* CIRCParser::createPrivateMessageEvent(const string& host,
 	string channel = param.substr(0, index);
 	int contentIndex = param.find(":") + 1;
 	string content = param.substr(contentIndex,
-			param.size() - contentIndex - 1);
+	        param.size() - contentIndex - 1);
 
 	// Messagedataの作成。
 	CMessageData message;

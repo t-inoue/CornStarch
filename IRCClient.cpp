@@ -18,17 +18,17 @@ CIRCClient::CIRCClient() :
 
 CIRCClient::~CIRCClient(void)
 {
-
+	m_connected = false;
+	this->close();
 }
 void CIRCClient::init(int connectionId)
 {
 	CSocketClient::init();
 	m_connectionId = connectionId;
 
-
 }
 void CIRCClient::start(wxEvtHandler* handler, const wxString& userName,
-		const wxString& password)
+        const wxString& password)
 {
 
 	if (m_connected){
@@ -47,8 +47,8 @@ void CIRCClient::start(wxEvtHandler* handler, const wxString& userName,
 	string nick(wxString::Format(wxT("NICK %s\r\n"), userName.c_str()));
 	send(nick);
 	string user(
-			wxString::Format(wxT( "USER %s * 0 :%s\r\n"), userName.c_str(),
-					userName.c_str()));
+	        wxString::Format(wxT( "USER %s * 0 :%s\r\n"), userName.c_str(),
+	                userName.c_str()));
 	send(user);
 
 	Thread *thread = new Thread(this, &CIRCClient::receiveLoop);
@@ -63,18 +63,28 @@ void CIRCClient::receiveLoop()
 		receive();
 		if (this->m_buffer != ""){
 			vector<string> messages = CStringUtility::split(this->m_buffer,
-					"\n");
+			        "\n");
 			for (int i = 0; i < messages.size(); i++){
-				cout << messages[i].c_str();
-				CConnectionEventBase* event = parser.parse(messages[i]);
-				if (event != NULL){
-					event->setConnectionId(m_connectionId);
-					wxQueueEvent(m_handler, event);
+				if (messages[i].find("PING") == 0){
+					string pingValue =
+					        CStringUtility::split(messages[i], ":")[1];
+					pong(pingValue);
+				} else{
+					CConnectionEventBase* event = parser.parse(messages[i]);
+					if (event != NULL){
+						event->setConnectionId(m_connectionId);
+						wxQueueEvent(m_handler, event);
+					}
 				}
 			}
 
 		}
 	}
+}
+void CIRCClient::pong(const wxString& value)
+{
+	wxString content(wxString::Format(wxT("PONG %s\r\n"), value));
+	send(content);
 }
 void CIRCClient::quit(void)
 {
@@ -106,15 +116,27 @@ void CIRCClient::getNamesAsync(const wxString& channelName)
 void CIRCClient::sendMessage(const wxString& target, const wxString& content)
 {
 	wxString contentWxString(
-			wxString::Format(wxT("PRIVMSG %s %s\r\n"), target, content));
+	        wxString::Format(wxT("PRIVMSG %s %s\r\n"), target, content));
 	send(contentWxString);
 }
 void CIRCClient::sendNotice(const wxString& target, const wxString& content)
 {
-
 	wxString contentWxString(
-			wxString::Format(wxT("NOTICE %s %s\r\n"), target, content));
+	        wxString::Format(wxT("NOTICE %s %s\r\n"), target, content));
 	send(contentWxString);
+}
+void CIRCClient::changeTopic(const wxString& channelName,
+        const wxString& content)
+{
+	wxString contentWxString(
+	        wxString::Format(wxT("TOPIC %s %s\r\n"), channelName, content));
+	send(contentWxString);
+}
+void CIRCClient::changeNickname(const wxString& content)
+{
+	wxString contentWxString(wxString::Format(wxT("NICK %s\r\n"), content));
+	send(contentWxString);
+
 }
 }
 } /* namespace CornStarch */

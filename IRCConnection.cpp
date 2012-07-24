@@ -14,6 +14,8 @@
 #include "GetMessageEvent.hpp"
 #include "GetMemberInfoEvent.hpp"
 #include "PartEvent.hpp"
+#include "ChannelStreamEvent.hpp"
+#include "UserStreamEvent.hpp"
 
 // イベントの宣言
 wxDECLARE_EVENT(myEVT_THREAD_PUT_JOIN, CJoinEvent);
@@ -22,6 +24,8 @@ wxDECLARE_EVENT(myEVT_THREAD_POST_MESSAGE, wxThreadEvent);
 wxDECLARE_EVENT(myEVT_THREAD_GET_MESSAGE, CGetMessageEvent);
 wxDECLARE_EVENT(myEVT_THREAD_GET_MEMBER_INFO, CGetMemberInfoEvent);
 wxDECLARE_EVENT(myEVT_THREAD_DELETE_PART, CPartEvent);
+wxDECLARE_EVENT(myEVT_THREAD_STREAM_CH_UPDATE, CChannelStreamEvent);
+wxDECLARE_EVENT(myEVT_THREAD_STREAM_USER_UPDATE, CUserStreamEvent);
 namespace CornStarch
 {
 namespace IRC
@@ -173,6 +177,33 @@ void CIRCConnection::startStreamTask(const IUser* user)
 void CIRCConnection::deleteAuthTask(void)
 {
 }
+//override ニックネームを変更するタスク(別スレッド)を開始する
+void CIRCConnection::startNickChangeTask(const IUser* user, const wxString& nick){
+	m_client->changeNickname(nick);
 
+	CMemberData member;
+	member.m_name = wxString(user->getUserName());
+	member.m_nick = wxString(nick);
+
+	CUserStreamEvent* event = new CUserStreamEvent();
+	event->SetEventType(myEVT_THREAD_STREAM_USER_UPDATE);
+	event->setMember(member);
+	wxQueueEvent(m_handler, event);
+}
+
+//override トピックを変更するタスク(別スレッド)を開始する
+void CIRCConnection::startChangeTopicTask(const IUser* user, const wxString& topic){
+	m_client->changeTopic(user->getChannelString(), topic);
+
+	CChannelData channel;
+	channel.m_name = wxString(user->getChannelString());
+	channel.m_topic = wxString(user->getChannelString());
+
+	CChannelStreamEvent* event = new CChannelStreamEvent();
+	event->SetEventType(myEVT_THREAD_STREAM_CH_UPDATE);
+	event->setChannel(channel);
+	event->setConnectionId(m_connectionId);
+	wxQueueEvent(m_handler, event);
+}
 }
 } /* namespace CornStarch */

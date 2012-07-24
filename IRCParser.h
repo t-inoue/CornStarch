@@ -30,6 +30,9 @@ class CIRCParser
 	// 名前一覧の名前をバッファに追加します。
 	void addNames(const string& param);
 
+	// ニックネームイベントを生成します。
+	CConnectionEventBase* createNickMessageEvent(const string& host,
+			const string& param) const;
 	// トピックイベントを生成します。
 	CConnectionEventBase* createTopicMessageEvent(const string& host,
 			const string& param) const;
