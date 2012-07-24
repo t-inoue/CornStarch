@@ -10,7 +10,6 @@ CSocketClient::CSocketClient(void) : m_address(NULL), m_socket(NULL)
 CSocketClient::~CSocketClient(void)
 {
     delete m_address;
-    delete m_socket;
 }
 
 
@@ -35,6 +34,7 @@ bool CSocketClient::connect(void)
 void CSocketClient::close(void)
 {
     m_socket->Close();
+    delete m_socket;
 }
 
 // ポート番号をセット

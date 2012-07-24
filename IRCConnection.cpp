@@ -33,9 +33,9 @@ CIRCConnection::CIRCConnection()
 
 CIRCConnection::~CIRCConnection()
 {
+	delete m_client;
 	int size = (int) m_channels.size();
-	for (int i = 0; i < size; i++)
-	{
+	for (int i = 0; i < size; i++){
 		delete m_channels[i];
 	}
 }
@@ -90,8 +90,7 @@ void CIRCConnection::startGetChannelTask(const IUser* user)
 
 	vector<CChannelData*> channels;
 	int size = m_channels.size();
-	for (int i = 0; i < size; i++)
-	{
+	for (int i = 0; i < size; i++){
 		CChannelData* channel = new CChannelData();
 		channel->m_name = m_channels[i]->m_name;
 		channel->m_topic = m_channels[i]->m_topic;
@@ -109,11 +108,9 @@ void CIRCConnection::startPartTask(const IUser* user, const wxString& channel)
 	m_client->part(channel);
 
 	vector<CChannelData*>::iterator it = m_channels.begin();
-	while (it != m_channels.end())
-	{
+	while (it != m_channels.end()){
 		wxString channelName = (*it)->m_name;
-		if (channelName == channel)
-		{
+		if (channelName == channel){
 			m_channels.erase(it);
 			break;
 		}
@@ -121,8 +118,8 @@ void CIRCConnection::startPartTask(const IUser* user, const wxString& channel)
 	}
 
 	CPartEvent* event = new CPartEvent();
-    event->SetEventType(myEVT_THREAD_DELETE_PART); // イベントの種類をセット
-    event->SetString(channel);
+	event->SetEventType(myEVT_THREAD_DELETE_PART); // イベントの種類をセット
+	event->SetString(channel);
 	event->setConnectionId(m_connectionId);
 	wxQueueEvent(m_handler, event);
 }
@@ -160,9 +157,9 @@ void CIRCConnection::startGetMemberInfoTask(const IUser* user,
 // ユーザが正規の人かどうか判断するタスク(別スレッド)を開始する
 void CIRCConnection::startAuthTask(const IUser* user)
 {
-	m_client->start(m_handler,user->getUserName(),"");
+	m_client->start(m_handler, user->getUserName(), "");
 	//Sample
-	startJoinTask(user,"#cc");
+	startJoinTask(user, "#cc");
 }
 
 // ストリーム通信タスク(別スレッド)を開始
