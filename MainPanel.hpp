@@ -6,7 +6,7 @@
 #include "PaneCn.hpp"
 #include "PaneMember.hpp"
 #include <wx/sizer.h>
-#include "ConnectionContents.hpp"
+#include "ChatService.hpp"
 
 class CMainPanel : public CSplitPanel
 {
@@ -33,7 +33,7 @@ public:
     void displayMembers(const std::vector<CMemberData*>& members);
 
     // チャンネルペインにチャンネルを表示
-    void displayChannels(const std::vector<CConnectionContents*>& connections);
+    void displayChannels(const std::vector<CChatServiceBase*>& services);
 
     // ログ一覧ペインにログを表示
     void displayLogs(const std::vector<CChatLog*>& logs);

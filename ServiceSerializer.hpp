@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <wx/xml/xml.h>
 #include <vector>
-#include "ConnectionContents.hpp"
+//#include "ConnectionContents.hpp"
 
 // サービスのシリアライズを行うクラス
 class CServiceSerializer
@@ -17,6 +17,6 @@ public:
     void init(void);
 
     // サービスを受け取り、ファイルに保存する
-    void saveService(const std::vector<CConnectionContents*> services);
+    //void saveService(const std::vector<CConnectionContents*> services);
 };
 

@@ -1,6 +1,6 @@
 ﻿#include "MainPanel.hpp"
 #include "vector"
-#include "ConnectionContents.hpp"
+#include "ChatService.hpp"
 using namespace std;
 
 
@@ -78,10 +78,10 @@ void CMainPanel::displayMembers(const vector<CMemberData*>& members)
 }
 
 // チャンネルペインにチャンネルを表示
-void CMainPanel::displayChannels(const std::vector<CConnectionContents*>& connections)
+void CMainPanel::displayChannels(const std::vector<CChatServiceBase*>& services)
 {
     m_cnBox->Show(false);
-    m_cnBox->displayChannels(connections);
+    m_cnBox->displayChannels(services);
     m_cnBox->Show(true);
 
 }

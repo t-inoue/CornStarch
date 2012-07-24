@@ -8,7 +8,7 @@
 #include "IConnection.hpp"
 
 // 通信のModelコンテンツを扱うクラス
-class CConnectionContents
+class CChatServiceBase
 {
 protected:
     // イベントハンドラ
@@ -28,8 +28,8 @@ protected:
     int m_id;
 
 public:
-    CConnectionContents(void);
-    virtual ~CConnectionContents(void);
+    CChatServiceBase(void);
+    virtual ~CChatServiceBase(void);
 
     // IDを取得
 	int getId() const
@@ -56,7 +56,7 @@ public:
 
 
     // 初期化を行う
-    virtual void init(wxEvtHandler* handler);
+    virtual void init(wxEvtHandler* handler) = 0;
 
     // ユーザがログインしているか
     bool isUserLogin(void) const;

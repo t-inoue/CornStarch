@@ -1,18 +1,18 @@
 ﻿
-#include "SCConnectionContents.h"
+#include "SCService.h"
 #include "SCConnection.hpp"
 #include "SCUser.hpp"
 
-CSCConnectionContents::CSCConnectionContents() {
+CSCService::CSCService() {
 
 }
 
-CSCConnectionContents::~CSCConnectionContents() {
+CSCService::~CSCService() {
 }
 
-void CSCConnectionContents::init(wxEvtHandler* handler)
+void CSCService::init(wxEvtHandler* handler)
 {
-	CConnectionContents::init(handler);
+	CChatServiceBase::init(handler);
 
     // スターチャットの通信
     m_connect = new CSCConnection();

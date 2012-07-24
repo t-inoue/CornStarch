@@ -3,7 +3,7 @@
 #include "MainMenuBar.hpp"
 #include "MainPanel.hpp"
 #include "MainNotifier.hpp"
-#include "ConnectionContents.hpp"
+#include "ChatService.hpp"
 #include <map>
 
 // ビュー部分(メニューバー、画面、ダイアログ)を管理
@@ -41,7 +41,7 @@ public: // 各ペインに関するメソッド
     void displayMembers(const std::vector<CMemberData*>& members);
 
     // チャンネル一覧を表示する
-    void displayChannels(const std::vector<CConnectionContents*>& connections);
+    void displayChannels(const std::vector<CChatServiceBase*>& services);
 
     // 投稿用ペインの文字を消す
     void clearPostPaneText(void);

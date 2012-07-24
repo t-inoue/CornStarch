@@ -1,23 +1,23 @@
-#include "IRCConnectionContents.h"
+#include "IRCService.h"
 #include "IRCUser.hpp"
 #include "IRCConnection.h"
 namespace CornStarch
 {
 namespace IRC
 {
-CIRCConnectionContents::CIRCConnectionContents()
+CIRCService::CIRCService()
 {
 
 }
 
-CIRCConnectionContents::~CIRCConnectionContents()
+CIRCService::~CIRCService()
 {
 }
 
-void CIRCConnectionContents::init(wxEvtHandler* handler)
+void CIRCService::init(wxEvtHandler* handler)
 {
 
-	CConnectionContents::init(handler);
+	CChatServiceBase::init(handler);
 
 	m_connect = new CIRCConnection();
 	m_connect->init(m_id, m_handler);

@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "ChannelData.hpp"
 #include <vector>
-#include "ConnectionContents.hpp"
+#include "ChatService.hpp"
 #include "header.hpp"
 #include "wx/treectrl.h"
 #include "ChannelSelectEvent.hpp"
@@ -26,7 +26,7 @@ public:
     void setStringSelection(const wxString& channel);
 
     // 所属チャンネル一覧を表示
-    void displayChannels(const vector<CConnectionContents*>& connections);
+    void displayChannels(const vector<CChatServiceBase*>& services);
 
 private:
     // チャンネルが選択された際のイベント処理

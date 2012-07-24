@@ -2,17 +2,17 @@
 #ifndef IRCCONNECTIONCONTENTS_H_
 #define IRCCONNECTIONCONTENTS_H_
 
-#include "ConnectionContents.hpp"
+#include "ChatService.hpp"
 namespace CornStarch
 {
 namespace IRC
 {
 //IRC用の通信モデルを保持するクラス
-class CIRCConnectionContents: public CConnectionContents
+class CIRCService: public CChatServiceBase
 {
 public:
-	CIRCConnectionContents();
-	virtual ~CIRCConnectionContents();
+	CIRCService();
+	virtual ~CIRCService();
 
 	//初期化します。
 	void init(wxEvtHandler* handler);
