@@ -10,6 +10,13 @@
 // 通信のModelコンテンツを扱うクラス
 class CChatServiceBase
 {
+public:
+    // チャットの種類
+    enum CHAT_TYPE{
+        STAR_CHAT = 0,
+        IRC,
+    };
+
 protected:
     // イベントハンドラ
     wxEvtHandler* m_handler;
@@ -26,6 +33,9 @@ protected:
     wxString m_name;
     // ID
     int m_id;
+
+    // チャットの種類
+    CHAT_TYPE m_type;
 
 public:
     CChatServiceBase(void);
@@ -54,6 +64,16 @@ public:
 		m_name = name;
 	}
 
+    // チャットの種類を取得
+    CHAT_TYPE getChatType(void) const
+    {
+        return m_type;
+    }
+
+    wxString getUserName(void) const
+    {
+        return m_user->getUserName();
+    }
 
     // 初期化を行う
     virtual void init(wxEvtHandler* handler) = 0;
