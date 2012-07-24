@@ -1,7 +1,8 @@
 ﻿#pragma once
 #include <wx/xml/xml.h>
 #include <vector>
-//#include "ConnectionContents.hpp"
+#include "IRCService.h"
+#include "SCService.h"
 
 // サービスのシリアライズを行うクラス
 class CServiceSerializer
@@ -17,6 +18,9 @@ public:
     void init(void);
 
     // サービスを受け取り、ファイルに保存する
-    //void saveService(const std::vector<CConnectionContents*> services);
+    void saveService(const std::vector<CChatServiceBase*>& services);
+
+    // 保存されたサービス情報を基に、vectorにpushする
+    void loadService(wxEvtHandler* handler, std::vector<CChatServiceBase*>& services);
 };
 

@@ -23,16 +23,6 @@ void CSCService::init(wxEvtHandler* handler)
     m_user->init();
     m_user->setChannel("");
 
-    // 認証
-    wxString basicKey = m_user->getBasicKey();
-    wxString nameKey = m_user->getNameKey();
-//    if (m_persist->isKeySaved(basicKey) && m_persist->isKeySaved(nameKey)){
-//
-//        // 保存されてデータから読み込み。
-//        m_user->setUserName(m_persist->loadValue(nameKey));
-//        m_user->setBasic(m_persist->loadValue(basicKey));
-//
-//        // 認証を開始
-//        m_connect->startAuthTask( m_user);
-//    }
+    // チャットのタイプ
+    m_type = CChatServiceBase::STAR_CHAT;
 }
