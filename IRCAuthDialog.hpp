@@ -1,7 +1,7 @@
-#pragma once
+ï»¿#pragma once
 #include "AuthDialog.hpp"
 
-// IRC‚ÌƒT[ƒo’Ç‰Á—p”FØƒ_ƒCƒAƒƒO
+// IRCã®ã‚µãƒ¼ãƒè¿½åŠ ç”¨èªè¨¼ãƒ€ã‚¤ã‚¢ãƒ­ã‚°
 class CIRCAuthDialog : public CAuthDialog
 {
 private:
@@ -11,10 +11,10 @@ public:
     CIRCAuthDialog(void);
     ~CIRCAuthDialog(void);
 
-    // ‰Šú‰»‚ğs‚¤
+    // åˆæœŸåŒ–ã‚’è¡Œã†
     void init(wxWindow* parent, const wxString& title);
 
-    // ƒjƒbƒNƒl[ƒ€‚ğæ“¾‚·‚é
+    // ãƒ‹ãƒƒã‚¯ãƒãƒ¼ãƒ ã‚’å–å¾—ã™ã‚‹
     wxString getNick(void) const;
 };
 
