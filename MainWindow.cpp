@@ -157,9 +157,10 @@ void CMainWindow::onIRCRegister(wxCommandEvent& event)
 void CMainWindow::addNewConneection(CChatServiceBase* connnection)
 {
 	connnection->setId(m_serverIdLog);
+	m_serverIdLog++;
+	connnection->setHost(m_view->getDlgHostName());
 	connnection->init(GetEventHandler());
 	m_contents.push_back(connnection);
-	m_serverIdLog++;
 	// コンテンツを更新
 	connnection->registerUser(m_view->getDlgUserName(),
 			m_view->getDlgPassword());

@@ -2,7 +2,7 @@
 
 using namespace std;
 
-const wxString CHttpClient::HOST_NAME = "example";
+//const wxString CHttpClient::HOST_NAME = "example";
 const wxString CHttpClient::HTTP_VER = "HTTP/1.1";
 const wxString CHttpClient::HTTP_PORT = "80";
 
@@ -26,7 +26,7 @@ void CHttpClient::init(void)
     CSocketClient::init();
 
     setPort(HTTP_PORT); // 80番ポート
-    setUrl(HOST_NAME); // ホスト名
+    //setUrl(HOST_NAME); // ホスト名
 }
 
 // HTTPレスポンスを受信して、Bodyを返す

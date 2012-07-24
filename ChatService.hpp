@@ -53,7 +53,17 @@ public:
 	{
 		m_name = name;
 	}
+	// ホストを取得
+	wxString getHost() const
+	{
+		return m_connect->getHost();
+	}
 
+	// ホストを設定
+	void setHost(wxString value)
+	{
+		m_connect->setHost(value);
+	}
 
     // 初期化を行う
     virtual void init(wxEvtHandler* handler) = 0;

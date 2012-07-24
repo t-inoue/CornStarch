@@ -32,6 +32,7 @@ wxThread::ExitCode CSCGetStreamTask::Entry()
 {
     // クライアントの初期化
     CSCClient* client = new CSCClient();
+    client->setUrl(m_host);
     client->init();
 
     client->connect();

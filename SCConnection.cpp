@@ -172,6 +172,7 @@ void CSCConnection::deleteAuthTask(void)
 // 別スレッドでタスクを開始する
 void CSCConnection::startThread(CSCTask* task)
 {
+	task->setHost(getHost());
 	// 別スレッドを作る
 	if (task->Create() != wxTHREAD_NO_ERROR)
 	{

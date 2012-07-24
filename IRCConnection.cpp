@@ -46,7 +46,10 @@ void CIRCConnection::init(int connectionId, wxEvtHandler* handler)
 	m_connectionId = connectionId;
 	m_handler = handler;
 	m_client = new CIRCClient();
+	m_client->setPort("6667");
+	m_client->setHost(getHost());
 	m_client->init(connectionId);
+
 }
 
 // メッセージを投稿するタスク(別スレッド)を開始する

@@ -25,12 +25,10 @@ void CIRCClient::init(int connectionId)
 	CSocketClient::init();
 	m_connectionId = connectionId;
 
-	m_port = "6667";
-	m_host = "example";
 
 }
-void CIRCClient::start(wxEvtHandler* handler, wxString userName,
-		wxString password)
+void CIRCClient::start(wxEvtHandler* handler, const wxString& userName,
+		const wxString& password)
 {
 
 	if (m_connected){
@@ -78,41 +76,40 @@ void CIRCClient::receiveLoop()
 		}
 	}
 }
-void CIRCClient::disconnect(void)
+void CIRCClient::quit(void)
 {
 	wxString content("QUIT\r\n");
 	send(content);
 }
-void CIRCClient::join(wxString channelName)
+void CIRCClient::join(const wxString& channelName)
 {
 	wxString content(wxString::Format(wxT("JOIN %s\r\n"), channelName));
 	send(content);
 }
-void CIRCClient::part(wxString channelName)
+void CIRCClient::part(const wxString& channelName)
 {
 	wxString content(wxString::Format(wxT("PART %s\r\n"), channelName));
 	send(content);
 }
-void CIRCClient::getTopicAsync(wxString channelName)
+void CIRCClient::getTopicAsync(const wxString& channelName)
 {
 	wxString content(wxString::Format(wxT("TOPIC %s\r\n"), channelName));
 	send(content);
 
 }
-void CIRCClient::getNamesAsync(wxString channelName)
+void CIRCClient::getNamesAsync(const wxString& channelName)
 {
 	wxString content(wxString::Format(wxT("NAMES %s\r\n"), channelName));
 	send(content);
-
 }
 
-void CIRCClient::sendMessage(wxString target, wxString content)
+void CIRCClient::sendMessage(const wxString& target, const wxString& content)
 {
 	wxString contentWxString(
 			wxString::Format(wxT("PRIVMSG %s %s\r\n"), target, content));
 	send(contentWxString);
 }
-void CIRCClient::sendNotice(wxString target, wxString content)
+void CIRCClient::sendNotice(const wxString& target, const wxString& content)
 {
 
 	wxString contentWxString(

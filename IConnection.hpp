@@ -5,11 +5,15 @@ using namespace std;
 
 // 通信部分のインターフェース
 class IConnection {
+
+	wxString m_host;
+
 public:
 	IConnection() {
 	}
 	virtual ~IConnection() {
 	}
+
 	// 初期化を行う
 	virtual void init(int connectionId,wxEvtHandler* handler) = 0;
 
@@ -50,6 +54,17 @@ public:
 	// 認証用タスク(別スレッド)を削除する
 	virtual void deleteAuthTask(void) =0;
 
+
+	// ホストを取得
+	wxString getHost() const
+	{
+		return m_host;
+	}
+	// ホストを設定
+	void setHost(wxString host)
+	{
+		m_host = host;
+	}
 };
 
 #endif /* IConnection_H_ */
