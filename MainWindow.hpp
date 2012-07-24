@@ -18,6 +18,7 @@ private:
     // 通信要素
     vector<CConnectionContents*> m_contents; // スターチャットのコンテンツを管理
     void addNewConneection(CConnectionContents* connnection);
+
     // wxWindowイベントを処理させたいクラスに利用するマクロ
     DECLARE_EVENT_TABLE()
 
@@ -72,13 +73,19 @@ private: // メニュー系
     // 表示を更新
     void onUpdateDisplay(wxCommandEvent& event);
 
+    // ニックネーム変更
+    void onNickChange(wxCommandEvent& event);
+
+    // トピック変更
+    void onChangeTopic(wxCommandEvent& event);
+
 private: // 画面系
 
     // 投稿ペインでEnterキーを押下
     void onEnter(wxCommandEvent& event);
 
     // チャンネル選択時
-    void onChannel(wxCommandEvent& event);
+    void onChannelSelected(CChannelSelectEvent& event);
 
 private: // 通信系
 

@@ -52,6 +52,22 @@ int CViewDialog::showModalAuthCancelDlg(void)
     return m_cancelAuthDlg->ShowModal();
 }
 
+// ニックネーム変更ダイアログを表示
+int CViewDialog::showModalNickDlg(void)
+{
+    m_nickDlg = new CNickChangeDialog();
+    m_nickDlg->init(m_parent, "ニックネームを指定");
+    return m_nickDlg->ShowModal();
+}
+
+// トピック変更ダイアログを表示
+int CViewDialog::showModalTopicDlg(void)
+{
+    m_topicDlg = new CChangeTopicDialog();
+    m_topicDlg->init(m_parent, "トピックを指定");
+    return m_topicDlg->ShowModal();
+}
+
 // ユーザ認証キャンセル用ダイアログを消す
 void CViewDialog::destroyAuthCancelDlg(void)
 {
@@ -84,3 +100,16 @@ wxString CViewDialog::getHostName(void) const
 {
     return m_authDlg->getHostName();
 }
+
+// ニックネームを取得
+wxString CViewDialog::getNickName(void) const
+{
+    return m_nickDlg->getNickName();
+}
+
+// トピック名を取得
+wxString CViewDialog::getTopic(void) const
+{
+    return m_topicDlg->getTopic();
+}
+

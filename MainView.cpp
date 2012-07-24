@@ -2,7 +2,7 @@
 
 using namespace std;
 
-CMainView::CMainView(void) : m_menuBar(NULL), m_panel(NULL), m_dialog(NULL)
+CMainView::CMainView(void) : m_menuBar(NULL), m_panel(NULL), m_dialog(NULL), m_notifier(NULL)
 {
 }
 
@@ -10,6 +10,7 @@ CMainView::CMainView(void) : m_menuBar(NULL), m_panel(NULL), m_dialog(NULL)
 CMainView::~CMainView(void)
 {
     delete m_dialog;
+    delete m_notifier;
 }
 
 
@@ -36,6 +37,12 @@ void CMainView::init(wxWindow* parent)
         m_dialog = new CViewDialog();
         m_dialog->init(parent);
     }
+
+    // 通知クラスを初期化
+    if (m_notifier == NULL){
+        m_notifier = new CMainNotifier();
+        m_notifier->init();
+    }
 }
 
 
@@ -52,12 +59,6 @@ wxWindowID CMainView::getPostPaneID(void) const
 wxWindowID CMainView::getCnPaneID(void) const
 {
     return m_panel->getCnPaneID();
-}
-
-// 選択されているチャンネル名を取得する
-wxString CMainView::getSelectedChannel(void) const
-{
-    return m_panel->getSelectedChannel();
 }
 
 // 指定したチャンネルを選択済み項目にする
@@ -141,6 +142,18 @@ int CMainView::showModalAuthCancelDlg(void)
     return m_dialog->showModalAuthCancelDlg();
 }
 
+// ニックネーム変更ダイアログを表示
+int CMainView::showModalNickDlg(void)
+{
+    return m_dialog->showModalNickDlg();
+}
+
+// トピック変更ダイアログを表示
+int CMainView::showModalTopicDlg(void)
+{
+    return m_dialog->showModalTopicDlg();
+}
+
 // 認証中止ダイアログを消す
 void CMainView::clearAuthCancelDlg(void)
 {
@@ -173,4 +186,26 @@ wxString CMainView::getDlgChannelName(void) const
 wxString CMainView::getDlgHostName(void) const
 {
     return m_dialog->getHostName();
+}
+
+// ニックネームを取得
+wxString CMainView::getNickName(void) const
+{
+    return m_dialog->getNickName();
+}
+
+// トピック名を取得
+wxString CMainView::getTopic(void) const
+{
+    return m_dialog->getTopic();
+}
+
+
+//////////////////////////////////////////////////////////////////////
+
+
+// メッセージを通知する
+void CMainView::messageNotify(const wxString& title, const wxString& message)
+{
+    m_notifier->messageNotify(title, message);
 }

@@ -11,7 +11,7 @@ class CMainLogHolder
 {
 private:
     std::vector<CChatLog*> m_logs; // ƒƒO‚ğ•Û‘¶‚·‚é
-    static const int MAX_LENGTH = 10; //ƒƒO‚ÌÅ‘åŒÂ”
+    static const int MAX_LENGTH = 200; //ƒƒO‚ÌÅ‘åŒÂ”
 
 public:
     CMainLogHolder(void);

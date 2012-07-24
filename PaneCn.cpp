@@ -1,4 +1,5 @@
 ﻿#include "PaneCn.hpp"
+
 using namespace std;
 
 CPaneCn::CPaneCn(void)
@@ -9,14 +10,19 @@ CPaneCn::~CPaneCn(void)
 {
 }
 
+
 //////////////////////////////////////////////////////////////////////
+
 
 // 初期化を行う
 void CPaneCn::init(wxWindow* parent)
 {
 	// スクロールバー(水平、垂直を必要に応じて)、ソート
-	Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL,
-			wxLB_NEEDED_SB | wxLB_SORT | wxLB_HSCROLL);
+	Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, 
+        wxTR_DEFAULT_STYLE | wxTR_HIDE_ROOT);
+
+    // Rootノードを追加
+    AddRoot("Root");
 }
 
 // 選択済み項目を決める
@@ -28,20 +34,70 @@ void CPaneCn::setStringSelection(const wxString& channel)
 // 所属チャンネル一覧を表示
 void CPaneCn::displayChannels(const vector<CConnectionContents*>& connections)
 {
-	// 現在の表示文字をクリアする
-	this->Clear();
+    // 項目を削除
+    wxTreeItemId rootId = GetRootItem();
+    DeleteChildren(rootId);
 
-	int size = (int) connections.size();
-	for (int i = 0; i < size; i++)
-	{
-		int id = connections[i]->getId();
-		stringstream idString;
-		idString << id;
-		int channelSize = (int) connections[i]->getChannels().size();
-		for (int j = 0; j < channelSize; j++)
-		{
-			this->Append(idString.str()+":"+connections[i]->getChannels()[j]);
-		}
-	}
+    // 各サーバについてループ
+    vector<CConnectionContents*>::const_iterator it;
+    for (it = connections.begin(); it != connections.end(); it++){
+
+        // サーバ情報をセット
+        CTreeServerItem* data = new CTreeServerItem();
+        data->setServerId((*it)->getId());
+
+        // サーバ名をセット(現在は暫定的にID)
+        stringstream ss;
+        ss << (*it)->getId();
+        wxTreeItemId id = AppendItem(rootId, "サーバ" + ss.str(), -1, -1, data); 
+
+        // 各チャンネルについてループ
+        vector<wxString>::const_iterator cit;
+        vector<wxString> vec = (*it)->getChannels();
+        for (cit = vec.begin(); cit != vec.end(); cit++){
+
+            // チャンネルをセット
+            AppendItem(id, *cit);
+        }
+    }
 }
+
+
+//////////////////////////////////////////////////////////////////////
+
+
+// チャンネルが選択された際のイベント処理
+void CPaneCn::onChannelSelected(wxTreeEvent& event)
+{
+    // 自分と親のツリーIDを取得
+    wxTreeItemId id = event.GetItem();
+    wxTreeItemId parentId = GetItemParent(id);
+
+    // アイテム名の取得
+    wxString itemName = GetItemText(id);
+
+    // コントローラへ投げるイベントを作成
+    CChannelSelectEvent* chEvent = new CChannelSelectEvent();
+
+    // 選択されたのがチャンネルなら
+    if (parentId != GetRootItem()){
+
+        // イベントの初期化
+        int serverId = ((CTreeServerItem*)GetItemData(parentId))->getServerId();
+        chEvent->setServerOrNot(false);
+        chEvent->setServerId(serverId);
+        chEvent->setServer(GetItemText(parentId));
+
+    } else {
+
+        // イベントの初期化
+        chEvent->setServerOrNot(true);
+    }
+
+    // イベントを送信
+    chEvent->setText(itemName);
+    chEvent->SetEventType(myEVT_SELECt_TREE_NODE);
+    wxQueueEvent(GetParent()->GetParent()->GetParent()->GetEventHandler(), chEvent);
+}
+
 

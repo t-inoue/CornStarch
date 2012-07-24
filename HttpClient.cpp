@@ -2,7 +2,7 @@
 
 using namespace std;
 
-const wxString CHttpClient::HOST_NAME = "chat.example.com";
+const wxString CHttpClient::HOST_NAME = "sample";
 const wxString CHttpClient::HTTP_VER = "HTTP/1.1";
 const wxString CHttpClient::HTTP_PORT = "80";
 
@@ -100,6 +100,17 @@ void CHttpClient::sendStreamDefault(const wxString& basic)
 {
     sendCommonHeader(0, basic);
     sendKeepAlive();
+    sendLF();
+}
+
+// PUT時にキー名をvalueを指定するときのリクエストヘッダ
+void CHttpClient::sendPutParticular(const wxString& key, const wxString& value, 
+    const wxString& basic)
+{
+    sendCommonHeader(key.size() + value.size() - 4, basic);
+    send("Content-Type: application/x-www-form-urlencoded; charset=UTF-8");
+    send("");
+    send(key + "=" + value);
     sendLF();
 }
 

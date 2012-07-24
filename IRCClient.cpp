@@ -11,7 +11,7 @@ namespace CornStarch
 namespace IRC
 {
 CIRCClient::CIRCClient() :
-		m_handler(NULL)
+m_handler(NULL), m_connected(false)
 {
 
 }
@@ -26,7 +26,7 @@ void CIRCClient::init(int connectionId)
 	m_connectionId = connectionId;
 
 	m_port = "6667";
-	m_host = "";
+	m_host = "sample";
 
 }
 void CIRCClient::start(wxEvtHandler* handler, wxString userName,

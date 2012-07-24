@@ -222,6 +222,22 @@ void CConnectionContents::onUpdateChannelView(void)
     }
 }
 
+// ニックネームの変更を行う際
+void CConnectionContents::onNickChange(const wxString& nick)
+{
+    // 自身のニックネーム変更
+    m_user->setNickName(nick);
+
+    // ニックネーム変更タスクを開始
+    m_connect->startNickChangeTask(m_user, nick);
+}
+
+// トピックの変更を行う際
+void CConnectionContents::onChangeTopic(const wxString& topic)
+{
+    m_connect->startChangeTopicTask(m_user, topic);
+}
+
 
 /////////////////////////////////////////
 

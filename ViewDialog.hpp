@@ -3,6 +3,8 @@
 #include "SCAuthDialog.hpp"
 #include "IRCAuthDialog.hpp"
 #include "ChannelDialog.hpp"
+#include "ChangeTopicDialog.hpp"
+#include "NickChangeDialog.hpp"
 
 // 表示するダイアログを管理
 class CViewDialog
@@ -11,6 +13,8 @@ private:
     CAuthDialog* m_authDlg; // ユーザ認証ダイアログ
     CChannelDialog* m_channelDlg; // チャンネル名指定用ダイアログ
     wxDialog* m_cancelAuthDlg; // ユーザ認証キャンセル用ダイアログ
+    CNickChangeDialog* m_nickDlg; // ニックネーム変更用ダイアログ
+    CChangeTopicDialog* m_topicDlg; // トピック変更用ダイアログ
 
     wxWindow* m_parent; // 親となるウィンドウ
 
@@ -33,6 +37,12 @@ public:
     // ユーザ認証キャンセル用ダイアログを表示
     int showModalAuthCancelDlg(void);
 
+    // ニックネーム変更ダイアログを表示
+    int showModalNickDlg(void);
+
+    // トピック変更ダイアログを表示
+    int showModalTopicDlg(void);
+
     // ユーザ認証キャンセル用ダイアログを消す
     void destroyAuthCancelDlg(void);
 
@@ -47,5 +57,11 @@ public:
 
     // ホスト名を取得
     wxString getHostName(void) const;
+
+    // ニックネームを取得
+    wxString getNickName(void) const;
+
+    // トピック名を取得
+    wxString getTopic(void) const;
 };
 

@@ -120,13 +120,6 @@ wxWindowID CMainPanel::getCnPaneID(void) const
     return m_cnBox->GetId();
 }
 
-// チャンネルペインで選ばれている項目の名前を返す
-wxString CMainPanel::getSelectedChannel(void) const
-{
-    int index = m_cnBox->GetSelection();
-    return m_cnBox->GetString(index);
-}
-
 
 //////////////////////////////////////////////////////////////////////
 

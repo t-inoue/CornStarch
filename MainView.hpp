@@ -2,6 +2,7 @@
 #include "ViewDialog.hpp"
 #include "MainMenuBar.hpp"
 #include "MainPanel.hpp"
+#include "MainNotifier.hpp"
 #include "ConnectionContents.hpp"
 #include <map>
 
@@ -12,6 +13,7 @@ private:
     CMainMenuBar* m_menuBar; // メニューバーを管理
     CViewDialog* m_dialog; // ダイアログを管理
     CMainPanel* m_panel; // 各ペインを管理
+    CMainNotifier* m_notifier; // 通知を行う
 
 public:
     CMainView(void);
@@ -27,9 +29,6 @@ public: // 各ペインに関するメソッド
 
     // チャンネルペインのIDを取得する
     wxWindowID getCnPaneID(void) const;
-
-    // 選択されているチャンネル名を取得する
-    wxString getSelectedChannel(void) const;
 
     // 指定したチャンネルを選択済み項目にする
     void setSelectedChannel(const wxString& channelName);
@@ -72,6 +71,12 @@ public: // ダイアログに関するメソッド
     // 認証中止ダイアログを表示する
     int showModalAuthCancelDlg(void);
 
+    // ニックネーム変更ダイアログを表示
+    int showModalNickDlg(void);
+
+    // トピック変更ダイアログを表示
+    int showModalTopicDlg(void);
+
     // 認証中止ダイアログを消す
     void clearAuthCancelDlg(void);
 
@@ -86,5 +91,16 @@ public: // ダイアログに関するメソッド
 
     // ホスト名を取得
     wxString getDlgHostName(void) const;
+
+    // ニックネームを取得
+    wxString getNickName(void) const;
+
+    // トピック名を取得
+    wxString getTopic(void) const;
+
+public: // 通知に関するメソッド
+
+    // メッセージを通知する
+    void messageNotify(const wxString& title, const wxString& message);
 };
 

@@ -23,4 +23,7 @@ void CMenuChannel::init(void)
     append(
         MENU_CHANNEL_PART,
         wxT("チャンネルから離脱"));
+    append(
+        MENU_CHANNEL_TOPIC_CHANGE,
+        wxT("トピックを変更"));
 }

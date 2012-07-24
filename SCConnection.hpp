@@ -7,6 +7,8 @@
 #include "SCJoinChannelTask.hpp"
 #include "SCPartChannelTask.hpp"
 #include "SCGetMemberInfoTask.hpp"
+#include "SCNickChangeTask.hpp"
+#include "SCTopicChangeTask.hpp"
 #include "SCGetStreamTask.hpp"
 #include "IConnection.hpp"
 #include "IUser.h"
@@ -49,6 +51,12 @@ public:
 
 	// メンバーの情報を取得するタスク(別スレッド)を開始する
 	void startGetMemberInfoTask(const IUser* user,const wxString& name);
+
+    // ニックネームを変更するタスク(別スレッド)を開始する
+    void startNickChangeTask(const IUser* user, const wxString& nick);
+
+    // トピックを変更するタスク(別スレッド)を開始する
+    void startChangeTopicTask(const IUser* user, const wxString& topic);
 
 	// ユーザが正規の人かどうか判断するタスク(別スレッド)を開始する
 	void startAuthTask(const IUser* user);

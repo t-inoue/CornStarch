@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "MessageVec.hpp"
 #include "MemberVec.hpp"
 
