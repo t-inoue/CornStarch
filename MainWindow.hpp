@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "MainView.hpp"
 #include "MainLogHolder.hpp"
-#include "ChatService.hpp"
+#include "ChatServiceBase.hpp"
 #include "vector"
 #include "PartEvent.hpp"
 #include "ServiceSerializer.hpp"

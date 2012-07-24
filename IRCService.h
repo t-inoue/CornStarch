@@ -2,7 +2,7 @@
 #ifndef IRCCONNECTIONCONTENTS_H_
 #define IRCCONNECTIONCONTENTS_H_
 
-#include "ChatService.hpp"
+#include "ChatServiceBase.hpp"
 namespace CornStarch
 {
 namespace IRC

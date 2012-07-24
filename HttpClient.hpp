@@ -5,78 +5,49 @@
 // HTTP通信を行うためのクライアントクラス
 class CHttpClient : public CSocketClient
 {
-
+	wxString  m_host;
 protected:
 
-    static const wxString HTTP_PORT; // ポート番号
-    static const wxString HOST_NAME; // ホスト名
-    static const wxString HTTP_VER; // HTTP/1.1
+    static const wxString HTTP_PORT;;
+	static const wxString HTTP_VER;
 
 public:
+	CHttpClient(void);
+	virtual ~CHttpClient(void);
+	void init(void);
+	std::string recvHttpResponseBody(void);
 
-    CHttpClient(void);
-    virtual ~CHttpClient(void);
+	wxString getHost() const
+	{
+		return m_host;
+	}
 
-    // 初期化を行う
-    void init(void);
-
-    // HTTPレスポンスを受信して、Bodyを返す
-    std::string recvHttpResponseBody(void);
+	void setHost(wxString host)
+	{
+		setUrl(host);
+		m_host = host;
+	}
 
 protected:
-
-    // HTTPリクエストメソッドの行を送信する
-    void sendRequestMethod(const wxString& method, const wxString& uri);
-
-    // HTTPレスポンスのbody部を取得する
-    std::string getResponceBody(const std::string& str) const;
-
-    // POST時のデフォルトリクエストヘッダ
-    void sendPostDefault(const wxString& str, const wxString& basic);
-
-    // GET時のデフォルトリクエストヘッダ
-    void sendGetDefault(const wxString& basic);
-
-    // PUT時のデフォルトリクエストヘッダ
-    void sendPutDefault(const wxString& basic);
-
-    // DELETE時のデフォルトリクエストヘッダ
-    void sendDeleteDefault(const wxString& basic);
-
-    // stream時のデフォルトリクエストヘッダ
-    void sendStreamDefault(const wxString& basic);
-
-    // PUT時にキー名をvalueを指定するときのリクエストヘッダ
-    void sendPutParticular(const wxString& key, const wxString& value, 
-        const wxString& basic);
-
-    // レスポンスがHTTPレスポンスとして完結しているかを判断する
-    bool isCorrectHttpResponse(void) const;
+	void sendRequestMethod(const wxString& method, const wxString& uri);
+	std::string getResponceBody(const std::string& str) const;
+	void sendPostDefault(const wxString& str, const wxString& basic);
+	void sendGetDefault(const wxString& basic);
+	void sendPutDefault(const wxString& basic);
+	void sendDeleteDefault(const wxString& basic);
+	void sendStreamDefault(const wxString& basic);
+	void sendPutParticular(const wxString& key, const wxString& value, const wxString& basic);
+	bool isCorrectHttpResponse(void) const;
 
 private:
-
-    // 共通部分となるHTTPヘッダを送る
-    void sendCommonHeader(int length, const wxString& basic);
+	void sendCommonHeader(int length, const wxString& basic);
 
 private:
-
-    // Hostを送る
-    void sendHost(void);
-
-    // Basic認証を行う行を送る
-    void sendAuth(const wxString& basic);
-
-    // Acceptを送る
-    void sendAccept(void);
-
-    // Content-Lengthを送る
-    void sendLength(int length);
-
-    // Keep-Alive
-    void sendKeepAlive(void);
-
-    // bodyを送る
-    void sendBody(const wxString& body);
-
+	void sendHost(void);
+	void sendAuth(const wxString& basic);
+	void sendAccept(void);
+	void sendLength(int length);
+	void sendKeepAlive(void);
+	void sendBody(const wxString& body);
 };
 

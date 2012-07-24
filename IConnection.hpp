@@ -1,15 +1,16 @@
 ﻿#ifndef IConnection_H_
 #define IConnection_H_
+#include "header.hpp"
 #include "IUser.h"
 using namespace std;
 
 // 通信部分のインターフェース
 class IConnection {
-
-	wxString m_host;
+//protected:
+//	wxString m_host;
 
 public:
-	IConnection() {
+	IConnection(){
 	}
 	virtual ~IConnection() {
 	}
@@ -56,15 +57,15 @@ public:
 
 
 	// ホストを取得
-	wxString getHost() const
-	{
-		return m_host;
-	}
+	virtual wxString getHost() const = 0;
+//	{
+//		return m_host;
+//	}
 	// ホストを設定
-	void setHost(wxString host)
-	{
-		m_host = host;
-	}
+	virtual void setHost(wxString host) = 0;
+//	{
+//		m_host = host;
+//	}
 };
 
 #endif /* IConnection_H_ */

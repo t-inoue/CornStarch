@@ -21,9 +21,24 @@ class CIRCConnection: public IConnection
 	wxEvtHandler* m_handler;
 	int m_connectionId;
 	vector<CChannelData*> m_channels;
+	wxString m_host;
 public:
 	CIRCConnection();
 	virtual ~CIRCConnection(void);
+
+	// ホストを取得
+	wxString getHost() const
+	{
+		return m_host;
+	}
+	// ホストを設定
+	void setHost(wxString host)
+	{
+		m_host = host;
+		m_client->setHost(host);
+	}
+
+
 
 	//override 初期化を行う
 	void init(int connectionId, wxEvtHandler* handler);

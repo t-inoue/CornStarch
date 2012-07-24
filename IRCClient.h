@@ -69,16 +69,6 @@ public:
 	{
 		m_host = host;
 	}
-	// ポートを取得
-	wxString getPort() const
-	{
-		return m_port;
-	}
-	// ポートを設定
-	void setPort(wxString port)
-	{
-		m_port = port;
-	}
 }
 
 ;

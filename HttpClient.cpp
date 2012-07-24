@@ -165,7 +165,7 @@ void CHttpClient::sendCommonHeader(int length, const wxString& basic)
 // Hostを送る
 void CHttpClient::sendHost(void)
 {
-    send("Host: " + HOST_NAME);
+    send("Host: " + m_host);
 }
 
 // Basic認証を行う行を送る

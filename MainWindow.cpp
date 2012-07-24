@@ -162,8 +162,8 @@ void CMainWindow::addNewConneection(CChatServiceBase* connnection)
 {
 	connnection->setId(m_serverIdLog);
 	m_serverIdLog++;
-	connnection->setHost(m_view->getDlgHostName());
 	connnection->init(GetEventHandler());
+	connnection->setHost(m_view->getDlgHostName());
 	m_contents.push_back(connnection);
 	// コンテンツを更新
 	connnection->registerUser(m_view->getDlgUserName(),

@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "ChannelData.hpp"
 #include <vector>
-#include "ChatService.hpp"
+#include "ChatServiceBase.hpp"
 #include "header.hpp"
 #include "wx/treectrl.h"
 #include "ChannelSelectEvent.hpp"

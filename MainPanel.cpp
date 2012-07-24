@@ -1,6 +1,6 @@
 ﻿#include "MainPanel.hpp"
 #include "vector"
-#include "ChatService.hpp"
+#include "ChatServiceBase.hpp"
 using namespace std;
 
 

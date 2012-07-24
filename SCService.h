@@ -2,7 +2,7 @@
 #ifndef SCCONNECTIONCONTENTS_H_
 #define SCCONNECTIONCONTENTS_H_
 
-#include "ChatService.hpp"
+#include "ChatServiceBase.hpp"
 
 class CSCService: public CChatServiceBase {
 public:

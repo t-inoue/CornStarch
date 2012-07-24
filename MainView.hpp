@@ -3,7 +3,7 @@
 #include "MainMenuBar.hpp"
 #include "MainPanel.hpp"
 #include "MainNotifier.hpp"
-#include "ChatService.hpp"
+#include "ChatServiceBase.hpp"
 #include <map>
 
 // ビュー部分(メニューバー、画面、ダイアログ)を管理

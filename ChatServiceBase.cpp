@@ -1,4 +1,4 @@
-﻿#include "ChatService.hpp"
+﻿#include "ChatServiceBase.hpp"
 
 using namespace std;
 
@@ -320,7 +320,7 @@ void CChatServiceBase::onGetMemberStatus(const CMemberData& member)
 void CChatServiceBase::onGetMessageStream(const CMessageData& message)
 {
     // 別クライアントからのメッセージだったら、データ更新のみ
-    if (m_channel->hasSameMessage(message)){
+    if (m_channel->hasSameMessage(message)&& message.m_username == m_user->getUserName()){
         m_channel->onUpdateMessageId(message);
         return;
     }

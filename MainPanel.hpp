@@ -6,7 +6,7 @@
 #include "PaneCn.hpp"
 #include "PaneMember.hpp"
 #include <wx/sizer.h>
-#include "ChatService.hpp"
+#include "ChatServiceBase.hpp"
 
 class CMainPanel : public CSplitPanel
 {
