@@ -1,4 +1,4 @@
-#include "SCAuthDialog.hpp"
+﻿#include "SCAuthDialog.hpp"
 
 
 CSCAuthDialog::CSCAuthDialog(void)
