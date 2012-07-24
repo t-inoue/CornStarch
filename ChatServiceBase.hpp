@@ -86,6 +86,18 @@ public:
         return m_user->getUserName();
     }
 
+    wxString getBasic(void) const
+    {
+        return m_user->getBasic();
+    }
+
+    void regUser(const wxString& name, const wxString& basic)
+    {
+        m_user->setBasic(basic);
+        m_user->setUserName(name);
+        m_connect->startAuthTask(m_user);
+    }
+
     // 初期化を行う
     virtual void init(wxEvtHandler* handler) = 0;
 

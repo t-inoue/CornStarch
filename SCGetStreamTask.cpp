@@ -51,9 +51,9 @@ wxThread::ExitCode CSCGetStreamTask::Entry()
         size_t size = jsonVec.size();
         for (size_t i = 0; i < size; i++){
         	CConnectionEventBase* event = parseStream(jsonVec[i]);
-        	event->setConnectionId(m_connectionId);
             // イベントを送信
             if (event != NULL){
+                event->setConnectionId(m_connectionId);
                 wxQueueEvent(m_handler, event);
             }
         }

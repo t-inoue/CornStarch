@@ -1,6 +1,7 @@
 ﻿#include "ServiceSerializer.hpp"
 
 using namespace std;
+const wxString CServiceSerializer::PATH = "filename.xml";
 
 CServiceSerializer::CServiceSerializer(void) : m_doc(NULL)
 {
@@ -36,15 +37,26 @@ void CServiceSerializer::saveService(const vector<CChatServiceBase*>& services)
             // StarChatのとき
             wxXmlNode* serverRoot = new wxXmlNode(root, wxXML_ELEMENT_NODE, "StarChat");
             wxXmlNode* server1 = new wxXmlNode(serverRoot, wxXML_ELEMENT_NODE, "host");
-            wxXmlNode* child1 = new wxXmlNode(server1, wxXML_TEXT_NODE, "text", "example.co.jp");
+            wxXmlNode* child1 = new wxXmlNode(server1, wxXML_TEXT_NODE, "text", (*it)->getHost());
+            wxXmlNode* server3 = new wxXmlNode(serverRoot, wxXML_ELEMENT_NODE, "pass");
+            wxXmlNode* child3 = new wxXmlNode(server3, wxXML_TEXT_NODE, "text", (*it)->getBasic());
             wxXmlNode* server2 = new wxXmlNode(serverRoot, wxXML_ELEMENT_NODE, "name");
             wxXmlNode* child2 = new wxXmlNode(server2, wxXML_TEXT_NODE, "text", (*it)->getUserName());
+        } else {
 
+            // IRCのとき
+            wxXmlNode* serverRoot = new wxXmlNode(root, wxXML_ELEMENT_NODE, "IRC");
+            wxXmlNode* server1 = new wxXmlNode(serverRoot, wxXML_ELEMENT_NODE, "host");
+            wxXmlNode* child1 = new wxXmlNode(server1, wxXML_TEXT_NODE, "text", (*it)->getHost());
+            wxXmlNode* server2 = new wxXmlNode(serverRoot, wxXML_ELEMENT_NODE, "name");
+            wxXmlNode* child2 = new wxXmlNode(server2, wxXML_TEXT_NODE, "text", (*it)->getUserName());
+            wxXmlNode* server3 = new wxXmlNode(serverRoot, wxXML_ELEMENT_NODE, "nick");
+            wxXmlNode* child3 = new wxXmlNode(server3, wxXML_TEXT_NODE, "text", (*it)->getNickName());
         }
     }
 
     m_doc->SetRoot(root);
-    m_doc->Save("serial/filename.xml");
+    m_doc->Save(PATH);
 }
 
 // 保存されたサービス情報を基に、vectorにpushする
@@ -54,37 +66,53 @@ void CServiceSerializer::loadService(wxEvtHandler* handler,
 	CChatServiceBase* service;
 
     // ファイルが存在しない時
-    if (!m_doc->Load("serial/filename.xml")){
+    if (!m_doc->Load(PATH)){
         return;
     }
 
     // 各サーバ情報の読み込み
     wxXmlNode* child = m_doc->GetRoot()->GetChildren();
 
-    int count = 0;
+    int count = 1000;
 
     // 各サーバの情報から、サービスを作成
     while(child){
 
-        if (child->GetName() == "SCServer"){
+        if (child->GetName() == "StarChat"){
 
             // SC 文字列読み込み
             wxXmlNode* status = child->GetChildren();
-            wxString name = status->GetName();
+            wxString name = status->GetChildren()->GetContent();
             status = status->GetNext();
-            wxString pass = status->GetName();
+            wxString pass = status->GetChildren()->GetContent();
             status = status->GetNext();
-            wxString host = status->GetName();
+            wxString host = status->GetChildren()->GetContent();
 
             // サービス作成
             service = new CSCService();
-            service->init(handler);
             service->setId(count++);
-            service->registerUser(name, pass);
+            service->init(handler);
+            service->setHost(host);
             services.push_back(service);
-        } else {
+            service->regUser(name, pass);
 
-            // IRC (未記述) 
+        } else if (child->GetName() == "IRC"){
+
+            // IRC 文字列読み込み
+            wxXmlNode* status = child->GetChildren();
+            wxString nick = status->GetChildren()->GetContent();
+            status = status->GetNext();
+            wxString name = status->GetChildren()->GetContent();
+            status = status->GetNext();
+            wxString host = status->GetChildren()->GetContent();
+
+            // サービス作成
+            service = new CornStarch::IRC::CIRCService();
+            service->setId(count++);
+            service->init(handler);
+            service->setHost(host);
+            services.push_back(service);
+            service->regUser(nick, "");
         }
 
         // 次のサーバ情報の読み込み

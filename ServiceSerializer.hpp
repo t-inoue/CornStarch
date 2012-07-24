@@ -9,6 +9,7 @@ class CServiceSerializer
 {
 private:
     wxXmlDocument* m_doc;
+    static const wxString PATH;
 
 public:
     CServiceSerializer(void);
