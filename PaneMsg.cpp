@@ -57,6 +57,10 @@ void CPaneMsg::displayMessages(const vector<CMessageData*>& messages,
         body.Replace("\r", "");
         this->AppendText(body + "\n");
         this->SetStyle(index, index + body.size(), wxTextAttr(*wxBLACK));
+
+        if (i < size - 1){
+            drawDateLine(messages[i]->getTime("%Y/%m/%d(%a)"), messages[i + 1]->getTime("%Y/%m/%d(%a)"));
+        }
     }
 }
 
@@ -76,3 +80,12 @@ wxString CPaneMsg::getNickName(const wxString& userName, const map<wxString, wxS
     return nickTable.find(userName)->second;
 }
 
+// 必要に応じて日付変更線を描画
+void CPaneMsg::drawDateLine(const wxString& now, const wxString& next)
+{
+    if (now == next){
+        return;
+    }
+
+    AppendText("\n------" + next + "--------\n\n");
+}

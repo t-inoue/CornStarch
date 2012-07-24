@@ -25,5 +25,7 @@ private:
     wxString getNickName(const wxString& userName, 
         const std::map<wxString, wxString>& nickTable);
 
+    // 必要に応じて日付変更線を描画
+    void drawDateLine(const wxString& now, const wxString& next);
 };
 
