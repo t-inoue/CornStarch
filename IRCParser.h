@@ -15,10 +15,13 @@
 
 using namespace std;
 
-namespace CornStarch {
-namespace IRC {
+namespace CornStarch
+{
+namespace IRC
+{
 //IRC用のイベントから呼び出します。
-class CIRCParser {
+class CIRCParser
+{
 
 	// メッセージに設定するId
 	int m_messageId;

@@ -12,9 +12,12 @@
 #include "IUser.h"
 using namespace std;
 
-namespace CornStarch {
-namespace IRC {
-class CIRCUser: public IUser {
+namespace CornStarch
+{
+namespace IRC
+{
+class CIRCUser: public IUser
+{
 
 //            static const int MAX_LENGTH = 1024; // basicエンコード後の最大文字長
 //            static const wxString NAME_KEY; // ユーザ名保存に使うキー名
@@ -37,7 +40,8 @@ public:
 	// ユーザ情報を初期化
 	void init(void);
 
-	wxString getPassword() {
+	wxString getPassword()
+	{
 		return m_password;
 	}
 
@@ -92,17 +96,31 @@ public:
 	// メッセージ中にキーワードが含まれているか
 	bool isCalled(const wxString& message) const;
 
-    // basic認証用文字列をセット
-    virtual void setBasic(const wxString& basic) {};
+	// basic認証用文字列をセット
+	virtual void setBasic(const wxString& basic)
+	{
+	}
+	;
 
-    // ユーザ名をセット
-    virtual void setUserName(const wxString& name) {};
+	// ユーザ名をセット
+	virtual void setUserName(const wxString& name)
+	{
+	}
+	;
 
-    // basic文字列を保存する際のキー名を取得
-    virtual wxString getBasicKey(void) const {return "";};
+	// basic文字列を保存する際のキー名を取得
+	virtual wxString getBasicKey(void) const
+	{
+		return "";
+	}
+	;
 
-    // 名前を保存する際のキー名を取得
-    virtual wxString getNameKey(void) const {return "";};
+	// 名前を保存する際のキー名を取得
+	virtual wxString getNameKey(void) const
+	{
+		return "";
+	}
+	;
 
 };
 }

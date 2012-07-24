@@ -11,7 +11,7 @@ namespace CornStarch
 namespace IRC
 {
 CIRCClient::CIRCClient() :
-m_handler(NULL), m_connected(false)
+		m_handler(NULL), m_connected(false)
 {
 
 }
@@ -33,8 +33,7 @@ void CIRCClient::start(wxEvtHandler* handler, wxString userName,
 		wxString password)
 {
 
-	if (m_connected)
-	{
+	if (m_connected){
 		return;
 	}
 
@@ -61,20 +60,16 @@ void CIRCClient::receiveLoop()
 {
 	CIRCParser parser;
 
-	while (m_connected)
-	{
+	while (m_connected){
 		this->m_buffer = "";
 		receive();
-		if (this->m_buffer != "")
-		{
+		if (this->m_buffer != ""){
 			vector<string> messages = CStringUtility::split(this->m_buffer,
 					"\n");
-			for (int i = 0; i < messages.size(); i++)
-			{
+			for (int i = 0; i < messages.size(); i++){
 				cout << messages[i].c_str();
 				CConnectionEventBase* event = parser.parse(messages[i]);
-				if (event != NULL)
-				{
+				if (event != NULL){
 					event->setConnectionId(m_connectionId);
 					wxQueueEvent(m_handler, event);
 				}

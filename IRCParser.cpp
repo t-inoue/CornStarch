@@ -1,5 +1,4 @@
-﻿
-#include <iostream>
+﻿#include <iostream>
 #include "IRCParser.h"
 #include "vector"
 #include "GetMemberEvent.hpp"
@@ -35,8 +34,7 @@ CIRCParser::~CIRCParser()
 
 CConnectionEventBase* CIRCParser::parse(const std::string& content)
 {
-	if (content[0] == ':')
-	{
+	if (content[0] == ':'){
 		int index = 1;
 		int nextIndex = content.find(" ");
 		string host = content.substr(index, nextIndex - index);
@@ -45,33 +43,26 @@ CConnectionEventBase* CIRCParser::parse(const std::string& content)
 		string statusCode = content.substr(index, nextIndex - index);
 		index = nextIndex + 1;
 		string param = content.substr(index);
-		if (statusCode == "PRIVMSG")
-		{
+		if (statusCode == "PRIVMSG"){
 			m_messageId++;
 			return createPrivateMessageEvent(host, param);
 		}
-		if (statusCode == "PART")
-		{
+		if (statusCode == "PART"){
 			return createPartMessageEvent(host, param);
 		}
-		if (statusCode == "JOIN")
-		{
+		if (statusCode == "JOIN"){
 			return createJoinMessageEvent(host, param);
 		}
-		if (statusCode == "TOPIC")
-		{
+		if (statusCode == "TOPIC"){
 			return createTopicMessageEvent(host, param);
 		}
-		if (statusCode == "353")
-		{
+		if (statusCode == "353"){
 			addNames(param);
 		}
-		if (statusCode == "332")
-		{
+		if (statusCode == "332"){
 			return createTopicEvent(param);
 		}
-		if (statusCode == "366")
-		{
+		if (statusCode == "366"){
 			return createNamesEvent(param);
 		}
 
@@ -156,10 +147,8 @@ CConnectionEventBase* CIRCParser::createNamesEvent(const string& param)
 
 	// 各メンバについてループ
 	int size = (int) names.size();
-	for (int i = 0; i < size; i++)
-	{
-		if (names[i].size() != 0 && names[i] != "\r")
-		{
+	for (int i = 0; i < size; i++){
+		if (names[i].size() != 0 && names[i] != "\r"){
 			// パラメータの取得
 			CMemberData* mem = new CMemberData();
 			mem->m_name = names[i]; // 名前(name)
