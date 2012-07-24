@@ -18,8 +18,10 @@ CMainNotifier::~CMainNotifier(void)
 // 初期化を行う
 void CMainNotifier::init(void)
 {
+#ifdef _WIN32
     m_taskbar = new wxTaskBarIcon();
     m_taskbar->SetIcon(wxIcon());
+#endif
 }
 
 // 通知を行う

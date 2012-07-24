@@ -1,131 +1,134 @@
 ﻿#pragma once
 #include "MainView.hpp"
 #include "MainLogHolder.hpp"
-#include "ConnectionContents.hpp"
+#include "ChatService.hpp"
 #include "vector"
 #include "PartEvent.hpp"
 
 // ビューコントローラとなるウィンドウクラス
-class CMainWindow : public wxFrame
+class CMainWindow: public wxFrame
 {
 private:
 
-    // CornStarch全般
-    CMainView* m_view; // ビューの挙動を管理
-    CMainLogHolder* m_logHolder; // チャットのログを保持
-    int m_serverIdLog;
-    int m_currentServerId;
-    // 通信要素
-    vector<CConnectionContents*> m_contents; // スターチャットのコンテンツを管理
-    void addNewConneection(CConnectionContents* connnection);
+	// CornStarch全般
+	CMainView* m_view; // ビューの挙動を管理
+	CMainLogHolder* m_logHolder; // チャットのログを保持
+	int m_serverIdLog;
+	int m_currentServiceId;
+	// 通信要素
+	vector<CChatServiceBase*> m_contents; // スターチャットのコンテンツを管理
+	void addNewConneection(CChatServiceBase* connnection);
 
-    // wxWindowイベントを処理させたいクラスに利用するマクロ
-    DECLARE_EVENT_TABLE()
+	// wxWindowイベントを処理させたいクラスに利用するマクロ
+DECLARE_EVENT_TABLE()
 
 public:
-    CMainWindow(void);
-    ~CMainWindow(void);
+	CMainWindow(void);
+	~CMainWindow(void);
 
-    // 初期化を行う
-    void init(void);
+	// 初期化を行う
+	void init(void);
 
 private:
 
-    // 画面操作に関するイベントハンドラを設定する
-    void initHandle(void);
-    
-    // Modelがあれば画面を更新する
-    void updateAllView(int connectionId,const wxString& channel);
+	// 画面操作に関するイベントハンドラを設定する
+	void initHandle(void);
 
-    // メッセージ画面を更新する(Modelがある場合)
-    void updateMessageView(int connectionId,const wxString& channel);
+	// Modelがあれば画面を更新する
+	void updateAllView(int connectionId, const wxString& channel);
 
-    // メンバー画面を更新する(Modelがある場合)
-    void updateMemberView(int connectionId,const wxString& channel);
+	// メッセージ画面を更新する(Modelがある場合)
+	void updateMessageView(int connectionId, const wxString& channel);
 
-    // チャンネル画面とタイトルバーを更新する(Modelがある場合)
-    void updateChannelView(int connectionId,const wxString& channel);
+	// メンバー画面を更新する(Modelがある場合)
+	void updateMemberView(int connectionId, const wxString& channel);
 
-    // タイトルバーにタイトルを表示する
-    void displayTitle(const wxString& channel, const wxString& topic);
+	// チャンネル画面とタイトルバーを更新する(Modelがある場合)
+	void updateChannelView(int connectionId, const wxString& channel);
 
-    CConnectionContents* getConnectionContents(int connectionId);
-private: // メニュー系
+	// タイトルバーにタイトルを表示する
+	void displayTitle(const wxString& channel, const wxString& topic);
 
-    // 終了
-    void onQuit(wxCommandEvent& event);
+	CChatServiceBase* getConnectionContents(int connectionId);
+private:
+	// メニュー系
 
-    // ユーザ登録(SC)
-    void onSCRegister(wxCommandEvent& event);
+	// 終了
+	void onQuit(wxCommandEvent& event);
 
-    // ユーザ登録(IRC)
-    void onIRCRegister(wxCommandEvent& event);
+	// ユーザ登録(SC)
+	void onSCRegister(wxCommandEvent& event);
 
-    // ログアウトメニュー
-    void onLogout(wxCommandEvent& event);
+	// ユーザ登録(IRC)
+	void onIRCRegister(wxCommandEvent& event);
 
-    // チャンネルに参加メニュー
-    void onJoin(wxCommandEvent& event);
+	// ログアウトメニュー
+	void onLogout(wxCommandEvent& event);
 
-    // チャンネルから離脱メニュー
-    void onPart(wxCommandEvent& event);
+	// チャンネルに参加メニュー
+	void onJoin(wxCommandEvent& event);
 
-    // 表示を更新
-    void onUpdateDisplay(wxCommandEvent& event);
+	// チャンネルから離脱メニュー
+	void onPart(wxCommandEvent& event);
 
-    // ニックネーム変更
-    void onNickChange(wxCommandEvent& event);
+	// 表示を更新
+	void onUpdateDisplay(wxCommandEvent& event);
 
-    // トピック変更
-    void onChangeTopic(wxCommandEvent& event);
+	// ニックネーム変更
+	void onNickChange(wxCommandEvent& event);
 
-private: // 画面系
+	// トピック変更
+	void onChangeTopic(wxCommandEvent& event);
 
-    // 投稿ペインでEnterキーを押下
-    void onEnter(wxCommandEvent& event);
+private:
+	// 画面系
 
-    // チャンネル選択時
-    void onChannelSelected(CChannelSelectEvent& event);
+	// 投稿ペインでEnterキーを押下
+	void onEnter(wxCommandEvent& event);
 
-private: // 通信系
+	// チャンネル選択時
+	void onChannelSelected(CChannelSelectEvent& event);
 
-    // メッセージ投稿終了時
-    void onFinishPostMessage(wxThreadEvent& event);
+private:
+	// 通信系
 
-    // 認証情報の受信時
-    void onGetAuth(CAuthEvent& event);
+	// メッセージ投稿終了時
+	void onFinishPostMessage(wxThreadEvent& event);
 
-    // メッセージ一覧受信時
-    void onGetMessages(CGetMessageEvent& event);
+	// 認証情報の受信時
+	void onGetAuth(CAuthEvent& event);
 
-    // メンバー一覧受信時
-    void onGetMembers(CGetMemberEvent& event);
+	// メッセージ一覧受信時
+	void onGetMessages(CGetMessageEvent& event);
 
-    // チャンネル一覧受信時
-    void onGetChannels(CGetChannelEvent& event);
+	// メンバー一覧受信時
+	void onGetMembers(CGetMemberEvent& event);
 
-    // チャンネル参加時
-    void onJoinChannel(CJoinEvent& event);
+	// チャンネル一覧受信時
+	void onGetChannels(CGetChannelEvent& event);
 
-    // チャンネル離脱時
-    void onPartChannel(CPartEvent& event);
+	// チャンネル参加時
+	void onJoinChannel(CJoinEvent& event);
 
-    // メンバー情報の受信時
-    void onGetMemberInfo(CGetMemberInfoEvent& event);
+	// チャンネル離脱時
+	void onPartChannel(CPartEvent& event);
 
-    // メッセージストリーム受信時
-    void onMsgStream(CMsgStreamEvent& event);
+	// メンバー情報の受信時
+	void onGetMemberInfo(CGetMemberInfoEvent& event);
 
-    // チャンネル参加ストリーム受信時
-    void onJoinStream(CJoinStreamEvent& event);
+	// メッセージストリーム受信時
+	void onMsgStream(CMsgStreamEvent& event);
 
-    // チャンネル離脱ストリーム受信時
-    void onPartStream(CPartStreamEvent& event);
+	// チャンネル参加ストリーム受信時
+	void onJoinStream(CJoinStreamEvent& event);
 
-    // チャンネル更新ストリーム受信時
-    void onChannelStream(CChannelStreamEvent& event);
+	// チャンネル離脱ストリーム受信時
+	void onPartStream(CPartStreamEvent& event);
 
-    // ユーザ情報更新ストリーム受信時
-    void onUserStream(CUserStreamEvent& event);
+	// チャンネル更新ストリーム受信時
+	void onChannelStream(CChannelStreamEvent& event);
+
+	// ユーザ情報更新ストリーム受信時
+	void onUserStream(CUserStreamEvent& event);
 
 };

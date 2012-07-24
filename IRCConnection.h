@@ -50,11 +50,15 @@ public:
 	//override メンバーの情報を取得するタスク(別スレッド)を開始する
 	void startGetMemberInfoTask(const IUser* user, const wxString& userName);
 
-    //override ニックネームを変更するタスク(別スレッド)を開始する(未実装)
-    void startNickChangeTask(const IUser* user, const wxString& nick){}
+	//override ニックネームを変更するタスク(別スレッド)を開始する(未実装)
+	void startNickChangeTask(const IUser* user, const wxString& nick)
+	{
+	}
 
-    //override トピックを変更するタスク(別スレッド)を開始する(未実装)
-    void startChangeTopicTask(const IUser* user, const wxString& topic){}
+	//override トピックを変更するタスク(別スレッド)を開始する(未実装)
+	void startChangeTopicTask(const IUser* user, const wxString& topic)
+	{
+	}
 
 	//override ユーザが正規の人かどうか判断するタスク(別スレッド)を開始する
 	void startAuthTask(const IUser* user);

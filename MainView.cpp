@@ -81,9 +81,9 @@ void CMainView::displayMembers(const vector<CMemberData*>& members)
 }
 
 // チャンネル一覧を表示する
-void CMainView::displayChannels(const std::vector<CConnectionContents*>& connections)
+void CMainView::displayChannels(const std::vector<CChatServiceBase*>& services)
 {
-    m_panel->displayChannels(connections);
+    m_panel->displayChannels(services);
 }
 
 // 投稿用ペインの文字を消す

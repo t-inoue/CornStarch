@@ -32,14 +32,14 @@ void CPaneCn::setStringSelection(const wxString& channel)
 }
 
 // 所属チャンネル一覧を表示
-void CPaneCn::displayChannels(const vector<CConnectionContents*>& connections)
+void CPaneCn::displayChannels(const vector<CChatServiceBase*>& connections)
 {
     // 項目を削除
     wxTreeItemId rootId = GetRootItem();
     DeleteChildren(rootId);
 
     // 各サーバについてループ
-    vector<CConnectionContents*>::const_iterator it;
+    vector<CChatServiceBase*>::const_iterator it;
     for (it = connections.begin(); it != connections.end(); it++){
 
         // サーバ情報をセット
