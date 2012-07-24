@@ -77,7 +77,6 @@ void CIRCClient::receiveLoop()
 					}
 				}
 			}
-
 		}
 	}
 }
