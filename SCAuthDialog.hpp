@@ -1,7 +1,7 @@
-#pragma once
+ï»¿#pragma once
 #include "AuthDialog.hpp"
 
-// StarChatƒT[ƒo’Ç‰Á—p”FØƒ_ƒCƒAƒƒO‚Ìì¬
+// StarChatã‚µãƒ¼ãƒè¿½åŠ ç”¨èªè¨¼ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®ä½œæˆ
 class CSCAuthDialog : public CAuthDialog
 {
 public:

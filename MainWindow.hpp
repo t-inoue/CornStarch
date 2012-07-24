@@ -4,6 +4,7 @@
 #include "ConnectionContents.hpp"
 #include "vector"
 #include "PartEvent.hpp"
+#include "ServiceSerializer.hpp"
 
 // ビューコントローラとなるウィンドウクラス
 class CMainWindow : public wxFrame
@@ -18,6 +19,9 @@ private:
     // 通信要素
     vector<CConnectionContents*> m_contents; // スターチャットのコンテンツを管理
     void addNewConneection(CConnectionContents* connnection);
+
+    // サービスのシリアライズ
+    CServiceSerializer* m_serialize;
 
     // wxWindowイベントを処理させたいクラスに利用するマクロ
     DECLARE_EVENT_TABLE()

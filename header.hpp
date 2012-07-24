@@ -4,6 +4,7 @@
 
 #pragma comment(lib, "wxmsw29ud_core.lib")
 #pragma comment(lib, "wxmsw29ud_adv.lib")
+#pragma comment(lib, "wxbase29ud_xml.lib")
 #pragma comment(lib, "wxbase29ud.lib")
 #pragma comment(lib, "wxtiffd.lib")
 #pragma comment(lib, "wxjpegd.lib")

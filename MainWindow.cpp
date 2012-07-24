@@ -39,6 +39,10 @@ void CMainWindow::init(void)
     // ログ保持部の初期化
     m_logHolder = new CMainLogHolder();
 
+    // サービスのシリアライズ
+    m_serialize = new CServiceSerializer();
+    m_serialize->init();
+
     // イベントハンドラの初期化
     initHandle();
 }
