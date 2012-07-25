@@ -9,14 +9,10 @@ CSCConnection::CSCConnection(void) :
 
 CSCConnection::~CSCConnection(void)
 {
-	if (m_getStreamTask != NULL)
-	{
-		if (m_getStreamTask->IsRunning())
-		{
+	if (m_getStreamTask != NULL){
+		if (m_getStreamTask->IsRunning()){
 			m_getStreamTask->Delete();
-		}
-		else
-		{
+		} else{
 			delete m_getStreamTask;
 		}
 	}
@@ -33,7 +29,7 @@ void CSCConnection::init(int connectionId, wxEvtHandler* handler)
 
 // メッセージを投稿するタスク(別スレッド)を開始する
 void CSCConnection::startPostMessageTask(const IUser* user,
-		const wxString& message, const wxString& channel)
+        const wxString& message, const wxString& channel)
 {
 	CSCPostMessageTask* postMessageTask = new CSCPostMessageTask();
 	postMessageTask->init(m_connetionId, m_handler, channel, user->getBasic());
@@ -45,18 +41,21 @@ void CSCConnection::startPostMessageTask(const IUser* user,
 
 // チャンネルのメッセージを取得するタスク(別スレッド)を開始する
 void CSCConnection::startGetMessageTask(const IUser* user,
-		const wxString& channel)
+        const wxString& channel)
 {
-	CSCGetMessageTask* getMessageTask = new CSCGetMessageTask();
-	getMessageTask->init(m_connetionId, m_handler, channel, user->getBasic());
+	if (channel != ""){
+		CSCGetMessageTask* getMessageTask = new CSCGetMessageTask();
+		getMessageTask->init(m_connetionId, m_handler, channel,
+		        user->getBasic());
 
-	// 別スレッドでの開始
-	startThread(getMessageTask);
+		// 別スレッドでの開始
+		startThread(getMessageTask);
+	}
 }
 
 // チャンネルのメンバーを取得するタスク(別スレッド)を開始する
 void CSCConnection::startGetMemberTask(const IUser* user,
-		const wxString& channel)
+        const wxString& channel)
 {
 	CSCGetMemberTask* getMemberTask = new CSCGetMemberTask();
 	getMemberTask->init(m_connetionId, m_handler, channel, user->getBasic());
@@ -70,38 +69,40 @@ void CSCConnection::startGetChannelTask(const IUser* user)
 {
 
 	CSCGetChannelTask* getChannelTask = new CSCGetChannelTask();
-	getChannelTask->init(m_connetionId, m_handler, user->getUserName(), user->getBasic());
+	getChannelTask->init(m_connetionId, m_handler, user->getUserName(),
+	        user->getBasic());
 
 	// 別スレッドでの開始
 	startThread(getChannelTask);
 }
 
 // チャンネルから離脱するタスク(別スレッド)を開始する
-void CSCConnection::startPartTask(const IUser* user,
-		const wxString& channel)
+void CSCConnection::startPartTask(const IUser* user, const wxString& channel)
 {
 
 	CSCPartChannelTask* partChannelTask = new CSCPartChannelTask();
-	partChannelTask->init(m_connetionId, m_handler, user->getUserName(), channel, user->getBasic());
+	partChannelTask->init(m_connetionId, m_handler, user->getUserName(),
+	        channel, user->getBasic());
 
 	// 別スレッドでの開始
 	startThread(partChannelTask);
 }
 
 // チャンネルに参加するタスク(別スレッド)を開始する
-void CSCConnection::startJoinTask(const IUser* user,
-		const wxString& channel)
+void CSCConnection::startJoinTask(const IUser* user, const wxString& channel)
 {
 
 	CSCJoinChannelTask* joinChannelTask = new CSCJoinChannelTask();
-	joinChannelTask->init(m_connetionId, m_handler, user->getUserName(), channel, user->getBasic());
+	joinChannelTask->init(m_connetionId, m_handler, user->getUserName(),
+	        channel, user->getBasic());
 
 	// 別スレッドでの開始
 	startThread(joinChannelTask);
 }
 
 // メンバーの情報を取得するタスク(別スレッド)を開始する
-void CSCConnection::startGetMemberInfoTask(const IUser* user,const wxString& name)
+void CSCConnection::startGetMemberInfoTask(const IUser* user,
+        const wxString& name)
 {
 
 	CSCGetMemberInfoTask* getInfoTask = new CSCGetMemberInfoTask();
@@ -114,19 +115,21 @@ void CSCConnection::startGetMemberInfoTask(const IUser* user,const wxString& nam
 // ニックネームを変更するタスク(別スレッド)を開始する
 void CSCConnection::startNickChangeTask(const IUser* user, const wxString& nick)
 {
-    CSCNickChangeTask* changeNickTask = new CSCNickChangeTask();
-    changeNickTask->init(m_connetionId, m_handler, nick, user->getUserName(), user->getBasic());
+	CSCNickChangeTask* changeNickTask = new CSCNickChangeTask();
+	changeNickTask->init(m_connetionId, m_handler, nick, user->getUserName(),
+	        user->getBasic());
 
 	// 別スレッドでの開始
 	startThread(changeNickTask);
 }
 
 // トピックを変更するタスク(別スレッド)を開始する
-void CSCConnection::startChangeTopicTask(const IUser* user, const wxString& topic)
+void CSCConnection::startChangeTopicTask(const IUser* user,
+        const wxString& topic)
 {
-    CSCTopicChangeTask* changeTopicTask = new CSCTopicChangeTask();
-    changeTopicTask->init(m_connetionId, m_handler, user->getChannelString(), 
-        topic, user->getBasic());
+	CSCTopicChangeTask* changeTopicTask = new CSCTopicChangeTask();
+	changeTopicTask->init(m_connetionId, m_handler, user->getChannelString(),
+	        topic, user->getBasic());
 
 	// 別スレッドでの開始
 	startThread(changeTopicTask);
@@ -137,7 +140,8 @@ void CSCConnection::startAuthTask(const IUser* user)
 {
 	// 初期化
 	m_authTask = new CSCAuthTask();
-	m_authTask->init(m_connetionId, m_handler, user->getUserName(), user->getBasic());
+	m_authTask->init(m_connetionId, m_handler, user->getUserName(),
+	        user->getBasic());
 
 	// 別スレッドでの開始
 	startThread(m_authTask);
@@ -147,15 +151,15 @@ void CSCConnection::startAuthTask(const IUser* user)
 void CSCConnection::startStreamTask(const IUser* user)
 {
 	// 既に実行中だったら
-	if (m_getStreamTask != NULL)
-	{
+	if (m_getStreamTask != NULL){
 
 		return;
 	}
 
 	// ストリームの初期化
 	m_getStreamTask = new CSCGetStreamTask();
-	m_getStreamTask->init(m_connetionId, m_handler ,user->getUserName(), user->getBasic());
+	m_getStreamTask->init(m_connetionId, m_handler, user->getUserName(),
+	        user->getBasic());
 
 	// 別スレッドでの実行
 	startThread(m_getStreamTask);
@@ -174,16 +178,14 @@ void CSCConnection::startThread(CSCTask* task)
 {
 	task->setHost(getHost());
 	// 別スレッドを作る
-	if (task->Create() != wxTHREAD_NO_ERROR)
-	{
+	if (task->Create() != wxTHREAD_NO_ERROR){
 		delete task;
 		task = NULL;
 		return;
 	}
 
 	// 別スレッドを走らせる
-	if (task->Run() != wxTHREAD_NO_ERROR)
-	{
+	if (task->Run() != wxTHREAD_NO_ERROR){
 		delete task;
 		task = NULL;
 		return;
