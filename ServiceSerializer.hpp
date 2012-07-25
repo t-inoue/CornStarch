@@ -34,12 +34,8 @@ public:
     void saveService(const std::map<int,CChatServiceBase*>& services);
 
     // 保存されたサービス情報を基に、vectorにpushする
-//<<<<<<< HEAD
     void loadService(wxEvtHandler* handler, std::map<int,CChatServiceBase*>& services,
         int& serviceId);
-//=======
-//    void loadService(wxEvtHandler* handler, std::vector<CChatServiceBase*>& services,
-//        int& serviceId);
 
 private:
 
@@ -49,7 +45,5 @@ private:
 
     // サービス情報をRootノードに追加
     void addServiceToRoot(wxXmlNode* root, const CChatServiceBase* service);
-//
-//>>>>>>> regSerial
 };
 
