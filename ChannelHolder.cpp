@@ -2,7 +2,7 @@
 
 using namespace std;
 
-CChannelHolder::CChannelHolder(void)
+CChannelHolder::CChannelHolder(void):m_isLoaded(false)
 {
 }
 
@@ -24,6 +24,7 @@ void CChannelHolder::init(void)
 // チャンネル一覧をセットする
 void CChannelHolder::setChannels(const vector<CChannelData*>& channels)
 {
+	m_isLoaded = true;
     // チャンネル一覧を空にする
     deleteChannels();
 
@@ -64,7 +65,7 @@ vector<wxString> CChannelHolder::getChannels(void) const
 // 既にチャンネル一覧を取得したか
 bool CChannelHolder::hasReceivedChannel(void) const
 {
-    return !m_channels.empty();
+    return m_isLoaded;
 }
 
 // チャンネルを追加する

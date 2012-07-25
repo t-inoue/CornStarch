@@ -92,7 +92,8 @@ void CPaneCn::onChannelSelected(wxTreeEvent& event)
         chEvent->setServer(GetItemText(parentId));
 
     } else {
-
+        int serverId = ((CTreeServerItem*)GetItemData(id))->getServerId();
+    	 chEvent->setServerId(serverId);
         // イベントの初期化
         chEvent->setServerOrNot(true);
     }

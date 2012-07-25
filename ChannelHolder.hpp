@@ -8,7 +8,7 @@ class CChannelHolder
 {
 private:
     std::map<wxString, CChannelStatus*> m_channels; // チャンネル一覧
-
+    bool m_isLoaded;
 public:
     CChannelHolder(void);
     ~CChannelHolder(void);

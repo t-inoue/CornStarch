@@ -165,8 +165,7 @@ void CIRCConnection::startGetMemberInfoTask(const IUser* user,
 void CIRCConnection::startAuthTask(const IUser* user)
 {
 	m_client->start(m_handler, user->getUserName(), "");
-	//Sample
-	startJoinTask(user, "#cc");
+
 }
 
 // ストリーム通信タスク(別スレッド)を開始

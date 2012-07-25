@@ -8,23 +8,23 @@ using namespace std;
 
 //////////////////////////////////////////////////////////////////////
 
-CMainWindow::CMainWindow(void) : m_view(NULL), m_logHolder(NULL),
-    m_serialize(NULL), m_serverIdLog(0), m_currentServiceId(0)
+CMainWindow::CMainWindow(void) :
+		m_view(NULL), m_logHolder(NULL), m_serialize(NULL), m_serverIdLog(0), m_currentServiceId(
+		        0)
 {
 }
 
 CMainWindow::~CMainWindow(void)
 {
-    // ファイルに保存
-    m_serialize->saveService(m_services);
+	// ファイルに保存
+	m_serialize->saveService(m_services);
 
 	delete m_view;
 	delete m_logHolder;
-    delete m_serialize;
+	delete m_serialize;
 
-	map<int,CChatServiceBase*>::iterator it = m_services.begin();
-	while( it != m_services.end() )
-	{
+	map<int, CChatServiceBase*>::iterator it = m_services.begin();
+	while (it != m_services.end()){
 		delete (*it).second;
 		++it;
 	}
@@ -43,22 +43,21 @@ void CMainWindow::init(void)
 	// ログ保持部の初期化
 	m_logHolder = new CMainLogHolder();
 
-    // イベントハンドラの初期化
-    initHandle();
+	// イベントハンドラの初期化
+	initHandle();
 
-    // サービスのシリアライズ
-    m_serialize = new CServiceSerializer();
-    m_serialize->init();
-    m_serialize->loadService(GetEventHandler(), m_services);
-    m_currentServiceId = 1000;
+	// サービスのシリアライズ
+	m_serialize = new CServiceSerializer();
+	m_serialize->init();
+	m_serialize->loadService(GetEventHandler(), m_services);
+	m_currentServiceId = 1000;
 }
 
 //////////////////////////////////////////////////////////////////////
 CChatServiceBase* CMainWindow::getService(int serviceId)
 {
-	map<int,CChatServiceBase*>::iterator it = m_services.find(serviceId);
-	if(it != m_services.end())
-	{
+	map<int, CChatServiceBase*>::iterator it = m_services.find(serviceId);
+	if (it != m_services.end()){
 		return (*it).second;
 	}
 	return NULL;
@@ -69,11 +68,11 @@ void CMainWindow::initHandle(void)
 {
 	// エンターキー押下時
 	this->Connect(m_view->getPostPaneID(), wxEVT_COMMAND_TEXT_ENTER,
-			wxCommandEventHandler(CMainWindow::onEnter));
+	        wxCommandEventHandler(CMainWindow::onEnter));
 
-    // メンバーがダブルクリックされたとき
-    this->Connect(m_view->getMemPaneID(), wxEVT_COMMAND_LISTBOX_DOUBLECLICKED,
-        wxCommandEventHandler(CMainWindow::onMemberSelected));
+	// メンバーがダブルクリックされたとき
+	this->Connect(m_view->getMemPaneID(), wxEVT_COMMAND_LISTBOX_DOUBLECLICKED,
+	        wxCommandEventHandler(CMainWindow::onMemberSelected));
 }
 
 // Modelがあれば画面を更新する
@@ -93,7 +92,7 @@ void CMainWindow::updateMessageView(int connectionId, const wxString& channel)
 
 		// メッセージを表示
 		m_view->displayMessages(contents->getMessages(channel),
-				contents->getNickTable());
+		        contents->getNickTable());
 	}
 }
 // メンバー画面を更新する(Modelがある場合)
@@ -106,7 +105,7 @@ void CMainWindow::updateMemberView(int connectionId, const wxString& channel)
 		// メンバーを表示
 		m_view->displayMembers(contents->getMembers(channel));
 		m_view->displayMessages(contents->getMessages(channel),
-				contents->getNickTable());
+		        contents->getNickTable());
 	}
 }
 
@@ -163,8 +162,7 @@ void CMainWindow::onIRCRegister(wxCommandEvent& event)
 	}
 
 	// ここでIRCサーバの追加を行う
-	CChatServiceBase* contents =
-			new CornStarch::IRC::CIRCService(); //
+	CChatServiceBase* contents = new CornStarch::IRC::CIRCService(); //
 	addNewService(contents);
 }
 void CMainWindow::addNewService(CChatServiceBase* service)
@@ -173,10 +171,10 @@ void CMainWindow::addNewService(CChatServiceBase* service)
 	m_serverIdLog++;
 	service->init(GetEventHandler());
 	service->setHost(m_view->getDlgHostName());
-	m_services.insert(map<int, CChatServiceBase*>::value_type( service->getId(), service) );
+	m_services.insert(
+	        map<int, CChatServiceBase*>::value_type(service->getId(), service));
 	// コンテンツを更新
-	service->registerUser(m_view->getDlgUserName(),
-			m_view->getDlgPassword());
+	service->registerUser(m_view->getDlgUserName(), m_view->getDlgPassword());
 }
 // ログアウトメニュー
 void CMainWindow::onLogout(wxCommandEvent& event)
@@ -226,7 +224,7 @@ void CMainWindow::onPart(wxCommandEvent& event)
 // 表示を更新
 void CMainWindow::onUpdateDisplay(wxCommandEvent& event)
 {
-	map<int,CChatServiceBase*>::iterator it = m_services.begin();
+	map<int, CChatServiceBase*>::iterator it = m_services.begin();
 	while (it != m_services.end()){
 		// 保持しているデータを初期化
 		(*it).second->reconnect();
@@ -310,8 +308,8 @@ void CMainWindow::onMemberSelected(wxCommandEvent& event)
 {
 	CChatServiceBase* contents = getService(m_currentServiceId);
 
-    wxString name = contents->getMemberRealName(event.GetString());
-    wxMessageBox("本名は" + name + "です");
+	wxString name = contents->getMemberRealName(event.GetString());
+	wxMessageBox("本名は" + name + "です");
 }
 
 // チャンネル選択時
@@ -319,6 +317,7 @@ void CMainWindow::onChannelSelected(CChannelSelectEvent& event)
 {
 	// 選択したのがサーバ名だったとき
 	if (event.isServerSelected()){
+		m_currentServiceId = event.getServerId();
 		return;
 	}
 
@@ -353,11 +352,11 @@ void CMainWindow::onGetAuth(CAuthEvent& event)
 	if (!event.isAuthSucceeded()){
 		wxMessageBox("認証に失敗しました");
 		m_services.erase(event.getConnectionId());
+
 		return;
 	}
 
-	CChatServiceBase* contents = getService(
-			event.getConnectionId());
+	CChatServiceBase* contents = getService(event.getConnectionId());
 	// コンテンツの更新
 	contents->onAuthSucceeed();
 
@@ -368,8 +367,7 @@ void CMainWindow::onGetAuth(CAuthEvent& event)
 // メッセージ一覧受信時
 void CMainWindow::onGetMessages(CGetMessageEvent& event)
 {
-	CChatServiceBase* contents = getService(
-			event.getConnectionId());
+	CChatServiceBase* contents = getService(event.getConnectionId());
 	// メッセージを追加
 	contents->onGetMessages(event.getMessages());
 
@@ -380,8 +378,7 @@ void CMainWindow::onGetMessages(CGetMessageEvent& event)
 // メンバー一覧受信時
 void CMainWindow::onGetMembers(CGetMemberEvent& event)
 {
-	CChatServiceBase* contents = getService(
-			event.getConnectionId());
+	CChatServiceBase* contents = getService(event.getConnectionId());
 	// メンバーの追加
 	contents->onGetMembers(event.getMembers());
 
@@ -392,34 +389,28 @@ void CMainWindow::onGetMembers(CGetMemberEvent& event)
 // チャンネル一覧受信時
 void CMainWindow::onGetChannels(CGetChannelEvent& event)
 {
-	{
-		CChatServiceBase* contents = getService(
-				event.getConnectionId());
-		// チャンネルの追加
-		contents->onGetChannels(event.getChannels());
 
-		// 表示の更新
-		updateChannelView(event.getConnectionId(),
-				contents->getCurrentChannel());
-		updateMemberView(event.getConnectionId(),
-				contents->getCurrentChannel());
-		updateMessageView(event.getConnectionId(),
-				contents->getCurrentChannel());
-	}
+	CChatServiceBase* contents = getService(event.getConnectionId());
+	// チャンネルの追加
+	contents->onGetChannels(event.getChannels());
+
+	// 表示の更新
+	updateChannelView(event.getConnectionId(), contents->getCurrentChannel());
+	updateMemberView(event.getConnectionId(), contents->getCurrentChannel());
+	updateMessageView(event.getConnectionId(), contents->getCurrentChannel());
+
 }
 // チャンネル参加時
 void CMainWindow::onJoinChannel(CJoinEvent& event)
 {
-	CChatServiceBase* contents = getService(
-			event.getConnectionId());
+	CChatServiceBase* contents = getService(event.getConnectionId());
 	contents->onJoinChannel(event.GetString());
 }
 
 // チャンネル離脱時
 void CMainWindow::onPartChannel(CPartEvent& event)
 {
-	CChatServiceBase* contents = getService(
-			event.getConnectionId());
+	CChatServiceBase* contents = getService(event.getConnectionId());
 
 	contents->onPartChannel(event.GetString());
 
@@ -430,8 +421,7 @@ void CMainWindow::onPartChannel(CPartEvent& event)
 // メンバー情報の受信時
 void CMainWindow::onGetMemberInfo(CGetMemberInfoEvent& event)
 {
-	CChatServiceBase* contents = getService(
-			event.getConnectionId());
+	CChatServiceBase* contents = getService(event.getConnectionId());
 	// データ更新
 	CMemberData data = event.getMember();
 	contents->onGetMemberStatus(data);
@@ -446,15 +436,14 @@ void CMainWindow::onGetMemberInfo(CGetMemberInfoEvent& event)
 // メッセージストリーム受信時
 void CMainWindow::onMsgStream(CMsgStreamEvent& event)
 {
-	CChatServiceBase* contents = getService(
-			event.getConnectionId());
+	CChatServiceBase* contents = getService(event.getConnectionId());
 	CMessageData data = event.getMessage();
 	bool myPost = contents->isPostedThisClient(data);
 
 	contents->onGetMessageStream(data);
 	if (!myPost){
 		m_logHolder->pushMessageLog(data,
-				contents->getMemberNick(data.m_username));
+		        contents->getMemberNick(data.m_username));
 	}
 
 	// メッセージをログ一覧に表示
@@ -472,8 +461,7 @@ void CMainWindow::onMsgStream(CMsgStreamEvent& event)
 // チャンネル参加ストリーム受信時
 void CMainWindow::onJoinStream(CJoinStreamEvent& event)
 {
-	CChatServiceBase* contents = getService(
-			event.getConnectionId());
+	CChatServiceBase* contents = getService(event.getConnectionId());
 	// 処理待ちに追加
 	CSubscribeData data(event.getChannelName(), event.getUserName());
 	contents->onGetJoinStream(data.m_channel, data.m_username);
@@ -489,8 +477,7 @@ void CMainWindow::onJoinStream(CJoinStreamEvent& event)
 // チャンネル離脱ストリーム受信時
 void CMainWindow::onPartStream(CPartStreamEvent& event)
 {
-	CChatServiceBase* contents = getService(
-			event.getConnectionId());
+	CChatServiceBase* contents = getService(event.getConnectionId());
 	CSubscribeData data(event.getChannelName(), event.getUserName());
 	wxString name = event.getUserName();
 	wxString channel = event.getChannelName();
@@ -509,8 +496,7 @@ void CMainWindow::onPartStream(CPartStreamEvent& event)
 // チャンネル更新ストリーム受信時
 void CMainWindow::onChannelStream(CChannelStreamEvent& event)
 {
-	CChatServiceBase* contents = getService(
-			event.getConnectionId());
+	CChatServiceBase* contents = getService(event.getConnectionId());
 	// データ更新
 	CChannelData channel = event.getChannel();
 	contents->onGetChannelStream(channel);
@@ -528,8 +514,7 @@ void CMainWindow::onChannelStream(CChannelStreamEvent& event)
 // ユーザ情報更新ストリーム受信時
 void CMainWindow::onUserStream(CUserStreamEvent& event)
 {
-	CChatServiceBase* contents = getService(
-			event.getConnectionId());
+	CChatServiceBase* contents = getService(event.getConnectionId());
 	// データ更新
 	CMemberData member = event.getMember();
 	contents->onGetUserStream(member);
