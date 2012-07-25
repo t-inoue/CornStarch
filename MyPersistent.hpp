@@ -1,26 +1,16 @@
 ﻿#pragma once
 #include <wx/string.h>
 #include "header.hpp"
-
-#ifdef _WIN32
 #include <wx/msw/registry.h>
-#else
-#include <map>
-#include <fstream>
-#include <sys/stat.h>
-#include <string>
-#include <stdlib.h>
-#endif
+#include <vector>
+#include "IRCService.h"
+#include "SCService.h"
 
 // 永続化情報を管理するクラス
 class CMyPersistent
 {
-#ifdef _WIN32
     wxRegKey* m_regKey; // レジストリアクセス
     static const wxString KEY_PLACE; // Keyのフルパス
-#else
-    static const wxString FILE_PATH; // 保存するパス
-#endif
 
 public:
     CMyPersistent(void);
@@ -41,13 +31,11 @@ public:
     // 永続化された情報を消す
     void deleteValue(const wxString& key);
 
-#ifndef _WIN32
+    // サービスを受け取り、ファイルに保存する
+    void saveService(const std::vector<CChatServiceBase*>& services);
 
-private:
-    // ファイルをmapとして開く
-    std::map<std::string, std::string> loadFileAsMap(void) const;
-
-#endif
-
+    // 保存されたサービス情報を基に、vectorにpushする
+    void loadService(wxEvtHandler* handler, std::vector<CChatServiceBase*>& services,
+        int& serviceId);
 };
 

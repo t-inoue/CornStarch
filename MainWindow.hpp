@@ -5,6 +5,7 @@
 #include "vector"
 #include "PartEvent.hpp"
 #include "ServiceSerializer.hpp"
+#include "MyPersistent.hpp"
 
 // ビューコントローラとなるウィンドウクラス
 class CMainWindow: public wxFrame
@@ -14,14 +15,16 @@ private:
 	// CornStarch全般
 	CMainView* m_view; // ビューの挙動を管理
 	CMainLogHolder* m_logHolder; // チャットのログを保持
-	int m_serverIdLog;
+	int m_uniqueServiceId;
 	int m_currentServiceId;
+
 	// 通信要素
 	vector<CChatServiceBase*> m_contents; // スターチャットのコンテンツを管理
 	void addNewConneection(CChatServiceBase* connnection);
 
     // サービスのシリアライズ
     CServiceSerializer* m_serialize;
+    CMyPersistent* m_persist;
 
     // wxWindowイベントを処理させたいクラスに利用するマクロ
     DECLARE_EVENT_TABLE()
