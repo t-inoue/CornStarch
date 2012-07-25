@@ -1,7 +1,7 @@
 ﻿#include "ServiceSerializer.hpp"
 
 using namespace std;
-const wxString CServiceSerializer::PATH = "filename.xml";
+const wxString CServiceSerializer::PATH = wxString(getenv("HOME")) + "/.CornStarch";
 
 CServiceSerializer::CServiceSerializer(void) : m_doc(NULL)
 {

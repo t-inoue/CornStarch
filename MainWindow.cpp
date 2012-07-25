@@ -16,11 +16,13 @@ CMainWindow::CMainWindow(void) : m_view(NULL), m_logHolder(NULL), m_contents(NUL
 CMainWindow::~CMainWindow(void)
 {
     // ファイルに保存
-    m_serialize->saveService(m_contents);
+    //m_serialize->saveService(m_contents);
+    m_persist->saveService(m_contents);
 
 	delete m_view;
 	delete m_logHolder;
     delete m_serialize;
+    delete m_persist;
 
 	int size = (int) m_contents.size();
 	for (int i = 0; i < size; i++){
@@ -45,12 +47,13 @@ void CMainWindow::init(void)
     initHandle();
 
     // シリアライズされたサービスを読み込み
-    m_serialize = new CServiceSerializer();
-    m_serialize->init();
-    m_serialize->loadService(GetEventHandler(), m_contents, m_uniqueServiceId);
+    //m_serialize = new CServiceSerializer();
+    //m_serialize->init();
+    //m_serialize->loadService(GetEventHandler(), m_contents, m_uniqueServiceId);
 
     m_persist = new CMyPersistent();
     m_persist->init();
+    m_persist->loadService(GetEventHandler(), m_contents, m_uniqueServiceId);
 }
 
 //////////////////////////////////////////////////////////////////////

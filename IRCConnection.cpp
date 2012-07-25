@@ -164,6 +164,7 @@ void CIRCConnection::startGetMemberInfoTask(const IUser* user,
 // ユーザが正規の人かどうか判断するタスク(別スレッド)を開始する
 void CIRCConnection::startAuthTask(const IUser* user)
 {
+    // 
 	m_client->start(m_handler, user->getUserName(), "");
 	//Sample
 	startJoinTask(user, "#cc");
