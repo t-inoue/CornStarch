@@ -428,18 +428,6 @@ void CMainWindow::onJoinChannel(CJoinEvent& event)
 	contents->onJoinChannel(event.GetString());
 }
 
-// サーバー削除
-void CMainWindow::onDeleteService(wxCommandEvent& event)
-{
-	CChatServiceBase* service = getService(m_currentServiceId);
-	if (service != NULL){
-		delete service;
-		m_services.erase(m_currentServiceId);
-		// 画面表示の更新
-		updateAllView(m_currentServiceId,"");
-	}
-}
-
 // チャンネル離脱時
 void CMainWindow::onPartChannel(CPartEvent& event)
 {
