@@ -381,6 +381,7 @@ void CMainWindow::onGetAuth(CAuthEvent& event)
 		// 画面表示の更新
 		updateAllView(event.getConnectionId(), service->getCurrentChannel());
 	}
+
 }
 
 // メッセージ一覧受信時
@@ -419,11 +420,24 @@ void CMainWindow::onGetChannels(CGetChannelEvent& event)
 	updateMessageView(event.getConnectionId(), contents->getCurrentChannel());
 
 }
+
 // チャンネル参加時
 void CMainWindow::onJoinChannel(CJoinEvent& event)
 {
 	CChatServiceBase* contents = getService(event.getConnectionId());
 	contents->onJoinChannel(event.GetString());
+}
+
+// サーバー削除
+void CMainWindow::onDeleteService(wxCommandEvent& event)
+{
+	CChatServiceBase* service = getService(m_currentServiceId);
+	if (service != NULL){
+		delete service;
+		m_services.erase(m_currentServiceId);
+		// 画面表示の更新
+		updateAllView(m_currentServiceId,"");
+	}
 }
 
 // チャンネル離脱時
