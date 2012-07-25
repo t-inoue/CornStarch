@@ -8,20 +8,22 @@ using namespace std;
 
 //////////////////////////////////////////////////////////////////////
 
-
-CMainWindow::CMainWindow(void) : m_view(NULL), m_logHolder(NULL),
-    m_serialize(NULL), m_uniqueServiceId(0), m_currentServiceId(0)
+CMainWindow::CMainWindow(void) :
+		m_view(NULL), m_logHolder(NULL), m_serialize(NULL), m_uniqueServiceId(
+		        0), m_currentServiceId(0)
 {
 }
 
 CMainWindow::~CMainWindow(void)
 {
-    // ファイルに保存
-    m_serialize->saveService(m_services);
+	// ファイルに保存
+	m_serialize->saveService(m_services);
+	//m_persist->saveService(m_services);
 
 	delete m_view;
 	delete m_logHolder;
-    delete m_serialize;
+	delete m_serialize;
+	//delete m_persist;
 
 	map<int, CChatServiceBase*>::iterator it = m_services.begin();
 	while (it != m_services.end()){
@@ -46,10 +48,14 @@ void CMainWindow::init(void)
 	// イベントハンドラの初期化
 	initHandle();
 
-    // シリアライズされたサービスを読み込み
-    m_serialize = new CServiceSerializer();
-    m_serialize->init();
-    m_serialize->loadService(GetEventHandler(), m_services, m_uniqueServiceId);
+	// シリアライズされたサービスを読み込み
+	m_serialize = new CServiceSerializer();
+	m_serialize->init();
+	m_serialize->loadService(GetEventHandler(), m_services, m_uniqueServiceId);
+
+	//m_persist = new CMyPersistent();
+	//m_persist->init();
+	//m_persist->loadService(GetEventHandler(), m_services, m_uniqueServiceId);
 
 }
 
@@ -174,7 +180,7 @@ void CMainWindow::addNewService(CChatServiceBase* service)
 	m_services.insert(
 	        map<int, CChatServiceBase*>::value_type(service->getId(), service));
 
-    // コンテンツを更新
+	// コンテンツを更新
 	service->registerUser(m_view->getDlgUserName(), m_view->getDlgPassword());
 }
 // ログアウトメニュー
@@ -203,7 +209,17 @@ void CMainWindow::onJoin(wxCommandEvent& event)
 	// チャンネル参加タスクの開始
 	contents->joinChannel(m_view->getDlgChannelName());
 }
-
+// サーバー削除
+void CMainWindow::onDeleteService(wxCommandEvent& event)
+{
+	CChatServiceBase* service = getService(m_currentServiceId);
+	if (service != NULL){
+		delete service;
+		m_services.erase(m_currentServiceId);
+		// 画面表示の更新
+		//updateAllView(m_currentServiceId,"");
+	}
+}
 // チャンネルから離脱メニュー
 void CMainWindow::onPart(wxCommandEvent& event)
 {
@@ -349,20 +365,23 @@ void CMainWindow::onFinishPostMessage(wxThreadEvent& event)
 // 認証情報の受信時
 void CMainWindow::onGetAuth(CAuthEvent& event)
 {
-	// 認証に失敗
-	if (!event.isAuthSucceeded()){
-		wxMessageBox("認証に失敗しました");
-		m_services.erase(event.getConnectionId());
+	CChatServiceBase* service = getService(event.getConnectionId());
+	if (service != NULL){
+		// 認証に失敗
+		if (!event.isAuthSucceeded()){
+			wxMessageBox("認証に失敗しました");
+			m_services.erase(event.getConnectionId());
 
-		return;
+			delete service;
+		} else{
+			// コンテンツの更新
+			service->onAuthSucceeed();
+		}
+
+		// 画面表示の更新
+		updateAllView(event.getConnectionId(), service->getCurrentChannel());
 	}
 
-	CChatServiceBase* contents = getService(event.getConnectionId());
-	// コンテンツの更新
-	contents->onAuthSucceeed();
-
-	// 画面表示の更新
-	updateAllView(event.getConnectionId(), contents->getCurrentChannel());
 }
 
 // メッセージ一覧受信時
@@ -401,6 +420,7 @@ void CMainWindow::onGetChannels(CGetChannelEvent& event)
 	updateMessageView(event.getConnectionId(), contents->getCurrentChannel());
 
 }
+
 // チャンネル参加時
 void CMainWindow::onJoinChannel(CJoinEvent& event)
 {

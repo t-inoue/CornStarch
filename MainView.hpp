@@ -46,6 +46,17 @@ public: // 各ペインに関するメソッド
     // チャンネル一覧を表示する
     void displayChannels(const std::map<int,CChatServiceBase*>& services);
 
+    // メッセージ一覧をクリアする。
+    void clearMessages(void);
+
+    // メンバー一覧をクリアする
+    void clearMembers(void);
+
+    // チャンネル一覧をクリアする
+    void clearChannels(void);
+
+
+
     // 投稿用ペインの文字を消す
     void clearPostPaneText(void);
 

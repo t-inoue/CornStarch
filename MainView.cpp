@@ -104,6 +104,16 @@ void CMainView::displayLogs(const std::vector<CChatLog*>& logs)
     m_panel->displayLogs(logs);
 }
 
+// メッセージ一覧をクリアします。
+void CMainView::clearMessages(void){
+
+}
+
+// メンバー一覧をクリアします。
+void CMainView::clearMembers(void){}
+
+// チャンネル一覧をクリアします。
+void CMainView::clearChannels(void){}
 
 //////////////////////////////////////////////////////////////////////
 
