@@ -17,6 +17,5 @@ public:
 
     // 認証の成否を取得
     bool isAuthSucceeded(void) const;
-
 };
 

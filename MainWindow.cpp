@@ -52,11 +52,11 @@ void CMainWindow::init(void)
 }
 
 //////////////////////////////////////////////////////////////////////
-CChatServiceBase* CMainWindow::getConnectionContents(int connectionId)
+CChatServiceBase* CMainWindow::getService(int serviceId)
 {
 	vector<CChatServiceBase*>::iterator it = m_contents.begin();
 	while (it != m_contents.end()){
-		if ((*it)->getId() == connectionId){
+		if ((*it)->getId() == serviceId){
 			return *it;
 		}
 		++it;
@@ -88,7 +88,7 @@ void CMainWindow::updateAllView(int connectionId, const wxString& channel)
 void CMainWindow::updateMessageView(int connectionId, const wxString& channel)
 {
 	if (connectionId == m_currentServiceId){
-		CChatServiceBase* contents = getConnectionContents(connectionId);
+		CChatServiceBase* contents = getService(connectionId);
 		contents->onUpdateMessageView(channel);
 
 		// メッセージを表示
@@ -100,7 +100,7 @@ void CMainWindow::updateMessageView(int connectionId, const wxString& channel)
 void CMainWindow::updateMemberView(int connectionId, const wxString& channel)
 {
 	if (connectionId == m_currentServiceId){
-		CChatServiceBase* contents = getConnectionContents(connectionId);
+		CChatServiceBase* contents = getService(connectionId);
 		contents->onUpdateMemberView(channel);
 
 		// メンバーを表示
@@ -113,7 +113,7 @@ void CMainWindow::updateMemberView(int connectionId, const wxString& channel)
 // チャンネル画面とタイトルバーを更新する(Modelがある場合)
 void CMainWindow::updateChannelView(int connectionId, const wxString& channel)
 {
-	CChatServiceBase* contents = getConnectionContents(connectionId);
+	CChatServiceBase* contents = getService(connectionId);
 	contents->onUpdateChannelView();
 
 	// チャンネルを表示
@@ -151,7 +151,7 @@ void CMainWindow::onSCRegister(wxCommandEvent& event)
 		return;
 	}
 	CChatServiceBase* contents = new CSCService(); //new CornStarch::IRC::CIRCConnectionContents();//
-	addNewConneection(contents);
+	addNewService(contents);
 }
 
 // ユーザ登録(IRC)
@@ -165,9 +165,9 @@ void CMainWindow::onIRCRegister(wxCommandEvent& event)
 	// ここでIRCサーバの追加を行う
 	CChatServiceBase* contents =
 			new CornStarch::IRC::CIRCService(); //
-	addNewConneection(contents);
+	addNewService(contents);
 }
-void CMainWindow::addNewConneection(CChatServiceBase* connnection)
+void CMainWindow::addNewService(CChatServiceBase* connnection)
 {
 	connnection->setId(m_serverIdLog);
 	m_serverIdLog++;
@@ -190,7 +190,7 @@ void CMainWindow::onLogout(wxCommandEvent& event)
 void CMainWindow::onJoin(wxCommandEvent& event)
 {
 
-	CChatServiceBase* contents = getConnectionContents(m_currentServiceId);
+	CChatServiceBase* contents = getService(m_currentServiceId);
 	// 未ログインの時
 	if (!contents->isUserLogin()){
 		return;
@@ -208,7 +208,7 @@ void CMainWindow::onJoin(wxCommandEvent& event)
 // チャンネルから離脱メニュー
 void CMainWindow::onPart(wxCommandEvent& event)
 {
-	CChatServiceBase* contents = getConnectionContents(m_currentServiceId);
+	CChatServiceBase* contents = getService(m_currentServiceId);
 	// 未ログインの時
 	if (!contents->isUserLogin()){
 		return;
@@ -235,7 +235,7 @@ void CMainWindow::onUpdateDisplay(wxCommandEvent& event)
 		++it;
 	}
 
-	CChatServiceBase* contents = getConnectionContents(m_currentServiceId);
+	CChatServiceBase* contents = getService(m_currentServiceId);
 	// 表示を更新
 	updateAllView(m_currentServiceId, contents->getCurrentChannel());
 }
@@ -244,7 +244,7 @@ void CMainWindow::onUpdateDisplay(wxCommandEvent& event)
 void CMainWindow::onNickChange(wxCommandEvent& event)
 {
 	// 未ログインの時
-	CChatServiceBase* contents = getConnectionContents(m_currentServiceId);
+	CChatServiceBase* contents = getService(m_currentServiceId);
 	if (!contents->isUserLogin()){
 		return;
 	}
@@ -262,7 +262,7 @@ void CMainWindow::onNickChange(wxCommandEvent& event)
 void CMainWindow::onChangeTopic(wxCommandEvent& event)
 {
 	// 未ログインの時
-	CChatServiceBase* contents = getConnectionContents(m_currentServiceId);
+	CChatServiceBase* contents = getService(m_currentServiceId);
 	if (!contents->isUserLogin()){
 		return;
 	}
@@ -281,7 +281,7 @@ void CMainWindow::onChangeTopic(wxCommandEvent& event)
 // 投稿ペインでEnterキーを押下
 void CMainWindow::onEnter(wxCommandEvent& event)
 {
-	CChatServiceBase* contents = getConnectionContents(m_currentServiceId);
+	CChatServiceBase* contents = getService(m_currentServiceId);
 	// 何も文がないとき
 	wxString body = event.GetString();
 	if (body == ""){
@@ -308,7 +308,7 @@ void CMainWindow::onEnter(wxCommandEvent& event)
 // メンバーがダブルクリック
 void CMainWindow::onMemberSelected(wxCommandEvent& event)
 {
-	CChatServiceBase* contents = getConnectionContents(m_currentServiceId);
+	CChatServiceBase* contents = getService(m_currentServiceId);
 
     wxString name = contents->getMemberRealName(event.GetString());
     wxMessageBox("本名は" + name + "です");
@@ -327,7 +327,7 @@ void CMainWindow::onChannelSelected(CChannelSelectEvent& event)
 	m_currentServiceId = event.getServerId();
 
 	// 選択したコンテンツを取得
-	CChatServiceBase* contents = getConnectionContents(m_currentServiceId);
+	CChatServiceBase* contents = getService(m_currentServiceId);
 
 	// コンテンツの更新
 	contents->selectChannel(channel);
@@ -355,7 +355,7 @@ void CMainWindow::onGetAuth(CAuthEvent& event)
 		return;
 	}
 
-	CChatServiceBase* contents = getConnectionContents(
+	CChatServiceBase* contents = getService(
 			event.getConnectionId());
 	// コンテンツの更新
 	contents->onAuthSucceeed();
@@ -367,7 +367,7 @@ void CMainWindow::onGetAuth(CAuthEvent& event)
 // メッセージ一覧受信時
 void CMainWindow::onGetMessages(CGetMessageEvent& event)
 {
-	CChatServiceBase* contents = getConnectionContents(
+	CChatServiceBase* contents = getService(
 			event.getConnectionId());
 	// メッセージを追加
 	contents->onGetMessages(event.getMessages());
@@ -379,7 +379,7 @@ void CMainWindow::onGetMessages(CGetMessageEvent& event)
 // メンバー一覧受信時
 void CMainWindow::onGetMembers(CGetMemberEvent& event)
 {
-	CChatServiceBase* contents = getConnectionContents(
+	CChatServiceBase* contents = getService(
 			event.getConnectionId());
 	// メンバーの追加
 	contents->onGetMembers(event.getMembers());
@@ -392,7 +392,7 @@ void CMainWindow::onGetMembers(CGetMemberEvent& event)
 void CMainWindow::onGetChannels(CGetChannelEvent& event)
 {
 	{
-		CChatServiceBase* contents = getConnectionContents(
+		CChatServiceBase* contents = getService(
 				event.getConnectionId());
 		// チャンネルの追加
 		contents->onGetChannels(event.getChannels());
@@ -409,7 +409,7 @@ void CMainWindow::onGetChannels(CGetChannelEvent& event)
 // チャンネル参加時
 void CMainWindow::onJoinChannel(CJoinEvent& event)
 {
-	CChatServiceBase* contents = getConnectionContents(
+	CChatServiceBase* contents = getService(
 			event.getConnectionId());
 	contents->onJoinChannel(event.GetString());
 }
@@ -417,7 +417,7 @@ void CMainWindow::onJoinChannel(CJoinEvent& event)
 // チャンネル離脱時
 void CMainWindow::onPartChannel(CPartEvent& event)
 {
-	CChatServiceBase* contents = getConnectionContents(
+	CChatServiceBase* contents = getService(
 			event.getConnectionId());
 
 	contents->onPartChannel(event.GetString());
@@ -429,7 +429,7 @@ void CMainWindow::onPartChannel(CPartEvent& event)
 // メンバー情報の受信時
 void CMainWindow::onGetMemberInfo(CGetMemberInfoEvent& event)
 {
-	CChatServiceBase* contents = getConnectionContents(
+	CChatServiceBase* contents = getService(
 			event.getConnectionId());
 	// データ更新
 	CMemberData data = event.getMember();
@@ -445,7 +445,7 @@ void CMainWindow::onGetMemberInfo(CGetMemberInfoEvent& event)
 // メッセージストリーム受信時
 void CMainWindow::onMsgStream(CMsgStreamEvent& event)
 {
-	CChatServiceBase* contents = getConnectionContents(
+	CChatServiceBase* contents = getService(
 			event.getConnectionId());
 	CMessageData data = event.getMessage();
 	bool myPost = contents->isPostedThisClient(data);
@@ -471,7 +471,7 @@ void CMainWindow::onMsgStream(CMsgStreamEvent& event)
 // チャンネル参加ストリーム受信時
 void CMainWindow::onJoinStream(CJoinStreamEvent& event)
 {
-	CChatServiceBase* contents = getConnectionContents(
+	CChatServiceBase* contents = getService(
 			event.getConnectionId());
 	// 処理待ちに追加
 	CSubscribeData data(event.getChannelName(), event.getUserName());
@@ -488,7 +488,7 @@ void CMainWindow::onJoinStream(CJoinStreamEvent& event)
 // チャンネル離脱ストリーム受信時
 void CMainWindow::onPartStream(CPartStreamEvent& event)
 {
-	CChatServiceBase* contents = getConnectionContents(
+	CChatServiceBase* contents = getService(
 			event.getConnectionId());
 	CSubscribeData data(event.getChannelName(), event.getUserName());
 	wxString name = event.getUserName();
@@ -508,7 +508,7 @@ void CMainWindow::onPartStream(CPartStreamEvent& event)
 // チャンネル更新ストリーム受信時
 void CMainWindow::onChannelStream(CChannelStreamEvent& event)
 {
-	CChatServiceBase* contents = getConnectionContents(
+	CChatServiceBase* contents = getService(
 			event.getConnectionId());
 	// データ更新
 	CChannelData channel = event.getChannel();
@@ -527,7 +527,7 @@ void CMainWindow::onChannelStream(CChannelStreamEvent& event)
 // ユーザ情報更新ストリーム受信時
 void CMainWindow::onUserStream(CUserStreamEvent& event)
 {
-	CChatServiceBase* contents = getConnectionContents(
+	CChatServiceBase* contents = getService(
 			event.getConnectionId());
 	// データ更新
 	CMemberData member = event.getMember();

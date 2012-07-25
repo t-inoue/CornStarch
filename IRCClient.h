@@ -27,6 +27,8 @@ class CIRCClient: public CSocketClient
 	// コネクションIDです。
 	int m_connectionId;
 
+	// 切断中かを示します。
+	bool m_isClosing;
 	wxEvtHandler* m_handler;
 	// 受信ループです。
 	void receiveLoop(void);
@@ -40,8 +42,10 @@ public:
 	// 通信を開始します。
 	void start(wxEvtHandler* handler, const wxString& userName,
 			const wxString& password);
-	// 切断します。
+	// Quitメッセージを送ります。
 	void quit(void);
+	// IRCから切断します。
+	void disconnect(void);
 	// メッセージを送ります。
 	void sendMessage(const wxString& target, const wxString& content);
 	// Noticeを送ります。

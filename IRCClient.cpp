@@ -13,7 +13,7 @@ namespace CornStarch
 namespace IRC
 {
 CIRCClient::CIRCClient() :
-		m_handler(NULL)
+		m_handler(NULL),m_isClosing(false)
 {
 
 }
@@ -29,14 +29,12 @@ void CIRCClient::init(int connectionId)
 void CIRCClient::start(wxEvtHandler* handler, const wxString& userName,
         const wxString& password)
 {
-
 	if (m_socket->IsConnected()){
 		return;
 	}
 
 	setPort(this->m_port);
-	string host(this->m_host.c_str());
-	setUrl(host);
+	setUrl(this->m_host);
 
 	connect();
 	m_handler = handler;
@@ -76,11 +74,13 @@ void CIRCClient::receiveLoop()
 			}
 		}
 	}
-	CAuthEvent* event = new CAuthEvent();
-	event->setAuthResult(false);
-	event->SetEventType(myEVT_THREAD_GET_PING); // イベントの種類をセット
-	event->setConnectionId(m_connectionId);
-	wxQueueEvent(m_handler, event);
+	if (m_isClosing != true){
+		CAuthEvent* event = new CAuthEvent();
+		event->setAuthResult(false);
+		event->SetEventType(myEVT_THREAD_GET_PING); // イベントの種類をセット
+		event->setConnectionId(m_connectionId);
+		wxQueueEvent(m_handler, event);
+	}
 }
 void CIRCClient::pong(const wxString& value)
 {
@@ -92,6 +92,13 @@ void CIRCClient::quit(void)
 	wxString content("QUIT\r\n");
 	send(content);
 }
+void CIRCClient::disconnect(void)
+{
+	m_isClosing = true;
+	this->close();
+}
+
+
 void CIRCClient::join(const wxString& channelName)
 {
 	wxString content(wxString::Format(wxT("JOIN %s\r\n"), channelName));

@@ -18,7 +18,7 @@ private:
 	int m_currentServiceId;
 	// 通信要素
 	vector<CChatServiceBase*> m_contents; // スターチャットのコンテンツを管理
-	void addNewConneection(CChatServiceBase* connnection);
+	void addNewService(CChatServiceBase* connnection);
 
     // サービスのシリアライズ
     CServiceSerializer* m_serialize;
@@ -53,7 +53,7 @@ private:
 	// タイトルバーにタイトルを表示する
 	void displayTitle(const wxString& channel, const wxString& topic);
 
-	CChatServiceBase* getConnectionContents(int connectionId);
+	CChatServiceBase* getService(int serviceId);
 private:
 	// メニュー系
 

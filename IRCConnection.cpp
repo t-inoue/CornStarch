@@ -37,7 +37,7 @@ CIRCConnection::CIRCConnection()
 
 CIRCConnection::~CIRCConnection()
 {
-	m_client->close();
+	m_client->disconnect();
 
 	int size = (int) m_channels.size();
 	for (int i = 0; i < size; i++){
