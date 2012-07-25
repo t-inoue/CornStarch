@@ -8,6 +8,7 @@ class CMessageVec : public std::vector<CMessageData*>
 private:
     static const size_t MAX_MESSAGE_NUM = 300; // メッセージの最大保有数
 
+	bool m_isLoaded;
 public:
     CMessageVec(void);
     ~CMessageVec(void);

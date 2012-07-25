@@ -71,16 +71,17 @@ void CIRCConnection::startPostMessageTask(const IUser* user,
 void CIRCConnection::startGetMessageTask(const IUser* user,
         const wxString& channel)
 {
-	time_t timer = time(NULL);
+	if (channel != ""){
+		time_t timer = time(NULL);
 
-	vector<CMessageData*> result;
-	result.push_back(new CMessageData(1, "", "Connect", channel, timer));
-	CGetMessageEvent* event = new CGetMessageEvent();
-	event->setMessages(result); // 値取得
-	event->SetEventType(myEVT_THREAD_GET_MESSAGE); // イベントの種類をセット
-	event->setConnectionId(m_connectionId);
-	wxQueueEvent(m_handler, event);
-
+		vector<CMessageData*> result;
+		//result.push_back(new CMessageData(1, "", "Connect", channel, timer));
+		CGetMessageEvent* event = new CGetMessageEvent();
+		event->setMessages(result); // 値取得
+		event->SetEventType(myEVT_THREAD_GET_MESSAGE); // イベントの種類をセット
+		event->setConnectionId(m_connectionId);
+		wxQueueEvent(m_handler, event);
+	}
 }
 
 // チャンネルのメンバーを取得するタスク(別スレッド)を開始する
