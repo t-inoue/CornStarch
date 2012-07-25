@@ -6,6 +6,7 @@
 #include "wx/treectrl.h"
 #include "ChannelSelectEvent.hpp"
 #include "TreeServerItem.hpp"
+#include <map>
 
 // イベントの宣言
 wxDECLARE_EVENT(myEVT_SELECt_TREE_NODE, CChannelSelectEvent);
@@ -26,7 +27,7 @@ public:
     void setStringSelection(const wxString& channel);
 
     // 所属チャンネル一覧を表示
-    void displayChannels(const vector<CChatServiceBase*>& services);
+    void displayChannels(const map<int,CChatServiceBase*>& services);
 
 private:
     // チャンネルが選択された際のイベント処理

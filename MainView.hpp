@@ -44,7 +44,7 @@ public: // 各ペインに関するメソッド
     void displayMembers(const std::vector<CMemberData*>& members);
 
     // チャンネル一覧を表示する
-    void displayChannels(const std::vector<CChatServiceBase*>& services);
+    void displayChannels(const std::map<int,CChatServiceBase*>& services);
 
     // 投稿用ペインの文字を消す
     void clearPostPaneText(void);

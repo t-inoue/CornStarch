@@ -17,8 +17,8 @@ private:
 	int m_serverIdLog;
 	int m_currentServiceId;
 	// 通信要素
-	vector<CChatServiceBase*> m_contents; // スターチャットのコンテンツを管理
-	void addNewService(CChatServiceBase* connnection);
+	map<int,CChatServiceBase*> m_services; // スターチャットのコンテンツを管理
+	void addNewService(CChatServiceBase* service);
 
     // サービスのシリアライズ
     CServiceSerializer* m_serialize;
@@ -39,16 +39,16 @@ private:
 	void initHandle(void);
 
 	// Modelがあれば画面を更新する
-	void updateAllView(int connectionId, const wxString& channel);
+	void updateAllView(int serviceId, const wxString& channel);
 
 	// メッセージ画面を更新する(Modelがある場合)
-	void updateMessageView(int connectionId, const wxString& channel);
+	void updateMessageView(int serviceId, const wxString& channel);
 
 	// メンバー画面を更新する(Modelがある場合)
-	void updateMemberView(int connectionId, const wxString& channel);
+	void updateMemberView(int serviceId, const wxString& channel);
 
 	// チャンネル画面とタイトルバーを更新する(Modelがある場合)
-	void updateChannelView(int connectionId, const wxString& channel);
+	void updateChannelView(int serviceId, const wxString& channel);
 
 	// タイトルバーにタイトルを表示する
 	void displayTitle(const wxString& channel, const wxString& topic);

@@ -87,7 +87,7 @@ void CMainView::displayMembers(const vector<CMemberData*>& members)
 }
 
 // チャンネル一覧を表示する
-void CMainView::displayChannels(const std::vector<CChatServiceBase*>& services)
+void CMainView::displayChannels(const std::map<int,CChatServiceBase*>& services)
 {
     m_panel->displayChannels(services);
 }

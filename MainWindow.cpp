@@ -8,7 +8,7 @@ using namespace std;
 
 //////////////////////////////////////////////////////////////////////
 
-CMainWindow::CMainWindow(void) : m_view(NULL), m_logHolder(NULL), m_contents(NULL),
+CMainWindow::CMainWindow(void) : m_view(NULL), m_logHolder(NULL),
     m_serialize(NULL), m_serverIdLog(0), m_currentServiceId(0)
 {
 }
@@ -16,15 +16,17 @@ CMainWindow::CMainWindow(void) : m_view(NULL), m_logHolder(NULL), m_contents(NUL
 CMainWindow::~CMainWindow(void)
 {
     // ファイルに保存
-    m_serialize->saveService(m_contents);
+    m_serialize->saveService(m_services);
 
 	delete m_view;
 	delete m_logHolder;
     delete m_serialize;
 
-	int size = (int) m_contents.size();
-	for (int i = 0; i < size; i++){
-		delete m_contents[i];
+	map<int,CChatServiceBase*>::iterator it = m_services.begin();
+	while( it != m_services.end() )
+	{
+		delete (*it).second;
+		++it;
 	}
 }
 
@@ -47,19 +49,17 @@ void CMainWindow::init(void)
     // サービスのシリアライズ
     m_serialize = new CServiceSerializer();
     m_serialize->init();
-    m_serialize->loadService(GetEventHandler(), m_contents);
+    m_serialize->loadService(GetEventHandler(), m_services);
     m_currentServiceId = 1000;
 }
 
 //////////////////////////////////////////////////////////////////////
 CChatServiceBase* CMainWindow::getService(int serviceId)
 {
-	vector<CChatServiceBase*>::iterator it = m_contents.begin();
-	while (it != m_contents.end()){
-		if ((*it)->getId() == serviceId){
-			return *it;
-		}
-		++it;
+	map<int,CChatServiceBase*>::iterator it = m_services.find(serviceId);
+	if(it != m_services.end())
+	{
+		return (*it).second;
 	}
 	return NULL;
 }
@@ -119,7 +119,7 @@ void CMainWindow::updateChannelView(int connectionId, const wxString& channel)
 	// チャンネルを表示
 	displayTitle(channel, contents->getTopic(channel));
 
-	m_view->displayChannels(m_contents);
+	m_view->displayChannels(m_services);
 
 	m_view->setSelectedChannel(contents->getCurrentChannel());
 }
@@ -167,15 +167,15 @@ void CMainWindow::onIRCRegister(wxCommandEvent& event)
 			new CornStarch::IRC::CIRCService(); //
 	addNewService(contents);
 }
-void CMainWindow::addNewService(CChatServiceBase* connnection)
+void CMainWindow::addNewService(CChatServiceBase* service)
 {
-	connnection->setId(m_serverIdLog);
+	service->setId(m_serverIdLog);
 	m_serverIdLog++;
-	connnection->init(GetEventHandler());
-	connnection->setHost(m_view->getDlgHostName());
-	m_contents.push_back(connnection);
+	service->init(GetEventHandler());
+	service->setHost(m_view->getDlgHostName());
+	m_services.insert(map<int, CChatServiceBase*>::value_type( service->getId(), service) );
 	// コンテンツを更新
-	connnection->registerUser(m_view->getDlgUserName(),
+	service->registerUser(m_view->getDlgUserName(),
 			m_view->getDlgPassword());
 }
 // ログアウトメニュー
@@ -226,12 +226,12 @@ void CMainWindow::onPart(wxCommandEvent& event)
 // 表示を更新
 void CMainWindow::onUpdateDisplay(wxCommandEvent& event)
 {
-	vector<CChatServiceBase*>::iterator it = m_contents.begin();
-	while (it != m_contents.end()){
+	map<int,CChatServiceBase*>::iterator it = m_services.begin();
+	while (it != m_services.end()){
 		// 保持しているデータを初期化
-		(*it)->reconnect();
-		(*it)->clearChannels();
-		(*it)->clearNickTable();
+		(*it).second->reconnect();
+		(*it).second->clearChannels();
+		(*it).second->clearNickTable();
 		++it;
 	}
 
@@ -352,6 +352,7 @@ void CMainWindow::onGetAuth(CAuthEvent& event)
 	// 認証に失敗
 	if (!event.isAuthSucceeded()){
 		wxMessageBox("認証に失敗しました");
+		m_services.erase(event.getConnectionId());
 		return;
 	}
 

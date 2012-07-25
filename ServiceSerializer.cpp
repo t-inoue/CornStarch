@@ -24,34 +24,34 @@ void CServiceSerializer::init(void)
 }
 
 // サービスを受け取り、ファイルに保存する
-void CServiceSerializer::saveService(const vector<CChatServiceBase*>& services)
+void CServiceSerializer::saveService(const map<int,CChatServiceBase*>& services)
 {
     wxXmlNode* docRoot = new wxXmlNode(wxXML_DOCUMENT_NODE, "R");
     wxXmlNode* root = new wxXmlNode(wxXML_ELEMENT_NODE, "root");
 
     // 各サーバについて
-    vector<CChatServiceBase*>::const_iterator it;
+    map<int,CChatServiceBase*>::const_iterator it;
     for (it = services.begin(); it != services.end(); it++){
-        if ((*it)->getChatType() == CChatServiceBase::STAR_CHAT){
+        if ((*it).second->getChatType() == CChatServiceBase::STAR_CHAT){
 
             // StarChatのとき
             wxXmlNode* serverRoot = new wxXmlNode(root, wxXML_ELEMENT_NODE, "StarChat");
             wxXmlNode* server1 = new wxXmlNode(serverRoot, wxXML_ELEMENT_NODE, "host");
-            wxXmlNode* child1 = new wxXmlNode(server1, wxXML_TEXT_NODE, "text", (*it)->getHost());
+            wxXmlNode* child1 = new wxXmlNode(server1, wxXML_TEXT_NODE, "text", (*it).second->getHost());
             wxXmlNode* server3 = new wxXmlNode(serverRoot, wxXML_ELEMENT_NODE, "pass");
-            wxXmlNode* child3 = new wxXmlNode(server3, wxXML_TEXT_NODE, "text", (*it)->getBasic());
+            wxXmlNode* child3 = new wxXmlNode(server3, wxXML_TEXT_NODE, "text", (*it).second->getBasic());
             wxXmlNode* server2 = new wxXmlNode(serverRoot, wxXML_ELEMENT_NODE, "name");
-            wxXmlNode* child2 = new wxXmlNode(server2, wxXML_TEXT_NODE, "text", (*it)->getUserName());
+            wxXmlNode* child2 = new wxXmlNode(server2, wxXML_TEXT_NODE, "text", (*it).second->getUserName());
         } else {
 
             // IRCのとき
             wxXmlNode* serverRoot = new wxXmlNode(root, wxXML_ELEMENT_NODE, "IRC");
             wxXmlNode* server1 = new wxXmlNode(serverRoot, wxXML_ELEMENT_NODE, "host");
-            wxXmlNode* child1 = new wxXmlNode(server1, wxXML_TEXT_NODE, "text", (*it)->getHost());
+            wxXmlNode* child1 = new wxXmlNode(server1, wxXML_TEXT_NODE, "text", (*it).second->getHost());
             wxXmlNode* server2 = new wxXmlNode(serverRoot, wxXML_ELEMENT_NODE, "name");
-            wxXmlNode* child2 = new wxXmlNode(server2, wxXML_TEXT_NODE, "text", (*it)->getUserName());
+            wxXmlNode* child2 = new wxXmlNode(server2, wxXML_TEXT_NODE, "text", (*it).second->getUserName());
             wxXmlNode* server3 = new wxXmlNode(serverRoot, wxXML_ELEMENT_NODE, "nick");
-            wxXmlNode* child3 = new wxXmlNode(server3, wxXML_TEXT_NODE, "text", (*it)->getUserName());
+            wxXmlNode* child3 = new wxXmlNode(server3, wxXML_TEXT_NODE, "text", (*it).second->getUserName());
         }
     }
 
@@ -61,7 +61,7 @@ void CServiceSerializer::saveService(const vector<CChatServiceBase*>& services)
 
 // 保存されたサービス情報を基に、vectorにpushする
 void CServiceSerializer::loadService(wxEvtHandler* handler, 
-    vector<CChatServiceBase*>& services)
+    map<int,CChatServiceBase*>& services)
 {
 	CChatServiceBase* service;
 
@@ -93,7 +93,7 @@ void CServiceSerializer::loadService(wxEvtHandler* handler,
             service->setId(count++);
             service->init(handler);
             service->setHost(host);
-            services.push_back(service);
+            services.insert(map<int, CChatServiceBase*>::value_type(service->getId(),service));
             service->regUser(name, pass);
 
         } else if (child->GetName() == "IRC"){
@@ -111,7 +111,7 @@ void CServiceSerializer::loadService(wxEvtHandler* handler,
             service->setId(count++);
             service->init(handler);
             service->setHost(host);
-            services.push_back(service);
+            services.insert(map<int, CChatServiceBase*>::value_type(service->getId(), service));
             service->regUser(nick, "");
         }
 

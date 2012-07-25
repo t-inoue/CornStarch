@@ -32,26 +32,26 @@ void CPaneCn::setStringSelection(const wxString& channel)
 }
 
 // 所属チャンネル一覧を表示
-void CPaneCn::displayChannels(const vector<CChatServiceBase*>& connections)
+void CPaneCn::displayChannels(const map<int,CChatServiceBase*>& connections)
 {
     // 項目を削除
     wxTreeItemId rootId = GetRootItem();
     DeleteChildren(rootId);
 
     // 各サーバについてループ
-    vector<CChatServiceBase*>::const_iterator it;
+    map<int,CChatServiceBase*>::const_iterator it;
     for (it = connections.begin(); it != connections.end(); it++){
 
         // サーバ情報をセット
         CTreeServerItem* data = new CTreeServerItem();
-        data->setServerId((*it)->getId());
+        data->setServerId((*it).second->getId());
 
         // サーバ名をセット
-        wxTreeItemId id = AppendItem(rootId, (*it)->getHost(), -1, -1, data); 
+        wxTreeItemId id = AppendItem(rootId, (*it).second->getHost(), -1, -1, data);
 
         // 各チャンネルについてループ
         vector<wxString>::const_iterator cit;
-        vector<wxString> vec = (*it)->getChannels();
+        vector<wxString> vec = (*it).second->getChannels();
         for (cit = vec.begin(); cit != vec.end(); cit++){
 
             // チャンネルをセット

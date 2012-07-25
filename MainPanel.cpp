@@ -78,7 +78,7 @@ void CMainPanel::displayMembers(const vector<CMemberData*>& members)
 }
 
 // チャンネルペインにチャンネルを表示
-void CMainPanel::displayChannels(const std::vector<CChatServiceBase*>& services)
+void CMainPanel::displayChannels(const std::map<int,CChatServiceBase*>& services)
 {
     m_cnBox->Show(false);
     m_cnBox->displayChannels(services);
