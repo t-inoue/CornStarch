@@ -2,7 +2,7 @@
 
 using namespace std;
 
-CChatServiceBase::CChatServiceBase(void) : m_handler(NULL), m_persist(NULL), 
+CChatServiceBase::CChatServiceBase(void) : m_handler(NULL), 
     m_channel(NULL), m_user(NULL), m_nickTable(NULL), m_connect(NULL)
 {
 }
@@ -14,8 +14,6 @@ CChatServiceBase::~CChatServiceBase(void)
     delete m_channel;
     delete m_user;
     delete m_nickTable;
-
-    delete m_persist;
 }
 
 
@@ -35,10 +33,6 @@ void CChatServiceBase::init(wxEvtHandler* handler)
 
     // ニックネームテーブルの初期化
     m_nickTable = new CNickTable();
-
-    // 永続化を扱うクラスの初期化
-    m_persist = new CMyPersistent();
-    m_persist->init();
 
 }
 
@@ -61,11 +55,6 @@ void CChatServiceBase::registerUser(const wxString& userName, const wxString& pa
 // ログアウト時
 void CChatServiceBase::logout(void)
 {
-    // ログインしているとき、保存してある情報を削除
-    if (isUserLogin()){
-        m_persist->deleteValue(m_user->getNameKey());
-        m_persist->deleteValue(m_user->getBasicKey());
-    }
 }
 
 // チャンネルに参加を行う際
@@ -253,10 +242,6 @@ void CChatServiceBase::onAuthSucceeed(void)
 {
     // ユーザをログイン状態にする
     m_user->setLogin(true);
-
-    // パスワード永続化
-    m_persist->saveValue(m_user->getNameKey(), m_user->getUserName());
-    m_persist->saveValue(m_user->getBasicKey(), m_user->getBasic());
 
     // ニックネーム取得タスク
     m_connect->startGetMemberInfoTask(m_user,m_user->getUserName());

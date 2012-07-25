@@ -3,7 +3,6 @@
 #include "ChannelHolder.hpp"
 #include "SCUser.hpp"
 #include "NickTable.hpp"
-#include "MyPersistent.hpp"
 #include "IUser.h"
 #include "IConnection.hpp"
 
@@ -27,8 +26,6 @@ protected:
     IUser* m_user; // ユーザ情報
     CNickTable* m_nickTable; // ニックネームテーブル
 
-    // 汎用クラス
-    CMyPersistent* m_persist; // 永続化を扱う
     // 名前
     wxString m_name;
     // ID

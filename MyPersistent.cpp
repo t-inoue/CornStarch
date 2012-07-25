@@ -2,8 +2,6 @@
 
 using namespace std;
 
-// windows
-#ifdef _WIN32
 const wxString CMyPersistent::KEY_PLACE
     = "HKEY_CURRENT_USER\\Software\\CornStarch";
 
@@ -27,255 +25,147 @@ void CMyPersistent::init(void)
     m_regKey = new wxRegKey(KEY_PLACE);
 
     // 存在しなければ新規作成
-    if (m_regKey->Exists()){
+    if (!m_regKey->Exists()){
         m_regKey->Create();
     }
 }
 
-// keyとvalueを永続化する
-void CMyPersistent::saveValue(const wxString& key, const wxString& value)
+// サービスを受け取り、ファイルに保存する
+void CMyPersistent::saveService(const map<int, CChatServiceBase*>& services)
 {
-    // 値の保存
-    m_regKey->SetValue(key, value);
+    // CornStarchレジストリの初期化
+    m_regKey->DeleteSelf();
+    m_regKey->Create();
+    m_regKey->Open();
+
+    // 各サービスについてループ
+    int uniqueId = 0; // レジストリ上のサーバ情報を区別するためのID
+    map<int, CChatServiceBase*>::const_iterator it;
+    for (it = services.begin(); it != services.end(); it++){
+
+        // レジストリに保存
+        saveReg(it->second, uniqueId++);
+    }
+    m_regKey->Close();
 }
 
-// keyの情報を取得する
-wxString CMyPersistent::loadValue(const wxString& key)
+// 保存されたサービス情報を基に、vectorにpushする
+void CMyPersistent::loadService(wxEvtHandler* handler, map<int, CChatServiceBase*>& services,
+    int& serviceId)
 {
-    // 文字列の読み込み
-    wxString result;
-    if (!m_regKey->QueryValue(key, result)){
+    m_regKey->Open(wxRegKey::Read);
 
-        // valueが存在しない場合
-        return "";
+    // サービスの個数
+    size_t num;
+    m_regKey->GetKeyInfo(&num, NULL, NULL, NULL);
+
+    // 最初のサービスの取得
+    wxString key;
+    long index;
+    m_regKey->GetFirstKey(key, index);
+
+    // 各サービスについて
+    for (size_t i = 0; i < num; i++){
+
+        CChatServiceBase* service = newService(handler, key, serviceId);
+        services.insert(map<int, CChatServiceBase*>::value_type(serviceId, service));
+
+        // 次の要素の取得
+        serviceId++;
+        m_regKey->GetNextKey(key, index);
     }
 
-    // 値の読み込み
-    return result;
+    m_regKey->Close();
 }
-
-// keyが登録されているかどうか
-bool CMyPersistent::isKeySaved(const wxString& key) const
-{
-    // キーが存在しない
-    if (!m_regKey->Exists()){
-        return false;
-    }
-
-    // キー名に対応する値が存在しない
-    if (!m_regKey->HasValue(key)){
-        return false;
-    }
-
-    return true;
-}
-
-// 永続化された情報を消す
-void CMyPersistent::deleteValue(const wxString& key)
-{
-    m_regKey->DeleteValue(key);
-}
-
-
-// linux
-#elif defined __linux
-const wxString CMyPersistent::FILE_PATH
-    = "/.CornStarch";
-
-CMyPersistent::CMyPersistent(void)
-{
-}
-
-
-CMyPersistent::~CMyPersistent(void)
-{
-}
-
 
 //////////////////////////////////////////////////////////////////////
 
-
-// 初期化を行う
-void CMyPersistent::init(void)
+// レジスタに保存する
+void CMyPersistent::saveReg(const CChatServiceBase* service, int id)
 {
-    // ファイルが存在しない場合に作成
-    ifstream ifs;
-    ifs.open(getenv("HOME") + FILE_PATH);
-    if (ifs.fail()){
-        ofstream ofs;
-        ofs.open(getenv("HOME") + FILE_PATH);
-        chmod(getenv("HOME") + FILE_PATH, S_IRUSR | S_IWUSR);
-        ofs.close();
-    }
-    ifs.close();
-}
+    wxString idStr;
+    idStr.Printf("%d", id);
 
-// 情報を保存する
-void CMyPersistent::saveValue(const wxString& key, const wxString& value)
-{
-    // ファイルからmapとして読み込み
-    map<string, string> data = loadFileAsMap();
-
-    // mapに保存
-    data[(string)key.mb_str(wxConvUTF8)] = (string)value.mb_str(wxConvUTF8);
-
-    // mapからファイルに保存
-    ofstream ofs;
-    ofs.open(getenv("HOME") + FILE_PATH, ios::trunc);
-    map<string, string>::iterator it;
-    for (it = data.begin(); it != data.end(); it++){
-        ofs << it->first << " " << it->second << endl;
-    }
-    ofs.close();
-}
-
-// キーから情報を読み込む
-wxString CMyPersistent::loadValue(const wxString& key)
-{
-    // ファイルからmapとして読み込み
-    map<string, string> table = loadFileAsMap();
-
-    return wxString(table[(string)key.mb_str(wxConvUTF8)].c_str(), wxConvUTF8);
-}
-
-// keyが保存されているか
-bool CMyPersistent::isKeySaved(const wxString& key) const
-{
-    // ファイルからmapとして読み込み
-    map<string, string> table = loadFileAsMap();
-
-    // keyが保存されていたら
-    if (table[(string)key.mb_str(wxConvUTF8)] != ""){
-        return true;
+    // レジストリ保存
+    wxRegKey reg(*m_regKey, idStr);
+    if (!reg.Exists()){
+        reg.Create();
     }
 
-    return false;
-}
+    if (service->getChatType() == CChatServiceBase::STAR_CHAT){
 
-// 保存情報を削除する
-void CMyPersistent::deleteValue(const wxString& key)
-{
-    ofstream ofs;
-    ofs.open(getenv("HOME") + FILE_PATH, ios::trunc);
-}
+        // StarChatのとき
+        wxRegKey scReg(reg, "StarChat");
+        if (!scReg.Exists()){
+            scReg.Create();
+        }
+        scReg.SetValue("HOST", service->getHost());
+        scReg.SetValue("PASS", service->getBasic());
+        scReg.SetValue("NAME", service->getUserName());
 
-// ファイルをmapとして開く
-map<string, string> CMyPersistent::loadFileAsMap(void) const
-{
-    map<string, string> table;
+    } else {
 
-    // 保存情報をmapで読み込む
-    ifstream ifs;
-    ifs.open(getenv("HOME") + FILE_PATH);
-    while (!ifs.eof()){
-        string key, value;
-        ifs >> key >> value;        
-        table[key] = value;
+        // IRCのとき
+        wxRegKey ircReg(reg, "IRC");
+        if (!ircReg.Exists()){
+            ircReg.Create();
+        }
+        ircReg.SetValue("HOST", service->getHost());
+        ircReg.SetValue("NICK", service->getUserName());
+        ircReg.SetValue("NAME", service->getUserName());
     }
-    ifs.close();
-
-    return table;
 }
 
-
-// mac
-#else
-const wxString CMyPersistent::FILE_PATH
-    = "/.CornStarch";
-
-CMyPersistent::CMyPersistent(void)
+// レジスタのサブキーからサービスを作成する
+CChatServiceBase* CMyPersistent::newService(wxEvtHandler* handler, 
+    const wxString& subKey, int serviceId)
 {
-}
+    // サーバの種類を取得
+    wxRegKey regType(*m_regKey, subKey);
+    wxString type;
+    long idxaa;
+    regType.GetFirstKey(type, idxaa);
 
+    // サーバ情報要素取得用
+    wxRegKey reg(regType, type);
+    reg.Open(wxRegKey::Read);
+    wxString value;
 
-CMyPersistent::~CMyPersistent(void)
-{
-}
+    // 情報要素の数
+    size_t length;
+    reg.GetKeyInfo(NULL, NULL, &length, NULL);
 
-
-//////////////////////////////////////////////////////////////////////
-
-
-// 初期化を行う
-void CMyPersistent::init(void)
-{
-    // ファイルが存在しない場合に作成
-    ifstream ifs;
-    ifs.open(getenv("HOME") + FILE_PATH);
-    if (ifs.fail()){
-        ofstream ofs;
-        ofs.open(getenv("HOME") + FILE_PATH);
-        chmod(getenv("HOME") + FILE_PATH, S_IRUSR | S_IWUSR);
-        ofs.close();
-    }
-    ifs.close();
-}
-
-// 情報を保存する
-void CMyPersistent::saveValue(const wxString& key, const wxString& value)
-{
-    // ファイルからmapとして読み込み
-    map<string, string> data = loadFileAsMap();
-
-    // mapに保存
-    data[(string)key.mb_str(wxConvUTF8)] = (string)value.mb_str(wxConvUTF8);
-
-    // mapからファイルに保存
-    ofstream ofs;
-    ofs.open(getenv("HOME") + FILE_PATH, ios::trunc);
-    map<string, string>::iterator it;
-    for (it = data.begin(); it != data.end(); it++){
-        ofs << it->first << " " << it->second << endl;
-    }
-    ofs.close();
-}
-
-// キーから情報を読み込む
-wxString CMyPersistent::loadValue(const wxString& key)
-{
-    // ファイルからmapとして読み込み
-    map<string, string> table = loadFileAsMap();
-
-    return wxString(table[(string)key.mb_str(wxConvUTF8)].c_str(), wxConvUTF8);
-}
-
-// keyが保存されているか
-bool CMyPersistent::isKeySaved(const wxString& key) const
-{
-    // ファイルからmapとして読み込み
-    map<string, string> table = loadFileAsMap();
-
-    // keyが保存されていたら
-    if (table[(string)key.mb_str(wxConvUTF8)] != ""){
-        return true;
+    // サービスの作成
+    CChatServiceBase* service;
+    if (type == "StarChat"){ // StarChat
+        service = new CSCService();
+    } else if (type == "IRC"){ // IRC
+        service = new CornStarch::IRC::CIRCService();
     }
 
-    return false;
-}
+    // レジストリからパラメータの読み込み
+    wxString nick, name, pass, host;
+    wxString prop;
+    long idx;
+    reg.GetFirstValue(prop, idx);
+    for (size_t j = 0; j < length; j++){
+        if (prop == "NAME"){
+            reg.QueryValue(prop, name);
+        } else if (prop == "PASS"){
+            reg.QueryValue(prop, pass);
+        } else if (prop == "HOST"){
+            reg.QueryValue(prop, host);
+        }
 
-// 保存情報を削除する
-void CMyPersistent::deleteValue(const wxString& key)
-{
-    ofstream ofs;
-    ofs.open(getenv("HOME") + FILE_PATH, ios::trunc);
-}
-
-// ファイルをmapとして開く
-map<string, string> CMyPersistent::loadFileAsMap(void) const
-{
-    map<string, string> table;
-
-    // 保存情報をmapで読み込む
-    ifstream ifs;
-    ifs.open(getenv("HOME") + FILE_PATH);
-    while (!ifs.eof()){
-        string key, value;
-        ifs >> key >> value;        
-        table[key] = value;
+        // 次の要素へ
+        reg.GetNextValue(prop, idx);
     }
-    ifs.close();
 
-    return table;
+    // サービスのパラメータ注入
+    service->setId(serviceId);
+    service->init(handler);
+    service->setHost(host);
+    service->regUser(name, pass);
+
+    return service;
 }
-
-#endif

@@ -1,4 +1,16 @@
-﻿#pragma once
+﻿/*
+StarChat:
+・ホスト名
+・ユーザ名
+・basic認証文字列
+IRC:
+・ホスト名
+・ニックネーム
+・本名
+・所属チャンネル
+*/
+
+#pragma once
 #include <wx/xml/xml.h>
 #include <map>
 #include "IRCService.h"
@@ -22,6 +34,22 @@ public:
     void saveService(const std::map<int,CChatServiceBase*>& services);
 
     // 保存されたサービス情報を基に、vectorにpushする
-    void loadService(wxEvtHandler* handler, std::map<int,CChatServiceBase*>& services);
+//<<<<<<< HEAD
+    void loadService(wxEvtHandler* handler, std::map<int,CChatServiceBase*>& services,
+        int& serviceId);
+//=======
+//    void loadService(wxEvtHandler* handler, std::vector<CChatServiceBase*>& services,
+//        int& serviceId);
+
+private:
+
+    // XMLNodeからサービスを作成する
+    CChatServiceBase* newService(wxXmlNode* node, wxEvtHandler* handler, 
+        int& serviceId);
+
+    // サービス情報をRootノードに追加
+    void addServiceToRoot(wxXmlNode* root, const CChatServiceBase* service);
+//
+//>>>>>>> regSerial
 };
 

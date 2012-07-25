@@ -8,20 +8,36 @@ using namespace std;
 
 //////////////////////////////////////////////////////////////////////
 
-CMainWindow::CMainWindow(void) :
-		m_view(NULL), m_logHolder(NULL), m_serialize(NULL), m_serverIdLog(0), m_currentServiceId(
-		        0)
+//<<<<<<< HEAD
+//CMainWindow::CMainWindow(void) :
+//		m_view(NULL), m_logHolder(NULL), m_serialize(NULL), m_serverIdLog(0),
+//            m_currentServiceId(0)
+//=======
+CMainWindow::CMainWindow(void) : m_view(NULL), m_logHolder(NULL),
+    m_serialize(NULL), m_uniqueServiceId(0), m_currentServiceId(0)
+//>>>>>>> regSerial
 {
 }
 
 CMainWindow::~CMainWindow(void)
 {
-	// ファイルに保存
-	m_serialize->saveService(m_services);
+//<<<<<<< HEAD
+//	// ファイルに保存
+//	m_serialize->saveService(m_services);
+//
+//	delete m_view;
+//	delete m_logHolder;
+//	delete m_serialize;
+//=======
+    // ファイルに保存
+    //m_serialize->saveService(m_contents);
+    m_persist->saveService(m_services);
 
 	delete m_view;
 	delete m_logHolder;
-	delete m_serialize;
+    delete m_serialize;
+    delete m_persist;
+//>>>>>>> regSerial
 
 	map<int, CChatServiceBase*>::iterator it = m_services.begin();
 	while (it != m_services.end()){
@@ -46,11 +62,22 @@ void CMainWindow::init(void)
 	// イベントハンドラの初期化
 	initHandle();
 
-	// サービスのシリアライズ
-	m_serialize = new CServiceSerializer();
-	m_serialize->init();
-	m_serialize->loadService(GetEventHandler(), m_services);
-	m_currentServiceId = 1000;
+//<<<<<<< HEAD
+//	// サービスのシリアライズ
+//	m_serialize = new CServiceSerializer();
+//	m_serialize->init();
+//	m_serialize->loadService(GetEventHandler(), m_services);
+//	m_currentServiceId = 1000;
+//=======
+    // シリアライズされたサービスを読み込み
+    //m_serialize = new CServiceSerializer();
+    //m_serialize->init();
+    //m_serialize->loadService(GetEventHandler(), m_contents, m_uniqueServiceId);
+
+    m_persist = new CMyPersistent();
+    m_persist->init();
+    m_persist->loadService(GetEventHandler(), m_services, m_uniqueServiceId);
+//>>>>>>> regSerial
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -167,12 +194,21 @@ void CMainWindow::onIRCRegister(wxCommandEvent& event)
 }
 void CMainWindow::addNewService(CChatServiceBase* service)
 {
-	service->setId(m_serverIdLog);
-	m_serverIdLog++;
+//<<<<<<< HEAD
+//	service->setId(m_serverIdLog);
+//	m_serverIdLog++;
+//	service->init(GetEventHandler());
+//	service->setHost(m_view->getDlgHostName());
+//	m_services.insert(
+//	        map<int, CChatServiceBase*>::value_type(service->getId(), service));
+//=======
+	service->setId(m_uniqueServiceId);
+	m_uniqueServiceId++;
 	service->init(GetEventHandler());
 	service->setHost(m_view->getDlgHostName());
 	m_services.insert(
 	        map<int, CChatServiceBase*>::value_type(service->getId(), service));
+//>>>>>>> regSerial
 	// コンテンツを更新
 	service->registerUser(m_view->getDlgUserName(), m_view->getDlgPassword());
 }
