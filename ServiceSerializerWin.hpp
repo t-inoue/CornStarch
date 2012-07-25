@@ -1,4 +1,5 @@
 ﻿#pragma once
+#ifdef _WIN32
 #include <wx/string.h>
 #include "header.hpp"
 #include <wx/msw/registry.h>
@@ -7,14 +8,14 @@
 #include "SCService.h"
 
 // 永続化情報を管理するクラス
-class CMyPersistent
+class CServiceSerializer
 {
     wxRegKey* m_regKey; // レジストリアクセス
     static const wxString KEY_PLACE; // Keyのフルパス
 
 public:
-    CMyPersistent(void);
-    ~CMyPersistent(void);
+    CServiceSerializer(void);
+    ~CServiceSerializer(void);
 
     // 初期化を行う
     void init(void);
@@ -35,4 +36,4 @@ private:
     CChatServiceBase* newService(wxEvtHandler* handler, const wxString& subKey,
         int serviceId);
 };
-
+#endif

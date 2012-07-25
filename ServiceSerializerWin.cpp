@@ -1,16 +1,17 @@
-﻿#include "MyPersistent.hpp"
+﻿#include "ServiceSerializerWin.hpp"
+#ifdef _WIN32
 
 using namespace std;
 
-const wxString CMyPersistent::KEY_PLACE
+const wxString CServiceSerializer::KEY_PLACE
     = "HKEY_CURRENT_USER\\Software\\CornStarch";
 
-CMyPersistent::CMyPersistent(void) : m_regKey(NULL)
+CServiceSerializer::CServiceSerializer(void) : m_regKey(NULL)
 {
 }
 
 
-CMyPersistent::~CMyPersistent(void)
+CServiceSerializer::~CServiceSerializer(void)
 {
     delete m_regKey;
 }
@@ -20,7 +21,7 @@ CMyPersistent::~CMyPersistent(void)
 
 
 // 初期化を行う
-void CMyPersistent::init(void)
+void CServiceSerializer::init(void)
 {
     m_regKey = new wxRegKey(KEY_PLACE);
 
@@ -31,7 +32,7 @@ void CMyPersistent::init(void)
 }
 
 // サービスを受け取り、ファイルに保存する
-void CMyPersistent::saveService(const map<int, CChatServiceBase*>& services)
+void CServiceSerializer::saveService(const map<int, CChatServiceBase*>& services)
 {
     // CornStarchレジストリの初期化
     m_regKey->DeleteSelf();
@@ -50,7 +51,7 @@ void CMyPersistent::saveService(const map<int, CChatServiceBase*>& services)
 }
 
 // 保存されたサービス情報を基に、vectorにpushする
-void CMyPersistent::loadService(wxEvtHandler* handler, map<int, CChatServiceBase*>& services,
+void CServiceSerializer::loadService(wxEvtHandler* handler, map<int, CChatServiceBase*>& services,
     int& serviceId)
 {
     m_regKey->Open(wxRegKey::Read);
@@ -81,7 +82,7 @@ void CMyPersistent::loadService(wxEvtHandler* handler, map<int, CChatServiceBase
 //////////////////////////////////////////////////////////////////////
 
 // レジスタに保存する
-void CMyPersistent::saveReg(const CChatServiceBase* service, int id)
+void CServiceSerializer::saveReg(const CChatServiceBase* service, int id)
 {
     wxString idStr;
     idStr.Printf("%d", id);
@@ -117,7 +118,7 @@ void CMyPersistent::saveReg(const CChatServiceBase* service, int id)
 }
 
 // レジスタのサブキーからサービスを作成する
-CChatServiceBase* CMyPersistent::newService(wxEvtHandler* handler, 
+CChatServiceBase* CServiceSerializer::newService(wxEvtHandler* handler, 
     const wxString& subKey, int serviceId)
 {
     // サーバの種類を取得
@@ -169,3 +170,4 @@ CChatServiceBase* CMyPersistent::newService(wxEvtHandler* handler,
 
     return service;
 }
+#endif

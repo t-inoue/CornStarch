@@ -5,7 +5,7 @@
 #include "vector"
 #include "PartEvent.hpp"
 #include "ServiceSerializer.hpp"
-#include "MyPersistent.hpp"
+#include "ServiceSerializerWin.hpp"
 
 // ビューコントローラとなるウィンドウクラス
 class CMainWindow: public wxFrame
@@ -24,7 +24,6 @@ private:
 
     // サービスのシリアライズ
     CServiceSerializer* m_serialize;
-    CMyPersistent* m_persist;
 
     // wxWindowイベントを処理させたいクラスに利用するマクロ
     DECLARE_EVENT_TABLE()

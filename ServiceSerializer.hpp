@@ -1,16 +1,5 @@
-﻿/*
-StarChat:
-・ホスト名
-・ユーザ名
-・basic認証文字列
-IRC:
-・ホスト名
-・ニックネーム
-・本名
-・所属チャンネル
-*/
-
-#pragma once
+﻿#pragma once
+#ifndef _WIN32
 #include <wx/xml/xml.h>
 #include <map>
 #include "IRCService.h"
@@ -47,3 +36,4 @@ private:
     void addServiceToRoot(wxXmlNode* root, const CChatServiceBase* service);
 };
 
+#endif
