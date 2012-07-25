@@ -1,4 +1,5 @@
 ﻿#include "ServiceSerializer.hpp"
+#ifndef _WIN32
 
 using namespace std;
 const wxString CServiceSerializer::PATH = wxString(getenv("HOME")) + "/.CornStarch";
@@ -132,3 +133,4 @@ void CServiceSerializer::addServiceToRoot(wxXmlNode* root, const CChatServiceBas
         wxXmlNode* child3 = new wxXmlNode(server3, wxXML_TEXT_NODE, "text", service->getUserName());
     }
 }
+#endif
