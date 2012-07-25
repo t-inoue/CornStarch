@@ -46,10 +46,8 @@ void CPaneCn::displayChannels(const vector<CChatServiceBase*>& connections)
         CTreeServerItem* data = new CTreeServerItem();
         data->setServerId((*it)->getId());
 
-        // サーバ名をセット(現在は暫定的にID)
-        stringstream ss;
-        ss << (*it)->getId();
-        wxTreeItemId id = AppendItem(rootId, "サーバ" + ss.str(), -1, -1, data); 
+        // サーバ名をセット
+        wxTreeItemId id = AppendItem(rootId, (*it)->getHost(), -1, -1, data); 
 
         // 各チャンネルについてループ
         vector<wxString>::const_iterator cit;
