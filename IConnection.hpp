@@ -58,14 +58,8 @@ public:
 
 	// ホストを取得
 	virtual wxString getHost() const = 0;
-//	{
-//		return m_host;
-//	}
 	// ホストを設定
 	virtual void setHost(wxString host) = 0;
-//	{
-//		m_host = host;
-//	}
 };
 
 #endif /* IConnection_H_ */

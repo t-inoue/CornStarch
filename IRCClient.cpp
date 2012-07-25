@@ -3,7 +3,9 @@
 #include "GetMemberEvent.hpp"
 #include "IRCParser.h"
 #include "StringUtility.h"
+#include "AuthEvent.hpp"
 
+wxDECLARE_EVENT(myEVT_THREAD_GET_PING, CAuthEvent);
 using namespace std;
 
 namespace CornStarch
@@ -11,27 +13,24 @@ namespace CornStarch
 namespace IRC
 {
 CIRCClient::CIRCClient() :
-		m_handler(NULL), m_connected(false)
+		m_handler(NULL)
 {
 
 }
 
 CIRCClient::~CIRCClient(void)
 {
-	m_connected = false;
-	this->close();
 }
 void CIRCClient::init(int connectionId)
 {
 	CSocketClient::init();
 	m_connectionId = connectionId;
-
 }
 void CIRCClient::start(wxEvtHandler* handler, const wxString& userName,
         const wxString& password)
 {
 
-	if (m_connected){
+	if (m_socket->IsConnected()){
 		return;
 	}
 
@@ -39,27 +38,25 @@ void CIRCClient::start(wxEvtHandler* handler, const wxString& userName,
 	string host(this->m_host.c_str());
 	setUrl(host);
 
-	m_connected = connect();
+	connect();
 	m_handler = handler;
 	//　IRCへの接続
-	string pass(wxString::Format(wxT( "PASS %s\r\n"), userName.c_str()));
-	send(pass);
-	string nick(wxString::Format(wxT("NICK %s\r\n"), userName.c_str()));
-	send(nick);
-	string user(
-	        wxString::Format(wxT( "USER %s * 0 :%s\r\n"), userName.c_str(),
+	string pass(
+	        wxString::Format(wxT( "PASS %s\r\nNICK %s\r\nUSER %s * 0 :%s\r\n"),
+	                userName.c_str(), userName.c_str(), userName.c_str(),
 	                userName.c_str()));
-	send(user);
+	send(pass);
 
-	Thread *thread = new Thread(this, &CIRCClient::receiveLoop);
+	Thread *thread = new Thread(this, &CIRCClient::receiveLoop, true);
 	thread->start();
 }
+
 void CIRCClient::receiveLoop()
 {
 	CIRCParser parser;
-
-	while (m_connected){
+	while (m_socket->IsConnected()){
 		this->m_buffer = "";
+
 		receive();
 		if (this->m_buffer != ""){
 			vector<string> messages = CStringUtility::split(this->m_buffer,
@@ -79,6 +76,11 @@ void CIRCClient::receiveLoop()
 			}
 		}
 	}
+	CAuthEvent* event = new CAuthEvent();
+	event->setAuthResult(false);
+	event->SetEventType(myEVT_THREAD_GET_PING); // イベントの種類をセット
+	event->setConnectionId(m_connectionId);
+	wxQueueEvent(m_handler, event);
 }
 void CIRCClient::pong(const wxString& value)
 {

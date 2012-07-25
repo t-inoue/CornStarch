@@ -26,8 +26,6 @@ class CIRCClient: public CSocketClient
 	wxString m_port;
 	// コネクションIDです。
 	int m_connectionId;
-	// 接続されているかを取得します。
-	bool m_connected;
 
 	wxEvtHandler* m_handler;
 	// 受信ループです。

@@ -10,9 +10,11 @@
 #include "JoinStreamEvent.hpp"
 #include "PartStreamEvent.hpp"
 #include "UserStreamEvent.hpp"
+#include "AuthEvent.hpp"
 wxDECLARE_EVENT(myEVT_THREAD_GET_MEMBER, CGetMemberEvent);
 wxDECLARE_EVENT(myEVT_THREAD_GET_MESSAGE, CGetMessageEvent);
 
+wxDECLARE_EVENT(myEVT_THREAD_GET_PING, CAuthEvent);
 wxDECLARE_EVENT(myEVT_THREAD_STREAM_MSG_ADD, CMsgStreamEvent);
 wxDECLARE_EVENT(myEVT_THREAD_STREAM_CH_JOIN, CJoinStreamEvent);
 wxDECLARE_EVENT(myEVT_THREAD_STREAM_CH_PART, CPartStreamEvent);
@@ -68,7 +70,18 @@ CConnectionEventBase* CIRCParser::parse(const std::string& content)
 		if (statusCode == "366"){
 			return createNamesEvent(param);
 		}
-
+		if (statusCode == "433"){
+			CAuthEvent* event = new CAuthEvent();
+			event->setAuthResult(false);
+			event->SetEventType(myEVT_THREAD_GET_PING); // イベントの種類をセット
+			return event;
+		}
+		if (statusCode == "001"){
+			CAuthEvent* event = new CAuthEvent();
+			event->setAuthResult(true);
+			event->SetEventType(myEVT_THREAD_GET_PING); // イベントの種類をセット
+			return event;
+		}
 	}
 	return NULL;
 }
@@ -101,7 +114,6 @@ CConnectionEventBase* CIRCParser::createTopicMessageEvent(const string& host,
 	int contentIndex = param.find(":") + 1;
 	string content = param.substr(contentIndex,
 	        param.size() - contentIndex - 1);
-
 
 	string channelName = param.substr(0, index);
 

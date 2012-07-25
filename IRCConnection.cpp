@@ -37,7 +37,8 @@ CIRCConnection::CIRCConnection()
 
 CIRCConnection::~CIRCConnection()
 {
-	delete m_client;
+	m_client->close();
+
 	int size = (int) m_channels.size();
 	for (int i = 0; i < size; i++){
 		delete m_channels[i];
@@ -57,7 +58,7 @@ void CIRCConnection::init(int connectionId, wxEvtHandler* handler)
 
 // メッセージを投稿するタスク(別スレッド)を開始する
 void CIRCConnection::startPostMessageTask(const IUser* user,
-		const wxString& message, const wxString& channel)
+        const wxString& message, const wxString& channel)
 {
 	m_client->sendMessage(channel, message);
 	wxThreadEvent* event = new wxThreadEvent();
@@ -68,7 +69,7 @@ void CIRCConnection::startPostMessageTask(const IUser* user,
 
 // チャンネルのメッセージを取得するタスク(別スレッド)を開始する
 void CIRCConnection::startGetMessageTask(const IUser* user,
-		const wxString& channel)
+        const wxString& channel)
 {
 	time_t timer = time(NULL);
 
@@ -84,7 +85,7 @@ void CIRCConnection::startGetMessageTask(const IUser* user,
 
 // チャンネルのメンバーを取得するタスク(別スレッド)を開始する
 void CIRCConnection::startGetMemberTask(const IUser* user,
-		const wxString& channel)
+        const wxString& channel)
 {
 	m_client->getNamesAsync(channel);
 }
@@ -149,7 +150,7 @@ void CIRCConnection::startJoinTask(const IUser* user, const wxString& channel)
 
 // メンバーの情報を取得するタスク(別スレッド)を開始する
 void CIRCConnection::startGetMemberInfoTask(const IUser* user,
-		const wxString& userName)
+        const wxString& userName)
 {
 	CGetMemberInfoEvent* event = new CGetMemberInfoEvent();
 	CMemberData member(userName, userName);
@@ -178,7 +179,9 @@ void CIRCConnection::deleteAuthTask(void)
 {
 }
 //override ニックネームを変更するタスク(別スレッド)を開始する
-void CIRCConnection::startNickChangeTask(const IUser* user, const wxString& nick){
+void CIRCConnection::startNickChangeTask(const IUser* user,
+        const wxString& nick)
+{
 	m_client->changeNickname(nick);
 
 	CMemberData member;
@@ -192,7 +195,9 @@ void CIRCConnection::startNickChangeTask(const IUser* user, const wxString& nick
 }
 
 //override トピックを変更するタスク(別スレッド)を開始する
-void CIRCConnection::startChangeTopicTask(const IUser* user, const wxString& topic){
+void CIRCConnection::startChangeTopicTask(const IUser* user,
+        const wxString& topic)
+{
 	m_client->changeTopic(user->getChannelString(), topic);
 
 	CChannelData channel;

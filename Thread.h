@@ -18,8 +18,14 @@ namespace CornStarch {
         
         class ThreadDataBase
         {
+        protected:
+            bool m_isDeleteInstance;
         public:
-            ThreadDataBase(){
+            ThreadDataBase():m_isDeleteInstance(false){
+            }
+            void setDeleteInstance(bool value)
+            {
+            	m_isDeleteInstance = value;
             }
             virtual ~ThreadDataBase() {}
             virtual void startThread() = 0;
@@ -46,12 +52,14 @@ namespace CornStarch {
                 method_t method_ = *(method_t*)method;
                 T *instance_ = (T*)instance;
                 (instance_->*method_)();
-                
+                if(m_isDeleteInstance)
+                {
+                	delete instance_;
+                }
             }
         };
  
          ThreadDataBase* threadData;
-        
         
     public:
         
@@ -72,10 +80,10 @@ namespace CornStarch {
 
         // インスタンスとメソッドを指定する
         template<typename T>
-        Thread(T *obje, void (T::*method)(void)) {
+        Thread(T *obje, void (T::*method)(void),bool isDeleteInstance = false) {
             ThreadData<T> *data = new ThreadData<T>();
             data->instance = (void*) obje;
-            
+            data->setDeleteInstance(isDeleteInstance);
             typedef void (T::*method_t)(void);
             // void*はdeleteができないのでmalloc、freeをする
             int size = sizeof(method_t);

@@ -73,6 +73,11 @@ void CPaneCn::onChannelSelected(wxTreeEvent& event)
     wxTreeItemId id = event.GetItem();
     wxTreeItemId parentId = GetItemParent(id);
 
+    // 親のIDがなければ何もしない
+    if(parentId == NULL)
+    {
+    	return;
+    }
     // アイテム名の取得
     wxString itemName = GetItemText(id);
 
