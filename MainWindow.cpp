@@ -9,7 +9,7 @@ using namespace std;
 //////////////////////////////////////////////////////////////////////
 
 CMainWindow::CMainWindow(void) : m_view(NULL), m_logHolder(NULL), m_contents(NULL),
-    m_serialize(NULL), m_serverIdLog(0), m_currentServiceId(0)
+    m_serialize(NULL), m_uniqueServiceId(0), m_currentServiceId(0)
 {
 }
 
@@ -44,11 +44,13 @@ void CMainWindow::init(void)
     // イベントハンドラの初期化
     initHandle();
 
-    // サービスのシリアライズ
+    // シリアライズされたサービスを読み込み
     m_serialize = new CServiceSerializer();
     m_serialize->init();
-    m_serialize->loadService(GetEventHandler(), m_contents);
-    m_currentServiceId = 1000;
+    m_serialize->loadService(GetEventHandler(), m_contents, m_uniqueServiceId);
+
+    m_persist = new CMyPersistent();
+    m_persist->init();
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -169,8 +171,8 @@ void CMainWindow::onIRCRegister(wxCommandEvent& event)
 }
 void CMainWindow::addNewConneection(CChatServiceBase* connnection)
 {
-	connnection->setId(m_serverIdLog);
-	m_serverIdLog++;
+	connnection->setId(m_uniqueServiceId);
+	m_uniqueServiceId++;
 	connnection->init(GetEventHandler());
 	connnection->setHost(m_view->getDlgHostName());
 	m_contents.push_back(connnection);
