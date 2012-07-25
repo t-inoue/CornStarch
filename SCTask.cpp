@@ -36,26 +36,28 @@ wxThread::ExitCode CSCTask::Entry(void)
     client->setHost(m_host);
 
     // 接続
-    client->connect();
+    string body;
+    if (client->connect()){
 
-    // リクエストを送信する
-    sendRequestToSC(client);
+        // リクエストを送信する
+        sendRequestToSC(client);
 
-    // 通信が可能となるまで待機
-    while(!client->waitRecv()){
+        // 通信が可能となるまで待機
+        while(!client->waitRecv()){
 
-        // スレッド廃棄要求が来たら終了
-        if (TestDestroy()){
+            // スレッド廃棄要求が来たら終了
+            if (TestDestroy()){
 
-            // 通信クライアントを消す
-            client->close();
-            delete client;
-            return (wxThread::ExitCode)-1;
+                // 通信クライアントを消す
+                client->close();
+                delete client;
+                return (wxThread::ExitCode)-1;
+            }
         }
-    }
 
-    // レスポンスボディを受信する
-    string body = client->recvHttpResponseBody();
+        // レスポンスボディを受信する
+        body = client->recvHttpResponseBody();
+    }
 
     // 通信クライアントを消す
     client->close();
