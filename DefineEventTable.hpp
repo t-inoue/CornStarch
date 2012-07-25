@@ -69,6 +69,7 @@ BEGIN_EVENT_TABLE(CMainWindow, wxFrame)
     EVT_MENU(CMenuPart::MENU_FILE_LOGOUT, CMainWindow::onLogout) // ログアウトして終了
     EVT_MENU(CMenuPart::MENU_SERVER_SC_ADD, CMainWindow::onSCRegister) // SCサーバの登録
     EVT_MENU(CMenuPart::MENU_SERVER_IRC_ADD, CMainWindow::onIRCRegister) // IRCサーバの登録
+    EVT_MENU(CMenuPart::MENU_SERVER_DELETE, CMainWindow::onDeleteService) // サーバの削除
     EVT_MENU(CMenuPart::MENU_SERVER_NICK_CHANGE, CMainWindow::onNickChange) // ニックネーム変更
     EVT_MENU(CMenuPart::MENU_CHANNEL_JOIN, CMainWindow::onJoin) // チャンネルに参加
     EVT_MENU(CMenuPart::MENU_CHANNEL_PART, CMainWindow::onPart) // チャンネルから離脱

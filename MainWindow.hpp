@@ -68,7 +68,8 @@ private:
 
 	// ユーザ登録(IRC)
 	void onIRCRegister(wxCommandEvent& event);
-
+	// サーバー削除
+	void onDeleteService(wxCommandEvent& event);
 	// ログアウトメニュー
 	void onLogout(wxCommandEvent& event);
 

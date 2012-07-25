@@ -23,6 +23,9 @@ void CMenuServer::init(void)
         MENU_SERVER_IRC_ADD,
         wxT("IRCサーバの追加"));
     append(
+        MENU_SERVER_DELETE,
+        wxT("サーバの削除"));
+    append(
         MENU_SERVER_NICK_CHANGE,
         wxT("ニックネーム変更"));
 }

@@ -10,6 +10,7 @@ public:
         MENU_FILE_LOGOUT,
         MENU_SERVER_SC_ADD,
         MENU_SERVER_IRC_ADD,
+        MENU_SERVER_DELETE,
         MENU_SERVER_NICK_CHANGE,
         MENU_UPDATE,
         MENU_CHANNEL_JOIN,

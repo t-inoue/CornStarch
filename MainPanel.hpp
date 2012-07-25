@@ -38,6 +38,16 @@ public:
     // ログ一覧ペインにログを表示
     void displayLogs(const std::vector<CChatLog*>& logs);
 
+    // メッセージペインをクリアする。
+    void clearMessages(void);
+
+    // メンバーペインをクリアする
+    void clearMembers(void);
+
+    // チャンネルペインをクリアする
+    void clearChannels(void);
+
+
 public:
     // 投稿ペインの文字列をクリアする
     void clearPostPaneText(void);
