@@ -21,7 +21,7 @@ private:
 	int m_currentServiceId;
 
 	// 通信要素
-	map<int,CChatServiceBase*> m_services; // スターチャットのコンテンツを管理
+	map<int, CChatServiceBase*> m_services; // スターチャットのコンテンツを管理
 	void addNewService(CChatServiceBase* service);
 
     // サービスのシリアライズ
@@ -62,6 +62,7 @@ private:
 
 	// IDからサービスを取得する
 	CChatServiceBase* getService(int serviceId);
+
 private:
 	// メニュー系
 
@@ -73,9 +74,11 @@ private:
 
 	// ユーザ登録(IRC)
 	void onIRCRegister(wxCommandEvent& event);
+
 	// サーバー削除
 	void onDeleteService(wxCommandEvent& event);
-	// ログアウトメニュー
+
+    // ログアウトメニュー
 	void onLogout(wxCommandEvent& event);
 
 	// チャンネルに参加メニュー
