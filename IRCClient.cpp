@@ -6,22 +6,26 @@
 #include "AuthEvent.hpp"
 
 namespace CornStarch
-{;
+{
+;
 
 wxDECLARE_EVENT(myEVT_THREAD_GET_PING, CAuthEvent);
 
 namespace IRC
-{;
+{
+;
 
 using namespace std;
 
-CIRCClient::CIRCClient() : m_handler(NULL), m_isClosing(false)
+CIRCClient::CIRCClient() :
+        m_handler(NULL), m_isClosing(false)
 {
-
+    m_mutex = new wxMutex();
 }
 
 CIRCClient::~CIRCClient(void)
 {
+    delete m_mutex;
 }
 void CIRCClient::init(int connectionId)
 {
@@ -52,12 +56,17 @@ void CIRCClient::connect(const wxString& content)
     setUrl(this->m_host);
     CSocketClient::connect();
     //　IRCへの接続
-    send(content);
+    sendCommand(content);
 
     Thread *thread = new Thread(this, &CIRCClient::receiveLoop, true);
     thread->start();
 }
-
+void CIRCClient::sendCommand(const wxString& content)
+{
+    m_mutex->Lock();
+    send (content);
+    m_mutex->Unlock();
+}
 void CIRCClient::receiveLoop()
 {
     CIRCParser parser;
@@ -94,12 +103,12 @@ void CIRCClient::receiveLoop()
 void CIRCClient::pong(const wxString& value)
 {
     wxString content(wxString::Format(wxT("PONG %s\r\n"), value));
-    send(content);
+    sendCommand(content);
 }
 void CIRCClient::quit(void)
 {
     wxString content("QUIT\r\n");
-    send(content);
+    sendCommand(content);
 }
 void CIRCClient::disconnect(void)
 {
@@ -110,48 +119,48 @@ void CIRCClient::disconnect(void)
 void CIRCClient::join(const wxString& channelName)
 {
     wxString content(wxString::Format(wxT("JOIN %s\r\n"), channelName));
-    send(content);
+    sendCommand(content);
 }
 void CIRCClient::part(const wxString& channelName)
 {
     wxString content(wxString::Format(wxT("PART %s\r\n"), channelName));
-    send(content);
+    sendCommand(content);
 }
 void CIRCClient::getTopicAsync(const wxString& channelName)
 {
     wxString content(wxString::Format(wxT("TOPIC %s\r\n"), channelName));
-    send(content);
+    sendCommand(content);
 
 }
 void CIRCClient::getNamesAsync(const wxString& channelName)
 {
     wxString content(wxString::Format(wxT("NAMES %s\r\n"), channelName));
-    send(content);
+    sendCommand(content);
 }
 
 void CIRCClient::sendMessage(const wxString& target, const wxString& content)
 {
     wxString contentWxString(
             wxString::Format(wxT("PRIVMSG %s %s\r\n"), target, content));
-    send(contentWxString);
+    sendCommand(contentWxString);
 }
 void CIRCClient::sendNotice(const wxString& target, const wxString& content)
 {
     wxString contentWxString(
             wxString::Format(wxT("NOTICE %s %s\r\n"), target, content));
-    send(contentWxString);
+    sendCommand(contentWxString);
 }
 void CIRCClient::changeTopic(const wxString& channelName,
         const wxString& content)
 {
     wxString contentWxString(
             wxString::Format(wxT("TOPIC %s %s\r\n"), channelName, content));
-    send(contentWxString);
+    sendCommand(contentWxString);
 }
 void CIRCClient::changeNickname(const wxString& content)
 {
     wxString contentWxString(wxString::Format(wxT("NICK %s\r\n"), content));
-    send(contentWxString);
+    sendCommand(contentWxString);
 
 }
 }

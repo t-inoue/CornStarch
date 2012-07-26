@@ -19,7 +19,8 @@ namespace IRC
 // IRCと接続するためのクライントクラスです。
 class CIRCClient: public CSocketClient
 {
-
+    // ミューテックス
+    wxMutex *m_mutex;
 	// ホスト名です。
 	wxString m_host;
 	// ポート番号です
@@ -35,6 +36,8 @@ class CIRCClient: public CSocketClient
 	// ハートビートへの反応です。
 	void pong(const wxString& value);
 
+    // コマンドをスレッドセーフで送信します。
+    void sendCommand(const wxString& target);
 	//IRCへ接続します。
 	void connect(const wxString& content);
 public:
