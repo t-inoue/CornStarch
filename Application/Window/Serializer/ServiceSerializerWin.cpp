@@ -117,6 +117,21 @@ void CServiceSerializer::saveReg(const CChatServiceBase* service, int id)
         ircReg.SetValue("HOST", service->getHost());
         ircReg.SetValue("NICK", service->getUserName());
         ircReg.SetValue("NAME", service->getUserName());
+
+        // チャンネルを保存
+        vector<wxString> channels = service->getChannels();
+        if (channels.size() != 0){
+            wxRegKey ch(ircReg, "CHANNEL");
+            if (!ch.Exists()){
+                ch.Create();
+            }
+
+            // チャンネル情報を保存
+            vector<wxString>::const_iterator it;
+            for (it = channels.begin(); it != channels.end(); it++){
+                ch.SetValue((*it), (*it));
+            }
+        }
     }
 }
 
@@ -137,7 +152,8 @@ CChatServiceBase* CServiceSerializer::newService(wxEvtHandler* handler,
 
     // 情報要素の数
     size_t length;
-    reg.GetKeyInfo(NULL, NULL, &length, NULL);
+    size_t subKeyNum;
+    reg.GetKeyInfo(&subKeyNum, NULL, &length, NULL);
 
     // サービスの作成
     CChatServiceBase* service;
@@ -152,6 +168,9 @@ CChatServiceBase* CServiceSerializer::newService(wxEvtHandler* handler,
     wxString prop;
     long idx;
     reg.GetFirstValue(prop, idx);
+
+    vector<wxString> channels;
+
     for (size_t j = 0; j < length; j++){
         if (prop == "NAME"){
             reg.QueryValue(prop, name);
@@ -165,10 +184,30 @@ CChatServiceBase* CServiceSerializer::newService(wxEvtHandler* handler,
         reg.GetNextValue(prop, idx);
     }
 
+    for(int k = 0; k < subKeyNum; k++){
+
+        // レジストリのサブキーからパラメータを読み込む
+        wxRegKey ch(reg, "CHANNEL");
+        ch.Open(wxRegKey::Read);
+        size_t values;
+        ch.GetKeyInfo(NULL, NULL, &values, NULL);
+
+        long ix;
+        wxString chName;
+        wxString result;
+        ch.GetFirstValue(chName, ix);
+        for (size_t k = 0; k < values; k++){
+            ch.QueryValue(chName, result);
+            channels.push_back(result);
+            ch.GetNextValue(chName, ix);
+        }
+    }
+
     // サービスのパラメータ注入
     service->setId(serviceId);
     service->init(handler);
     service->setHost(host);
+    service->setSavedChannels(channels);
     service->regUser(name, pass);
 
     return service;
