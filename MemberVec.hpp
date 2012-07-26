@@ -4,6 +4,8 @@
 
 class CMemberVec : public std::vector<CMemberData*>
 {
+private:
+	bool m_isLoaded;
 public:
     CMemberVec(void);
     ~CMemberVec(void);

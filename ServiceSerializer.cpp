@@ -1,4 +1,5 @@
 ﻿#include "ServiceSerializer.hpp"
+#include <sys/stat.h>
 #ifndef _WIN32
 
 using namespace std;
@@ -37,6 +38,7 @@ void CServiceSerializer::saveService(const map<int,CChatServiceBase*>& services)
 
     m_doc->SetRoot(root);
     m_doc->Save(PATH);
+    chmod(PATH, S_IRUSR | S_IWUSR);
 }
 
 // 保存されたサービス情報を基に、vectorにpushする
