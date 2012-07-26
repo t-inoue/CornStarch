@@ -67,13 +67,54 @@ private:
 			method_t method_ = *(method_t*) method;
 			T *instance_ = (T*) instance;
 			(instance_->*method_)();
-			//
 			if (m_isDeleteInstance){
 				delete instance_;
 			}
 		}
 	};
+	template<typename T, typename TArg,typename TArgActual>
+	class TrehadDataFunc: public ThreadData<T>
+	{
+	public:
+		virtual ~TrehadDataFunc()
+		{
+		}
+		TArgActual arg;
+		//override スレッドを開始します。
+		void startThread()
+		{
+			typedef void (T::*method_t)(TArg);
 
+			method_t method_ = *(method_t*)this->method;
+			T *instance_ = (T*)this->instance;
+			(instance_->*method_)(arg);
+			if (this->m_isDeleteInstance){
+				delete instance_;
+			}
+		}
+	};
+	template<typename T, typename TArg,typename TArgActual, typename TArg2,typename TArgActual2>
+	class TrehadDataFunc2: public ThreadData<T>
+	{
+	public:
+		virtual ~TrehadDataFunc2()
+		{
+		}
+		TArgActual arg;
+		TArgActual2 arg2;
+		//override スレッドを開始します。
+		void startThread()
+		{
+			typedef void (T::*method_t)(TArg,TArg2);
+
+			method_t method_ = *(method_t*)this->method;
+			T *instance_ = (T*)this->instance;
+			(instance_->*method_)(arg,arg2);
+			if (this->m_isDeleteInstance){
+				delete instance_;
+			}
+		}
+	};
 	// Thread実行のための要素です。
 	ThreadDataBase* threadData;
 
@@ -104,11 +145,41 @@ public:
 		data->instance = (void*) obje;
 		data->setDeleteInstance(isDeleteInstance);
 		typedef void (T::*method_t)(void);
-		// void*はdeleteができないのでmalloc、freeをする
 		int size = sizeof(method_t);
 		data->method = malloc(size);
 		*(method_t*) data->method = method;
 
+		threadData = data;
+	}
+	// インスタンスとメソッドを指定する
+	template<typename T, typename TArg, typename TArgActual>
+	Thread(T *obje, void (T::*method)(TArg), TArgActual arg, bool isDeleteInstance =
+	        false)
+	{
+		TrehadDataFunc<T, TArg, TArgActual> *data = new TrehadDataFunc<T,TArg, TArgActual>();
+		data->instance = (void*) obje;
+		data->setDeleteInstance(isDeleteInstance);
+		data->arg = arg;
+		typedef void (T::*method_t)(TArg);
+		int size = sizeof(method_t);
+		data->method = malloc(size);
+		*(method_t*) data->method = method;
+		threadData = data;
+	}
+	// インスタンスとメソッドを指定する
+	template<typename T, typename TArg,typename TArgActual,typename TArg2,typename TArgActual2>
+	Thread(T *obje, void (T::*method)(TArg,TArg2), TArgActual arg,TArgActual2 arg2, bool isDeleteInstance =
+	        false)
+	{
+		TrehadDataFunc2<T, TArg,TArgActual,TArg2, TArgActual2> *data = new TrehadDataFunc2<T, TArg,TArgActual,TArg2, TArgActual2>();
+		data->instance = (void*) obje;
+		data->setDeleteInstance(isDeleteInstance);
+		data->arg = arg;
+		data->arg2 = arg2;
+		typedef void (T::*method_t)(TArg,TArg2);
+		int size = sizeof(method_t);
+		data->method = malloc(size);
+		*(method_t*) data->method = method;
 		threadData = data;
 	}
 	virtual ~Thread()

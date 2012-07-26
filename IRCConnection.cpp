@@ -16,6 +16,7 @@
 #include "PartEvent.hpp"
 #include "ChannelStreamEvent.hpp"
 #include "UserStreamEvent.hpp"
+#include "Thread.h"
 
 // イベントの宣言
 wxDECLARE_EVENT(myEVT_THREAD_PUT_JOIN, CJoinEvent);
@@ -60,7 +61,10 @@ void CIRCConnection::init(int connectionId, wxEvtHandler* handler)
 void CIRCConnection::startPostMessageTask(const IUser* user,
         const wxString& message, const wxString& channel)
 {
-	m_client->sendMessage(channel, message);
+
+	Thread *thread =new Thread(m_client, &CIRCClient::sendMessage,channel,message);
+	thread->start();
+
 	wxThreadEvent* event = new wxThreadEvent();
 	event->SetEventType(myEVT_THREAD_POST_MESSAGE);
 	wxQueueEvent(m_handler, event);
@@ -72,10 +76,7 @@ void CIRCConnection::startGetMessageTask(const IUser* user,
         const wxString& channel)
 {
 	if (channel != ""){
-		time_t timer = time(NULL);
-
 		vector<CMessageData*> result;
-		//result.push_back(new CMessageData(1, "", "Connect", channel, timer));
 		CGetMessageEvent* event = new CGetMessageEvent();
 		event->setMessages(result); // 値取得
 		event->SetEventType(myEVT_THREAD_GET_MESSAGE); // イベントの種類をセット
@@ -88,7 +89,11 @@ void CIRCConnection::startGetMessageTask(const IUser* user,
 void CIRCConnection::startGetMemberTask(const IUser* user,
         const wxString& channel)
 {
-	m_client->getNamesAsync(channel);
+	if (channel != ""){
+
+		Thread *thread =new Thread(m_client, &CIRCClient::getNamesAsync,channel);
+		thread->start();
+	}
 }
 
 // ユーザの所属するチャンネル一覧を取得するタスク(別スレッド)を開始する
@@ -113,7 +118,8 @@ void CIRCConnection::startGetChannelTask(const IUser* user)
 // チャンネルから離脱するタスク(別スレッド)を開始する
 void CIRCConnection::startPartTask(const IUser* user, const wxString& channel)
 {
-	m_client->part(channel);
+	Thread *thread =new Thread(m_client, &CIRCClient::part,channel);
+	thread->start();
 
 	vector<CChannelData*>::iterator it = m_channels.begin();
 	while (it != m_channels.end()){
@@ -135,8 +141,11 @@ void CIRCConnection::startPartTask(const IUser* user, const wxString& channel)
 // チャンネルに参加するタスク(別スレッド)を開始する
 void CIRCConnection::startJoinTask(const IUser* user, const wxString& channel)
 {
-	m_client->join(channel);
-	m_client->getTopicAsync(channel);
+	Thread *thread =new Thread(m_client, &CIRCClient::join,channel);
+	thread->start();
+	Thread *threadTopic =new Thread(m_client, &CIRCClient::getTopicAsync,channel);
+	threadTopic->start();
+
 	CChannelData *channelData = new CChannelData();
 	channelData->m_name = channel;
 	channelData->m_topic = "";
@@ -165,9 +174,7 @@ void CIRCConnection::startGetMemberInfoTask(const IUser* user,
 // ユーザが正規の人かどうか判断するタスク(別スレッド)を開始する
 void CIRCConnection::startAuthTask(const IUser* user)
 {
-    // 
 	m_client->start(m_handler, user->getUserName(), "");
-
 }
 
 // ストリーム通信タスク(別スレッド)を開始
@@ -183,7 +190,8 @@ void CIRCConnection::deleteAuthTask(void)
 void CIRCConnection::startNickChangeTask(const IUser* user,
         const wxString& nick)
 {
-	m_client->changeNickname(nick);
+	Thread *thread =new Thread(m_client, &CIRCClient::changeNickname,nick);
+	thread->start();
 
 	CMemberData member;
 	member.m_name = wxString(user->getUserName());
@@ -199,7 +207,8 @@ void CIRCConnection::startNickChangeTask(const IUser* user,
 void CIRCConnection::startChangeTopicTask(const IUser* user,
         const wxString& topic)
 {
-	m_client->changeTopic(user->getChannelString(), topic);
+	Thread *thread =new Thread(m_client, &CIRCClient::changeTopic,user->getChannelString(), topic);
+	thread->start();
 
 	CChannelData channel;
 	channel.m_name = wxString(user->getChannelString());

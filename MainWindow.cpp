@@ -378,15 +378,17 @@ void CMainWindow::onGetAuth(CAuthEvent& event)
 		if (!event.isAuthSucceeded()){
 			wxMessageBox("認証に失敗しました");
 			m_services.erase(event.getConnectionId());
-
 			delete service;
+			m_view->displayChannels(m_services);
+
 		} else{
 			// コンテンツの更新
 			service->onAuthSucceeed();
+
+			// 画面表示の更新
+			updateAllView(event.getConnectionId(), service->getCurrentChannel());
 		}
 
-		// 画面表示の更新
-		updateAllView(event.getConnectionId(), service->getCurrentChannel());
 	}
 
 }

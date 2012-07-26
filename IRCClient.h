@@ -34,6 +34,9 @@ class CIRCClient: public CSocketClient
 	void receiveLoop(void);
 	// ハートビートへの反応です。
 	void pong(const wxString& value);
+
+	//IRCへ接続します。
+	void connect(const wxString& content);
 public:
 	CIRCClient();
 	virtual ~CIRCClient(void);
@@ -44,6 +47,7 @@ public:
 			const wxString& password);
 	// Quitメッセージを送ります。
 	void quit(void);
+
 	// IRCから切断します。
 	void disconnect(void);
 	// メッセージを送ります。

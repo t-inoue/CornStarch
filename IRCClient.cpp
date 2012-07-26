@@ -13,7 +13,7 @@ namespace CornStarch
 namespace IRC
 {
 CIRCClient::CIRCClient() :
-		m_handler(NULL),m_isClosing(false)
+		m_handler(NULL), m_isClosing(false)
 {
 
 }
@@ -33,17 +33,24 @@ void CIRCClient::start(wxEvtHandler* handler, const wxString& userName,
 		return;
 	}
 
+	m_handler = handler;
+
+	wxString pass(
+	        wxString::Format(wxT( "PASS %s\r\nNICK %s\r\nUSER %s * 0 :%s\r\n"),
+	                password.c_str(), userName.c_str(), userName.c_str(),
+	                userName.c_str()));
+
+	Thread *thread = new Thread(this, &CIRCClient::connect,pass);
+	thread->start();
+}
+
+void CIRCClient::connect(const wxString& content)
+{
 	setPort(this->m_port);
 	setUrl(this->m_host);
-
-	connect();
-	m_handler = handler;
+	CSocketClient::connect();
 	//　IRCへの接続
-	string pass(
-	        wxString::Format(wxT( "PASS %s\r\nNICK %s\r\nUSER %s * 0 :%s\r\n"),
-	                userName.c_str(), userName.c_str(), userName.c_str(),
-	                userName.c_str()));
-	send(pass);
+	send(content);
 
 	Thread *thread = new Thread(this, &CIRCClient::receiveLoop, true);
 	thread->start();
@@ -97,7 +104,6 @@ void CIRCClient::disconnect(void)
 	m_isClosing = true;
 	this->close();
 }
-
 
 void CIRCClient::join(const wxString& channelName)
 {

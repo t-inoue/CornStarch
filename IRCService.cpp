@@ -26,7 +26,7 @@ void CIRCService::init(wxEvtHandler* handler)
 	m_user->init();
 	m_user->setChannel("");
 
-    // ƒ`ƒƒƒbƒg‚Ìƒ^ƒCƒv
+    // IRCã®ãƒãƒ£ãƒƒãƒˆã‚¿ã‚¤ãƒ—
     m_type = CChatServiceBase::IRC;
 
 }
