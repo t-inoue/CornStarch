@@ -21,12 +21,10 @@ CMainWindow::~CMainWindow(void)
 {
 	// ファイルに保存
 	m_serialize->saveService(m_services);
-	//m_persist->saveService(m_services);
 
 	delete m_view;
 	delete m_logHolder;
 	delete m_serialize;
-	//delete m_persist;
 
 	map<int, CChatServiceBase*>::iterator it = m_services.begin();
 	while (it != m_services.end()){
@@ -55,11 +53,6 @@ void CMainWindow::init(void)
 	m_serialize = new CServiceSerializer();
 	m_serialize->init();
 	m_serialize->loadService(GetEventHandler(), m_services, m_uniqueServiceId);
-
-	//m_persist = new CMyPersistent();
-	//m_persist->init();
-	//m_persist->loadService(GetEventHandler(), m_services, m_uniqueServiceId);
-
 }
 
 //////////////////////////////////////////////////////////////////////

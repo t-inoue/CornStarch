@@ -90,6 +90,7 @@ CChatServiceBase* CServiceSerializer::newService(wxXmlNode* node,
     // 各タグの情報を取得
     wxXmlNode* status = node->GetChildren();
     wxString nick, name, pass, host;
+    vector<wxString> channels;
     while (status){
 
         // タグ情報の読み込み
@@ -101,7 +102,16 @@ CChatServiceBase* CServiceSerializer::newService(wxXmlNode* node,
         } else if (tag == "host"){
             host = status->GetNodeContent();
         }
+        if(tag == "channels")
+        {
+            wxXmlNode* channel = status->GetChildren();
+            while(channel)
+            {
+                channels.push_back(channel->GetNodeContent());
+                channel = channel->GetNext();
+            }
 
+        }
         // 次のタグへ
         status = status->GetNext();
     }
@@ -110,7 +120,11 @@ CChatServiceBase* CServiceSerializer::newService(wxXmlNode* node,
     service->setId(serviceId);
     service->init(handler);
     service->setHost(host);
+    service->setSavedChannels(channels);
     service->regUser(name, pass);
+
+
+
     return service;
 }
 
@@ -137,6 +151,18 @@ void CServiceSerializer::addServiceToRoot(wxXmlNode* root, const CChatServiceBas
         wxXmlNode* child2 = new wxXmlNode(server2, wxXML_TEXT_NODE, "text", service->getUserName());
         wxXmlNode* server3 = new wxXmlNode(serverRoot, wxXML_ELEMENT_NODE, "nick");
         wxXmlNode* child3 = new wxXmlNode(server3, wxXML_TEXT_NODE, "text", service->getUserName());
+
+
+        wxXmlNode* server4 = new wxXmlNode(serverRoot, wxXML_ELEMENT_NODE, "channels");
+        vector<wxString> channels = service->getChannels();
+        vector<wxString>::iterator it = channels.begin();
+        while (it != channels.end())
+        {
+            wxXmlNode* channel = new wxXmlNode(server4, wxXML_ELEMENT_NODE, "channel");
+            wxXmlNode* channleText = new wxXmlNode(channel, wxXML_TEXT_NODE, "text", (*it));
+            it++;
+        }
+
     }
 }
 

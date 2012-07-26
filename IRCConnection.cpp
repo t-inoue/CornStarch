@@ -149,6 +149,7 @@ void CIRCConnection::startJoinTask(const IUser* user, const wxString& channel)
 	Thread *threadTopic =new Thread(m_client, &CIRCClient::getTopicAsync,channel);
 	threadTopic->start();
 
+
 	CChannelData *channelData = new CChannelData();
 	channelData->m_name = channel;
 	channelData->m_topic = "";
