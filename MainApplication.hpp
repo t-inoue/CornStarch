@@ -1,6 +1,9 @@
 ﻿#pragma once
 #include "MainWindow.hpp"
 
+namespace CornStarch
+{;
+
 class CMainApplication : public wxApp
 {
 private:
@@ -16,3 +19,4 @@ public:
     virtual bool OnInit();
 };
 
+}

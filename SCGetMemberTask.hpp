@@ -2,8 +2,14 @@
 #include "SCTask.hpp"
 #include "GetMemberEvent.hpp"
 
+namespace CornStarch
+{;
+
 // イベントの宣言
 wxDECLARE_EVENT(myEVT_THREAD_GET_MEMBER, CGetMemberEvent);
+
+namespace StarChat
+{;
 
 // メンバー取得を別スレッドで取得するためのタスク
 class CSCGetMemberTask : public CSCTask
@@ -28,3 +34,5 @@ private:
     CConnectionEventBase* parseHttpResponse(const std::string& responseBody);
 };
 
+}
+}

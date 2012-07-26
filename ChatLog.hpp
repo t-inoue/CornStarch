@@ -1,6 +1,9 @@
 ﻿#pragma once
 #include <wx/string.h>
 
+namespace CornStarch
+{;
+
 // チャットのログを管理
 class CChatLog
 {
@@ -31,3 +34,4 @@ public:
     virtual void updateNick(const wxString& nick);
 };
 
+}

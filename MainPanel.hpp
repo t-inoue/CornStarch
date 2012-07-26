@@ -8,6 +8,9 @@
 #include <wx/sizer.h>
 #include "ChatServiceBase.hpp"
 
+namespace CornStarch
+{;
+
 class CMainPanel : public CSplitPanel
 {
 private:
@@ -72,3 +75,4 @@ private:
 
 };
 
+}

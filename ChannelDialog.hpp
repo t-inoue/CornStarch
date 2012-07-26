@@ -1,6 +1,9 @@
 ﻿#pragma once
 #include "header.hpp"
 
+namespace CornStarch
+{;
+
 // チャンネル名指定用ダイアログ
 class CChannelDialog : public wxDialog
 {
@@ -18,3 +21,4 @@ public:
     wxString getChannelName(void) const;
 };
 
+}

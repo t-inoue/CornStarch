@@ -2,6 +2,9 @@
 #include "header.hpp"
 #include <wx/taskbar.h>
 
+namespace CornStarch
+{;
+
 // 通知を行う
 class CMainNotifier
 {
@@ -18,3 +21,5 @@ public:
     // 通知を行う
     void messageNotify(const wxString& title, const wxString& message);
 };
+
+}

@@ -1,5 +1,7 @@
 ﻿#include "MenuUpdate.hpp"
 
+namespace CornStarch
+{;
 
 CMenuUpdate::CMenuUpdate(void)
 {
@@ -20,4 +22,6 @@ void CMenuUpdate::init(void)
     append(
         MENU_UPDATE,
         wxT("更新\tF5"));
+}
+
 }

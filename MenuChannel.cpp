@@ -1,5 +1,7 @@
 ﻿#include "MenuChannel.hpp"
 
+namespace CornStarch
+{;
 
 CMenuChannel::CMenuChannel(void)
 {
@@ -26,4 +28,6 @@ void CMenuChannel::init(void)
     append(
         MENU_CHANNEL_TOPIC_CHANGE,
         wxT("トピックを変更"));
+}
+
 }

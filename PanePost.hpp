@@ -1,6 +1,9 @@
 ﻿#pragma once
 #include "header.hpp"
 
+namespace CornStarch
+{;
+
 // メッセージ投稿用ペイン
 class CPanePost : public wxTextCtrl
 {
@@ -12,3 +15,4 @@ public:
     void init(wxWindow* parent);
 };
 
+}

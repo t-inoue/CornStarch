@@ -3,6 +3,9 @@
 #include "ChannelStatus.hpp"
 #include "ChannelData.hpp"
 
+namespace CornStarch
+{;
+
 // チャンネル一覧を保持する
 class CChannelHolder
 {
@@ -79,3 +82,4 @@ public:
     bool hasSameMessage(const CMessageData& message);
 };
 
+}

@@ -1,8 +1,15 @@
 ﻿#pragma once
 #include "SCTask.hpp"
 
+namespace CornStarch
+{;
+
 // イベントの宣言
 wxDECLARE_EVENT(myEVT_THREAD_POST_MESSAGE, wxThreadEvent);
+
+namespace StarChat
+{;
+
 
 // 別スレッドでコメントの投稿を行う
 class CSCPostMessageTask : public CSCTask
@@ -31,3 +38,6 @@ private:
     // HTTPレスポンスを解析してイベントを作成する
     CConnectionEventBase* parseHttpResponse(const std::string& responseBody);
 };
+
+}
+}

@@ -2,6 +2,10 @@
 #include "header.hpp"
 #include "ChannelData.hpp"
 #include "ConnectionEventBase.hpp"
+
+namespace CornStarch
+{;
+
 // チャンネル情報更新時のイベント
 class CChannelStreamEvent : public CConnectionEventBase
 {
@@ -19,3 +23,4 @@ public:
     void setChannel(const CChannelData& channel);
 };
 
+}

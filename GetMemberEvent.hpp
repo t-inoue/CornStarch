@@ -4,6 +4,9 @@
 #include "MemberData.hpp"
 #include "ConnectionEventBase.hpp"
 
+namespace CornStarch
+{;
+
 // メンバー受信時のイベント
 class CGetMemberEvent : public CConnectionEventBase
 {
@@ -21,3 +24,4 @@ public:
     std::vector<CMemberData*> getMembers(void) const;
 };
 
+}

@@ -3,6 +3,9 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+
 const wxString CServiceSerializer::KEY_PLACE
     = "HKEY_CURRENT_USER\\Software\\CornStarch";
 
@@ -139,9 +142,9 @@ CChatServiceBase* CServiceSerializer::newService(wxEvtHandler* handler,
     // サービスの作成
     CChatServiceBase* service;
     if (type == "StarChat"){ // StarChat
-        service = new CSCService();
+        service = new StarChat::CSCService();
     } else if (type == "IRC"){ // IRC
-        service = new CornStarch::IRC::CIRCService();
+        service = new IRC::CIRCService();
     }
 
     // レジストリからパラメータの読み込み
@@ -169,5 +172,7 @@ CChatServiceBase* CServiceSerializer::newService(wxEvtHandler* handler,
     service->regUser(name, pass);
 
     return service;
+}
+
 }
 #endif

@@ -2,6 +2,9 @@
 #include <wx/string.h>
 #include <time.h>
 
+namespace CornStarch
+{;
+
 // 投稿メッセージの内容を表すクラス
 class CMessageData
 {
@@ -38,3 +41,4 @@ public:
     }
 };
 
+}

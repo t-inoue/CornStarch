@@ -2,6 +2,9 @@
 #include "header.hpp"
 #include "ConnectionEventBase.hpp"
 
+namespace CornStarch
+{;
+
 // ユーザ認証時のイベント
 class CAuthEvent : public CConnectionEventBase
 {
@@ -19,3 +22,4 @@ public:
     bool isAuthSucceeded(void) const;
 };
 
+}

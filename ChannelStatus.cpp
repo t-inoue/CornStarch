@@ -2,6 +2,9 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+
 CChannelStatus::CChannelStatus(void)
 {
 }
@@ -109,4 +112,6 @@ void CChannelStatus::updateMember(const CMemberData& member)
 void CChannelStatus::popMember(const wxString& userName)
 {
     m_members->pop(userName);
+}
+
 }

@@ -3,6 +3,9 @@
 #include "ChannelData.hpp"
 #include "ConnectionEventBase.hpp"
 
+namespace CornStarch
+{;
+
 // チャンネル参加時のイベント
 class CJoinEvent : public CConnectionEventBase
 {
@@ -20,3 +23,4 @@ public:
     CChannelData getChannel(void) const;
 };
 
+}

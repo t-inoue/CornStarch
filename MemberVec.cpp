@@ -2,6 +2,9 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+
 CMemberVec::CMemberVec(void)
 {
 }
@@ -84,4 +87,6 @@ void CMemberVec::deleteAllMembers(void)
         delete (*this)[i];
     }
     clear();
+}
+
 }

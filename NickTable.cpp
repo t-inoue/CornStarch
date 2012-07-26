@@ -2,6 +2,9 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+
 CNickTable::CNickTable(void)
 {
 }
@@ -50,4 +53,6 @@ wxString CNickTable::getRealName(const wxString& nick)
         }
     }
     return "";
+}
+
 }

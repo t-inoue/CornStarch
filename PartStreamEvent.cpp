@@ -2,6 +2,9 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+
 CPartStreamEvent::CPartStreamEvent(void)
 {
 }
@@ -37,4 +40,6 @@ wxString CPartStreamEvent::getChannelName(void) const
 wxString CPartStreamEvent::getUserName(void) const
 {
     return m_user;
+}
+
 }

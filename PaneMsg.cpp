@@ -2,6 +2,9 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+
 CPaneMsg::CPaneMsg(void)
 {
 }
@@ -88,4 +91,6 @@ void CPaneMsg::drawDateLine(const wxString& now, const wxString& next)
     }
 
     AppendText("\n------" + next + "--------\n\n");
+}
+
 }

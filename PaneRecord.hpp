@@ -7,6 +7,9 @@
 #include "header.hpp"
 #include <vector>
 
+namespace CornStarch
+{;
+
 // メッセージ一覧表示用ペイン
 class CPaneRecord : public wxTextCtrl
 {
@@ -50,3 +53,4 @@ private:
     void pushLog(const CTopicLog& topicLog);
 };
 
+}

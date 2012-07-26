@@ -1,5 +1,7 @@
 ﻿#include "GetMemberInfoEvent.hpp"
 
+namespace CornStarch
+{;
 
 CGetMemberInfoEvent::CGetMemberInfoEvent(void) : m_member(NULL)
 {
@@ -29,4 +31,6 @@ void CGetMemberInfoEvent::setMember(const CMemberData& member)
 CMemberData CGetMemberInfoEvent::getMember(void) const
 {
     return *m_member;
+}
+
 }

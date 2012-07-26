@@ -1,6 +1,9 @@
 ﻿#pragma once
 #include "wx/treebase.h"
 
+namespace CornStarch
+{;
+
 // チャンネルツリーペインで選択時に発生するイベント
 class CChannelSelectEvent : public wxTreeEvent
 {
@@ -39,3 +42,4 @@ public:
     bool isServerSelected(void) const;
 };
 
+}

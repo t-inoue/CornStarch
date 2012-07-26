@@ -1,5 +1,7 @@
 ﻿#include "ChangeTopicDialog.hpp"
 
+namespace CornStarch
+{;
 
 CChangeTopicDialog::CChangeTopicDialog(void)
 {
@@ -50,3 +52,4 @@ wxString CChangeTopicDialog::getTopic(void) const
     return "";
 }
 
+}

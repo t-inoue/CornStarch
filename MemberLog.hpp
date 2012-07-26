@@ -2,6 +2,9 @@
 #include "ChatLog.hpp"
 #include "MemberData.hpp"
 
+namespace CornStarch
+{;
+
 // メンバー情報更新ログ
 class CMemberLog : public CChatLog
 {
@@ -19,3 +22,4 @@ public:
     CMemberData getLog(void) const;
 };
 
+}

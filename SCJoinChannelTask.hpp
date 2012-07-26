@@ -2,8 +2,14 @@
 #include "SCTask.hpp"
 #include "JoinEvent.hpp"
 
+namespace CornStarch
+{;
+
 // イベントの宣言
 wxDECLARE_EVENT(myEVT_THREAD_PUT_JOIN, CJoinEvent);
+
+namespace StarChat
+{;
 
 // チャンネルに参加するためのタスク
 class CSCJoinChannelTask : public CSCTask
@@ -29,3 +35,5 @@ private:
     CConnectionEventBase* parseHttpResponse(const std::string& responseBody);
 };
 
+}
+}

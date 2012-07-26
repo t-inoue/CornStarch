@@ -6,6 +6,9 @@
 #include "ChatServiceBase.hpp"
 #include <map>
 
+namespace CornStarch
+{;
+
 // ビュー部分(メニューバー、画面、ダイアログ)を管理
 class CMainView
 {
@@ -118,3 +121,4 @@ public: // 通知に関するメソッド
     void messageNotify(const wxString& title, const wxString& message);
 };
 
+}

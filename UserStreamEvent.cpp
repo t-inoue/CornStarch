@@ -1,5 +1,7 @@
 ﻿#include "UserStreamEvent.hpp"
 
+namespace CornStarch
+{;
 
 CUserStreamEvent::CUserStreamEvent(void) : m_member(NULL)
 {
@@ -29,4 +31,6 @@ void CUserStreamEvent::setMember(const CMemberData& member)
 CMemberData CUserStreamEvent::getMember(void) const
 {
     return *m_member;
+}
+
 }

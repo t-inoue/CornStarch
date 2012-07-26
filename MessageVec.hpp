@@ -2,6 +2,9 @@
 #include <vector>
 #include "MessageData.hpp"
 
+namespace CornStarch
+{;
+
 // メッセージ一覧を管理する
 class CMessageVec : public std::vector<CMessageData*>
 {
@@ -31,3 +34,5 @@ public:
     // 全メッセージを削除する
     void deleteAllMessages(void);
 };
+
+}

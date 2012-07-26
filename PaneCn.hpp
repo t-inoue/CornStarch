@@ -8,8 +8,11 @@
 #include "TreeServerItem.hpp"
 #include <map>
 
+namespace CornStarch
+{;
+
 // イベントの宣言
-wxDECLARE_EVENT(myEVT_SELECt_TREE_NODE, CChannelSelectEvent);
+wxDECLARE_EVENT(myEVT_SELECT_TREE_NODE, CChannelSelectEvent);
 
 class CPaneCn : public wxTreeCtrl
 {
@@ -34,3 +37,5 @@ private:
     void onChannelSelected(wxTreeEvent& event);
 
 };
+
+}

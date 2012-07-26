@@ -1,6 +1,9 @@
 ﻿#pragma once
 #include "header.hpp"
 
+namespace CornStarch
+{;
+
 // ニックネーム変更用ダイアログ
 class CNickChangeDialog : public wxDialog
 {
@@ -17,3 +20,4 @@ public:
     wxString getNickName(void) const;
 };
 
+}

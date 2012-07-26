@@ -4,6 +4,9 @@
 #include "header.hpp"
 #include "wx/listbox.h"
 
+namespace CornStarch
+{;
+
 class CPaneMember : public wxListBox
 {
 public:
@@ -17,3 +20,4 @@ public:
     void displayMembers(const std::vector<CMemberData*>& members);
 };
 
+}

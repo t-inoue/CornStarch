@@ -2,8 +2,14 @@
 #include "SCTask.hpp"
 #include "GetChannelEvent.hpp"
 
+namespace CornStarch
+{;
+
 // イベントの宣言
 wxDECLARE_EVENT(myEVT_THREAD_GET_CHANNEL, CGetChannelEvent);
+
+namespace StarChat
+{;
 
 // チャンネルを別スレッドで取得するためのタスク
 class CSCGetChannelTask : public CSCTask
@@ -28,3 +34,5 @@ private:
     CConnectionEventBase* parseHttpResponse(const std::string& responseBody);
 };
 
+}
+}

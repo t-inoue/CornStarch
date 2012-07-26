@@ -1,5 +1,7 @@
 ﻿#include "ChannelDialog.hpp"
 
+namespace CornStarch
+{;
 
 CChannelDialog::CChannelDialog(void) : m_channelText(NULL)
 {
@@ -50,3 +52,4 @@ wxString CChannelDialog::getChannelName(void) const
     return "";
 }
 
+}

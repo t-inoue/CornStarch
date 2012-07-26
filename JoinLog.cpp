@@ -2,6 +2,9 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+
 CJoinLog::CJoinLog(void) : m_sub(NULL)
 {
 }
@@ -54,4 +57,6 @@ bool CJoinLog::isUnknownNick(const wxString& name) const
 void CJoinLog::updateNick(const wxString& nick)
 {
     m_nick = nick;
+}
+
 }

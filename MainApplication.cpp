@@ -1,5 +1,8 @@
 ﻿#include "MainApplication.hpp"
 
+namespace CornStarch
+{;
+
 const wxString CMainApplication::TITLE = "CornStarch"; // ウィンドウタイトル
 
 // アプリケーションクラスを認識させる
@@ -22,4 +25,6 @@ bool CMainApplication::OnInit()
 
     // 続きの処理を実行
     return true;
+}
+
 }

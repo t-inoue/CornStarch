@@ -1,6 +1,12 @@
 ﻿#include "SCUser.hpp"
 
 using namespace std;
+
+namespace CornStarch
+{;
+namespace StarChat
+{;
+
 const wxString CSCUser::BASIC_KEY = "basic";
 const wxString CSCUser::NAME_KEY = "username";
 
@@ -129,8 +135,6 @@ wxString CSCUser::getNameKey(void) const
 }
 
 
-
-
 //////////////////////////////////////////////////////////////////////
 
 
@@ -147,3 +151,5 @@ wxString CSCUser::crypt(const wxString& username, const wxString& password)
     return wxBase64Encode(str, str.size());
 }
 
+}
+}

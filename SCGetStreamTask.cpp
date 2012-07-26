@@ -2,6 +2,11 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+namespace StarChat
+{;
+
 CSCGetStreamTask::CSCGetStreamTask(void)
 {
 }
@@ -125,4 +130,7 @@ CConnectionEventBase* CSCGetStreamTask::parseStream(const string& json)
     }
 
     return NULL;
+}
+
+}
 }

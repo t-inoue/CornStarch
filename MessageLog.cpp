@@ -2,6 +2,9 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+
 CMessageLog::CMessageLog(void) : m_message(NULL)
 {
 }
@@ -54,4 +57,6 @@ bool CMessageLog::isUnknownNick(const wxString& name) const
 void CMessageLog::updateNick(const wxString& nick)
 {
     m_nick = nick;
+}
+
 }

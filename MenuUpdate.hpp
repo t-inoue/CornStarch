@@ -1,6 +1,9 @@
 ﻿#pragma once
 #include "MenuPart.hpp"
 
+namespace CornStarch
+{;
+
 // メニュー項目の【更新】
 class CMenuUpdate : public CMenuPart
 {
@@ -12,3 +15,4 @@ public:
     void init(void);
 };
 
+}

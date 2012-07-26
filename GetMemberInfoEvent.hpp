@@ -3,6 +3,9 @@
 #include "MemberData.hpp"
 #include "ConnectionEventBase.hpp"
 
+namespace CornStarch
+{;
+
 // メンバー情報取得時のイベント
 class CGetMemberInfoEvent : public CConnectionEventBase
 {
@@ -20,3 +23,4 @@ public:
     CMemberData getMember(void) const;
 };
 
+}

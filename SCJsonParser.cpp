@@ -3,6 +3,11 @@
 using namespace std;
 using namespace picojson;
 
+namespace CornStarch
+{;
+namespace StarChat
+{;
+
 CSCJsonParser::CSCJsonParser(void)
 {
 }
@@ -290,4 +295,7 @@ value CSCJsonParser::parseSCJson(const string& json) const
 
     // 解析結果
     return v;
+}
+
+}
 }

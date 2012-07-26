@@ -2,6 +2,11 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+namespace StarChat
+{;
+
 CSCGetChannelTask::CSCGetChannelTask(void)
 {
 }
@@ -44,4 +49,7 @@ CConnectionEventBase* CSCGetChannelTask::parseHttpResponse(const string& respons
     event->setChannels(parser.getChannels(responseBody)); // 値取得
     event->SetEventType(myEVT_THREAD_GET_CHANNEL); // イベントの種類をセット
     return event;
+}
+
+}
 }
