@@ -2,6 +2,9 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+
 CChannelHolder::CChannelHolder(void):m_isLoaded(false)
 {
 }
@@ -253,4 +256,6 @@ bool CChannelHolder::hasSameMessage(const CMessageData& message)
     }
 
     return m_channels[message.m_channel]->hasSameMessage(message);
+}
+
 }

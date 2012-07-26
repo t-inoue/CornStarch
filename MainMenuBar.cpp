@@ -1,5 +1,7 @@
 ﻿#include "MainMenuBar.hpp"
 
+namespace CornStarch
+{;
 
 CMainMenuBar::CMainMenuBar(void)
     : m_menuFile(NULL), m_menuServer(NULL), m_menuChannel(NULL), m_menuUpdate(NULL)
@@ -41,3 +43,4 @@ void CMainMenuBar::init(void)
     Append(m_menuUpdate, m_menuUpdate->getTitle());
 }
 
+}

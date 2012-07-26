@@ -1,7 +1,11 @@
 ﻿#include "MainPanel.hpp"
 #include "vector"
 #include "ChatServiceBase.hpp"
+
 using namespace std;
+
+namespace CornStarch
+{;
 
 CMainPanel::CMainPanel(void) :
 		m_msgPane(NULL), m_memBox(NULL), m_cnBox(NULL), m_postPane(NULL), m_recordPane(
@@ -151,3 +155,4 @@ void CMainPanel::split(void)
 	this->SplitVertically(m_spHorL, m_spHorR);
 }
 
+}

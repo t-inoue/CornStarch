@@ -1,5 +1,7 @@
 ﻿#include "ViewDialog.hpp"
 
+namespace CornStarch
+{;
 
 CViewDialog::CViewDialog(void)
     : m_authDlg(NULL), m_channelDlg(NULL), m_cancelAuthDlg(NULL)
@@ -113,3 +115,4 @@ wxString CViewDialog::getTopic(void) const
     return m_topicDlg->getTopic();
 }
 
+}

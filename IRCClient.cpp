@@ -5,13 +5,16 @@
 #include "StringUtility.h"
 #include "AuthEvent.hpp"
 
+namespace CornStarch
+{;
+
 wxDECLARE_EVENT(myEVT_THREAD_GET_PING, CAuthEvent);
+
+namespace IRC
+{;
+
 using namespace std;
 
-namespace CornStarch
-{
-namespace IRC
-{
 CIRCClient::CIRCClient() :
 		m_handler(NULL),m_isClosing(false)
 {

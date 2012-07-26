@@ -2,6 +2,9 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+
 CPaneCn::CPaneCn(void)
 {
 }
@@ -100,8 +103,8 @@ void CPaneCn::onChannelSelected(wxTreeEvent& event)
 
     // イベントを送信
     chEvent->setText(itemName);
-    chEvent->SetEventType(myEVT_SELECt_TREE_NODE);
+    chEvent->SetEventType(myEVT_SELECT_TREE_NODE);
     wxQueueEvent(GetParent()->GetParent()->GetParent()->GetEventHandler(), chEvent);
 }
 
-
+}

@@ -2,6 +2,9 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+
 CChatServiceBase::CChatServiceBase(void) : m_handler(NULL), 
     m_channel(NULL), m_user(NULL), m_nickTable(NULL), m_connect(NULL)
 {
@@ -76,7 +79,7 @@ void CChatServiceBase::reconnect(void)
 {
     // 通信を初期化
     delete m_connect;
-    m_connect = new CSCConnection();
+    m_connect = new StarChat::CSCConnection();
     m_connect->init(m_id, m_handler);
     m_connect->startStreamTask( m_user);
 }
@@ -384,4 +387,6 @@ void CChatServiceBase::onGetUserStream(const CMemberData& member)
 {
     m_channel->updateMember(member);
     (*m_nickTable)[member.m_name] = member.m_nick;
+}
+
 }

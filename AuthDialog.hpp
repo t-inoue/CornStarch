@@ -1,6 +1,9 @@
 ﻿#pragma once
 #include "header.hpp"
 
+namespace CornStarch
+{;
+
 // ユーザ名登録用ダイアログ
 class CAuthDialog : public wxDialog
 {
@@ -28,3 +31,4 @@ public:
     wxString getHostName(void) const;
 };
 
+}

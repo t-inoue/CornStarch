@@ -4,6 +4,11 @@
 #include <wx/base64.h>
 #include "IUser.h"
 
+namespace CornStarch
+{;
+namespace StarChat
+{;
+
 // StarChatユーザの情報を格納
 class CSCUser:public IUser
 {
@@ -83,3 +88,5 @@ private:
 
 };
 
+}
+}

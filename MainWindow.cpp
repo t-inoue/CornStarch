@@ -6,6 +6,9 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+
 //////////////////////////////////////////////////////////////////////
 
 CMainWindow::CMainWindow(void) :
@@ -38,12 +41,12 @@ CMainWindow::~CMainWindow(void)
 void CMainWindow::init(void)
 {
 	// viewの初期化
-	m_view = new CMainView();
+	m_view = new CornStarch::CMainView();
 	m_view->init(this);
 	SetMenuBar(m_view->getMenuBar()); // メニューバー
 
 	// ログ保持部の初期化
-	m_logHolder = new CMainLogHolder();
+	m_logHolder = new CornStarch::CMainLogHolder();
 
 	// イベントハンドラの初期化
 	initHandle();
@@ -161,7 +164,7 @@ void CMainWindow::onSCRegister(wxCommandEvent& event)
 	if (m_view->showModalSCAuthDlg() != wxID_OK){
 		return;
 	}
-	CChatServiceBase* contents = new CSCService(); //new CornStarch::IRC::CIRCConnectionContents();//
+	CChatServiceBase* contents = new StarChat::CSCService(); //new CornStarch::IRC::CIRCConnectionContents();//
 	addNewService(contents);
 }
 
@@ -337,7 +340,7 @@ void CMainWindow::onMemberSelected(wxCommandEvent& event)
 }
 
 // チャンネル選択時
-void CMainWindow::onChannelSelected(CChannelSelectEvent& event)
+void CMainWindow::onChannelSelected(CornStarch::CChannelSelectEvent& event)
 {
 	// 選択したのがサーバ名だったとき
 	if (event.isServerSelected()){
@@ -552,4 +555,6 @@ void CMainWindow::onUserStream(CUserStreamEvent& event)
 	updateMemberView(event.getConnectionId(), contents->getCurrentChannel()); // メンバーペイン
 	updateMessageView(event.getConnectionId(), contents->getCurrentChannel()); // メッセージペイン
 	m_view->displayLogs(m_logHolder->getLogs()); // ログペイン
+}
+
 }

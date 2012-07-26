@@ -1,6 +1,9 @@
 ﻿#pragma once
 #include "wx/treebase.h"
 
+namespace CornStarch
+{;
+
 // ツリーのサーバ情報に入れるデータ
 class CTreeServerItem : public wxTreeItemData
 {
@@ -18,3 +21,4 @@ public:
     int getServerId(void) const;
 };
 
+}

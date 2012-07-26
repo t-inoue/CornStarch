@@ -4,6 +4,9 @@
 #include "MessageData.hpp"
 #include "ConnectionEventBase.hpp"
 
+namespace CornStarch
+{;
+
 // メッセージ受信時のイベント
 class CGetMessageEvent : public CConnectionEventBase
 {
@@ -21,3 +24,4 @@ public:
     std::vector<CMessageData*> getMessages(void) const;
 };
 
+}

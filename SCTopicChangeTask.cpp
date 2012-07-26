@@ -2,6 +2,11 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+namespace StarChat
+{;
+
 CSCTopicChangeTask::CSCTopicChangeTask(void)
 {
 }
@@ -39,4 +44,7 @@ void CSCTopicChangeTask::sendRequestToSC(CSCClient* client)
 CConnectionEventBase* CSCTopicChangeTask::parseHttpResponse(const string& responseBody)
 {
     return NULL;
+}
+
+}
 }

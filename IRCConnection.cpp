@@ -17,6 +17,9 @@
 #include "ChannelStreamEvent.hpp"
 #include "UserStreamEvent.hpp"
 
+namespace CornStarch
+{;
+
 // イベントの宣言
 wxDECLARE_EVENT(myEVT_THREAD_PUT_JOIN, CJoinEvent);
 wxDECLARE_EVENT(myEVT_THREAD_GET_CHANNEL, CGetChannelEvent);
@@ -26,10 +29,10 @@ wxDECLARE_EVENT(myEVT_THREAD_GET_MEMBER_INFO, CGetMemberInfoEvent);
 wxDECLARE_EVENT(myEVT_THREAD_DELETE_PART, CPartEvent);
 wxDECLARE_EVENT(myEVT_THREAD_STREAM_CH_UPDATE, CChannelStreamEvent);
 wxDECLARE_EVENT(myEVT_THREAD_STREAM_USER_UPDATE, CUserStreamEvent);
-namespace CornStarch
-{
+
 namespace IRC
-{
+{;
+
 CIRCConnection::CIRCConnection()
 {
 

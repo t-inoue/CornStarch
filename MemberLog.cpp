@@ -1,5 +1,7 @@
 ﻿#include "MemberLog.hpp"
 
+namespace CornStarch
+{;
 
 CMemberLog::CMemberLog(void) : m_member(NULL)
 {
@@ -31,4 +33,6 @@ void CMemberLog::init(const CMemberData& member)
 CMemberData CMemberLog::getLog(void) const
 {
     return *m_member;
+}
+
 }

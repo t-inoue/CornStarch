@@ -2,6 +2,9 @@
 #include <wx/string.h>
 #include <vector>
 
+namespace CornStarch
+{;
+
 // チャンネル入退出の内容を表すクラス
 class CSubscribeData
 {
@@ -14,3 +17,4 @@ public:
     CSubscribeData(){}
 };
 
+}

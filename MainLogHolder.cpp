@@ -2,6 +2,9 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+
 CMainLogHolder::CMainLogHolder(void)
 {
 }
@@ -103,4 +106,6 @@ void CMainLogHolder::pushLog(CChatLog* log)
         vector<CChatLog*>::iterator it = m_logs.begin();
         m_logs.erase(it);
     }
+}
+
 }

@@ -1,6 +1,9 @@
 ﻿#pragma once
 #include "AuthDialog.hpp"
 
+namespace CornStarch
+{;
+
 // IRCのサーバ追加用認証ダイアログ
 class CIRCAuthDialog : public CAuthDialog
 {
@@ -18,3 +21,4 @@ public:
     wxString getNick(void) const;
 };
 
+}

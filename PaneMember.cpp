@@ -2,6 +2,9 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+
 CPaneMember::CPaneMember(void)
 {
 }
@@ -34,4 +37,6 @@ void CPaneMember::displayMembers(const vector<CMemberData*>& members)
 
         this->Append(members[i]->m_nick);
     }
+}
+
 }

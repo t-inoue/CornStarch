@@ -2,6 +2,11 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+namespace StarChat
+{;
+
 CSCGetMessageTask::CSCGetMessageTask(void)
 {
 }
@@ -44,4 +49,7 @@ CConnectionEventBase* CSCGetMessageTask::parseHttpResponse(const string& respons
     event->setMessages(parser.getMessages(responseBody)); // 値取得
     event->SetEventType(myEVT_THREAD_GET_MESSAGE); // イベントの種類をセット
     return event;
+}
+
+}
 }

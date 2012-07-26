@@ -1,5 +1,7 @@
 ﻿#include "TreeServerItem.hpp"
 
+namespace CornStarch
+{;
 
 CTreeServerItem::CTreeServerItem(void)
 {
@@ -24,4 +26,6 @@ void CTreeServerItem::setServerId(int id)
 int CTreeServerItem::getServerId(void) const
 {
     return m_serverId;
+}
+
 }

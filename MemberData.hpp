@@ -2,6 +2,9 @@
 #include <wx/string.h>
 #include <vector>
 
+namespace CornStarch
+{;
+
 // メンバーを表すクラス
 class CMemberData
 {
@@ -16,3 +19,4 @@ public:
     CMemberData(void){}
 };
 
+}

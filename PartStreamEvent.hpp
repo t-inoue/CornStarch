@@ -3,6 +3,9 @@
 #include "ConnectionEventBase.hpp"
 #include <string>
 
+namespace CornStarch
+{;
+
 // チャンネルから誰かが離脱した際のイベント
 class CPartStreamEvent : public CConnectionEventBase
 {
@@ -27,3 +30,4 @@ public:
     wxString getUserName(void) const;
 };
 
+}

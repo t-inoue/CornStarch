@@ -1,5 +1,7 @@
 ﻿#include "TopicLog.hpp"
 
+namespace CornStarch
+{;
 
 CTopicLog::CTopicLog(void) : m_channel(NULL)
 {
@@ -31,4 +33,6 @@ void CTopicLog::init(const CChannelData& channel)
 CChannelData CTopicLog::getLog(void) const
 {
     return *m_channel;
+}
+
 }

@@ -2,6 +2,9 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+
 CAuthDialog::CAuthDialog(void) : m_nameText(NULL), m_passText(NULL)
 {
 }
@@ -65,4 +68,6 @@ wxString CAuthDialog::getPass(void) const
 wxString CAuthDialog::getHostName(void) const
 {
     return m_hostText->GetValue();
+}
+
 }

@@ -2,6 +2,9 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+
 CJoinStreamEvent::CJoinStreamEvent(void)
 {
 }
@@ -37,4 +40,6 @@ wxString CJoinStreamEvent::getChannelName(void) const
 wxString CJoinStreamEvent::getUserName(void) const
 {
     return m_user;
+}
+
 }

@@ -1,6 +1,11 @@
 ﻿#pragma once
 #include "SCTask.hpp"
 
+namespace CornStarch
+{;
+namespace StarChat
+{;
+
 // トピックを変更するためのタスク
 class CSCTopicChangeTask : public CSCTask
 {
@@ -25,3 +30,5 @@ private:
     CConnectionEventBase* parseHttpResponse(const std::string& responseBody);
 };
 
+}
+}

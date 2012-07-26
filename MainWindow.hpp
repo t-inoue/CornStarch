@@ -7,14 +7,17 @@
 #include "ServiceSerializer.hpp"
 #include "ServiceSerializerWin.hpp"
 
+namespace CornStarch
+{;
+
 // ビューコントローラとなるウィンドウクラス
 class CMainWindow: public wxFrame
 {
 private:
 
 	// CornStarch全般
-	CMainView* m_view; // ビューの挙動を管理
-	CMainLogHolder* m_logHolder; // チャットのログを保持
+	CornStarch::CMainView* m_view; // ビューの挙動を管理
+	CornStarch::CMainLogHolder* m_logHolder; // チャットのログを保持
 	int m_uniqueServiceId;
 	int m_currentServiceId;
 
@@ -101,7 +104,7 @@ private:
     void onMemberSelected(wxCommandEvent& event);
 
 	// チャンネル選択時
-	void onChannelSelected(CChannelSelectEvent& event);
+	void onChannelSelected(CornStarch::CChannelSelectEvent& event);
 
 private:
 	// 通信系
@@ -146,3 +149,5 @@ private:
 	void onUserStream(CUserStreamEvent& event);
 
 };
+
+}

@@ -1,6 +1,12 @@
 ﻿#include "SCPartChannelTask.hpp"
 #include "PartEvent.hpp"
+
 using namespace std;
+
+namespace CornStarch
+{;
+namespace StarChat
+{;
 
 CSCPartChannelTask::CSCPartChannelTask(void)
 {
@@ -43,4 +49,7 @@ CConnectionEventBase* CSCPartChannelTask::parseHttpResponse(const string& respon
     event->SetString(m_channel);
 	event->setConnectionId(m_connectionId);
     return event;
+}
+
+}
 }

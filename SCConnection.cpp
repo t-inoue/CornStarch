@@ -2,6 +2,11 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+namespace StarChat
+{;
+
 CSCConnection::CSCConnection(void) :
 		m_getStreamTask(NULL), m_authTask(NULL)
 {
@@ -192,3 +197,5 @@ void CSCConnection::startThread(CSCTask* task)
 	}
 }
 
+}
+}

@@ -2,6 +2,9 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+
 CMessageVec::CMessageVec(void) :
 		m_isLoaded(false)
 {
@@ -85,4 +88,6 @@ void CMessageVec::deleteAllMessages(void)
 		delete (*this)[i];
 	}
 	clear();
+}
+
 }

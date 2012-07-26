@@ -4,6 +4,9 @@
 #include "ChannelData.hpp"
 #include "ConnectionEventBase.hpp"
 
+namespace CornStarch
+{;
+
 // チャンネル受信時のイベント
 class CGetChannelEvent : public CConnectionEventBase
 {
@@ -21,3 +24,4 @@ public:
     std::vector<CChannelData*> getChannels(void) const;
 };
 
+}

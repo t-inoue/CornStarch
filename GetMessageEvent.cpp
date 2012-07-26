@@ -2,6 +2,9 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+
 CGetMessageEvent::CGetMessageEvent(void)
 {
 }
@@ -32,3 +35,4 @@ vector<CMessageData*> CGetMessageEvent::getMessages(void) const
     return m_messages;
 }
 
+}

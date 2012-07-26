@@ -2,6 +2,9 @@
 #include <vector>
 #include "MemberData.hpp"
 
+namespace CornStarch
+{;
+
 class CMemberVec : public std::vector<CMemberData*>
 {
 private:
@@ -28,3 +31,5 @@ public:
     // 全メンバーを削除する
     void deleteAllMembers(void);
 };
+
+}

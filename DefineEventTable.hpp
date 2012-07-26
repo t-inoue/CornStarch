@@ -1,6 +1,9 @@
 ﻿#include "MainWindow.hpp"
 #include "wx/event.h"
 
+namespace CornStarch
+{;
+
 // typedef
 typedef void (wxEvtHandler::*MyEventFunction)(CAuthEvent&);
 typedef void (wxEvtHandler::*delPartEvtFunction)(CPartEvent&);
@@ -30,7 +33,7 @@ wxDEFINE_EVENT(myEVT_THREAD_STREAM_USER_UPDATE, CUserStreamEvent);
 wxDEFINE_EVENT(myEVT_THREAD_PUT_JOIN, CJoinEvent);
 wxDEFINE_EVENT(myEVT_THREAD_DELETE_PART, CPartEvent);
 wxDEFINE_EVENT(myEVT_THREAD_POST_MESSAGE, wxThreadEvent);
-wxDEFINE_EVENT(myEVT_SELECt_TREE_NODE, CChannelSelectEvent);
+wxDEFINE_EVENT(myEVT_SELECT_TREE_NODE, CChannelSelectEvent);
 
 // イベントハンドラ
 #define MyEventHandler(func) wxEVENT_HANDLER_CAST(MyEventFunction, func)
@@ -91,7 +94,7 @@ BEGIN_EVENT_TABLE(CMainWindow, wxFrame)
     EVT_PUT_JOIN(myEVT_THREAD_PUT_JOIN, wxID_ANY, CMainWindow::onJoinChannel)
         
     // チャンネルツリーの項目を選択
-    EVT_SELECT_TREE_NODE(myEVT_SELECt_TREE_NODE, wxID_ANY, CMainWindow::onChannelSelected)
+    EVT_SELECT_TREE_NODE(myEVT_SELECT_TREE_NODE, wxID_ANY, CMainWindow::onChannelSelected)
 
 END_EVENT_TABLE();
 
@@ -103,3 +106,5 @@ BEGIN_EVENT_TABLE(CPaneCn, wxTreeCtrl)
     EVT_TREE_SEL_CHANGED(wxID_ANY, CPaneCn::onChannelSelected)
 
 END_EVENT_TABLE();
+
+}

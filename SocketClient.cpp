@@ -2,6 +2,9 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+
 CSocketClient::CSocketClient(void) :
 		m_address(NULL), m_socket(NULL)
 {
@@ -143,4 +146,6 @@ int CSocketClient::waitRecv(int usec, int sec)
 		return true;
 	}
 	return false;
+}
+
 }

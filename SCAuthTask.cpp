@@ -2,6 +2,11 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+namespace StarChat
+{;
+
 CSCAuthTask::CSCAuthTask(void)
 {
 }
@@ -43,4 +48,7 @@ CConnectionEventBase* CSCAuthTask::parseHttpResponse(const string& responseBody)
     event->setAuthResult(parser.isPingSucceeded(responseBody)); // 値取得
     event->SetEventType(myEVT_THREAD_GET_PING); // イベントの種類をセット
     return event;
+}
+
+}
 }

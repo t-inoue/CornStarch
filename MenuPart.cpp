@@ -1,5 +1,7 @@
 ﻿#include "MenuPart.hpp"
 
+namespace CornStarch
+{;
 
 CMenuPart::CMenuPart(void)
 {
@@ -42,3 +44,4 @@ void CMenuPart::setTitle(const wxString& title)
     m_title = title.Clone();
 }
 
+}

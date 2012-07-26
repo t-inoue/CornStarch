@@ -1,5 +1,7 @@
 ﻿#include "MsgStreamEvent.hpp"
 
+namespace CornStarch
+{;
 
 CMsgStreamEvent::CMsgStreamEvent(void) : m_message(NULL)
 {
@@ -29,4 +31,6 @@ void CMsgStreamEvent::setMessage(const CMessageData& message)
     }
 
     *m_message = message;
+}
+
 }

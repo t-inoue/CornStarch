@@ -1,6 +1,9 @@
 ﻿#pragma once
 #include "header.hpp"
 
+namespace CornStarch
+{;
+
 class CMenuPart : public wxMenu
 {
 public:
@@ -42,3 +45,4 @@ protected:
 
 };
 
+}

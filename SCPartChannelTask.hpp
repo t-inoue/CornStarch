@@ -2,8 +2,14 @@
 #include "SCTask.hpp"
 #include "PartEvent.hpp"
 
+namespace CornStarch
+{;
+
 // イベントの宣言
 wxDECLARE_EVENT(myEVT_THREAD_DELETE_PART, CPartEvent);
+
+namespace StarChat
+{;
 
 // チャンネルから離脱するためのタスク
 class CSCPartChannelTask : public CSCTask
@@ -29,3 +35,5 @@ private:
     CConnectionEventBase* parseHttpResponse(const std::string& responseBody);
 };
 
+}
+}

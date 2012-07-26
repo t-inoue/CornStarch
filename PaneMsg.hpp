@@ -5,6 +5,9 @@
 #include <vector>
 #include <map>
 
+namespace CornStarch
+{;
+
 // メッセージ表示用ペイン
 class CPaneMsg : public wxTextCtrl
 {
@@ -29,3 +32,4 @@ private:
     void drawDateLine(const wxString& now, const wxString& next);
 };
 
+}

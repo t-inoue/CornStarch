@@ -7,6 +7,9 @@
 #include "IRCService.h"
 #include "SCService.h"
 
+namespace CornStarch
+{;
+
 // 永続化情報を管理するクラス
 class CServiceSerializer
 {
@@ -36,4 +39,6 @@ private:
     CChatServiceBase* newService(wxEvtHandler* handler, const wxString& subKey,
         int serviceId);
 };
+
+}
 #endif

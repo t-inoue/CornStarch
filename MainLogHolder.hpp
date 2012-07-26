@@ -6,6 +6,9 @@
 #include "TopicLog.hpp"
 #include <vector>
 
+namespace CornStarch
+{;
+
 // チャットのログを保持するクラス
 class CMainLogHolder
 {
@@ -44,3 +47,4 @@ private:
     void pushLog(CChatLog* log);
 };
 
+}

@@ -1,5 +1,8 @@
 ﻿#include "SplitPanel.hpp"
 
+namespace CornStarch
+{;
+
 // イベントテーブル
 BEGIN_EVENT_TABLE(CSplitPanel, wxSplitterWindow)
 
@@ -97,3 +100,4 @@ void CSplitPanel::onLeftSashPosChanged(wxSplitterEvent& event)
     m_spMsg->SetSashPosition(newPos - 30);
 }
 
+}

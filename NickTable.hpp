@@ -3,6 +3,9 @@
 #include <vector>
 #include "MemberData.hpp"
 
+namespace CornStarch
+{;
+
 // 本名とニックネームの対応付けを行うためのテーブルクラス
 class CNickTable : public std::map<wxString, wxString>
 {
@@ -23,3 +26,4 @@ public:
     wxString getRealName(const wxString& nick);
 };
 
+}

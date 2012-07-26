@@ -6,6 +6,9 @@
 #include "ChangeTopicDialog.hpp"
 #include "NickChangeDialog.hpp"
 
+namespace CornStarch
+{;
+
 // 表示するダイアログを管理
 class CViewDialog
 {
@@ -65,3 +68,4 @@ public:
     wxString getTopic(void) const;
 };
 
+}

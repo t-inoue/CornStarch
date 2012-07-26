@@ -2,6 +2,9 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+
 CGetThreadEvent::CGetThreadEvent(wxEventType eventType, int id)
     : CConnectionEventBase(eventType, id)
 {
@@ -68,4 +71,6 @@ bool CGetThreadEvent::isPingSucceeded(void) const
 CGetThreadEvent* CGetThreadEvent::clone(void) const
 {
     return new CGetThreadEvent(*this);
+}
+
 }

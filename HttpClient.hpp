@@ -2,6 +2,11 @@
 #include "SocketClient.hpp"
 #include "sstream"
 
+namespace CornStarch
+{;
+namespace StarChat
+{;
+
 // HTTP通信を行うためのクライアントクラス
 class CHttpClient : public CSocketClient
 {
@@ -51,3 +56,5 @@ private:
 	void sendBody(const wxString& body);
 };
 
+}
+}

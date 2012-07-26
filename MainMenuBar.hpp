@@ -4,6 +4,9 @@
 #include "MenuChannel.hpp"
 #include "MenuUpdate.hpp"
 
+namespace CornStarch
+{;
+
 class CMainMenuBar : public wxMenuBar
 {
 private:
@@ -22,3 +25,4 @@ public:
 
 };
 
+}
