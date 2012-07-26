@@ -102,8 +102,7 @@ wxString CIRCUser::getChannelwxString(void) const
 // 現在見ているチャンネル名を取得する
 wxString CIRCUser::getChannelString(void) const
 {
-	wxString ch(m_currentCn.mb_str(wxConvUTF8));
-	return ch;
+	return m_currentCn;
 }
 
 // 永続化されたユーザ情報を読み込む
