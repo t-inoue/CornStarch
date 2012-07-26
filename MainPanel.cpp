@@ -87,17 +87,20 @@ void CMainPanel::displayChannels(
 // メッセージペインをクリアする。
 void CMainPanel::clearMessages(void)
 {
-	//m_msgPane->
+	m_msgPane->Clear();
 }
 
 // メンバーペインをクリアする
 void CMainPanel::clearMembers(void)
 {
+	m_memBox->Clear();
 }
 
 // チャンネルペインをクリアする
 void CMainPanel::clearChannels(void)
 {
+	wxTreeItemId rootId = m_cnBox->GetRootItem();
+	m_cnBox->DeleteChildren(rootId);
 }
 // ログ一覧ペインにログを表示
 void CMainPanel::displayLogs(const std::vector<CChatLog*>& logs)

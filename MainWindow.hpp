@@ -55,6 +55,10 @@ private:
 	// タイトルバーにタイトルを表示する
 	void displayTitle(const wxString& channel, const wxString& topic);
 
+	// すべての画面をクリアする。
+	void clearAllView();
+
+	// IDからサービスを取得する
 	CChatServiceBase* getService(int serviceId);
 private:
 	// メニュー系

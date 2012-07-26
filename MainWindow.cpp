@@ -88,45 +88,51 @@ void CMainWindow::updateAllView(int connectionId, const wxString& channel)
 	updateMemberView(connectionId, channel);
 	updateChannelView(connectionId, channel);
 }
-
+// すべての画面をクリアする。
+void CMainWindow::clearAllView()
+{
+	m_view->clearChannels();
+	m_view->clearMembers();
+	m_view->clearMessages();
+}
 // メッセージ画面を更新する(Modelがある場合)
 void CMainWindow::updateMessageView(int connectionId, const wxString& channel)
 {
 	if (connectionId == m_currentServiceId){
-		CChatServiceBase* contents = getService(connectionId);
-		contents->onUpdateMessageView(channel);
+		CChatServiceBase* service = getService(connectionId);
+		service->onUpdateMessageView(channel);
 
 		// メッセージを表示
-		m_view->displayMessages(contents->getMessages(channel),
-		        contents->getNickTable());
+		m_view->displayMessages(service->getMessages(channel),
+		        service->getNickTable());
 	}
 }
 // メンバー画面を更新する(Modelがある場合)
 void CMainWindow::updateMemberView(int connectionId, const wxString& channel)
 {
 	if (connectionId == m_currentServiceId){
-		CChatServiceBase* contents = getService(connectionId);
-		contents->onUpdateMemberView(channel);
+		CChatServiceBase* service = getService(connectionId);
+		service->onUpdateMemberView(channel);
 
 		// メンバーを表示
-		m_view->displayMembers(contents->getMembers(channel));
-		m_view->displayMessages(contents->getMessages(channel),
-		        contents->getNickTable());
+		m_view->displayMembers(service->getMembers(channel));
+		m_view->displayMessages(service->getMessages(channel),
+		        service->getNickTable());
 	}
 }
 
 // チャンネル画面とタイトルバーを更新する(Modelがある場合)
 void CMainWindow::updateChannelView(int connectionId, const wxString& channel)
 {
-	CChatServiceBase* contents = getService(connectionId);
-	contents->onUpdateChannelView();
+	CChatServiceBase* service = getService(connectionId);
+	service->onUpdateChannelView();
 
 	// チャンネルを表示
-	displayTitle(channel, contents->getTopic(channel));
+	displayTitle(channel, service->getTopic(channel));
 
 	m_view->displayChannels(m_services);
 
-	m_view->setSelectedChannel(contents->getCurrentChannel());
+	m_view->setSelectedChannel(service->getCurrentChannel());
 }
 
 // タイトルバーにタイトルを表示する
@@ -217,7 +223,8 @@ void CMainWindow::onDeleteService(wxCommandEvent& event)
 		delete service;
 		m_services.erase(m_currentServiceId);
 		// 画面表示の更新
-		//updateAllView(m_currentServiceId,"");
+		clearAllView();
+		m_view->displayChannels(m_services);
 	}
 }
 // チャンネルから離脱メニュー
