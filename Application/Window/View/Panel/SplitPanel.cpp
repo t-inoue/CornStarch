@@ -95,9 +95,13 @@ wxSplitterWindow* CSplitPanel::getRecordPane(void)
 // 左のsash位置が変更された
 void CSplitPanel::onLeftSashPosChanged(wxSplitterEvent& event)
 {
+    Show(false);
+    
     // 左画面のsash位置を調整する
     int newPos = event.GetSashPosition();
     m_spMsg->SetSashPosition(newPos - 30);
+
+    Show(true);
 }
 
 }

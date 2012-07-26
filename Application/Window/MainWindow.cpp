@@ -123,12 +123,19 @@ void CMainWindow::displayTitle(const wxString& channel, const wxString& topic,
         return;
     }
 
-    wxString tpc = topic;
+    CChatServiceBase* service = getService(serviceId);
+
+    // チャンネル名が空の時、サーバ名を表示
+    if (channel == ""){
+        SetTitle("(" + service->getUserName() + ")<" + service->getHost() + ">");
+        return;
+    }
 
     // 改行を消してタイトルを表示
+    wxString tpc = topic;
     tpc.Replace("\r\n", " ");
     tpc.Replace("\n", " ");
-    this->SetTitle("【" + channel + "】" + tpc);
+    this->SetTitle("(" + service->getNickName() + ")【" + channel + "】" + tpc);
 }
 
 // すべての画面をクリアする。
@@ -160,12 +167,12 @@ void CMainWindow::onQuit(wxCommandEvent& event)
 // ユーザ登録(SC)
 void CMainWindow::onSCRegister(wxCommandEvent& event)
 {
-
     // 認証ダイアログを表示
     if (m_view->showModalSCAuthDlg() != wxID_OK){
         return;
     }
-    CChatServiceBase* contents = new StarChat::CSCService(); //new CornStarch::IRC::CIRCConnectionContents();//
+
+    CChatServiceBase* contents = new StarChat::CSCService();
     addNewService(contents);
 }
 
@@ -178,9 +185,10 @@ void CMainWindow::onIRCRegister(wxCommandEvent& event)
     }
 
     // ここでIRCサーバの追加を行う
-    CChatServiceBase* contents = new CornStarch::IRC::CIRCService(); //
+    CChatServiceBase* contents = new CornStarch::IRC::CIRCService();
     addNewService(contents);
 }
+
 void CMainWindow::addNewService(CChatServiceBase* service)
 {
     service->setId(m_uniqueServiceId);
@@ -220,6 +228,7 @@ void CMainWindow::onJoin(wxCommandEvent& event)
     // チャンネル参加タスクの開始
     contents->joinChannel(m_view->getDlgChannelName());
 }
+
 // サーバー削除
 void CMainWindow::onDeleteService(wxCommandEvent& event)
 {
@@ -232,6 +241,7 @@ void CMainWindow::onDeleteService(wxCommandEvent& event)
         m_view->displayChannels(m_services);
     }
 }
+
 // チャンネルから離脱メニュー
 void CMainWindow::onPart(wxCommandEvent& event)
 {
@@ -253,20 +263,20 @@ void CMainWindow::onPart(wxCommandEvent& event)
 // 表示を更新
 void CMainWindow::onUpdateDisplay(wxCommandEvent& event)
 {
-    map<int, CChatServiceBase*>::iterator it = m_services.begin();
-    while (it != m_services.end()){
+    //map<int, CChatServiceBase*>::iterator it = m_services.begin();
+    //while (it != m_services.end()){
 
-        // 保持しているデータを初期化
-        (*it).second->reconnect();
-        (*it).second->clearChannels();
-        (*it).second->clearNickTable();
-        ++it;
-    }
+    //    // 保持しているデータを初期化
+    //    (*it).second->reconnect();
+    //    (*it).second->clearChannels();
+    //    (*it).second->clearNickTable();
+    //    ++it;
+    //}
 
-    CChatServiceBase* contents = getService(m_currentServiceId);
+    //CChatServiceBase* contents = getService(m_currentServiceId);
 
-    // 表示を更新
-    updateAllView(m_currentServiceId, contents->getCurrentChannel());
+    //// 表示を更新
+    //updateAllView(m_currentServiceId, contents->getCurrentChannel());
 }
 
 // ニックネーム変更
@@ -351,6 +361,7 @@ void CMainWindow::onChannelSelected(CChannelSelectEvent& event)
         m_currentServiceId = event.getServerId();
         m_view->clearMessages();
         m_view->clearMembers();
+        displayTitle("", "", m_currentServiceId);
         return;
     }
 
