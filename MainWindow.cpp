@@ -345,6 +345,8 @@ void CMainWindow::onChannelSelected(CornStarch::CChannelSelectEvent& event)
 	// 選択したのがサーバ名だったとき
 	if (event.isServerSelected()){
 		m_currentServiceId = event.getServerId();
+		m_view->clearMessages();
+		m_view->clearMembers();
 		return;
 	}
 

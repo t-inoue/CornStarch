@@ -82,9 +82,9 @@ CChatServiceBase* CServiceSerializer::newService(wxXmlNode* node,
     // サービス作成
     CChatServiceBase* service;
     if (node->GetName() == "StarChat"){ // StarChat
-        service = new CSCService();
+        service = new StarChat::CSCService();
     } else if (node->GetName() == "IRC"){ // IRC
-        service = new CornStarch::IRC::CIRCService();
+        service = new IRC::CIRCService();
     }
 
     // 各タグの情報を取得

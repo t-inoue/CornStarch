@@ -1,12 +1,12 @@
 ﻿#include "MainApplication.hpp"
 
+// アプリケーションクラスを認識させる
+wxIMPLEMENT_APP(CornStarch::CMainApplication);
 namespace CornStarch
 {;
 
 const wxString CMainApplication::TITLE = "CornStarch"; // ウィンドウタイトル
 
-// アプリケーションクラスを認識させる
-wxIMPLEMENT_APP(CMainApplication);
 
 // アプリケーションの初期化を行う
 bool CMainApplication::OnInit()
