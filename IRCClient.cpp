@@ -21,6 +21,7 @@ CIRCClient::CIRCClient() :
         m_handler(NULL), m_isClosing(false)
 {
     m_mutex = new wxMutex();
+
 }
 
 CIRCClient::~CIRCClient(void)
@@ -112,8 +113,11 @@ void CIRCClient::quit(void)
 }
 void CIRCClient::disconnect(void)
 {
-    m_isClosing = true;
-    this->close();
+    if(m_isClosing == false)
+    {
+        m_isClosing = true;
+        this->close();
+    }
 }
 
 void CIRCClient::join(const wxString& channelName)
