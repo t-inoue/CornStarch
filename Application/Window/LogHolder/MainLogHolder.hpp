@@ -1,9 +1,9 @@
 ﻿#pragma once
-#include "ChatLog\MessageLog.hpp"
-#include "ChatLog\MemberLog.hpp"
-#include "ChatLog\JoinLog.hpp"
-#include "ChatLog\PartLog.hpp"
-#include "ChatLog\TopicLog.hpp"
+#include "MessageLog.hpp"
+#include "MemberLog.hpp"
+#include "JoinLog.hpp"
+#include "PartLog.hpp"
+#include "TopicLog.hpp"
 #include <vector>
 
 namespace CornStarch

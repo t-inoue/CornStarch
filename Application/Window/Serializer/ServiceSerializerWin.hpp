@@ -1,10 +1,11 @@
 ﻿#pragma once
 #ifdef _WIN32
-#include "../../header.hpp"
+#include <wx/wxprec.h>
+#include <wx/wx.h>
 #include <wx/msw/registry.h>
 #include <vector>
-#include "../Service/IRCService.h"
-#include "../Service/SCService.h"
+#include "../Service/IRCService/IRCService.h"
+#include "../Service/SCService/SCService.h"
 
 namespace CornStarch
 {;

@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "Window\MainWindow.hpp"
+#include "header.hpp"
 
 namespace CornStarch
 {;

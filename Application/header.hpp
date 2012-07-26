@@ -19,5 +19,3 @@
 #pragma comment(lib, "odbc32.lib")
 #pragma comment(lib, "wininet.lib")
 #pragma comment(lib, "wxbase29ud_net.lib")
-#include <wx/wxprec.h>
-#include <wx/wx.h>

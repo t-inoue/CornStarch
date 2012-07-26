@@ -1,10 +1,11 @@
 ﻿#pragma once
-#include "../../../LogHolder/ChatLog/MessageLog.hpp"
-#include "../../../LogHolder/ChatLog/MemberLog.hpp"
-#include "../../../LogHolder/ChatLog/JoinLog.hpp"
-#include "../../../LogHolder/ChatLog/PartLog.hpp"
-#include "../../../LogHolder/ChatLog/TopicLog.hpp"
-#include "../../../../header.hpp"
+#include "../../../LogHolder/MessageLog.hpp"
+#include "../../../LogHolder/MemberLog.hpp"
+#include "../../../LogHolder/JoinLog.hpp"
+#include "../../../LogHolder/PartLog.hpp"
+#include "../../../LogHolder/TopicLog.hpp"
+#include <wx/wxprec.h>
+#include <wx/wx.h>
 #include <vector>
 
 namespace CornStarch

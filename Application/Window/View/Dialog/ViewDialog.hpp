@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include "../../../header.hpp"
 #include "SCAuthDialog.hpp"
 #include "IRCAuthDialog.hpp"
 #include "ChannelDialog.hpp"

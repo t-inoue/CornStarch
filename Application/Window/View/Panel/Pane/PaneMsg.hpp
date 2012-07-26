@@ -1,7 +1,8 @@
 ﻿#pragma once
 #include "../../../../DataStruct/MessageData.hpp"
 #include "../../../../DataStruct/MemberData.hpp"
-#include "../../../../header.hpp"
+#include <wx/wxprec.h>
+#include <wx/wx.h>
 #include <vector>
 #include <map>
 

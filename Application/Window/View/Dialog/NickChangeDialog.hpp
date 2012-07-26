@@ -1,5 +1,6 @@
 ﻿#pragma once
-#include "../../../header.hpp"
+#include <wx/wxprec.h>
+#include <wx/wx.h>
 
 namespace CornStarch
 {;

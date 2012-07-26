@@ -1,8 +1,8 @@
 ﻿#pragma once
-#include "Dialog\ViewDialog.hpp"
-#include "Menubar\MainMenuBar.hpp"
-#include "Panel\MainPanel.hpp"
-#include "Notifier\MainNotifier.hpp"
+#include "Dialog/ViewDialog.hpp"
+#include "Menubar/MainMenuBar.hpp"
+#include "Panel/MainPanel.hpp"
+#include "MainNotifier.hpp"
 #include <map>
 
 namespace CornStarch

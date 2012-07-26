@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include <wx/string.h>
-#include <vector>
 
 namespace CornStarch
 {;

@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "../../../Service/ChatServiceBase.hpp"
-#include "../../../../header.hpp"
+#include <wx/wxprec.h>
+#include <wx/wx.h>
 #include <wx/treectrl.h>
 #include "ChannelSelectEvent.hpp"
 #include "TreeServerItem.hpp"

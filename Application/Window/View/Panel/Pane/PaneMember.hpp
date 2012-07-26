@@ -1,7 +1,8 @@
 ﻿#pragma once
 #include "../../../../DataStruct/MemberData.hpp"
 #include <vector>
-#include "../../../../header.hpp"
+#include <wx/wxprec.h>
+#include <wx/wx.h>
 #include <wx/listbox.h>
 
 namespace CornStarch

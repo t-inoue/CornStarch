@@ -109,14 +109,20 @@ void CMainWindow::updateChannelView(int connectionId, const wxString& channel)
     service->onUpdateChannelView();
 
     // チャンネルを表示
-    displayTitle(channel, service->getTopic(channel));
+    displayTitle(channel, service->getTopic(channel), connectionId);
     m_view->displayChannels(m_services);
     m_view->setSelectedChannel(service->getCurrentChannel());
 }
 
 // タイトルバーにタイトルを表示する
-void CMainWindow::displayTitle(const wxString& channel, const wxString& topic)
+void CMainWindow::displayTitle(const wxString& channel, const wxString& topic,
+    int serviceId)
 {
+    // 現在見ているサーバではなかったら
+    if (serviceId != m_currentServiceId){
+        return;
+    }
+
     wxString tpc = topic;
 
     // 改行を消してタイトルを表示
@@ -360,7 +366,7 @@ void CMainWindow::onChannelSelected(CChannelSelectEvent& event)
 
     // 画面表示を更新
     wxString ch = contents->getCurrentChannel();
-    displayTitle(ch, contents->getTopic(ch));
+    displayTitle(ch, contents->getTopic(ch), event.getServerId());
     updateMessageView(m_currentServiceId, contents->getCurrentChannel());
     updateMemberView(m_currentServiceId, contents->getCurrentChannel());
 }
@@ -550,7 +556,7 @@ void CMainWindow::onChannelStream(CChannelStreamEvent& event)
 
     // 現在のチャンネルならばタイトルを更新
     if (channel.m_name == contents->getCurrentChannel()){
-        displayTitle(channel.m_name, channel.m_topic);
+        displayTitle(channel.m_name, channel.m_topic, event.getConnectionId());
     }
 }
 

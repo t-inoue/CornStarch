@@ -1,8 +1,8 @@
 ﻿#pragma once
-#include "ChannelHolder\ChannelHolder.hpp"
-#include "NickTable\NickTable.hpp"
-#include "User\IUser.h"
-#include "Connection\IConnection.hpp"
+#include "ChannelHolder.hpp"
+#include "NickTable.hpp"
+#include "IUser.h"
+#include "IConnection.hpp"
 #include "../../DataStruct/SubscribeData.hpp"
 
 namespace CornStarch

@@ -1,8 +1,8 @@
 ﻿#pragma once
 #include "View\MainView.hpp"
 #include "LogHolder\MainLogHolder.hpp"
-#include "Service\SCService.h"
-#include "Service\IRCService.h"
+#include "Service\SCService\SCService.h"
+#include "Service\IRCService\IRCService.h"
 #include "Serializer\ServiceSerializer.hpp"
 #include "Serializer\ServiceSerializerWin.hpp"
 
@@ -55,7 +55,7 @@ private:
 	void updateChannelView(int serviceId, const wxString& channel);
 
 	// タイトルバーにタイトルを表示する
-	void displayTitle(const wxString& channel, const wxString& topic);
+	void displayTitle(const wxString& channel, const wxString& topic, int serviceId);
 
 	// すべての画面をクリアする。
 	void clearAllView();
