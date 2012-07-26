@@ -2,8 +2,11 @@
 
 using namespace std;
 
-CMainView::CMainView(void) :
-		m_menuBar(NULL), m_panel(NULL), m_dialog(NULL), m_notifier(NULL)
+namespace CornStarch
+{;
+
+CMainView::CMainView(void) : m_menuBar(NULL), m_panel(NULL), m_dialog(NULL),
+    m_notifier(NULL)
 {
 }
 
@@ -223,4 +226,6 @@ wxString CMainView::getTopic(void) const
 void CMainView::messageNotify(const wxString& title, const wxString& message)
 {
 	m_notifier->messageNotify(title, message);
+}
+
 }

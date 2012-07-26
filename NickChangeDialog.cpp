@@ -1,5 +1,7 @@
 ﻿#include "NickChangeDialog.hpp"
 
+namespace CornStarch
+{;
 
 CNickChangeDialog::CNickChangeDialog(void) : m_nickText(NULL)
 {
@@ -50,3 +52,4 @@ wxString CNickChangeDialog::getNickName(void) const
     return "";
 }
 
+}

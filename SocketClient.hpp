@@ -2,6 +2,9 @@
 #include <wx/socket.h>
 #include <wx/string.h>
 
+namespace CornStarch
+{;
+
 // ソケット通信を行うクライアント
 class CSocketClient
 {
@@ -49,3 +52,4 @@ protected:
 
 };
 
+}

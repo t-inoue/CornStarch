@@ -1,5 +1,7 @@
 ﻿#include "MenuFile.hpp"
 
+namespace CornStarch
+{;
 
 CMenuFile::CMenuFile(void)
 {
@@ -23,5 +25,7 @@ void CMenuFile::init(void)
     append(
         MENU_FILE_LOGOUT,
         wxT("ログアウトして終了"));
+
+}
 
 }

@@ -1,5 +1,7 @@
 ﻿#include "ChatLog.hpp"
 
+namespace CornStarch
+{;
 
 CChatLog::CChatLog(void)
 {
@@ -29,4 +31,6 @@ bool CChatLog::isUnknownNick(const wxString& name) const
 // ニックネームを更新する
 void CChatLog::updateNick(const wxString& nick)
 {
+}
+
 }

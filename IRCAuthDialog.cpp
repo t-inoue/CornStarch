@@ -1,5 +1,7 @@
 ﻿#include "IRCAuthDialog.hpp"
 
+namespace CornStarch
+{;
 
 CIRCAuthDialog::CIRCAuthDialog(void)
 {
@@ -32,4 +34,6 @@ void CIRCAuthDialog::init(wxWindow* parent, const wxString& title)
 wxString CIRCAuthDialog::getNick(void) const
 {
     return m_nickText->GetValue();
+}
+
 }

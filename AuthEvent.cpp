@@ -1,6 +1,7 @@
 ﻿#include "AuthEvent.hpp"
 
-
+namespace CornStarch
+{;
 
 CAuthEvent::CAuthEvent(void)
 {
@@ -27,3 +28,4 @@ bool CAuthEvent::isAuthSucceeded(void) const
     return m_auth;
 }
 
+}

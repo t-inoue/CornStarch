@@ -1,7 +1,11 @@
-﻿
-#include "SCService.h"
+﻿#include "SCService.h"
 #include "SCConnection.hpp"
 #include "SCUser.hpp"
+
+namespace CornStarch
+{;
+namespace StarChat
+{;
 
 CSCService::CSCService() {
 
@@ -25,4 +29,7 @@ void CSCService::init(wxEvtHandler* handler)
 
     // チャットのタイプ
     m_type = CChatServiceBase::STAR_CHAT;
+}
+
+}
 }

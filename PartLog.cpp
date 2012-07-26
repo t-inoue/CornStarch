@@ -2,6 +2,9 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+
 CPartLog::CPartLog(void) : m_sub(NULL)
 {
 }
@@ -54,4 +57,6 @@ bool CPartLog::isUnknownNick(const wxString& name) const
 void CPartLog::updateNick(const wxString& nick)
 {
     m_nick = nick;
+}
+
 }

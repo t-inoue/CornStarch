@@ -4,6 +4,9 @@
 #include "MessageData.hpp"
 #include "SubscribeData.hpp"
 
+namespace CornStarch
+{;
+
 // ストリームの内容を表すクラス
 class CStreamData
 {
@@ -27,3 +30,4 @@ public:
     CSubscribeData m_sub; // チャンネル入退出
 };
 
+}

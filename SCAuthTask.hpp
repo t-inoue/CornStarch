@@ -2,8 +2,14 @@
 #include "SCTask.hpp"
 #include "AuthEvent.hpp"
 
+namespace CornStarch
+{;
+
 // イベントの宣言
 wxDECLARE_EVENT(myEVT_THREAD_GET_PING, CAuthEvent);
+
+namespace StarChat
+{;
 
 // StarChatのユーザ認証を行うためのタスク
 class CSCAuthTask : public CSCTask
@@ -29,3 +35,5 @@ private:
     CConnectionEventBase* parseHttpResponse(const std::string& responseBody);
 };
 
+}
+}

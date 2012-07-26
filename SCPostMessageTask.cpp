@@ -2,6 +2,11 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+namespace StarChat
+{;
+
 CSCPostMessageTask::CSCPostMessageTask(void)
 {
 }
@@ -45,4 +50,7 @@ CConnectionEventBase* CSCPostMessageTask::parseHttpResponse(const string& respon
 	CConnectionEventBase* event = new CConnectionEventBase();
     event->SetEventType(myEVT_THREAD_POST_MESSAGE);
     return event;
+}
+
+}
 }

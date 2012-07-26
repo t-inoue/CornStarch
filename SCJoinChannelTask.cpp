@@ -2,6 +2,11 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+namespace StarChat
+{;
+
 CSCJoinChannelTask::CSCJoinChannelTask(void)
 {
 }
@@ -42,4 +47,7 @@ CConnectionEventBase* CSCJoinChannelTask::parseHttpResponse(const string& respon
     event->SetEventType(myEVT_THREAD_PUT_JOIN); // イベントの種類をセット
     event->SetString(m_channel); // 新チャンネル名
     return event;
+}
+
+}
 }

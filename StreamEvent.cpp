@@ -1,5 +1,7 @@
 ﻿#include "StreamEvent.hpp"
 
+namespace CornStarch
+{;
 
 CStreamEvent::CStreamEvent(wxEventType eventType, int id)
     : CConnectionEventBase(eventType, id)
@@ -25,4 +27,6 @@ CStreamData CStreamEvent::getStreamData(void) const
 void CStreamEvent::setStreamData(const CStreamData& stream)
 {
     m_stream = stream;
+}
+
 }

@@ -2,6 +2,9 @@
 #include "ChatLog.hpp"
 #include "ChannelData.hpp"
 
+namespace CornStarch
+{;
+
 // トピック変更のログ
 class CTopicLog : public CChatLog
 {
@@ -19,3 +22,4 @@ public:
     CChannelData getLog(void) const;
 };
 
+}

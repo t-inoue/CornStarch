@@ -2,6 +2,9 @@
 #include "header.hpp"
 #include <wx/splitter.h>
 
+namespace CornStarch
+{;
+
 // アプリケーション用の画面分割クラス
 class CSplitPanel : public wxSplitterWindow
 {
@@ -56,3 +59,4 @@ private:
     
 };
 
+}

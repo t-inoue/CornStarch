@@ -6,6 +6,9 @@
 #include "IUser.h"
 #include "IConnection.hpp"
 
+namespace CornStarch
+{;
+
 // 通信のModelコンテンツを扱うクラス
 class CChatServiceBase
 {
@@ -216,7 +219,6 @@ public:
 
     // ユーザ情報更新ストリームの受信
     void onGetUserStream(const CMemberData& member);
+};
+
 }
-
-;
-

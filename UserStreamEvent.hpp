@@ -3,6 +3,9 @@
 #include "MemberData.hpp"
 #include "ConnectionEventBase.hpp"
 
+namespace CornStarch
+{;
+
 // ユーザ情報更新時のイベント
 class CUserStreamEvent : public CConnectionEventBase
 {
@@ -20,3 +23,4 @@ public:
     CMemberData getMember(void) const;
 };
 
+}

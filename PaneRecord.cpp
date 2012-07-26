@@ -2,6 +2,9 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+
 const wxColour CPaneRecord::COLOR_BLACK = wxColour(0, 0, 0);
 const wxColour CPaneRecord::COLOR_BLUE = wxColour(0, 0, 200);
 const wxColour CPaneRecord::COLOR_GREEN = wxColour(0, 50, 0);
@@ -122,4 +125,6 @@ void CPaneRecord::pushLog(const CTopicLog& topicLog)
 {
     CChannelData channel = topicLog.getLog();
     pushStringRow(channel.m_name + "のトピックが" + channel.m_topic + "に変更されました\n", COLOR_GREEN);
+}
+
 }

@@ -3,8 +3,12 @@
 #include <string>
 #include <vector>
 
+namespace CornStarch
+{;
+
 //　ユーザーのインターフェース
-class IUser{
+class IUser
+{
 public:
     IUser(void){};
     virtual ~IUser(void){};
@@ -61,4 +65,6 @@ public:
     virtual wxString getNameKey(void) const = 0;
 
 };
+
+}
 #endif

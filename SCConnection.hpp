@@ -13,6 +13,11 @@
 #include "IConnection.hpp"
 #include "IUser.h"
 
+namespace CornStarch
+{;
+namespace StarChat
+{;
+
 // 通信部分を管理(通信結果をイベントとして返す)
 class CSCConnection: public IConnection
 {
@@ -84,3 +89,5 @@ private:
 
 };
 
+}
+}

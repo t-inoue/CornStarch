@@ -5,6 +5,9 @@
 #include "IRCService.h"
 #include "SCService.h"
 
+namespace CornStarch
+{;
+
 // サービスのシリアライズを行うクラス
 class CServiceSerializer
 {
@@ -36,4 +39,5 @@ private:
     void addServiceToRoot(wxXmlNode* root, const CChatServiceBase* service);
 };
 
+}
 #endif

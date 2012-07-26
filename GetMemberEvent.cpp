@@ -2,6 +2,9 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+
 CGetMemberEvent::CGetMemberEvent(void)
 {
 }
@@ -31,4 +34,6 @@ void CGetMemberEvent::setMembers(const vector<CMemberData*>& members)
 vector<CMemberData*> CGetMemberEvent::getMembers(void) const
 {
     return m_members;
+}
+
 }

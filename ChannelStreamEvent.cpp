@@ -2,6 +2,9 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+
 CChannelStreamEvent::CChannelStreamEvent(void) : m_channelData(NULL)
 {
 }
@@ -30,4 +33,6 @@ void CChannelStreamEvent::setChannel(const CChannelData& channel)
     }
 
     *m_channelData = channel;
+}
+
 }

@@ -3,6 +3,9 @@
 #include "ConnectionEventBase.hpp"
 #include "StreamData.hpp"
 
+namespace CornStarch
+{;
+
 // ストリーム受信時に発生させるイベント
 class CStreamEvent : public CConnectionEventBase
 {
@@ -20,3 +23,4 @@ public:
     void setStreamData(const CStreamData& stream);
 };
 
+}

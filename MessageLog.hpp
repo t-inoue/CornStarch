@@ -2,6 +2,9 @@
 #include "ChatLog.hpp"
 #include "MessageData.hpp"
 
+namespace CornStarch
+{;
+
 // メッセージのログ
 class CMessageLog : public CChatLog
 {
@@ -29,3 +32,4 @@ public:
     void updateNick(const wxString& nick);
 };
 
+}

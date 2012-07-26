@@ -2,6 +2,9 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+
 CGetChannelEvent::CGetChannelEvent(void)
 {
 }
@@ -30,4 +33,6 @@ void CGetChannelEvent::setChannels(const vector<CChannelData*>& channels)
 vector<CChannelData*> CGetChannelEvent::getChannels(void) const
 {
     return m_channels;
+}
+
 }

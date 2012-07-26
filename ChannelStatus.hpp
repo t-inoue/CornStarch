@@ -2,6 +2,9 @@
 #include "MessageVec.hpp"
 #include "MemberVec.hpp"
 
+namespace CornStarch
+{;
+
 // チャンネルの内部状態(誰がいるかやメッセージなど)を管理
 class CChannelStatus
 {
@@ -59,3 +62,5 @@ public:
     // メンバー情報を消す
     void popMember(const wxString& userName);
 };
+
+}

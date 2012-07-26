@@ -2,6 +2,11 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+namespace StarChat
+{;
+
 CSCTask::CSCTask(void)
 {
 }
@@ -78,4 +83,7 @@ wxThread::ExitCode CSCTask::Entry(void)
 
     // 成功時
     return (wxThread::ExitCode)0;
+}
+
+}
 }

@@ -1,6 +1,9 @@
 ﻿#pragma once
 #include "header.hpp"
 
+namespace CornStarch
+{;
+
 // チャンネルトピック変更用ダイアログ
 class CChangeTopicDialog : public wxDialog
 {
@@ -18,3 +21,4 @@ public:
     wxString getTopic(void) const;
 };
 
+}

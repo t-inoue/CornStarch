@@ -2,6 +2,11 @@
 
 using namespace std;
 
+namespace CornStarch
+{;
+namespace StarChat
+{;
+
 CSCClient::CSCClient(void)
 {
 }
@@ -258,4 +263,7 @@ void CSCClient::sendPutUserApi(const wxString& userName)
 void CSCClient::sendPutChannelApi(const wxString& channel)
 {
     sendRequestMethod("PUT", "/channels/" + channel);
+}
+
+}
 }

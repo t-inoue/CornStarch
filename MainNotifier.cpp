@@ -1,5 +1,7 @@
 ﻿#include "MainNotifier.hpp"
 
+namespace CornStarch
+{;
 
 CMainNotifier::CMainNotifier(void) : m_taskbar(NULL)
 {
@@ -32,4 +34,6 @@ void CMainNotifier::messageNotify(const wxString& title, const wxString& message
 #else
     wxMessageBox(message, title);
 #endif
+}
+
 }

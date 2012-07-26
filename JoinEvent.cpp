@@ -1,5 +1,7 @@
 ﻿#include "JoinEvent.hpp"
 
+namespace CornStarch
+{;
 
 CJoinEvent::CJoinEvent(void) : m_channel(NULL)
 {
@@ -31,4 +33,6 @@ void CJoinEvent::setChannel(const CChannelData& channel)
 CChannelData CJoinEvent::getChannel(void) const
 {
     return *m_channel;
+}
+
 }

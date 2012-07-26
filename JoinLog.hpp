@@ -2,6 +2,9 @@
 #include "ChatLog.hpp"
 #include "SubscribeData.hpp"
 
+namespace CornStarch
+{;
+
 // チャンネル参加ログ
 class CJoinLog : public CChatLog
 {
@@ -29,3 +32,4 @@ public:
     void updateNick(const wxString& nick);
 };
 
+}

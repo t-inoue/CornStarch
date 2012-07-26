@@ -1,6 +1,11 @@
 ﻿#pragma once
 #include "HttpClient.hpp"
 
+namespace CornStarch
+{;
+namespace StarChat
+{;
+
 // スターチャット接続用クライアント
 class CSCClient : public CHttpClient
 {
@@ -94,3 +99,5 @@ private:
 
 };
 
+}
+}

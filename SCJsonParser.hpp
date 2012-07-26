@@ -8,6 +8,11 @@
 #include "vector"
 #include "header.hpp"
 
+namespace CornStarch
+{;
+namespace StarChat
+{;
+
 // StarChatに使われるJsonのパースを行う
 class CSCJsonParser
 {
@@ -48,3 +53,5 @@ private:
     picojson::value parseSCJson(const std::string& json) const;
 };
 
+}
+}

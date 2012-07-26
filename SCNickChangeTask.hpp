@@ -1,6 +1,11 @@
 ﻿#pragma once
 #include "SCTask.hpp"
 
+namespace CornStarch
+{;
+namespace StarChat
+{;
+
 // ニックネーム変更を行うためのタスク
 class CSCNickChangeTask : public CSCTask
 {
@@ -25,3 +30,5 @@ private:
     CConnectionEventBase* parseHttpResponse(const std::string& responseBody);
 };
 
+}
+}

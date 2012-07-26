@@ -6,6 +6,9 @@
 #include "ConnectionEventBase.hpp"
 #include <vector>
 
+namespace CornStarch
+{;
+
 // GET時にハンドルさせるイベント
 class CGetThreadEvent : public CConnectionEventBase
 {
@@ -49,3 +52,4 @@ public:
 
 };
 
+}

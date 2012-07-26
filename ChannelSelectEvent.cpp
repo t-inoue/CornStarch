@@ -1,5 +1,7 @@
 ﻿#include "ChannelSelectEvent.hpp"
 
+namespace CornStarch
+{;
 
 CChannelSelectEvent::CChannelSelectEvent(void)
 {
@@ -60,4 +62,6 @@ int CChannelSelectEvent::getServerId(void) const
 bool CChannelSelectEvent::isServerSelected(void) const
 {
     return m_isServer;
+}
+
 }

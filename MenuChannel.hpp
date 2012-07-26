@@ -1,6 +1,9 @@
 ﻿#pragma once
 #include "MenuPart.hpp"
 
+namespace CornStarch
+{;
+
 // メニュー項目の【チャンネル】
 class CMenuChannel : public CMenuPart
 {
@@ -13,3 +16,4 @@ public:
     void init(void);
 };
 
+}

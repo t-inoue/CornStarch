@@ -1,5 +1,7 @@
 ﻿#include "GetStreamEvent.hpp"
 
+namespace CornStarch
+{;
 
 CGetStreamEvent::CGetStreamEvent(void)
 {
@@ -24,4 +26,6 @@ CStreamData CGetStreamEvent::getStreamData(void) const
 void CGetStreamEvent::setStreamData(const CStreamData& stream)
 {
     m_stream = stream;
+}
+
 }

@@ -1,8 +1,10 @@
-﻿
-#ifndef CONNECTIONEVENTBASE_HPP_
+﻿#ifndef CONNECTIONEVENTBASE_HPP_
 #define CONNECTIONEVENTBASE_HPP_
 
 #include "header.hpp"
+
+namespace CornStarch
+{;
 
 // 通信から発生するイベントの基底クラス
 class CConnectionEventBase:public wxThreadEvent
@@ -27,5 +29,7 @@ public:
 
 
 };
+
+}
 
 #endif /* CONNECTIONEVENTBASE_HPP_ */

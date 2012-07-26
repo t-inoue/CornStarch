@@ -4,6 +4,11 @@
 #include "SCJsonParser.hpp"
 #include "ConnectionEventBase.hpp"
 
+namespace CornStarch
+{;
+namespace StarChat
+{;
+
 // スターチャットと通信を行うためのクラス
 class CSCTask : public wxThread
 {
@@ -41,6 +46,7 @@ protected:
 
     // HTTPレスポンスを解析してイベントを作成する
     virtual CConnectionEventBase* parseHttpResponse(const std::string& responseBody) {return NULL;};
-
-
 };
+
+}
+}
