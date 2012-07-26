@@ -18,7 +18,8 @@ public:
 
 	//初期化します。
 	void init(wxEvtHandler* handler);
-
+	//override 接続できたときの処理
+	void onAuthSucceeed(void);
 };
 }
 }

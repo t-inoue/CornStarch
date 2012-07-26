@@ -29,5 +29,14 @@ void CIRCService::init(wxEvtHandler* handler)
     m_type = CChatServiceBase::IRC;
 
 }
+void CIRCService::onAuthSucceeed(void)
+{
+    CChatServiceBase::onAuthSucceeed();
+    vector<wxString>::iterator it = savedChannels.begin();
+    while (it != savedChannels.end()){
+        joinChannel(*it);
+        it++;
+    }
+}
 }
 }

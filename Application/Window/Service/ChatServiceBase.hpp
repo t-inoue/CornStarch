@@ -13,9 +13,9 @@ class CChatServiceBase
 {
 public:
     // チャットの種類
-    enum CHAT_TYPE{
-        STAR_CHAT = 0,
-        IRC,
+    enum CHAT_TYPE
+    {
+        STAR_CHAT = 0, IRC,
     };
 
 protected:
@@ -35,44 +35,49 @@ protected:
 
     // チャットの種類
     CHAT_TYPE m_type;
-
+    // 保存されていたチャンネル
+    vector<wxString> savedChannels;
 public:
     CChatServiceBase(void);
     virtual ~CChatServiceBase(void);
 
     // IDを取得
-	int getId() const
-	{
-		return m_id;
-	}
-	// IDを設定
-	void setId(int id)
-	{
-		m_id = id;
-	}
+    int getId() const
+    {
+        return m_id;
+    }
+    // IDを設定
+    void setId(int id)
+    {
+        m_id = id;
+    }
+    // 保存されていたチャンネルを設定します。
+    void setSavedChannels(vector<wxString> savedChannels)
+    {
+        this->savedChannels = savedChannels;
+    }
+    // 名前を取得
+    wxString getName() const
+    {
+        return m_name;
+    }
 
-	// 名前を取得
-	wxString getName() const
-	{
-		return m_name;
-	}
+    // 名前を設定
+    void setName(wxString name)
+    {
+        m_name = name;
+    }
+    // ホストを取得
+    wxString getHost() const
+    {
+        return m_connect->getHost();
+    }
 
-	// 名前を設定
-	void setName(wxString name)
-	{
-		m_name = name;
-	}
-	// ホストを取得
-	wxString getHost() const
-	{
-		return m_connect->getHost();
-	}
-
-	// ホストを設定
-	void setHost(wxString value)
-	{
-		m_connect->setHost(value);
-	}
+    // ホストを設定
+    void setHost(wxString value)
+    {
+        m_connect->setHost(value);
+    }
 
     // チャットの種類を取得
     CHAT_TYPE getChatType(void) const
@@ -184,7 +189,7 @@ public:
     /////////////////////////////////////////
 
     // 認証が成功した場合
-    void onAuthSucceeed(void);
+    virtual void onAuthSucceeed(void);
 
     // メッセージ一覧を取得した場合
     void onGetMessages(const std::vector<CMessageData*>& messages);

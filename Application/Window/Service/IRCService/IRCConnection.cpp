@@ -117,6 +117,7 @@ void CIRCConnection::startPartTask(const IUser* user, const wxString& channel)
 		wxString channelName = (*it)->m_name;
 		if (channelName == channel){
 			m_channels.erase(it);
+			delete *it;
 			break;
 		}
 		++it;

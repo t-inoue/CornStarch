@@ -1,10 +1,10 @@
 ﻿#pragma once
-#include "View\MainView.hpp"
-#include "LogHolder\MainLogHolder.hpp"
-#include "Service\SCService\SCService.h"
-#include "Service\IRCService\IRCService.h"
-#include "Serializer\ServiceSerializer.hpp"
-#include "Serializer\ServiceSerializerWin.hpp"
+#include "View/MainView.hpp"
+#include "LogHolder/MainLogHolder.hpp"
+#include "Service/SCService/SCService.h"
+#include "Service/IRCService/IRCService.h"
+#include "Serializer/ServiceSerializer.hpp"
+#include "Serializer/ServiceSerializerWin.hpp"
 
 namespace CornStarch
 {;

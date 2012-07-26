@@ -223,14 +223,21 @@ void CMainWindow::onJoin(wxCommandEvent& event)
 // サーバー削除
 void CMainWindow::onDeleteService(wxCommandEvent& event)
 {
-    CChatServiceBase* service = getService(m_currentServiceId);
-    if (service != NULL){
-        delete service;
-        m_services.erase(m_currentServiceId);
-        // 画面表示の更新
-        clearAllView();
-        m_view->displayChannels(m_services);
-    }
+        CChatServiceBase* service = getService(m_currentServiceId);
+        if (service != NULL){
+            wxMessageDialog dialog(this,
+                    wxString::Format(wxT("サーバー[%s]の削除をしてもよろしいですか？"),
+                            service->getHost()), "確認", wxOK | wxCANCEL);
+
+            if (dialog.ShowModal() == wxID_OK){
+
+                delete service;
+                m_services.erase(m_currentServiceId);
+                // 画面表示の更新
+                clearAllView();
+                m_view->displayChannels(m_services);
+            }
+        }
 }
 // チャンネルから離脱メニュー
 void CMainWindow::onPart(wxCommandEvent& event)
