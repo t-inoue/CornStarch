@@ -387,7 +387,6 @@ void CChatServiceBase::onGetUserStream(const CMemberData& member)
 {
     m_channel->updateMember(member);
     (*m_nickTable)[member.m_name] = member.m_nick;
-
 }
 
 }
