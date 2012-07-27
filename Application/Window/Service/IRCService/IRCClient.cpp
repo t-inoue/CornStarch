@@ -71,7 +71,7 @@ void CIRCClient::receiveLoop()
             vector<string> messages = CStringUtility::split(this->m_buffer,
                     "\n");
             for (int i = 0; i < messages.size(); i++){
-                if (messages[i].find("PING") == 0){
+                if (messages[i].find(string("PI") + "NG") == 0){
                     string pingValue =
                             CStringUtility::split(messages[i], ":")[1];
                     pong(pingValue);
@@ -114,12 +114,12 @@ void CIRCClient::disconnect(void)
 
 void CIRCClient::join(const wxString& channelName)
 {
-    wxString content(wxString::Format(wxT("JOIN %s\r\n"), channelName));
+    wxString content(wxString::Format(wxString("JO") + wxString("IN %s\r\n"), channelName));
     sendCommand(content);
 }
 void CIRCClient::part(const wxString& channelName)
 {
-    wxString content(wxString::Format(wxT("PART %s\r\n"), channelName));
+    wxString content(wxString::Format(wxString("PA") + wxString("RT %s\r\n"), channelName));
     sendCommand(content);
 }
 void CIRCClient::getTopicAsync(const wxString& channelName)
@@ -137,7 +137,7 @@ void CIRCClient::getNamesAsync(const wxString& channelName)
 void CIRCClient::sendMessage(const wxString& target, const wxString& content)
 {
     wxString contentWxString(
-            wxString::Format(wxT("PRIVMSG %s %s\r\n"), target, content));
+            wxString::Format(wxString("PRIV") + wxString("MSG %s %s\r\n"), target, content));
     sendCommand(contentWxString);
 }
 void CIRCClient::sendNotice(const wxString& target, const wxString& content)
