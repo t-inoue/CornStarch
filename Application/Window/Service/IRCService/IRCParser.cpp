@@ -34,14 +34,14 @@ CConnectionEventBase* CIRCParser::parse(const std::string& content)
         string statusCode = content.substr(index, nextIndex - index);
         index = nextIndex + 1;
         string param = content.substr(index);
-        if (statusCode == "PRIVMSG"){
+        if (statusCode == string("PRIV") + "MSG"){
             m_messageId++;
             return createPrivateMessageEvent(host, param);
         }
-        if (statusCode == "PART"){
+        if (statusCode == string("PA") + "RT"){
             return createPartMessageEvent(host, param);
         }
-        if (statusCode == "JOIN"){
+        if (statusCode == string("JO") + "IN"){
             return createJoinMessageEvent(host, param);
         }
         if (statusCode == "TOPIC"){
