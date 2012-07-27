@@ -47,6 +47,9 @@ wxThread::ExitCode CSCGetStreamTask::Entry()
     // Deleteされるまでループ
     while (!TestDestroy()){
 
+        // CPUを休ませる(100msec)
+        wxUsleep(100);
+
         // ストリーム(JSON形式)を受信
         CSCJsonParser parser;
         string jsons = client->getStreamJson();
