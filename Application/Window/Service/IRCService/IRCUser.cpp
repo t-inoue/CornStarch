@@ -1,11 +1,4 @@
-﻿//
-//  IRCUserInfo.cpp
-//  testtest
-//
-//  Created by  on 12/07/17.
-//  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
-//
-
+﻿
 #include "IRCUser.hpp"
 
 namespace CornStarch

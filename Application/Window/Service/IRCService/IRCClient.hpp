@@ -1,10 +1,4 @@
-﻿//
-//  IRCClient.h
-//  testtest
-//
-//  Created by  on 12/07/13.
-//  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
-//
+﻿
 
 #ifndef _IRCClient_h
 #define _IRCClient_h

@@ -1,9 +1,4 @@
-﻿/*
- * IRCConnection.h
- *
- *  Created on: 2012/07/13
- */
-
+﻿
 #ifndef IRCCONNECTION_H_
 #define IRCCONNECTION_H_
 #include "../IConnection.hpp"

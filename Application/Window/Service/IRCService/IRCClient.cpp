@@ -15,7 +15,6 @@ CIRCClient::CIRCClient() :
         m_handler(NULL), m_isClosing(false), recieveThread(NULL)
 {
     m_mutex = new wxMutex();
-
 }
 
 CIRCClient::~CIRCClient(void)
@@ -87,7 +86,6 @@ void CIRCClient::receiveLoop()
             }
         }
         wxUsleep(100);
-
     }
     if (m_isClosing != true){
         CAuthEvent* event = new CAuthEvent();
@@ -130,8 +128,6 @@ void CIRCClient::joinAsync(const wxString& channelName)
                     channelName));
     Thread *thread =new Thread(this, &CIRCClient::sendCommand,content);
     thread->start();
-
-
 }
 void CIRCClient::partAsync(const wxString& channelName)
 {
@@ -160,14 +156,14 @@ void CIRCClient::sendMessageAsync(const wxString& target, const wxString& conten
     wxString contentWxString(
             wxString::Format(wxString("PRIV") + wxString("MSG %s %s\r\n"),
                     target, content));
-    Thread *thread =new Thread(this, &CIRCClient::sendCommand,content);
+    Thread *thread =new Thread(this, &CIRCClient::sendCommand,contentWxString);
     thread->start();
 }
 void CIRCClient::sendNoticeAsync(const wxString& target, const wxString& content)
 {
     wxString contentWxString(
             wxString::Format(wxT("NOTICE %s %s\r\n"), target, content));
-    Thread *thread =new Thread(this, &CIRCClient::sendCommand,content);
+    Thread *thread =new Thread(this, &CIRCClient::sendCommand,contentWxString);
     thread->start();
 }
 void CIRCClient::changeTopicAsync(const wxString& channelName,
@@ -175,13 +171,13 @@ void CIRCClient::changeTopicAsync(const wxString& channelName,
 {
     wxString contentWxString(
             wxString::Format(wxT("TOPIC %s %s\r\n"), channelName, content));
-    Thread *thread =new Thread(this, &CIRCClient::sendCommand,content);
+    Thread *thread =new Thread(this, &CIRCClient::sendCommand,contentWxString);
     thread->start();
 }
 void CIRCClient::changeNicknameAsync(const wxString& content)
 {
     wxString contentWxString(wxString::Format(wxT("NICK %s\r\n"), content));
-    Thread *thread =new Thread(this, &CIRCClient::sendCommand,content);
+    Thread *thread =new Thread(this, &CIRCClient::sendCommand,contentWxString);
     thread->start();
 
 }
