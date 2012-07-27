@@ -86,7 +86,7 @@ void CIRCClient::receiveLoop()
                 }
             }
         }
-        usleep(500);
+        _sleep(100);
     }
     if (m_isClosing != true){
         CAuthEvent* event = new CAuthEvent();
