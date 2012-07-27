@@ -189,6 +189,7 @@ void CIRCConnection::startNickChangeTask(const IUser* user,
 	CUserStreamEvent* event = new CUserStreamEvent();
 	event->SetEventType(myEVT_THREAD_STREAM_USER_UPDATE);
 	event->setMember(member);
+    event->setConnectionId(m_connectionId);
 	wxQueueEvent(m_handler, event);
 }
 
