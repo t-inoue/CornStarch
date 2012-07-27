@@ -2,8 +2,8 @@
 #ifndef _WIN32
 #include <wx/xml/xml.h>
 #include <map>
-#include "../Service/IRCService/IRCService.h"
-#include "../Service/SCService/SCService.h"
+#include "../Service/IRCService/IRCService.hpp"
+#include "../Service/SCService/SCService.hpp"
 #include <sys/stat.h>
 
 namespace CornStarch

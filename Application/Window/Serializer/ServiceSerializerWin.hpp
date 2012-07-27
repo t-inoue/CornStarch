@@ -4,8 +4,8 @@
 #include <wx/wx.h>
 #include <wx/msw/registry.h>
 #include <vector>
-#include "../Service/IRCService/IRCService.h"
-#include "../Service/SCService/SCService.h"
+#include "../Service/IRCService/IRCService.hpp"
+#include "../Service/SCService/SCService.hpp"
 
 namespace CornStarch
 {;

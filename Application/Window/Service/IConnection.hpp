@@ -2,7 +2,7 @@
 #define IConnection_H_
 #include <wx/wxprec.h>
 #include <wx/wx.h>
-#include "IUser.h"
+#include "IUser.hpp"
 
 using namespace std;
 

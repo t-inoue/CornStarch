@@ -13,7 +13,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
-#include "StringUtility.h"
+#include "StringUtility.hpp"
 #include "../Event/GetMemberEvent.hpp"
 #include "../Event/MsgStreamEvent.hpp"
 #include "../Event/GetMessageEvent.hpp"

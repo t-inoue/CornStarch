@@ -1,4 +1,4 @@
-#include "IRCService.h"
+#include "IRCService.hpp"
 
 namespace CornStarch
 {

@@ -7,7 +7,7 @@
 #ifndef IRCCONNECTION_H_
 #define IRCCONNECTION_H_
 #include "../IConnection.hpp"
-#include "IRCClient.h"
+#include "IRCClient.hpp"
 #include "IRCUser.hpp"
 #include "../Event/JoinEvent.hpp"
 #include "../Event/GetChannelEvent.hpp"

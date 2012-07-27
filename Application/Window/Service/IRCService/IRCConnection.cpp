@@ -4,7 +4,7 @@
  *  Created on: 2012/07/13
  */
 
-#include "IRCConnection.h"
+#include "IRCConnection.hpp"
 
 namespace CornStarch
 {;

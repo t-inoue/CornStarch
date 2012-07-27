@@ -9,8 +9,8 @@
 #ifndef _IRCClient_h
 #define _IRCClient_h
 #include "../SocketClient.hpp"
-#include "IRCParser.h"
-#include "Thread.h"
+#include "IRCParser.hpp"
+#include "Thread.hpp"
 
 namespace CornStarch
 {

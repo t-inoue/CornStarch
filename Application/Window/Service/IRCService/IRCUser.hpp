@@ -10,7 +10,7 @@
 #define _IRCUserInfo_h
 
 #include <iostream>
-#include "../IUser.h"
+#include "../IUser.hpp"
 
 using namespace std;
 

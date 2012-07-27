@@ -1,16 +1,18 @@
-﻿#include "IRCClient.h"
+﻿#include "IRCClient.hpp"
 namespace CornStarch
-{;
+{
+;
 
 wxDECLARE_EVENT(myEVT_THREAD_GET_PING, CAuthEvent);
 
 namespace IRC
-{;
+{
+;
 
 using namespace std;
 
 CIRCClient::CIRCClient() :
-        m_handler(NULL), m_isClosing(false),recieveThread(NULL)
+        m_handler(NULL), m_isClosing(false), recieveThread(NULL)
 {
     m_mutex = new wxMutex();
 
@@ -57,7 +59,7 @@ void CIRCClient::connect(const wxString& content)
 void CIRCClient::sendCommand(const wxString& content)
 {
     m_mutex->Lock();
-    send (content);
+    send(content);
     m_mutex->Unlock();
 }
 void CIRCClient::receiveLoop()
@@ -84,6 +86,7 @@ void CIRCClient::receiveLoop()
                 }
             }
         }
+        usleep(500);
     }
     if (m_isClosing != true){
         CAuthEvent* event = new CAuthEvent();
@@ -105,24 +108,29 @@ void CIRCClient::quit(void)
 }
 void CIRCClient::disconnect(void)
 {
-    if(m_isClosing == false)
-    {
+    if (m_isClosing == false){
         m_isClosing = true;
         this->close();
-        if (recieveThread->IsRunning()){
-            recieveThread->join();
+        if (recieveThread != NULL){
+            if (recieveThread->IsRunning()){
+                recieveThread->join();
             }
+        }
     }
 }
 
 void CIRCClient::join(const wxString& channelName)
 {
-    wxString content(wxString::Format(wxString("JO") + wxString("IN %s\r\n"), channelName));
+    wxString content(
+            wxString::Format(wxString("JO") + wxString("IN %s\r\n"),
+                    channelName));
     sendCommand(content);
 }
 void CIRCClient::part(const wxString& channelName)
 {
-    wxString content(wxString::Format(wxString("PA") + wxString("RT %s\r\n"), channelName));
+    wxString content(
+            wxString::Format(wxString("PA") + wxString("RT %s\r\n"),
+                    channelName));
     sendCommand(content);
 }
 void CIRCClient::getTopicAsync(const wxString& channelName)
@@ -140,7 +148,8 @@ void CIRCClient::getNamesAsync(const wxString& channelName)
 void CIRCClient::sendMessage(const wxString& target, const wxString& content)
 {
     wxString contentWxString(
-            wxString::Format(wxString("PRIV") + wxString("MSG %s %s\r\n"), target, content));
+            wxString::Format(wxString("PRIV") + wxString("MSG %s %s\r\n"),
+                    target, content));
     sendCommand(contentWxString);
 }
 void CIRCClient::sendNotice(const wxString& target, const wxString& content)

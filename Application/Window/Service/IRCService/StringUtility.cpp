@@ -7,7 +7,7 @@
 //
 
 #include <iostream>
-#include "StringUtility.h"
+#include "StringUtility.hpp"
 using namespace std;
 
 namespace CornStarch {

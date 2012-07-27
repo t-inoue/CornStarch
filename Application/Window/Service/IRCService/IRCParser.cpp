@@ -1,4 +1,4 @@
-﻿#include "IRCParser.h"
+﻿#include "IRCParser.hpp"
 
 namespace CornStarch
 {;

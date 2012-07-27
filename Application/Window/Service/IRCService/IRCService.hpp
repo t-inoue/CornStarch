@@ -3,7 +3,7 @@
 
 #include "../ChatServiceBase.hpp"
 #include "IRCUser.hpp"
-#include "IRCConnection.h"
+#include "IRCConnection.hpp"
 
 namespace CornStarch
 {

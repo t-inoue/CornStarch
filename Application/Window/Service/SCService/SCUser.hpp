@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "../IUser.h"
+#include "../IUser.hpp"
 #include <wx/base64.h>
 
 namespace CornStarch

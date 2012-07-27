@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "ChannelHolder.hpp"
 #include "NickTable.hpp"
-#include "IUser.h"
+#include "IUser.hpp"
 #include "IConnection.hpp"
 #include "../../DataStruct/SubscribeData.hpp"
 
