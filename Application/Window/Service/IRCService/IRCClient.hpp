@@ -19,6 +19,7 @@ namespace IRC
 // IRCと接続するためのクライントクラスです。
 class CIRCClient: public CSocketClient
 {
+    // 受信用のスレッドです。
     Thread *recieveThread;
     // ミューテックス
     wxMutex *m_mutex;
@@ -46,25 +47,25 @@ public:
 	// 初期化します。
 	void init(int connectionId);
 	// 通信を開始します。
-	void start(wxEvtHandler* handler, const wxString& userName,
+	void startAsync(wxEvtHandler* handler, const wxString& userName,
 			const wxString& password);
 	// Quitメッセージを送ります。
-	void quit(void);
+	void quitAsync(void);
 
 	// IRCから切断します。
 	void disconnect(void);
 	// メッセージを送ります。
-	void sendMessage(const wxString& target, const wxString& content);
+	void sendMessageAsync(const wxString& target, const wxString& content);
 	// Noticeを送ります。
-	void sendNotice(const wxString& target, const wxString& content);
+	void sendNoticeAsync(const wxString& target, const wxString& content);
 	// チャンネルに参加します。
-	void join(const wxString& channelName);
+	void joinAsync(const wxString& channelName);
 	// チャンネルから離脱します。
-	void part(const wxString& channelName);
+	void partAsync(const wxString& channelName);
 	// トピックを変更します。
-	void changeTopic(const wxString& channelName, const wxString& content);
+	void changeTopicAsync(const wxString& channelName, const wxString& content);
 	// ニックネームを変更します。
-	void changeNickname(const wxString& content);
+	void changeNicknameAsync(const wxString& content);
 
 	// トピックを非同期で取得します。
 	void getTopicAsync(const wxString& channelName);

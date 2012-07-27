@@ -27,7 +27,7 @@ void CIRCClient::init(int connectionId)
     CSocketClient::init();
     m_connectionId = connectionId;
 }
-void CIRCClient::start(wxEvtHandler* handler, const wxString& userName,
+void CIRCClient::startAsync(wxEvtHandler* handler, const wxString& userName,
         const wxString& password)
 {
     if (m_socket->IsConnected()){
@@ -101,17 +101,19 @@ void CIRCClient::pong(const wxString& value)
     wxString content(wxString::Format(wxT("PONG %s\r\n"), value));
     sendCommand(content);
 }
-void CIRCClient::quit(void)
+void CIRCClient::quitAsync(void)
 {
     wxString content("QUIT\r\n");
-    sendCommand(content);
+
+    Thread *thread =new Thread(this, &CIRCClient::sendCommand,content);
+    thread->start();
 }
 void CIRCClient::disconnect(void)
 {
     if (m_isClosing == false){
         m_isClosing = true;
         this->close();
-        if (recieveThread != NULL){
+        if (recieveThread != NULL&& recieveThread->IsAlive()){
             if (recieveThread->IsRunning()){
                 recieveThread->join();
             }
@@ -119,56 +121,76 @@ void CIRCClient::disconnect(void)
     }
 }
 
-void CIRCClient::join(const wxString& channelName)
+void CIRCClient::joinAsync(const wxString& channelName)
 {
     wxString content(
             wxString::Format(wxString("JO") + wxString("IN %s\r\n"),
                     channelName));
-    sendCommand(content);
+    Thread *thread =new Thread(this, &CIRCClient::sendCommand,content);
+    thread->start();
+
+    // イベントを通知
+    CChannelData *channelData = new CChannelData();
+    channelData->m_name = channel;
+    channelData->m_topic = "";
+    m_channels.push_back(channelData);
+
+    CJoinEvent* event = new CJoinEvent();
+    event->SetEventType(myEVT_THREAD_PUT_JOIN); // イベントの種類をセット
+    event->SetString(channel); // 新チャンネル名
+    event->setConnectionId(m_connectionId);
+    wxQueueEvent(m_handler, event);
 }
-void CIRCClient::part(const wxString& channelName)
+void CIRCClient::partAsync(const wxString& channelName)
 {
     wxString content(
             wxString::Format(wxString("PA") + wxString("RT %s\r\n"),
                     channelName));
-    sendCommand(content);
+    Thread *thread =new Thread(this, &CIRCClient::sendCommand,content);
+    thread->start();
 }
 void CIRCClient::getTopicAsync(const wxString& channelName)
 {
     wxString content(wxString::Format(wxT("TOPIC %s\r\n"), channelName));
-    sendCommand(content);
+    Thread *thread =new Thread(this, &CIRCClient::sendCommand,content);
+    thread->start();
 
 }
 void CIRCClient::getNamesAsync(const wxString& channelName)
 {
     wxString content(wxString::Format(wxT("NAMES %s\r\n"), channelName));
-    sendCommand(content);
+    Thread *thread =new Thread(this, &CIRCClient::sendCommand,content);
+    thread->start();
 }
 
-void CIRCClient::sendMessage(const wxString& target, const wxString& content)
+void CIRCClient::sendMessageAsync(const wxString& target, const wxString& content)
 {
     wxString contentWxString(
             wxString::Format(wxString("PRIV") + wxString("MSG %s %s\r\n"),
                     target, content));
-    sendCommand(contentWxString);
+    Thread *thread =new Thread(this, &CIRCClient::sendCommand,content);
+    thread->start();
 }
-void CIRCClient::sendNotice(const wxString& target, const wxString& content)
+void CIRCClient::sendNoticeAsync(const wxString& target, const wxString& content)
 {
     wxString contentWxString(
             wxString::Format(wxT("NOTICE %s %s\r\n"), target, content));
-    sendCommand(contentWxString);
+    Thread *thread =new Thread(this, &CIRCClient::sendCommand,content);
+    thread->start();
 }
-void CIRCClient::changeTopic(const wxString& channelName,
+void CIRCClient::changeTopicAsync(const wxString& channelName,
         const wxString& content)
 {
     wxString contentWxString(
             wxString::Format(wxT("TOPIC %s %s\r\n"), channelName, content));
-    sendCommand(contentWxString);
+    Thread *thread =new Thread(this, &CIRCClient::sendCommand,content);
+    thread->start();
 }
-void CIRCClient::changeNickname(const wxString& content)
+void CIRCClient::changeNicknameAsync(const wxString& content)
 {
     wxString contentWxString(wxString::Format(wxT("NICK %s\r\n"), content));
-    sendCommand(contentWxString);
+    Thread *thread =new Thread(this, &CIRCClient::sendCommand,content);
+    thread->start();
 
 }
 }

@@ -30,8 +30,8 @@ private:
 		virtual ~ThreadDataBase()
 		{
 		}
-		// スレッドを開始します。
-		virtual void startThread()=0;
+		// メソッドを実行します。
+		virtual void invoke()=0;
 	};
 	/*
 	 * スレッドで実行するインスタンスとメソッドを保持するクラス
@@ -54,8 +54,8 @@ private:
 		{
 			free(m_method);
 		}
-		//override スレッドを開始します。
-		void startThread()
+        //override メソッドを実行します。
+		void invoke()
 		{
 			typedef void (T::*method_t)(void);
 
@@ -76,8 +76,8 @@ private:
 		{
 		}
         TArgActual arg;
-		//override スレッドを開始します。
-		void startThread()
+        //override メソッドを実行します。
+		void invoke()
 		{
 			typedef void (T::*method_t)(TArg);
 			method_t method_ = *(method_t*)this->m_method;
@@ -97,8 +97,8 @@ private:
 		{
 		}
         TArgActual2 arg2;
-		//override スレッドを開始します。
-		void startThread()
+        //override メソッドを実行します。
+		void invoke()
 		{
 			typedef void (T::*method_t)(TArg,TArg2);
 			method_t method_ = *(method_t*)this->m_method;
@@ -114,7 +114,6 @@ public:
 	void start()
 	{
 	    m_mutex= new wxMutex();
-        m_mutex->Lock();
 		this->Create();
 		this->Run();
 	}
@@ -122,7 +121,8 @@ public:
 	// wxThreadのエントリポイントです。
 	wxThread::ExitCode Entry(void)
 	{
-		m_threadData->startThread();
+        m_mutex->Lock();
+		m_threadData->invoke();
 		delete m_threadData;
 		m_mutex->Unlock();
 		if (TestDestroy()){
