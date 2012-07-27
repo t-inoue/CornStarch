@@ -129,17 +129,7 @@ void CIRCClient::joinAsync(const wxString& channelName)
     Thread *thread =new Thread(this, &CIRCClient::sendCommand,content);
     thread->start();
 
-    // イベントを通知
-    CChannelData *channelData = new CChannelData();
-    channelData->m_name = channel;
-    channelData->m_topic = "";
-    m_channels.push_back(channelData);
 
-    CJoinEvent* event = new CJoinEvent();
-    event->SetEventType(myEVT_THREAD_PUT_JOIN); // イベントの種類をセット
-    event->SetString(channel); // 新チャンネル名
-    event->setConnectionId(m_connectionId);
-    wxQueueEvent(m_handler, event);
 }
 void CIRCClient::partAsync(const wxString& channelName)
 {
