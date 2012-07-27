@@ -53,7 +53,7 @@ void CIRCClient::connect(const wxString& content)
     //　IRCへの接続
     sendCommand(content);
 
-    recieveThread = new Thread(this, &CIRCClient::receiveLoop);
+    recieveThread = new Thread(this, &CIRCClient::receiveLoop,wxTHREAD_JOINABLE);
     recieveThread->start();
 }
 void CIRCClient::sendCommand(const wxString& content)
@@ -116,7 +116,8 @@ void CIRCClient::disconnect(void)
         this->close();
         if (recieveThread != NULL&& recieveThread->IsAlive()){
             if (recieveThread->IsRunning()){
-                recieveThread->join();
+                recieveThread->Wait();
+                delete recieveThread;
             }
         }
     }

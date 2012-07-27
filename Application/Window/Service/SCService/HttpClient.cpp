@@ -111,7 +111,7 @@ void CHttpClient::sendStreamDefault(const wxString& basic)
 void CHttpClient::sendPutParticular(const wxString& key, const wxString& value, 
     const wxString& basic)
 {
-    string strValue = value.mb_str(wxConvUTF8);
+    string strValue = (string)value.mb_str(wxConvUTF8);
     sendCommonHeader(key.size() + strValue.size() - 4, basic);
     send("Content-Type: application/x-www-form-urlencoded; charset=UTF-8");
     send("");

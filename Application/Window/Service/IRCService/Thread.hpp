@@ -107,13 +107,12 @@ private:
 	};
 	// Thread実行のための要素です。
 	ThreadDataBase* m_threadData;
-	wxMutex* m_mutex;
+
 public:
 
 	// スレッドを開始します。
 	void start()
 	{
-	    m_mutex= new wxMutex();
 		this->Create();
 		this->Run();
 	}
@@ -121,23 +120,18 @@ public:
 	// wxThreadのエントリポイントです。
 	wxThread::ExitCode Entry(void)
 	{
-        m_mutex->Lock();
 		m_threadData->invoke();
 		delete m_threadData;
-		m_mutex->Unlock();
 		if (TestDestroy()){
 			return (wxThread::ExitCode) -1;
 		}
 		return (wxThread::ExitCode) 0;
 	}
-	void join(void)
-	{
-	    wxMutexLocker lock(*m_mutex);
-	}
 
 	// インスタンスとメソッドを指定する
 	template<typename T>
-	Thread(T *obje, void (T::*method)(void))
+	Thread(T *obje, void (T::*method)(void),
+            wxThreadKind kind = wxTHREAD_DETACHED): wxThread(kind)
 	{
 		ThreadData<T> *data = new ThreadData<T>(obje);
 		typedef void (T::*method_t)(void);
@@ -149,7 +143,8 @@ public:
 	}
 	// インスタンスとメソッドを指定する
 	template<typename T, typename TArg, typename TArgActual>
-	Thread(T *obje, void (T::*method)(TArg), TArgActual arg)
+	Thread(T *obje, void (T::*method)(TArg), TArgActual arg,
+            wxThreadKind kind = wxTHREAD_DETACHED): wxThread(kind)
 	{
 	    ThreadDataFunc<T, TArg, TArgActual> *data = new ThreadDataFunc<T,TArg, TArgActual>(obje);
 		data->arg = arg;
@@ -161,7 +156,8 @@ public:
 	}
 	// インスタンスとメソッドを指定する
 	template<typename T, typename TArg,typename TArgActual,typename TArg2,typename TArgActual2>
-	Thread(T *obje, void (T::*method)(TArg,TArg2), TArgActual arg,TArgActual2 arg2)
+	Thread(T *obje, void (T::*method)(TArg,TArg2), TArgActual arg,TArgActual2 arg2,
+	        wxThreadKind kind = wxTHREAD_DETACHED): wxThread(kind)
 	{
 	    ThreadDataFunc2<T, TArg,TArgActual,TArg2, TArgActual2> *data =
 		        new ThreadDataFunc2<T, TArg,TArgActual,TArg2, TArgActual2>(obje);
@@ -175,7 +171,6 @@ public:
 	}
 	virtual ~Thread()
 	{
-	    delete m_mutex;
 	}
 };
 }
