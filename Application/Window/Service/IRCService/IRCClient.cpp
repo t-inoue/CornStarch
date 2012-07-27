@@ -111,7 +111,7 @@ void CIRCClient::disconnect(void)
         this->close();
         if (recieveThread->IsRunning()){
             recieveThread->join();
-            }
+        }
     }
 }
 
