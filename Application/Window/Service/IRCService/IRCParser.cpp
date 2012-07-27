@@ -50,22 +50,25 @@ CConnectionEventBase* CIRCParser::parse(const std::string& content)
         if (statusCode == "NICK"){
             return createNickMessageEvent(host, param);
         }
-        if (statusCode == "353"){
+        if (statusCode == "353"){ //チャンネルの名前
             addNames(param);
         }
-        if (statusCode == "332"){
+        if (statusCode == "332"){ //トピックリプライ
             return createTopicEvent(param);
         }
-        if (statusCode == "366"){
+        if (statusCode == "366"){ //ユーザー名羅列終了リプライ
             return createNamesEvent(param);
         }
-        if (statusCode == "433"){
+        if (statusCode == "433"|| // 不適切なチャンネル
+                statusCode == "432"){ //　不適切なユーザーID
+            //エラー
             CAuthEvent* event = new CAuthEvent();
             event->setAuthResult(false);
             event->SetEventType(myEVT_THREAD_GET_PING); // イベントの種類をセット
             return event;
         }
-        if (statusCode == "001"){
+        if (statusCode == "001"){ // 接続開始リプライ
+            //接続
             CAuthEvent* event = new CAuthEvent();
             event->setAuthResult(true);
             event->SetEventType(myEVT_THREAD_GET_PING); // イベントの種類をセット

@@ -23,16 +23,9 @@ private:
 	class ThreadDataBase
 	{
 	protected:
-		// スレッド終了時にインスタンスを削除するか
-		bool m_isDeleteInstance;
 	public:
-		ThreadDataBase(bool isDeleteInstance) :
-				m_isDeleteInstance(isDeleteInstance)
+		ThreadDataBase()
 		{
-		}
-		void setDeleteInstance(bool value)
-		{
-			m_isDeleteInstance = value;
 		}
 		virtual ~ThreadDataBase()
 		{
@@ -52,16 +45,13 @@ private:
         T* m_instance;
         // 実行するメソッドです。
         void* m_method;
-		ThreadData(T* instance,bool isDeleteInstance) :ThreadDataBase(isDeleteInstance),
+		ThreadData(T* instance) :
 				m_instance(instance)
 		{
 
 		}
 		virtual ~ThreadData()
 		{
-		    if (this->m_isDeleteInstance){
-		        delete this->m_instance;
-		    }
 			free(m_method);
 		}
 		//override スレッドを開始します。
@@ -77,8 +67,11 @@ private:
 	class ThreadDataFunc: public ThreadData<T>
 	{
 	public:
-	    ThreadDataFunc(T* instance,bool isDeleteInstance) :ThreadData<T>(instance,isDeleteInstance)
-	    {}
+	    ThreadDataFunc(T* instance) :
+	        ThreadData<T>(instance)
+	            {
+
+	            }
 		virtual ~ThreadDataFunc()
 		{
 		}
@@ -95,8 +88,11 @@ private:
 	class ThreadDataFunc2: public ThreadDataFunc<T,TArg,TArgActual>
 	{
 	public:
-	    ThreadDataFunc2(T* instance,bool isDeleteInstance) :ThreadDataFunc<T,TArg,TArgActual>(instance,isDeleteInstance)
-	           {}
+	    ThreadDataFunc2(T* instance) :
+	        ThreadDataFunc<T,TArg,TArgActual>(instance)
+                {
+
+                }
 		virtual ~ThreadDataFunc2()
 		{
 		}
@@ -110,69 +106,76 @@ private:
 		}
 	};
 	// Thread実行のための要素です。
-	ThreadDataBase* threadData;
-
+	ThreadDataBase* m_threadData;
+	wxMutex* m_mutex;
 public:
 
 	// スレッドを開始します。
 	void start()
 	{
+	    m_mutex= new wxMutex();
+        m_mutex->Lock();
 		this->Create();
 		this->Run();
 	}
+
 	// wxThreadのエントリポイントです。
 	wxThread::ExitCode Entry(void)
 	{
-		threadData->startThread();
-		delete threadData;
+		m_threadData->startThread();
+		delete m_threadData;
+		m_mutex->Unlock();
 		if (TestDestroy()){
 			return (wxThread::ExitCode) -1;
 		}
 		return (wxThread::ExitCode) 0;
 	}
+	void join(void)
+	{
+	    wxMutexLocker lock(*m_mutex);
+	}
 
 	// インスタンスとメソッドを指定する
 	template<typename T>
-	Thread(T *obje, void (T::*method)(void), bool isDeleteInstance = false)
+	Thread(T *obje, void (T::*method)(void))
 	{
-		ThreadData<T> *data = new ThreadData<T>(obje,isDeleteInstance);
+		ThreadData<T> *data = new ThreadData<T>(obje);
 		typedef void (T::*method_t)(void);
 		int size = sizeof(method_t);
 		data->m_method = malloc(size);
 		*(method_t*) data->m_method = method;
 
-		threadData = data;
+		m_threadData = data;
 	}
 	// インスタンスとメソッドを指定する
 	template<typename T, typename TArg, typename TArgActual>
-	Thread(T *obje, void (T::*method)(TArg), TArgActual arg, bool isDeleteInstance =
-	        false)
+	Thread(T *obje, void (T::*method)(TArg), TArgActual arg)
 	{
-	    ThreadDataFunc<T, TArg, TArgActual> *data = new ThreadDataFunc<T,TArg, TArgActual>(obje,isDeleteInstance);
+	    ThreadDataFunc<T, TArg, TArgActual> *data = new ThreadDataFunc<T,TArg, TArgActual>(obje);
 		data->arg = arg;
 		typedef void (T::*method_t)(TArg);
 		int size = sizeof(method_t);
 		data->m_method = malloc(size);
 		*(method_t*) data->m_method = method;
-		threadData = data;
+		m_threadData = data;
 	}
 	// インスタンスとメソッドを指定する
 	template<typename T, typename TArg,typename TArgActual,typename TArg2,typename TArgActual2>
-	Thread(T *obje, void (T::*method)(TArg,TArg2), TArgActual arg,TArgActual2 arg2, bool isDeleteInstance =
-	        false)
+	Thread(T *obje, void (T::*method)(TArg,TArg2), TArgActual arg,TArgActual2 arg2)
 	{
 	    ThreadDataFunc2<T, TArg,TArgActual,TArg2, TArgActual2> *data =
-		        new ThreadDataFunc2<T, TArg,TArgActual,TArg2, TArgActual2>(obje,isDeleteInstance);
+		        new ThreadDataFunc2<T, TArg,TArgActual,TArg2, TArgActual2>(obje);
 		data->arg = arg;
 		data->arg2 = arg2;
 		typedef void (T::*method_t)(TArg,TArg2);
 		int size = sizeof(method_t);
 		data->m_method = malloc(size);
 		*(method_t*) data->m_method = method;
-		threadData = data;
+		m_threadData = data;
 	}
 	virtual ~Thread()
 	{
+	    delete m_mutex;
 	}
 };
 }

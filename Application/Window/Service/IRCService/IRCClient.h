@@ -19,6 +19,7 @@ namespace IRC
 // IRCと接続するためのクライントクラスです。
 class CIRCClient: public CSocketClient
 {
+    Thread *recieveThread;
     // ミューテックス
     wxMutex *m_mutex;
 	// ホスト名です。

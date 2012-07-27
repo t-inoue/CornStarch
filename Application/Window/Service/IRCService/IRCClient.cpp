@@ -10,7 +10,7 @@ namespace IRC
 using namespace std;
 
 CIRCClient::CIRCClient() :
-        m_handler(NULL), m_isClosing(false)
+        m_handler(NULL), m_isClosing(false),recieveThread(NULL)
 {
     m_mutex = new wxMutex();
 
@@ -51,8 +51,8 @@ void CIRCClient::connect(const wxString& content)
     //　IRCへの接続
     sendCommand(content);
 
-    Thread *thread = new Thread(this, &CIRCClient::receiveLoop, true);
-    thread->start();
+    recieveThread = new Thread(this, &CIRCClient::receiveLoop);
+    recieveThread->start();
 }
 void CIRCClient::sendCommand(const wxString& content)
 {
@@ -109,6 +109,9 @@ void CIRCClient::disconnect(void)
     {
         m_isClosing = true;
         this->close();
+        if (recieveThread->IsRunning()){
+            recieveThread->join();
+            }
     }
 }
 
