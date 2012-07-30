@@ -90,6 +90,12 @@ void CIRCClient::disconnect(void)
 {
     if (m_isClosing == false){
         m_isClosing = true;
+        quitAsync();
+        if (m_sendTask != NULL && m_sendTask->IsAlive()){
+               if (m_sendTask->IsRunning()){
+                   m_sendTask->Wait();
+               }
+           }
         this->close();
         // スレッド終了待機
         if (m_receiveTask != NULL && m_receiveTask->IsAlive()){
@@ -97,11 +103,7 @@ void CIRCClient::disconnect(void)
                 m_receiveTask->Wait();
             }
         }
-        if (m_sendTask != NULL && m_sendTask->IsAlive()){
-            if (m_sendTask->IsRunning()){
-                m_sendTask->Wait();
-            }
-        }
+
     }
 }
 wxString CIRCClient::recieveData()

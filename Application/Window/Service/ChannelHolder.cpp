@@ -115,7 +115,7 @@ void CChannelHolder::deleteChannels(void)
         delete m_channels[it->first];
     }
     m_channels.clear();
-
+    
 }
 
 // 一番頭のチャンネルを取得する
@@ -240,7 +240,7 @@ bool CChannelHolder::hasReceivedMessage(const wxString& channel)
 bool CChannelHolder::hasReceivedMember(const wxString& channel)
 {
     // チャンネルが存在しない
-    if (m_channels.find(channel) == m_channels.end()){
+    if (m_channels.find(channel) == m_channels.end() ){
         return false;
     }
 

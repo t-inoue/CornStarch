@@ -17,6 +17,9 @@ public:
 
 	//初期化します。
 	void init(wxEvtHandler* handler);
+
+	//再接続します。
+	void reconnect(void);
 };
 
 }

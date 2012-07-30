@@ -1,9 +1,9 @@
 #include "IRCService.hpp"
 
 namespace CornStarch
-{
+{;
 namespace IRC
-{
+{;
 CIRCService::CIRCService()
 {
 
@@ -37,6 +37,20 @@ void CIRCService::onAuthSucceeed(void)
         joinChannel(*it);
         it++;
     }
+}
+
+//再接続します。
+void CIRCService::reconnect(void)
+{
+    // 通信を初期化
+    CIRCConnection *newConnection = new CIRCConnection;
+
+    newConnection->init(m_id, m_handler);
+    newConnection->setHost(m_connect->getHost());
+    this->setSavedChannels(getChannels());
+    delete m_connect;
+    m_connect = newConnection;
+    regUser(m_user->getUserName(),m_user->getBasic());
 }
 }
 }

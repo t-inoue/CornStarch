@@ -35,7 +35,6 @@ public:
 	void setHost(wxString host)
 	{
 		m_host = host;
-		m_client->setHost(host);
 	}
 
 	//override 初期化を行う

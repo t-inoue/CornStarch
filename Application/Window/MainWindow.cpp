@@ -4,13 +4,14 @@
 using namespace std;
 
 namespace CornStarch
-{;
+{
+;
 
 //////////////////////////////////////////////////////////////////////
 
 CMainWindow::CMainWindow(void) :
-m_view(NULL), m_logHolder(NULL), m_serialize(NULL), m_uniqueServiceId(
-    0), m_currentServiceId(0)
+        m_view(NULL), m_logHolder(NULL), m_serialize(NULL), m_uniqueServiceId(
+                0), m_currentServiceId(0)
 {
 }
 
@@ -60,11 +61,11 @@ void CMainWindow::initHandle(void)
 {
     // エンターキー押下時
     this->Connect(m_view->getPostPaneID(), wxEVT_COMMAND_TEXT_ENTER,
-        wxCommandEventHandler(CMainWindow::onEnter));
+            wxCommandEventHandler(CMainWindow::onEnter));
 
     // メンバーがダブルクリックされたとき
     this->Connect(m_view->getMemPaneID(), wxEVT_COMMAND_LISTBOX_DOUBLECLICKED,
-        wxCommandEventHandler(CMainWindow::onMemberSelected));
+            wxCommandEventHandler(CMainWindow::onMemberSelected));
 }
 
 // Modelがあれば画面を更新する
@@ -84,7 +85,7 @@ void CMainWindow::updateMessageView(int connectionId, const wxString& channel)
 
         // メッセージを表示
         m_view->displayMessages(service->getMessages(channel),
-            service->getNickTable());
+                service->getNickTable());
     }
 }
 
@@ -98,7 +99,7 @@ void CMainWindow::updateMemberView(int connectionId, const wxString& channel)
         // メンバーを表示
         m_view->displayMembers(service->getMembers(channel));
         m_view->displayMessages(service->getMessages(channel),
-            service->getNickTable());
+                service->getNickTable());
     }
 }
 
@@ -116,7 +117,7 @@ void CMainWindow::updateChannelView(int connectionId, const wxString& channel)
 
 // タイトルバーにタイトルを表示する
 void CMainWindow::displayTitle(const wxString& channel, const wxString& topic,
-    int serviceId)
+        int serviceId)
 {
     // 現在見ているサーバではなかったら
     if (serviceId != m_currentServiceId){
@@ -127,7 +128,8 @@ void CMainWindow::displayTitle(const wxString& channel, const wxString& topic,
 
     // チャンネル名が空の時、サーバ名を表示
     if (channel == ""){
-        SetTitle("(" + service->getNickName() + ")<" + service->getHost() + ">");
+        SetTitle(
+                "(" + service->getNickName() + ")<" + service->getHost() + ">");
         return;
     }
 
@@ -196,9 +198,8 @@ void CMainWindow::addNewService(CChatServiceBase* service)
     service->init(GetEventHandler());
     service->setHost(m_view->getDlgHostName());
     m_services.insert(
-        map<int, CChatServiceBase*>::value_type(service->getId(), service));
+            map<int, CChatServiceBase*>::value_type(service->getId(), service));
 
-    // コンテンツを更新
     service->registerUser(m_view->getDlgUserName(), m_view->getDlgPassword());
 }
 
@@ -235,8 +236,8 @@ void CMainWindow::onDeleteService(wxCommandEvent& event)
     CChatServiceBase* service = getService(m_currentServiceId);
     if (service != NULL){
         wxMessageDialog dialog(this,
-            wxString::Format(wxT("サーバー[%s]の削除をしてもよろしいですか？"),
-            service->getHost()), "確認", wxOK | wxCANCEL);
+                wxString::Format(wxT("サーバー[%s]の削除をしてもよろしいですか？"),
+                        service->getHost()), "確認", wxOK | wxCANCEL);
 
         if (dialog.ShowModal() == wxID_OK){
 
@@ -270,20 +271,21 @@ void CMainWindow::onPart(wxCommandEvent& event)
 // 表示を更新
 void CMainWindow::onUpdateDisplay(wxCommandEvent& event)
 {
-    //map<int, CChatServiceBase*>::iterator it = m_services.begin();
-    //while (it != m_services.end()){
+    map<int, CChatServiceBase*>::iterator it = m_services.begin();
+    while (it != m_services.end()){
 
-    //    // 保持しているデータを初期化
-    //    (*it).second->reconnect();
-    //    (*it).second->clearChannels();
-    //    (*it).second->clearNickTable();
-    //    ++it;
-    //}
+        // 保持しているデータを初期化
+        (*it).second->reconnect();
+        (*it).second->clearChannels();
+        (*it).second->clearNickTable();
+        ++it;
+    }
 
-    //CChatServiceBase* contents = getService(m_currentServiceId);
-
-    //// 表示を更新
-    //updateAllView(m_currentServiceId, contents->getCurrentChannel());
+    CChatServiceBase* service = getService(m_currentServiceId);
+    if (service != NULL){
+        // 表示を更新
+        updateAllView(m_currentServiceId, service->getCurrentChannel());
+    }
 }
 
 // ニックネーム変更
@@ -508,7 +510,7 @@ void CMainWindow::onMsgStream(CMsgStreamEvent& event)
     contents->onGetMessageStream(data);
     if (!myPost){
         m_logHolder->pushMessageLog(data,
-            contents->getMemberNick(data.m_username));
+                contents->getMemberNick(data.m_username));
     }
 
     // メッセージをログ一覧に表示

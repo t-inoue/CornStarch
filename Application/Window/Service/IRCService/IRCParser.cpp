@@ -59,8 +59,8 @@ CConnectionEventBase* CIRCParser::parse(const std::string& content)
         if (statusCode == "366"){ //ユーザー名羅列終了リプライ
             return createNamesEvent(param);
         }
-        if (statusCode == "433"|| // 不適切なチャンネル
-                statusCode == "432"){ //　不適切なユーザーID
+        if (statusCode == "433"|| // 不適切なユーザーID
+                statusCode == "432"){ //　不適切なチャンネル
             //エラー
             CAuthEvent* event = new CAuthEvent();
             event->setAuthResult(false);

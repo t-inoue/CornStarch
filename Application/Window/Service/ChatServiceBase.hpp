@@ -56,6 +56,7 @@ public:
     {
         this->savedChannels = savedChannels;
     }
+
     // 名前を取得
     wxString getName() const
     {
@@ -121,7 +122,7 @@ public:
     void partChannel(const wxString& channel);
 
     // 再接続を行う
-    void reconnect(void);
+    virtual void reconnect(void) = 0;
 
     // 各チャンネルの情報を破棄
     void clearChannels(void);

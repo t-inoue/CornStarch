@@ -44,8 +44,6 @@ void CIRCConnection::init(int connectionId, wxEvtHandler* handler)
 	m_handler = handler;
 	m_client = new CIRCClient();
 	m_client->init(connectionId,handler);
-	m_client->setPort("6667");
-
 }
 
 // メッセージを投稿するタスク(別スレッド)を開始する
@@ -164,7 +162,8 @@ void CIRCConnection::startGetMemberInfoTask(const IUser* user,
 // ユーザが正規の人かどうか判断するタスク(別スレッド)を開始する
 void CIRCConnection::startAuthTask(const IUser* user)
 {
-    //
+    m_client->setPort("6667");
+    m_client->setHost(m_host);
 	m_client->startAsync(user->getUserName(), "");
 }
 

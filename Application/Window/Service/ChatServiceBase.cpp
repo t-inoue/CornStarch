@@ -74,20 +74,13 @@ void CChatServiceBase::partChannel(const wxString& channel)
     m_connect->startPartTask(m_user, channel);
 }
 
-// 再接続を行う
-void CChatServiceBase::reconnect(void)
-{
-    // 通信を初期化
-    //delete m_connect;
-    //m_connect = new StarChat::CSCConnection();
-    //m_connect->init(m_id, m_handler);
-    //m_connect->startStreamTask( m_user);
-}
-
 // 各チャンネルの情報を破棄
 void CChatServiceBase::clearChannels(void)
 {
-    m_channel->deleteChannels();
+    delete m_channel;
+    m_channel = new CChannelHolder(); // チャンネル
+    m_channel->init();
+
 }
 
 // ニックネームテーブルを破棄
