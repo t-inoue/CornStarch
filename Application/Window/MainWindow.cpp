@@ -127,7 +127,7 @@ void CMainWindow::displayTitle(const wxString& channel, const wxString& topic,
 
     // チャンネル名が空の時、サーバ名を表示
     if (channel == ""){
-        SetTitle("(" + service->getUserName() + ")<" + service->getHost() + ">");
+        SetTitle("(" + service->getNickName() + ")<" + service->getHost() + ">");
         return;
     }
 
@@ -589,6 +589,8 @@ void CMainWindow::onUserStream(CUserStreamEvent& event)
     m_logHolder->pushChangeNickLog(member);
 
     // 表示の更新
+    wxString ch = contents->getCurrentChannel();
+    displayTitle(ch, contents->getTopic(ch), event.getConnectionId());
     updateMemberView(event.getConnectionId(), contents->getCurrentChannel()); // メンバーペイン
     updateMessageView(event.getConnectionId(), contents->getCurrentChannel()); // メッセージペイン
     m_view->displayLogs(m_logHolder->getLogs()); // ログペイン
