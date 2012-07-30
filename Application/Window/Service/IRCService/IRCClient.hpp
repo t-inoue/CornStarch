@@ -3,7 +3,6 @@
 #define _IRCClient_h
 #include "../SocketClient.hpp"
 #include "IRCParser.hpp"
-#include "Thread.hpp"
 #include "../../../header.hpp"
 #include <wx/wxprec.h>
 #include <wx/wx.h>
