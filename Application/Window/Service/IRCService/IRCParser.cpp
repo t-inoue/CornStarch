@@ -1,7 +1,8 @@
 ﻿#include "IRCParser.hpp"
 
 namespace CornStarch
-{;
+{
+;
 
 wxDECLARE_EVENT(myEVT_THREAD_GET_MEMBER, CGetMemberEvent);
 wxDECLARE_EVENT(myEVT_THREAD_GET_MESSAGE, CGetMessageEvent);
@@ -13,10 +14,11 @@ wxDECLARE_EVENT(myEVT_THREAD_STREAM_CH_UPDATE, CChannelStreamEvent);
 wxDECLARE_EVENT(myEVT_THREAD_STREAM_USER_UPDATE, CUserStreamEvent);
 
 namespace IRC
-{;
+{
+;
 
 CIRCParser::CIRCParser() :
-m_messageId(0)
+        m_messageId(0)
 {
 }
 CIRCParser::~CIRCParser()
@@ -50,6 +52,12 @@ CConnectionEventBase* CIRCParser::parse(const std::string& content)
         if (statusCode == "NICK"){
             return createNickMessageEvent(host, param);
         }
+        if (statusCode == "KICK"){
+            return createKickEvent(host, param);
+        }
+        if (statusCode == "INVITE"){
+            return createInviteEvent(host, param);
+        }
         if (statusCode == "353"){ //チャンネルの名前
             addNames(param);
         }
@@ -59,9 +67,9 @@ CConnectionEventBase* CIRCParser::parse(const std::string& content)
         if (statusCode == "366"){ //ユーザー名羅列終了リプライ
             return createNamesEvent(param);
         }
-        if (statusCode == "433"|| // 不適切なユーザーID
+        if (statusCode == "433" || // 不適切なユーザーID
                 statusCode == "432"){ //　不適切なチャンネル
-            //エラー
+                //エラー
             CAuthEvent* event = new CAuthEvent();
             event->setAuthResult(false);
             event->SetEventType(myEVT_THREAD_GET_PING); // イベントの種類をセット
@@ -78,14 +86,14 @@ CConnectionEventBase* CIRCParser::parse(const std::string& content)
     return NULL;
 }
 CConnectionEventBase* CIRCParser::createNickMessageEvent(const string& host,
-    const string& param) const
+        const string& param) const
 {
     vector<string> names = CStringUtility::split(host, "!");
     string name = names[0];
 
     int contentIndex = param.find(":") + 1;
     string content = param.substr(contentIndex,
-        param.size() - contentIndex - 1);
+            param.size() - contentIndex - 1);
 
     CMemberData member;
     member.m_name = wxString(name);
@@ -97,7 +105,7 @@ CConnectionEventBase* CIRCParser::createNickMessageEvent(const string& host,
     return event;
 }
 CConnectionEventBase* CIRCParser::createTopicMessageEvent(const string& host,
-    const string& param) const
+        const string& param) const
 {
     vector<string> names = CStringUtility::split(host, "!");
     string name = names[0];
@@ -105,7 +113,7 @@ CConnectionEventBase* CIRCParser::createTopicMessageEvent(const string& host,
 
     int contentIndex = param.find(":") + 1;
     string content = param.substr(contentIndex,
-        param.size() - contentIndex - 1);
+            param.size() - contentIndex - 1);
 
     string channelName = param.substr(0, index);
 
@@ -119,7 +127,7 @@ CConnectionEventBase* CIRCParser::createTopicMessageEvent(const string& host,
     return event;
 }
 CConnectionEventBase* CIRCParser::createJoinMessageEvent(const string& host,
-    const string& param) const
+        const string& param) const
 {
     vector<string> names = CStringUtility::split(host, "!");
     string name = names[0];
@@ -134,7 +142,7 @@ CConnectionEventBase* CIRCParser::createJoinMessageEvent(const string& host,
     return event;
 }
 CConnectionEventBase* CIRCParser::createPartMessageEvent(const string& host,
-    const string& param) const
+        const string& param) const
 {
     vector<string> names = CStringUtility::split(host, "!");
     string name = names[0];
@@ -151,7 +159,7 @@ CConnectionEventBase* CIRCParser::createPartMessageEvent(const string& host,
 
 }
 CConnectionEventBase* CIRCParser::createPrivateMessageEvent(const string& host,
-    const string& param) const
+        const string& param) const
 {
     vector<string> names = CStringUtility::split(host, "!");
     string name = names[0];
@@ -160,7 +168,7 @@ CConnectionEventBase* CIRCParser::createPrivateMessageEvent(const string& host,
     string channel = param.substr(0, index);
     int contentIndex = param.find(":") + 1;
     string content = param.substr(contentIndex,
-        param.size() - contentIndex - 1);
+            param.size() - contentIndex - 1);
 
     // Messagedataの作成。
     CMessageData message;
@@ -210,9 +218,19 @@ CConnectionEventBase* CIRCParser::createNamesEvent(const string& param)
 
 CConnectionEventBase* CIRCParser::createTopicEvent(const string& param) const
 {
-
     return NULL;
 }
 
+CConnectionEventBase* CIRCParser::createKickEvent(const string& host,
+        const string& param) const
+{
+    return NULL;
+}
+
+CConnectionEventBase* CIRCParser::createInviteEvent(const string& host,
+        const string& param) const
+{
+    return NULL;
+}
 }
 }

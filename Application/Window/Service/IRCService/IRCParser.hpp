@@ -59,8 +59,15 @@ class CIRCParser
 			const string& param) const;
 	//　名前一覧取得のイベントを作成します。
 	CConnectionEventBase* createNamesEvent(const string& param);
+	// 招待イベントを作成します。
+	CConnectionEventBase* createInviteEvent(const string& host,
+            const string& param) const;
+	// キックイベントを作成します。
+	CConnectionEventBase* createKickEvent(const string& host,
+            const string& param) const;
 	// トピック取得のイベントを作成します。
 	CConnectionEventBase* createTopicEvent(const string& param) const;
+
 public:
 
 	CIRCParser();

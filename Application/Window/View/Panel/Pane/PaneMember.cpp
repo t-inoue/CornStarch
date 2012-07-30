@@ -29,6 +29,7 @@ void CPaneMember::init(wxWindow* parent)
 // メンバーを表示する
 void CPaneMember::displayMembers(const vector<CMemberData*>& members)
 {
+    this->Freeze();
     // 現在の表示をクリアする
     this->Clear();
 
@@ -37,6 +38,7 @@ void CPaneMember::displayMembers(const vector<CMemberData*>& members)
 
         this->Append(members[i]->m_nick);
     }
+    this->Thaw();
 }
 
 }

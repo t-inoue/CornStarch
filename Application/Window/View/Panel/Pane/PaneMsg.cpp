@@ -33,6 +33,7 @@ void CPaneMsg::init(wxWindow* parent)
 void CPaneMsg::displayMessages(const vector<CMessageData*>& messages,
     const map<wxString, wxString>& nickTable)
 {
+    this->Freeze();
     this->Clear();
     int size = (int)messages.size();
     for (int i = 0; i < size; i++){
@@ -65,6 +66,7 @@ void CPaneMsg::displayMessages(const vector<CMessageData*>& messages,
             drawDateLine(messages[i]->getTime("%Y/%m/%d(%a)"), messages[i + 1]->getTime("%Y/%m/%d(%a)"));
         }
     }
+   this->Thaw();
 }
 
 
