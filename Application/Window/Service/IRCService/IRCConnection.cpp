@@ -43,7 +43,7 @@ void CIRCConnection::init(int connectionId, wxEvtHandler* handler)
 	m_connectionId = connectionId;
 	m_handler = handler;
 	m_client = new CIRCClient();
-	m_client->init(connectionId);
+	m_client->init(connectionId,handler);
 	m_client->setPort("6667");
 
 }
@@ -164,7 +164,8 @@ void CIRCConnection::startGetMemberInfoTask(const IUser* user,
 // ユーザが正規の人かどうか判断するタスク(別スレッド)を開始する
 void CIRCConnection::startAuthTask(const IUser* user)
 {
-	m_client->startAsync(m_handler, user->getUserName(), "");
+    //
+	m_client->startAsync(user->getUserName(), "");
 }
 
 // ストリーム通信タスク(別スレッド)を開始
@@ -208,5 +209,7 @@ void CIRCConnection::startChangeTopicTask(const IUser* user,
 	event->setConnectionId(m_connectionId);
 	wxQueueEvent(m_handler, event);
 }
+
+
 }
 } /* namespace CornStarch */

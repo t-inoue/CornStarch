@@ -1,21 +1,23 @@
 #include "IRCTask.hpp"
 
 namespace CornStarch
-{
-
-IRCTask::IRCTask()
-{
-}
-
-IRCTask::~IRCTask()
+{;
+namespace IRC
+{;
+CIRCTask::CIRCTask(wxThreadKind kind): wxThread(kind)
 {
 }
 
-// Run実行時に呼ばれる本体
-wxThread::ExitCode IRCTask::Entry(void)
+CIRCTask::~CIRCTask()
 {
+}
 
-    // 成功時
-    return (wxThread::ExitCode)0;
+void CIRCTask::init(int connectionId, wxEvtHandler* handler, CIRCClient* client)
+{
+    m_connectionId = connectionId;
+    m_handler = handler;
+    m_client = client;
+}
+
 }
 } /* namespace CornStarch */

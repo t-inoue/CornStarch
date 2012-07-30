@@ -9,6 +9,7 @@
 #include "../Event/GetMemberInfoEvent.hpp"
 #include "../Event/PartEvent.hpp"
 #include "../Event/GetChannelEvent.hpp"
+#include "Task/IRCTask.hpp"
 
 namespace CornStarch
 {
@@ -36,8 +37,6 @@ public:
 		m_host = host;
 		m_client->setHost(host);
 	}
-
-
 
 	//override 初期化を行う
 	void init(int connectionId, wxEvtHandler* handler);
@@ -78,8 +77,6 @@ public:
 
 	//override 認証用タスク(別スレッド)を削除する
 	void deleteAuthTask(void);
-
-private:
 
 };
 }
