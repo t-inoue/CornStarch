@@ -16,29 +16,20 @@ namespace IRC
 // IRCと接続するためのクライントクラスです。
 class CIRCClient: public CSocketClient
 {
-
+    // 送信用コマンドキュー
     wxMessageQueue<wxString> *m_commandQueue;
     // 受信用のスレッドです。
     wxThread *m_receiveTask;
+    // 送信用のスレッドです。
     wxThread *m_sendTask;
-    //Thread *recieveThread;
-    // ミューテックス
-    wxMutex *m_mutex;
     // ホスト名です。
     wxString m_host;
-//    // ポート番号です
-//    wxString m_port;
     // コネクションIDです。
     int m_connectionId;
 
     // 切断中かを示します。
     bool m_isClosing;
     wxEvtHandler* m_handler;
-
-    // ハートビートへの反応です。
-//    void pong(const wxString& value);
-//    //IRCへ接続します。
-//    void connect(const wxString& userName,const wxString& password);
 
     // スレッドを開始します。
     void startThread(wxThread* task);
@@ -80,6 +71,7 @@ public:
     // 名前一覧を非同期で取得します。
     void getNamesAsync(const wxString& channelName);
 
+    // ソケットからデータを受信します。
     wxString recieveData();
 
     wxMessageQueue<wxString>* getCommandQueue() const
@@ -107,32 +99,10 @@ public:
     {
         m_host = host;
     }
-//    wxString getPort() const
-//    {
-//        return m_port;
-//    }
-
-//    void setPort(wxString port)
-//    {
-//        m_port = port;
-//    }
-//    wxString getBuffer() const
-//    {
-//        return m_buffer;
-//    }
-//    void setBuffer(wxString value)
-//    {
-//        m_buffer = value;
-//    }
 
     bool isClosing() const
     {
         return m_isClosing;
-    }
-
-    void setClosing(bool isClosing)
-    {
-        m_isClosing = isClosing;
     }
 }
 

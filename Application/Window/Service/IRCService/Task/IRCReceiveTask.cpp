@@ -22,7 +22,7 @@ CIRCReceiveTask::~CIRCReceiveTask()
 
 void CIRCReceiveTask::pong(const wxString& value)
 {
-    wxString content(wxString::Format(wxT("PONG %s\r\n"), value));
+    wxString content(wxString::Format(wxT("PONG %s"), value));
     m_client->addCommandQueue(content);
 }
 // Run実行時に呼ばれる本体
