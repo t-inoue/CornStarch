@@ -11,6 +11,7 @@ namespace CornStarch
 {;
 
 // イベントの宣言
+wxDECLARE_EVENT(myEVT_SELECT_TREE_NODE_RIGHT, CChannelSelectEvent);
 wxDECLARE_EVENT(myEVT_SELECT_TREE_NODE, CChannelSelectEvent);
 
 class CPaneCn : public wxTreeCtrl
@@ -32,9 +33,18 @@ public:
     void displayChannels(const std::map<int, CChatServiceBase*>& services);
 
 private:
+    
     // チャンネルが選択された際のイベント処理
     void onChannelSelected(wxTreeEvent& event);
 
+    // 項目が右クリックされた際のイベント処理
+    void onItemRightClicked(wxTreeEvent& event);
+
+    // チャンネルを選択したというイベントを返す
+    CChannelSelectEvent* newSelectEvent(const wxTreeItemId& id);
+
+    // アクティベートされた
+    void onActivated(wxTreeEvent& event);
 };
 
 }

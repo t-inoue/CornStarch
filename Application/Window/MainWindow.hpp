@@ -105,6 +105,9 @@ private:
 	// チャンネル選択時
 	void onChannelSelected(CChannelSelectEvent& event);
 
+    // チャンネルペインを右クリック時
+    void onChannelRightClicked(CChannelSelectEvent& event);
+
 private:
 	// 通信系
 

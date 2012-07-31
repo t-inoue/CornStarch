@@ -34,6 +34,7 @@ wxDEFINE_EVENT(myEVT_THREAD_PUT_JOIN, CJoinEvent);
 wxDEFINE_EVENT(myEVT_THREAD_DELETE_PART, CPartEvent);
 wxDEFINE_EVENT(myEVT_THREAD_POST_MESSAGE, wxThreadEvent);
 wxDEFINE_EVENT(myEVT_SELECT_TREE_NODE, CChannelSelectEvent);
+wxDEFINE_EVENT(myEVT_SELECT_TREE_NODE_RIGHT, CChannelSelectEvent);
 
 // イベントハンドラ
 #define MyEventHandler(func) wxEVENT_HANDLER_CAST(MyEventFunction, func)
@@ -94,6 +95,7 @@ BEGIN_EVENT_TABLE(CMainWindow, wxFrame)
         
     // チャンネルツリーの項目を選択
     EVT_SELECT_TREE_NODE(myEVT_SELECT_TREE_NODE, wxID_ANY, CMainWindow::onChannelSelected)
+    EVT_SELECT_TREE_NODE(myEVT_SELECT_TREE_NODE_RIGHT, wxID_ANY, CMainWindow::onChannelRightClicked)
 
 END_EVENT_TABLE();
 
@@ -103,6 +105,12 @@ BEGIN_EVENT_TABLE(CPaneCn, wxTreeCtrl)
 
     // チャンネルツリーの項目を選択
     EVT_TREE_SEL_CHANGED(wxID_ANY, CPaneCn::onChannelSelected)
+
+    // チャンネルツリーの項目を右クリック
+    EVT_TREE_ITEM_RIGHT_CLICK(wxID_ANY, CPaneCn::onItemRightClicked)
+
+    // ツリーの項目がアクティベートされた
+    EVT_TREE_ITEM_ACTIVATED(wxID_ANY, CPaneCn::onActivated)
 
 END_EVENT_TABLE();
 
