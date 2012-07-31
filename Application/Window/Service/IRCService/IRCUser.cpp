@@ -18,10 +18,6 @@ CIRCUser::~CIRCUser(void)
 void CIRCUser::init(void)
 {
 	m_login = true;
-	m_username = "TEST";
-	//m_persist = new CSCPersistent();
-	//m_persist->init();
-
 }
 
 // ユーザ名をセット
@@ -29,7 +25,6 @@ void CIRCUser::setUserInfo(const wxString& username, const wxString& password)
 {
 	m_username = username;
 	m_password = password;
-	// m_basic = crypt(username, password);
 }
 
 // ニックネームをセット
@@ -98,39 +93,6 @@ wxString CIRCUser::getChannelString(void) const
 	return m_currentCn;
 }
 
-// 永続化されたユーザ情報を読み込む
-void CIRCUser::loadPersistentInfo(void)
-{
-//            m_username = m_persist->loadInfo(NAME_KEY);
-//            m_basic = m_persist->loadInfo(BASIC_KEY);
-}
-
-// ユーザ情報を永続化する
-void CIRCUser::savePersistentInfo(void)
-{
-//            m_persist->saveInfo(NAME_KEY, m_username);
-//            m_persist->saveInfo(BASIC_KEY, m_basic);
-}
-
-// 永続化されたユーザ情報を消す
-void CIRCUser::deletePersistentInfo(void)
-{
-//            m_persist->deleteInfo(NAME_KEY);
-//            m_persist->deleteInfo(BASIC_KEY);
-}
-
-// ユーザ情報が永続化されているかどうか
-bool CIRCUser::isSavedPersistentInfo(void) const
-{
-	return false;
-
-//            if (!m_persist->isKeySaved(NAME_KEY) || !m_persist->isKeySaved(BASIC_KEY)){
-//                return false;
-//            }
-//            
-//            return true;
-}
-
 // メッセージ中にキーワードが含まれているか
 bool CIRCUser::isCalled(const wxString& message) const
 {
@@ -144,21 +106,6 @@ bool CIRCUser::isCalled(const wxString& message) const
 
 	return false;
 }
-
-//////////////////////////////////////////////////////////////////////
-
-//        // basicエンコードする
-//        wxString CIRCUserInfo::crypt(const wxString& username, const wxString& password)
-//        {
-//            
-//            wxString str = m_username + ":" + password;
-//            if (str.size() > MAX_LENGTH / 4){
-//                m_basic = "";
-//            }
-//            
-//            CMyCrypt crypt;
-//            return crypt.encodeBase64(username + ":" + password);
-//        }
 
 }
 } /* namespace CornStarch */

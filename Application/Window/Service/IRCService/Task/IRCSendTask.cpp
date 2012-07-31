@@ -1,4 +1,5 @@
 ﻿#include "IRCSendTask.hpp"
+#include "../IRCCommand.hpp"
 
 namespace CornStarch
 {
@@ -25,6 +26,10 @@ wxThread::ExitCode CIRCSendTask::Entry(void)
         m_client->getCommandQueue()->ReceiveTimeout(100, buffer);
         if (buffer != ""){
             m_client->sendCommand(buffer);
+            if(buffer == IRCCommand::QUIT)
+            {
+                break;
+            }
         }
         wxUsleep(100);
     }

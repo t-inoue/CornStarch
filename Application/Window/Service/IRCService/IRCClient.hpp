@@ -17,6 +17,8 @@ class CIRCClient: public CSocketClient
 {
     // 送信用コマンドキュー
     wxMessageQueue<wxString> *m_commandQueue;
+    // 接続用のスレッドです。
+    wxThread *m_conenctTask;
     // 受信用のスレッドです。
     wxThread *m_receiveTask;
     // 送信用のスレッドです。
@@ -33,6 +35,7 @@ class CIRCClient: public CSocketClient
     // スレッドを開始します。
     void startThread(wxThread* task);
 public:
+
     CIRCClient();
     virtual ~CIRCClient(void);
     // 初期化します。

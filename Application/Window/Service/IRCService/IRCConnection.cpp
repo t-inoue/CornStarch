@@ -193,16 +193,6 @@ void CIRCConnection::startNickChangeTask(const IUser* user,
         const wxString& nick)
 {
     m_client->changeNicknameAsync(nick);
-    // イベントを通知
-	CMemberData member;
-	member.m_name = wxString(user->getUserName());
-	member.m_nick = wxString(nick);
-
-	CUserStreamEvent* event = new CUserStreamEvent();
-	event->SetEventType(myEVT_THREAD_STREAM_USER_UPDATE);
-	event->setMember(member);
-    event->setConnectionId(m_connectionId);
-	wxQueueEvent(m_handler, event);
 }
 
 //override トピックを変更するタスク(別スレッド)を開始する
@@ -210,16 +200,6 @@ void CIRCConnection::startChangeTopicTask(const IUser* user,
         const wxString& topic)
 {
     m_client->changeTopicAsync(user->getChannelString(), topic);
-    // イベントを通知
-	CChannelData channel;
-	channel.m_name = wxString(user->getChannelString());
-	channel.m_topic = wxString(user->getChannelString());
-
-	CChannelStreamEvent* event = new CChannelStreamEvent();
-	event->SetEventType(myEVT_THREAD_STREAM_CH_UPDATE);
-	event->setChannel(channel);
-	event->setConnectionId(m_connectionId);
-	wxQueueEvent(m_handler, event);
 }
 
 

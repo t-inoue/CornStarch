@@ -1,5 +1,6 @@
 ﻿#include "IRCReceiveTask.hpp"
 #include "../IRCParser.hpp"
+#include "../IRCCommand.hpp"
 #include  "../StringUtility.hpp"
 #include "../../Event/AuthEvent.hpp"
 namespace CornStarch
@@ -22,7 +23,7 @@ CIRCReceiveTask::~CIRCReceiveTask()
 
 void CIRCReceiveTask::pong(const wxString& value)
 {
-    wxString content(wxString::Format(wxT("PONG %s"), value));
+    wxString content(wxString::Format(wxT("%s %s"),IRCCommand::PONG, value));
     m_client->addCommandQueue(content);
 }
 // Run実行時に呼ばれる本体
@@ -37,7 +38,7 @@ wxThread::ExitCode CIRCReceiveTask::Entry(void)
             for (int i = 0; i < messages.size(); i++){
                 // PING応答
                 // ウイルス判定回避用に文字列を分割
-                if (messages[i].find(string("PI") + "NG") == 0){
+                if (messages[i].find(IRCCommand::PING) == 0){
                     wxString pingValue =
                             CStringUtility::split(messages[i], ":")[1];
                     pong(pingValue);

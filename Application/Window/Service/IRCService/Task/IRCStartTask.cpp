@@ -1,10 +1,13 @@
 ﻿#include "IRCStartTask.hpp"
-
+#include "../IRCCommand.hpp"
 namespace CornStarch
-{;
+{
+;
 namespace IRC
-{;
-CIRCStartTask::CIRCStartTask(wxThreadKind kind) :CIRCTask(kind)
+{
+;
+CIRCStartTask::CIRCStartTask(wxThreadKind kind) :
+        CIRCTask(kind)
 {
 
 }
@@ -19,23 +22,21 @@ wxThread::ExitCode CIRCStartTask::Entry(void)
     m_client->setUrl(m_client->getHost());
     m_client->connect();
     wxString pass(
-            wxString::Format(wxT( "PASS %s"),
-                  getPassword().c_str()));
+            wxString::Format(wxT( "%s %s"), IRCCommand::PASS,
+                    getPassword().c_str()));
     wxString nick(
-              wxString::Format(wxT( "NICK %s"),
-
+            wxString::Format(wxT( "%s %s"), IRCCommand::NICK,
                     getUserName().c_str()));
     wxString user(
-              wxString::Format(wxT( "USER %s * 0 :%s"),
-                     getUserName().c_str(),
-                    getUserName().c_str()));
+            wxString::Format(wxT( "%s %s * 0 :%s"), IRCCommand::USER,
+                    getUserName().c_str(), getUserName().c_str()));
     //　IRCへの接続
     m_client->addCommandQueue(pass);
     m_client->addCommandQueue(nick);
     m_client->addCommandQueue(user);
 
     // 成功時
-    return (wxThread::ExitCode)0;
+    return (wxThread::ExitCode) 0;
 }
 }
 } /* namespace CornStarch */

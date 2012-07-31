@@ -1,6 +1,6 @@
 ﻿#include "IRCParser.hpp"
 #include "IRCMessageData.hpp"
-
+#include "IRCCommand.hpp"
 namespace CornStarch
 {
 ;
@@ -27,46 +27,45 @@ CIRCParser::~CIRCParser()
 }
 CConnectionEventBase* CIRCParser::createEvent(const CIRCMessageData& message)
 {
-
-    if (message.m_statusCode == string("PRIV") + "MSG"){
+    if (message.m_statusCode == IRCCommand::PRIVMSG ){
         return createPrivateMessageEvent(message);
     }
-    if (message.m_statusCode == string("PA") + "RT"){
+    if (message.m_statusCode == IRCCommand::PART){
         return createPartMessageEvent(message);
     }
-    if (message.m_statusCode == string("JO") + "IN"){
+    if (message.m_statusCode == IRCCommand::JOIN){
         return createJoinMessageEvent(message);
     }
-    if (message.m_statusCode == "TOPIC"){
+    if (message.m_statusCode == IRCCommand::TOPIC){
         return createTopicMessageEvent(message);
     }
-    if (message.m_statusCode == "NICK"){
+    if (message.m_statusCode == IRCCommand::NICK){
         return createNickMessageEvent(message);
     }
-    if (message.m_statusCode == string("KI") + "CK"){
+    if (message.m_statusCode == IRCCommand::KICK){
         return createKickEvent(message);
     }
-    if (message.m_statusCode == "INVITE"){
+    if (message.m_statusCode == IRCCommand::INVITE){
         return createInviteEvent(message);
     }
-    if (message.m_statusCode == "353"){ //チャンネルの名前
+    if (message.m_statusCode == IRCCommand::NAMES_REPLY){
         addNames (message);
     }
-    if (message.m_statusCode == "332"){ //トピックリプライ
+    if (message.m_statusCode == IRCCommand::TOPIC_REPLY){
         return createTopicEvent(message);
     }
-    if (message.m_statusCode == "366"){ //ユーザー名羅列終了リプライ
+    if (message.m_statusCode == IRCCommand::NAMES_REPLY_END){ //ユーザー名羅列終了リプライ
         return createNamesEvent(message);
     }
-    if (message.m_statusCode == "433" || // 不適切なユーザーID
-            message.m_statusCode == "432"){ //　不適切なチャンネル
+    if (message.m_statusCode == IRCCommand::INVALID_USERNAME || // 不適切なユーザーID
+            message.m_statusCode == IRCCommand::INVALID_CHANNEL){ //　不適切なチャンネル
             //エラー
         CAuthEvent* event = new CAuthEvent();
         event->setAuthResult(false);
         event->SetEventType(myEVT_THREAD_GET_PING); // イベントの種類をセット
         return event;
     }
-    if (message.m_statusCode == "001"){ // 接続開始リプライ
+    if (message.m_statusCode == IRCCommand::OK){ // 接続開始リプライ
         //接続
         CAuthEvent* event = new CAuthEvent();
         event->setAuthResult(true);
@@ -118,6 +117,7 @@ CConnectionEventBase* CIRCParser::parse(const wxString& content)
 CConnectionEventBase* CIRCParser::createNickMessageEvent(const CIRCMessageData& message) const
 {
 
+    // Eventの作成
     CMemberData member;
     member.m_name = wxString(message.m_username);
     member.m_nick = wxString(message.m_body);
@@ -129,7 +129,7 @@ CConnectionEventBase* CIRCParser::createNickMessageEvent(const CIRCMessageData& 
 }
 CConnectionEventBase* CIRCParser::createTopicMessageEvent(const CIRCMessageData& message) const
 {
-
+    // Eventの作成
     CChannelData channel;
     channel.m_name = wxString(message.m_channel);
     channel.m_topic = wxString(message.m_body);
