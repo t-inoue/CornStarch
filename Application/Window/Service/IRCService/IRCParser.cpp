@@ -116,7 +116,6 @@ CConnectionEventBase* CIRCParser::parse(const wxString& content)
 }
 CConnectionEventBase* CIRCParser::createNickMessageEvent(const CIRCMessageData& message) const
 {
-
     // Eventの作成
     CMemberData member;
     member.m_name = wxString(message.m_username);

@@ -6,6 +6,7 @@ namespace IRC
 {
 const wxString IRCCommand::OK = "001";
 const wxString IRCCommand::PASS = "PASS";
+const wxString IRCCommand::ERROR = "ERROR";
 const wxString IRCCommand::USER = "USER";
 const wxString IRCCommand::PING = "PING";
 const wxString IRCCommand::PONG = "PONG";

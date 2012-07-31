@@ -391,14 +391,15 @@ void CMainWindow::onChannelRightClicked(CChannelSelectEvent& event)
         return;
     }
 
-    enum{
+    enum
+    {
         Id_Part,
     };
     wxMenu menu;
     menu.Append(Id_Part, "チャンネルから離脱");
 
     // コンテキスト表示
-    switch (this->GetPopupMenuSelectionFromUser(menu)){
+    switch (this->GetPopupMenuSelectionFromUser(menu)) {
     case Id_Part:
         wxMessageBox("サーバ" + event.getString() + "が選択された。今はまだ未実装");
         return;
@@ -449,38 +450,46 @@ void CMainWindow::onGetAuth(CAuthEvent& event)
 void CMainWindow::onGetMessages(CGetMessageEvent& event)
 {
     CChatServiceBase* contents = getService(event.getConnectionId());
+    if (contents != NULL){
+        // メッセージを追加
+        contents->onGetMessages(event.getMessages());
 
-    // メッセージを追加
-    contents->onGetMessages(event.getMessages());
-
-    // 表示の更新
-    updateMessageView(event.getConnectionId(), contents->getCurrentChannel());
+        // 表示の更新
+        updateMessageView(event.getConnectionId(),
+                contents->getCurrentChannel());
+    }
 }
 
 // メンバー一覧受信時
 void CMainWindow::onGetMembers(CGetMemberEvent& event)
 {
     CChatServiceBase* contents = getService(event.getConnectionId());
+    if (contents != NULL){
+        // メンバーの追加
+        contents->onGetMembers(event.getMembers());
 
-    // メンバーの追加
-    contents->onGetMembers(event.getMembers());
-
-    // 表示の更新
-    updateMemberView(event.getConnectionId(), contents->getCurrentChannel());
+        // 表示の更新
+        updateMemberView(event.getConnectionId(),
+                contents->getCurrentChannel());
+    }
 }
 
 // チャンネル一覧受信時
 void CMainWindow::onGetChannels(CGetChannelEvent& event)
 {
     CChatServiceBase* contents = getService(event.getConnectionId());
+    if (contents != NULL){
+        // チャンネルの追加
+        contents->onGetChannels(event.getChannels());
 
-    // チャンネルの追加
-    contents->onGetChannels(event.getChannels());
-
-    // 表示の更新
-    updateChannelView(event.getConnectionId(), contents->getCurrentChannel());
-    updateMemberView(event.getConnectionId(), contents->getCurrentChannel());
-    updateMessageView(event.getConnectionId(), contents->getCurrentChannel());
+        // 表示の更新
+        updateChannelView(event.getConnectionId(),
+                contents->getCurrentChannel());
+        updateMemberView(event.getConnectionId(),
+                contents->getCurrentChannel());
+        updateMessageView(event.getConnectionId(),
+                contents->getCurrentChannel());
+    }
 }
 
 // チャンネル参加時

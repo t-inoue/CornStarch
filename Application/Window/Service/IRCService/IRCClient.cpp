@@ -102,31 +102,29 @@ void CIRCClient::disconnect(void)
                    m_sendTask->Wait();
                }
            }
-        this->close();
         if (m_receiveTask != NULL && m_receiveTask->IsAlive()){
             if (m_receiveTask->IsRunning()){
-                m_receiveTask->Delete();
+                m_receiveTask->Wait();
             }
         }
+        this->close();
 
     }
 }
 wxString CIRCClient::recieveData()
 {
     this->m_buffer = "";
-    this->receive();
+    this->receive(100);
     return this->m_buffer;
 }
 void CIRCClient::joinAsync(const wxString& channelName)
 {
-    // ウイルス判定回避用に文字列を分割
     wxString content(
             wxString::Format(wxT("%s %s"),IRCCommand::JOIN, channelName));
     addCommandQueue(content);
 }
 void CIRCClient::partAsync(const wxString& channelName)
 {
-    // ウイルス判定回避用に文字列を分割
     wxString content(
             wxString::Format(wxT("%s %s"),IRCCommand::PART, channelName));
     addCommandQueue(content);
@@ -146,7 +144,6 @@ void CIRCClient::getNamesAsync(const wxString& channelName)
 void CIRCClient::sendMessageAsync(const wxString& target,
         const wxString& content)
 {
-    // ウイルス判定回避用に文字列を分割
     wxString contentWxString(
             wxString::Format(wxT("%s %s %s"),IRCCommand::PRIVMSG, target,
                     content));
