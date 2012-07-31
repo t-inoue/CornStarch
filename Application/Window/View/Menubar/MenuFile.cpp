@@ -21,11 +21,7 @@ void CMenuFile::init(void)
     setTitle(wxT("ファイル(&F)"));
     append(
         MENU_FILE_QUIT,
-        wxT("終了(&X)\tAlt-X")),
-    append(
-        MENU_FILE_LOGOUT,
-        wxT("ログアウトして終了"));
-
+        wxT("終了(&X)\tAlt-X"));
 }
 
 }

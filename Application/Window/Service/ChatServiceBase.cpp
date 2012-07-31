@@ -55,11 +55,6 @@ void CChatServiceBase::registerUser(const wxString& userName, const wxString& pa
     m_connect->startAuthTask(m_user);
 }
 
-// ログアウト時
-void CChatServiceBase::logout(void)
-{
-}
-
 // チャンネルに参加を行う際
 void CChatServiceBase::joinChannel(const wxString& channel)
 {

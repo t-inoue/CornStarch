@@ -112,9 +112,6 @@ public:
     // ユーザ登録を行った際のデータ更新
     void registerUser(const wxString& userName, const wxString& pass);
 
-    // ログアウト時
-    void logout(void);
-
     // チャンネルに参加を行う際
     void joinChannel(const wxString& channel);
 
