@@ -73,9 +73,13 @@ void CPaneCn::displayChannels(const map<int,CChatServiceBase*>& connections)
 void CPaneCn::onChannelSelected(wxTreeEvent& event)
 {
     wxTreeItemId id = event.GetItem();
+    CChannelSelectEvent* chEvent = newSelectEvent(id);
+
+    if (chEvent == NULL){
+        return;
+    }
 
     // イベント送信
-    CChannelSelectEvent* chEvent = newSelectEvent(id);
     chEvent->SetEventType(myEVT_SELECT_TREE_NODE); // イベントタイプ
     wxQueueEvent(GetParent()->GetParent()->GetParent()->GetEventHandler(), chEvent);
 }
@@ -85,9 +89,13 @@ void CPaneCn::onItemRightClicked(wxTreeEvent& event)
 {
     SelectItem(event.GetItem());
     wxTreeItemId id = event.GetItem();
+    CChannelSelectEvent* chEvent = newSelectEvent(id);
+
+    if (chEvent == NULL){
+        return;
+    }
 
     // イベント送信
-    CChannelSelectEvent* chEvent = newSelectEvent(id);
     chEvent->SetEventType(myEVT_SELECT_TREE_NODE_RIGHT); // イベントタイプ
     wxQueueEvent(GetParent()->GetParent()->GetParent()->GetEventHandler(), chEvent);
 }
@@ -100,6 +108,11 @@ CChannelSelectEvent* CPaneCn::newSelectEvent(const wxTreeItemId& id)
 
     // アイテム名の取得
     wxString itemName = GetItemText(id);
+
+    // Mac番で、ルートノードが選択されるケースがある
+    if (parentId == NULL){
+        return NULL;
+    }
 
     // コントローラへ投げるイベントを作成
     CChannelSelectEvent* chEvent = new CChannelSelectEvent();
