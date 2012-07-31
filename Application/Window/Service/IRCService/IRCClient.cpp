@@ -67,7 +67,6 @@ void CIRCClient::sendCommand(const wxString& command)
 }
 void CIRCClient::startThread(wxThread* task)
 {
-
     if (task->Create() != wxTHREAD_NO_ERROR){
         delete task;
         task = NULL;

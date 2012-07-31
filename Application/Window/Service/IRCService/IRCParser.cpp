@@ -40,10 +40,10 @@ CConnectionEventBase* CIRCParser::createEvent(const CIRCMessageData& message)
     if (message.m_statusCode == "TOPIC"){
         return createTopicMessageEvent(message);
     }
-    if (message.m_statusCode == string("KI") + "CK"){
+    if (message.m_statusCode == "NICK"){
         return createNickMessageEvent(message);
     }
-    if (message.m_statusCode == "KICK"){
+    if (message.m_statusCode == string("KI") + "CK"){
         return createKickEvent(message);
     }
     if (message.m_statusCode == "INVITE"){
@@ -160,7 +160,6 @@ CConnectionEventBase* CIRCParser::createPartMessageEvent(const CIRCMessageData& 
 }
 CConnectionEventBase* CIRCParser::createPrivateMessageEvent(const CIRCMessageData& message) const
 {
-
     // Eventの作成
     CMsgStreamEvent* event = new CMsgStreamEvent();
     event->SetEventType(myEVT_THREAD_STREAM_MSG_ADD);
