@@ -1,4 +1,4 @@
-
+﻿
 #ifndef IRCCOMMAND_HPP_
 #define IRCCOMMAND_HPP_
 
