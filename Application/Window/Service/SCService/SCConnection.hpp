@@ -31,17 +31,8 @@ public:
 
 	CSCConnection(void);
 	~CSCConnection(void);
-	// ホストを取得
-	wxString getHost() const
-	{
-		return m_host;
-	}
-	// ホストを設定
-	void setHost(wxString host)
-	{
-		m_host = host;
-	}
-	// 初期化を行う
+
+    // 初期化を行う
 	void init(int connectionId, wxEvtHandler* handler);
 
 	// メッセージを投稿するタスク(別スレッド)を開始する
@@ -80,6 +71,12 @@ public:
 
 	// 認証用タスク(別スレッド)を削除する
 	void deleteAuthTask(void);
+
+	// ホストを取得
+	wxString getHost() const;
+
+    // ホストを設定
+	void setHost(const wxString& host);
 
 private:
 

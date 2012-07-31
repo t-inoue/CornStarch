@@ -1,4 +1,4 @@
-
+﻿
 #include "InviteEvent.hpp"
 
 namespace CornStarch

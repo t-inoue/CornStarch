@@ -59,11 +59,11 @@ public:
     // 認証用タスク(別スレッド)を削除する
     virtual void deleteAuthTask(void) =0;
 
-
     // ホストを取得
     virtual wxString getHost() const = 0;
+
     // ホストを設定
-    virtual void setHost(wxString host) = 0;
+    virtual void setHost(const wxString& host) = 0;
 };
 
 }

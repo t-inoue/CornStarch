@@ -1,4 +1,4 @@
-#include "IRCTask.hpp"
+﻿#include "IRCTask.hpp"
 
 namespace CornStarch
 {;

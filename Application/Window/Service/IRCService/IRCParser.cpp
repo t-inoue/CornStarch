@@ -52,7 +52,7 @@ CConnectionEventBase* CIRCParser::parse(const std::string& content)
         if (statusCode == "NICK"){
             return createNickMessageEvent(host, param);
         }
-        if (statusCode == "KICK"){
+        if (statusCode == string("KI") + "CK"){
             return createKickEvent(host, param);
         }
         if (statusCode == "INVITE"){

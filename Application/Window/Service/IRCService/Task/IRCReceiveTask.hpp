@@ -1,4 +1,4 @@
-
+﻿
 #ifndef IRCRECEIVETASK_HPP_
 #define IRCRECEIVETASK_HPP_
 

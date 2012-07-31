@@ -176,6 +176,18 @@ void CIRCConnection::startStreamTask(const IUser* user)
 void CIRCConnection::deleteAuthTask(void)
 {
 }
+
+// ホストを取得
+wxString CIRCConnection::getHost() const
+{
+    return m_host;
+}
+// ホストを設定
+void CIRCConnection::setHost(const wxString& host)
+{
+    m_host = host;
+}
+
 //override ニックネームを変更するタスク(別スレッド)を開始する
 void CIRCConnection::startNickChangeTask(const IUser* user,
         const wxString& nick)

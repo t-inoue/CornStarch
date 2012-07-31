@@ -1,4 +1,4 @@
-#ifndef IRCLOGINTASK_HPP_
+﻿#ifndef IRCLOGINTASK_HPP_
 #define IRCLOGINTASK_HPP_
 
 #include "IRCTask.hpp"
