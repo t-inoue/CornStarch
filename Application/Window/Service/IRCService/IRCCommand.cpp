@@ -1,12 +1,12 @@
-#include "IRCCommand.hpp"
+﻿#include "IRCCommand.hpp"
 #include <string>
 namespace CornStarch
 {
 namespace IRC
 {
 
-// IRC�ʐM�ɕK�v�ȃR�}���h�����`
-// �ꕔ�A������Ƃ���ƃE�C���X��������邽�߁A������������Ȃ���`����
+// IRC通信に必要なコマンド名を定義
+// 一部、文字列とするとウイルス扱いされるため、部分文字列をつなげる形式に
 const wxString IRCCommand::OK = "001";
 const wxString IRCCommand::PASS = "PASS";
 const wxString IRCCommand::USER = "USER";
