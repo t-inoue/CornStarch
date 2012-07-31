@@ -20,8 +20,8 @@ CPaneCn::~CPaneCn(void)
 // 初期化を行う
 void CPaneCn::init(wxWindow* parent)
 {
-	// スクロールバー(水平、垂直を必要に応じて)、ソート
-	Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, 
+    // スクロールバー(水平、垂直を必要に応じて)、ソート
+    Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, 
         wxTR_DEFAULT_STYLE | wxTR_HIDE_ROOT);
 
     // Rootノードを追加
@@ -31,7 +31,7 @@ void CPaneCn::init(wxWindow* parent)
 // 選択済み項目を決める
 void CPaneCn::setStringSelection(const wxString& channel)
 {
-	// SetStringSelection(channel);
+    // SetStringSelection(channel);
 }
 
 // 所属チャンネル一覧を表示
@@ -70,15 +70,31 @@ void CPaneCn::displayChannels(const map<int,CChatServiceBase*>& connections)
 // チャンネルが選択された際のイベント処理
 void CPaneCn::onChannelSelected(wxTreeEvent& event)
 {
-    // 自分と親のツリーIDを取得
     wxTreeItemId id = event.GetItem();
+
+    // イベント送信
+    CChannelSelectEvent* chEvent = newSelectEvent(id);
+    chEvent->SetEventType(myEVT_SELECT_TREE_NODE); // イベントタイプ
+    wxQueueEvent(GetParent()->GetParent()->GetParent()->GetEventHandler(), chEvent);
+}
+
+// 項目が右クリックされた際のイベント処理
+void CPaneCn::onItemRightClicked(wxTreeEvent& event)
+{
+    wxTreeItemId id = event.GetItem();
+
+    // イベント送信
+    CChannelSelectEvent* chEvent = newSelectEvent(id);
+    chEvent->SetEventType(myEVT_SELECT_TREE_NODE_RIGHT); // イベントタイプ
+    wxQueueEvent(GetParent()->GetParent()->GetParent()->GetEventHandler(), chEvent);
+}
+
+// チャンネルを選択したというイベントを返す
+CChannelSelectEvent* CPaneCn::newSelectEvent(const wxTreeItemId& id)
+{
+    // 自分と親のツリーIDを取得
     wxTreeItemId parentId = GetItemParent(id);
 
-    // 親のIDがなければ何もしない
-    if(parentId == NULL)
-    {
-    	return;
-    }
     // アイテム名の取得
     wxString itemName = GetItemText(id);
 
@@ -95,16 +111,18 @@ void CPaneCn::onChannelSelected(wxTreeEvent& event)
         chEvent->setServer(GetItemText(parentId));
 
     } else {
+
+        // 選択されたのがサーバなら
         int serverId = ((CTreeServerItem*)GetItemData(id))->getServerId();
-    	 chEvent->setServerId(serverId);
+        chEvent->setServerId(serverId);
+
         // イベントの初期化
         chEvent->setServerOrNot(true);
     }
 
-    // イベントを送信
+    // イベントを返す
     chEvent->setText(itemName);
-    chEvent->SetEventType(myEVT_SELECT_TREE_NODE);
-    wxQueueEvent(GetParent()->GetParent()->GetParent()->GetEventHandler(), chEvent);
+    return chEvent;
 }
 
 }

@@ -383,6 +383,30 @@ void CMainWindow::onChannelSelected(CChannelSelectEvent& event)
     updateMemberView(m_currentServiceId, contents->getCurrentChannel());
 }
 
+// チャンネルペインを右クリック時
+void CMainWindow::onChannelRightClicked(CChannelSelectEvent& event)
+{
+    // チャンネル名がクリックされた
+    if (!event.isServerSelected()){
+        return;
+    }
+
+    enum{
+        Id_Part,
+    };
+    wxMenu menu;
+    menu.Append(Id_Part, "チャンネルから離脱");
+
+    // コンテキスト表示
+    switch (this->GetPopupMenuSelectionFromUser(menu)){
+    case Id_Part:
+        wxMessageBox("サーバ" + event.getString() + "が選択された。今はまだ未実装");
+        return;
+    default:
+        return;
+    }
+}
+
 //////////////////////////////////////////////////////////////////////
 
 // メッセージ投稿終了時
