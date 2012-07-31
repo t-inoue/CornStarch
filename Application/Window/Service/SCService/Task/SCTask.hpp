@@ -32,8 +32,9 @@ protected:
     int m_connectionId; // コネクションのID
     wxString m_host;
 public:
-    CSCTask(void);
+    CSCTask(wxThreadKind king = wxTHREAD_DETACHED);
     virtual ~CSCTask(void);
+
     // ホストを取得します。
 	wxString getHost() const
 	{

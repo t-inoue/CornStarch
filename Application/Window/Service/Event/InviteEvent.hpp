@@ -1,4 +1,4 @@
-#ifndef INVITEEVENT_HPP_
+﻿#ifndef INVITEEVENT_HPP_
 #define INVITEEVENT_HPP_
 #include "ConnectionEventBase.hpp"
 

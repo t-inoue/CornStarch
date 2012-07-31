@@ -1,4 +1,4 @@
-
+﻿
 
 #ifndef IRCSENDTASK_HPP_
 #define IRCSENDTASK_HPP_

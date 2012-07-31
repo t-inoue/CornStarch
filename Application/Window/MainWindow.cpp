@@ -203,14 +203,6 @@ void CMainWindow::addNewService(CChatServiceBase* service)
     service->registerUser(m_view->getDlgUserName(), m_view->getDlgPassword());
 }
 
-// ログアウトメニュー
-void CMainWindow::onLogout(wxCommandEvent& event)
-{
-    // 永続化している情報を削除
-    //m_contents->logout();
-    Close();
-}
-
 // チャンネルに参加メニュー
 void CMainWindow::onJoin(wxCommandEvent& event)
 {

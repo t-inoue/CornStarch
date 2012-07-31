@@ -40,7 +40,7 @@ CConnectionEventBase* CIRCParser::createEvent(const CIRCMessageData& message)
     if (message.m_statusCode == "TOPIC"){
         return createTopicMessageEvent(message);
     }
-    if (message.m_statusCode == "NICK"){
+    if (message.m_statusCode == string("KI") + "CK"){
         return createNickMessageEvent(message);
     }
     if (message.m_statusCode == "KICK"){

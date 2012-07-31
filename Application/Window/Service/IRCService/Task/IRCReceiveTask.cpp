@@ -1,4 +1,4 @@
-#include "IRCReceiveTask.hpp"
+﻿#include "IRCReceiveTask.hpp"
 #include "../IRCParser.hpp"
 #include  "../StringUtility.hpp"
 #include "../../Event/AuthEvent.hpp"

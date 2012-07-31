@@ -78,9 +78,6 @@ private:
 	// サーバー削除
 	void onDeleteService(wxCommandEvent& event);
 
-    // ログアウトメニュー
-	void onLogout(wxCommandEvent& event);
-
 	// チャンネルに参加メニュー
 	void onJoin(wxCommandEvent& event);
 

@@ -7,7 +7,8 @@ namespace CornStarch
 namespace StarChat
 {;
 
-CSCTask::CSCTask(void)
+
+CSCTask::CSCTask(wxThreadKind kind) : wxThread(kind)
 {
 }
 

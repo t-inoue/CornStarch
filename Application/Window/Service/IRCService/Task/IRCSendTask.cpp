@@ -1,4 +1,4 @@
-#include "IRCSendTask.hpp"
+﻿#include "IRCSendTask.hpp"
 
 namespace CornStarch
 {

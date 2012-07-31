@@ -17,6 +17,7 @@ CSCConnection::~CSCConnection(void)
 	if (m_getStreamTask != NULL){
 		if (m_getStreamTask->IsRunning()){
 			m_getStreamTask->Delete();
+			delete m_getStreamTask;
 		} else{
 			delete m_getStreamTask;
 		}
@@ -40,7 +41,7 @@ void CSCConnection::startPostMessageTask(const IUser* user,
 	postMessageTask->init(m_connetionId, m_handler, channel, user->getBasic());
 	postMessageTask->setMessage(message);
 
-	// 別スレッドでの開始
+	// 別スレッドでの開始4
 	startThread(postMessageTask);
 }
 
@@ -174,6 +175,18 @@ void CSCConnection::startStreamTask(const IUser* user)
 void CSCConnection::deleteAuthTask(void)
 {
 	m_authTask->Delete();
+}
+
+// ホストを取得
+wxString CSCConnection::getHost(void) const
+{
+    return m_host;
+}
+
+// ホストを設定
+void CSCConnection::setHost(const wxString& host)
+{
+    m_host = host;
 }
 
 ///////////////////////////////////////////////////////////////////////////

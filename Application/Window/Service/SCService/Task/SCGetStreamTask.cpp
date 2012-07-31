@@ -7,7 +7,7 @@ namespace CornStarch
 namespace StarChat
 {;
 
-CSCGetStreamTask::CSCGetStreamTask(void)
+CSCGetStreamTask::CSCGetStreamTask(void) : CSCTask(wxTHREAD_JOINABLE)
 {
 }
 

@@ -1,6 +1,5 @@
-#ifndef IRCTASK_HPP_
+﻿#ifndef IRCTASK_HPP_
 #define IRCTASK_HPP_
-#include "../../../../header.hpp"
 #include <wx/wxprec.h>
 #include <wx/wx.h>
 #include "../IRCClient.hpp"
