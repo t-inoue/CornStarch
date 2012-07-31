@@ -12,21 +12,21 @@ using namespace std;
 
 namespace CornStarch {
     
-    vector<string> CStringUtility::split(string str, string delim)
+    vector<wxString> CStringUtility::split(wxString str, wxString delim)
     {
-        std::vector<std::string> items;
-        std::size_t dlm_idx;
-        if(str.npos == (dlm_idx = str.find_first_of(delim))) {
-            items.push_back(str.substr(0, dlm_idx));
+        std::vector<wxString> items;
+        std::size_t delimIndex = str.find_first_of(delim);
+        if(wxString::npos == delimIndex) {
+            items.push_back(str.substr(0, delimIndex));
         }
-        while(str.npos != (dlm_idx = str.find_first_of(delim))) {
-            if(str.npos == str.find_first_not_of(delim)) {
+        while(wxString::npos != (delimIndex = str.find_first_of(delim))) {
+            if(wxString::npos == str.find_first_not_of(delim)) {
                 break;
             }
-            items.push_back(str.substr(0, dlm_idx));
-            dlm_idx++;
-            str = str.erase(0, dlm_idx);
-            if(str.npos == str.find_first_of(delim) && "" != str) {
+            items.push_back(str.substr(0, delimIndex));
+            delimIndex++;
+            str = str.erase(0, delimIndex);
+            if(wxString::npos == str.find_first_of(delim) && "" != str) {
                 items.push_back(str);
                 break;
             }

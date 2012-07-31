@@ -14,7 +14,6 @@ public:
     CIRCSendTask(wxThreadKind kind = wxTHREAD_DETACHED);
     virtual ~CIRCSendTask();
     wxThread::ExitCode Entry(void);
-    void addQueue(wxString command);
 };
 }
 } /* namespace CornStarch */

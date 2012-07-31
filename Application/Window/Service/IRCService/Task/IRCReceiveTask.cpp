@@ -30,18 +30,19 @@ wxThread::ExitCode CIRCReceiveTask::Entry(void)
 {
     CIRCParser parser;
     while (m_client->isSocketConnected()){
-        //m_client->setBuffer("");
        wxString buffer = m_client->recieveData();//  receive();
         if (buffer != ""){
             std::string str(buffer);
-            vector<string> messages = CStringUtility::split(str, "\n");
+            vector<wxString> messages = CStringUtility::split(str, "\n");
             for (int i = 0; i < messages.size(); i++){
+                // PING応答
                 // ウイルス判定回避用に文字列を分割
                 if (messages[i].find(string("PI") + "NG") == 0){
-                    string pingValue =
+                    wxString pingValue =
                             CStringUtility::split(messages[i], ":")[1];
                     pong(pingValue);
                 } else{
+                    // イベント生成
                     CConnectionEventBase* event = parser.parse(messages[i]);
                     if (event != NULL){
                         event->setConnectionId(m_connectionId);
@@ -53,6 +54,7 @@ wxThread::ExitCode CIRCReceiveTask::Entry(void)
         wxUsleep(100);
     }
     if (m_client->isClosing() != true){
+        // 故意でない切断時
         CAuthEvent* event = new CAuthEvent();
         event->setAuthResult(false);
         event->SetEventType(myEVT_THREAD_GET_PING); // イベントの種類をセット

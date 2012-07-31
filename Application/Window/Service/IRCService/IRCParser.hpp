@@ -24,6 +24,7 @@
 #include "../Event/UserStreamEvent.hpp"
 #include "../Event/AuthEvent.hpp"
 #include "../Event/ConnectionEventBase.hpp"
+#include "IRCMessageData.hpp"
 
 using namespace std;
 
@@ -38,41 +39,35 @@ class CIRCParser
 	// メッセージに設定するId
 	int m_messageId;
 
-	string m_buffer;
+	wxString m_buffer;
 	// 名前一覧の名前をバッファに追加します。
-	void addNames(const string& param);
+	void addNames(const CIRCMessageData& param);
 
 	// ニックネームイベントを生成します。
-	CConnectionEventBase* createNickMessageEvent(const string& host,
-			const string& param) const;
+	CConnectionEventBase* createNickMessageEvent(const CIRCMessageData& message) const;
 	// トピックイベントを生成します。
-	CConnectionEventBase* createTopicMessageEvent(const string& host,
-			const string& param) const;
+	CConnectionEventBase* createTopicMessageEvent(const CIRCMessageData& message) const;
 	// 参加イベントを生成します。
-	CConnectionEventBase* createJoinMessageEvent(const string& host,
-			const string& param) const;
+	CConnectionEventBase* createJoinMessageEvent(const CIRCMessageData& message) const;
 	// 離脱イベントを作成します。
-	CConnectionEventBase* createPartMessageEvent(const string& host,
-			const string& param) const;
+	CConnectionEventBase* createPartMessageEvent(const CIRCMessageData& message) const;
 	// メッセージのイベントを作成します。
-	CConnectionEventBase* createPrivateMessageEvent(const string& host,
-			const string& param) const;
+	CConnectionEventBase* createPrivateMessageEvent(const CIRCMessageData& message) const;
 	//　名前一覧取得のイベントを作成します。
-	CConnectionEventBase* createNamesEvent(const string& param);
+	CConnectionEventBase* createNamesEvent(const CIRCMessageData& message);
 	// 招待イベントを作成します。
-	CConnectionEventBase* createInviteEvent(const string& host,
-            const string& param) const;
+	CConnectionEventBase* createInviteEvent(const CIRCMessageData& message) const;
 	// キックイベントを作成します。
-	CConnectionEventBase* createKickEvent(const string& host,
-            const string& param) const;
+	CConnectionEventBase* createKickEvent(const CIRCMessageData& message) const;
 	// トピック取得のイベントを作成します。
-	CConnectionEventBase* createTopicEvent(const string& param) const;
+	CConnectionEventBase* createTopicEvent(const CIRCMessageData& message) const;
 
+	CConnectionEventBase* createEvent (const CIRCMessageData& message);
 public:
 
 	CIRCParser();
 	virtual ~CIRCParser(void);
-	CConnectionEventBase* parse(const std::string& content);
+	CConnectionEventBase* parse(const wxString& content);
 
 };
 }

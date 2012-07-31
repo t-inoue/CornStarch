@@ -83,14 +83,14 @@ void CIRCClient::startThread(wxThread* task)
 }
 void CIRCClient::quitAsync(void)
 {
-    wxString content("QUIT\r\n");
+    wxString content("QUIT");
     addCommandQueue(content);
 }
 void CIRCClient::disconnect(void)
 {
     if (m_isClosing == false){
-        m_isClosing = true;
         quitAsync();
+        m_isClosing = true;
         if (m_sendTask != NULL && m_sendTask->IsAlive()){
                if (m_sendTask->IsRunning()){
                    m_sendTask->Wait();
@@ -124,7 +124,6 @@ void CIRCClient::partAsync(const wxString& channelName)
     // ウイルス判定回避用に文字列を分割
     wxString content(
             wxString::Format(wxString("PA") + wxString("RT %s"), channelName));
-
     addCommandQueue(content);
 }
 void CIRCClient::getTopicAsync(const wxString& channelName)
@@ -167,7 +166,6 @@ void CIRCClient::changeNicknameAsync(const wxString& content)
 {
     wxString contentWxString(wxString::Format(wxT("NICK %s"), content));
     addCommandQueue(contentWxString);
-
 }
 }
 } /* namespace CornStarch */

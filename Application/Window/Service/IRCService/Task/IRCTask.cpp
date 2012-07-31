@@ -1,10 +1,13 @@
 #include "IRCTask.hpp"
 
 namespace CornStarch
-{;
+{
+;
 namespace IRC
-{;
-CIRCTask::CIRCTask(wxThreadKind kind): wxThread(kind)
+{
+;
+CIRCTask::CIRCTask(wxThreadKind kind) :
+        wxThread(kind)
 {
 }
 
@@ -25,9 +28,8 @@ void CIRCTask::continueWith(wxThread* thread)
 void CIRCTask::invokeContinueThreads()
 {
     vector<wxThread*>::iterator it = m_continueThreads.begin();
-    while (it != m_continueThreads.end())
-    {
-        if ((*it)->Create()!= wxTHREAD_NO_ERROR){
+    while (it != m_continueThreads.end()){
+        if ((*it)->Create() != wxTHREAD_NO_ERROR){
             delete (*it);
             it++;
             continue;
@@ -41,8 +43,9 @@ void CIRCTask::invokeContinueThreads()
 }
 void CIRCTask::OnExit()
 {
-    invokeContinueThreads();
-
+    if (m_client->isClosing() == false){
+        invokeContinueThreads();
+    }
 }
 }
 } /* namespace CornStarch */
