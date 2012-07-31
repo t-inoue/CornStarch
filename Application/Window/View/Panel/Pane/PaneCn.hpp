@@ -42,6 +42,9 @@ private:
 
     // チャンネルを選択したというイベントを返す
     CChannelSelectEvent* newSelectEvent(const wxTreeItemId& id);
+
+    // アクティベートされた
+    void onActivated(wxTreeEvent& event);
 };
 
 }

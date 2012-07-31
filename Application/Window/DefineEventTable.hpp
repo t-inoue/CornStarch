@@ -109,6 +109,9 @@ BEGIN_EVENT_TABLE(CPaneCn, wxTreeCtrl)
     // チャンネルツリーの項目を右クリック
     EVT_TREE_ITEM_RIGHT_CLICK(wxID_ANY, CPaneCn::onItemRightClicked)
 
+    // ツリーの項目がアクティベートされた
+    EVT_TREE_ITEM_ACTIVATED(wxID_ANY, CPaneCn::onActivated)
+
 END_EVENT_TABLE();
 
 }

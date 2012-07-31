@@ -22,7 +22,7 @@ void CPaneCn::init(wxWindow* parent)
 {
     // スクロールバー(水平、垂直を必要に応じて)、ソート
     Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, 
-        wxTR_DEFAULT_STYLE | wxTR_HIDE_ROOT);
+        wxTR_HIDE_ROOT | wxTR_NO_BUTTONS);
 
     // Rootノードを追加
     AddRoot("Root");
@@ -60,6 +60,8 @@ void CPaneCn::displayChannels(const map<int,CChatServiceBase*>& connections)
             // チャンネルをセット
             AppendItem(id, *cit);
         }
+
+        Expand(id);
     }
 }
 
@@ -81,6 +83,7 @@ void CPaneCn::onChannelSelected(wxTreeEvent& event)
 // 項目が右クリックされた際のイベント処理
 void CPaneCn::onItemRightClicked(wxTreeEvent& event)
 {
+    SelectItem(event.GetItem());
     wxTreeItemId id = event.GetItem();
 
     // イベント送信
@@ -123,6 +126,12 @@ CChannelSelectEvent* CPaneCn::newSelectEvent(const wxTreeItemId& id)
     // イベントを返す
     chEvent->setText(itemName);
     return chEvent;
+}
+
+// アクティベートされた
+void CPaneCn::onActivated(wxTreeEvent& event)
+{
+    return;
 }
 
 }
