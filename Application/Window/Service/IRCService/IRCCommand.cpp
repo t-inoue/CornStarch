@@ -1,12 +1,12 @@
-#include "IRCCommand.hpp"
+ï»¿#include "IRCCommand.hpp"
 #include <string>
 namespace CornStarch
 {
 namespace IRC
 {
 
-// IRC’ÊM‚É•K—v‚ÈƒRƒ}ƒ“ƒh–¼‚ð’è‹`
-// ˆê•”A•¶Žš—ñ‚Æ‚·‚é‚ÆƒEƒCƒ‹ƒXˆµ‚¢‚³‚ê‚é‚½‚ßA•”•ª•¶Žš—ñ‚ð‚Â‚È‚°‚éŒ`Ž®‚É
+// IRCï¿½ÊMï¿½É•Kï¿½vï¿½ÈƒRï¿½}ï¿½ï¿½ï¿½hï¿½ï¿½ï¿½ï¿½ï¿½`
+// ï¿½ê•”ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½ï¿½ÆƒEï¿½Cï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½é‚½ï¿½ßAï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â‚È‚ï¿½ï¿½ï¿½`ï¿½ï¿½ï¿½ï¿½
 const wxString IRCCommand::OK = "001";
 const wxString IRCCommand::PASS = "PASS";
 const wxString IRCCommand::ERROR = "ERROR";
