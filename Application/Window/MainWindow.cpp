@@ -174,6 +174,11 @@ void CMainWindow::onSCRegister(wxCommandEvent& event)
         return;
     }
 
+    if (m_view->getDlgHostName() == ""){
+        wxMessageBox("ホスト名を入力してください");
+        return;
+    }
+
     CChatServiceBase* contents = new StarChat::CSCService();
     addNewService(contents);
 }
@@ -183,6 +188,11 @@ void CMainWindow::onIRCRegister(wxCommandEvent& event)
 {
     // 認証ダイアログを表示
     if (m_view->showModalIRCAuthDlg() != wxID_OK){
+        return;
+    }
+
+    if (m_view->getDlgHostName() == ""){
+        wxMessageBox("ホスト名を入力してください");
         return;
     }
 
