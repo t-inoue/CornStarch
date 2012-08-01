@@ -394,7 +394,7 @@ void CMainWindow::onChannelSelected(CChannelSelectEvent& event)
 {
 
     // 選択したコンテンツを取得
-    CChatServiceBase* contents = getService(m_currentServiceId);
+    CChatServiceBase* contents = getService(event.getServerId());
     // 選択したのがサーバ名だったとき
     if (event.isServerSelected()){
         m_currentServiceId = event.getServerId();
@@ -414,7 +414,7 @@ void CMainWindow::onChannelSelected(CChannelSelectEvent& event)
     contents->selectChannel(channel);
 
     // 画面表示を更新
-    wxString ch = contents->getCurrentChannel();
+    wxString ch = channel;
     displayTitle(ch, contents->getTopic(ch), event.getServerId());
     updateMessageView(m_currentServiceId, contents->getCurrentChannel());
     updateMemberView(m_currentServiceId, contents->getCurrentChannel());
