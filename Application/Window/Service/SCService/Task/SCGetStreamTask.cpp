@@ -65,6 +65,15 @@ wxThread::ExitCode CSCGetStreamTask::Entry()
                 wxQueueEvent(m_handler, event);
             }
         }
+//        if (client->isSocketConnected() == false){
+//            // 故意でない切断時
+//            CDisconnectEvent* event = new CDisconnectEvent();
+//            event->SetEventType(myEVT_THREAD_DISCONNECT); // イベントの種類をセット
+//            event->setConnectionId(m_connectionId);
+//            wxQueueEvent(m_handler, event);
+//
+//            break;
+//        }
     }
 
     // 後処理

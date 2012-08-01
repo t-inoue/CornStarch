@@ -24,6 +24,7 @@
 #include "../Event/UserStreamEvent.hpp"
 #include "../Event/AuthEvent.hpp"
 #include "../Event/ConnectionEventBase.hpp"
+
 #include "IRCMessageData.hpp"
 
 using namespace std;

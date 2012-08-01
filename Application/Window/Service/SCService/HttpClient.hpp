@@ -32,7 +32,10 @@ public:
 		setUrl(host);
 		m_host = host;
 	}
-
+    bool isSocketConnected() const
+    {
+        return m_socket->IsConnected();
+    }
 protected:
 	void sendRequestMethod(const wxString& method, const wxString& uri);
 	std::string getResponceBody(const std::string& str) const;

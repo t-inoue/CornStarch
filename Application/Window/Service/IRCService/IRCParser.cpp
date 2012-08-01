@@ -27,7 +27,7 @@ CIRCParser::~CIRCParser()
 }
 CConnectionEventBase* CIRCParser::createEvent(const CIRCMessageData& message)
 {
-    if (message.m_statusCode == IRCCommand::PRIVMSG ){
+    if (message.m_statusCode == IRCCommand::PRIVMSG){
         return createPrivateMessageEvent(message);
     }
     if (message.m_statusCode == IRCCommand::PART){
@@ -49,7 +49,7 @@ CConnectionEventBase* CIRCParser::createEvent(const CIRCMessageData& message)
         return createInviteEvent(message);
     }
     if (message.m_statusCode == IRCCommand::NAMES_REPLY){
-        addNames (message);
+        addNames(message);
     }
     if (message.m_statusCode == IRCCommand::TOPIC_REPLY){
         return createTopicEvent(message);
@@ -57,9 +57,11 @@ CConnectionEventBase* CIRCParser::createEvent(const CIRCMessageData& message)
     if (message.m_statusCode == IRCCommand::NAMES_REPLY_END){ //ユーザー名羅列終了リプライ
         return createNamesEvent(message);
     }
-    if (message.m_statusCode == IRCCommand::INVALID_USERNAME || // 不適切なユーザーID
-            message.m_statusCode == IRCCommand::INVALID_CHANNEL){ //　不適切なチャンネル
-            //エラー
+    if (message.m_statusCode == IRCCommand::INVALID_USERNAME){
+
+    }
+    if (message.m_statusCode == IRCCommand::INVALID_CHANNEL){ //　不適切なチャンネル
+        //エラー
         CAuthEvent* event = new CAuthEvent();
         event->setAuthResult(false);
         event->SetEventType(myEVT_THREAD_GET_PING); // イベントの種類をセット
@@ -114,7 +116,8 @@ CConnectionEventBase* CIRCParser::parse(const wxString& content)
     }
     return NULL;
 }
-CConnectionEventBase* CIRCParser::createNickMessageEvent(const CIRCMessageData& message) const
+CConnectionEventBase* CIRCParser::createNickMessageEvent(
+        const CIRCMessageData& message) const
 {
     // Eventの作成
     CMemberData member;
@@ -126,7 +129,8 @@ CConnectionEventBase* CIRCParser::createNickMessageEvent(const CIRCMessageData& 
     event->setMember(member);
     return event;
 }
-CConnectionEventBase* CIRCParser::createTopicMessageEvent(const CIRCMessageData& message) const
+CConnectionEventBase* CIRCParser::createTopicMessageEvent(
+        const CIRCMessageData& message) const
 {
     // Eventの作成
     CChannelData channel;
@@ -138,7 +142,8 @@ CConnectionEventBase* CIRCParser::createTopicMessageEvent(const CIRCMessageData&
     event->setChannel(channel);
     return event;
 }
-CConnectionEventBase* CIRCParser::createJoinMessageEvent(const CIRCMessageData& message) const
+CConnectionEventBase* CIRCParser::createJoinMessageEvent(
+        const CIRCMessageData& message) const
 {
     // Eventの作成
     CJoinStreamEvent* event = new CJoinStreamEvent();
@@ -147,7 +152,8 @@ CConnectionEventBase* CIRCParser::createJoinMessageEvent(const CIRCMessageData& 
     event->setUserName(message.m_username);
     return event;
 }
-CConnectionEventBase* CIRCParser::createPartMessageEvent(const CIRCMessageData& message) const
+CConnectionEventBase* CIRCParser::createPartMessageEvent(
+        const CIRCMessageData& message) const
 {
     // Eventの作成
     CPartStreamEvent* event = new CPartStreamEvent();
@@ -157,7 +163,8 @@ CConnectionEventBase* CIRCParser::createPartMessageEvent(const CIRCMessageData& 
     return event;
 
 }
-CConnectionEventBase* CIRCParser::createPrivateMessageEvent(const CIRCMessageData& message) const
+CConnectionEventBase* CIRCParser::createPrivateMessageEvent(
+        const CIRCMessageData& message) const
 {
     // Eventの作成
     CMsgStreamEvent* event = new CMsgStreamEvent();
@@ -172,7 +179,8 @@ void CIRCParser::addNames(const CIRCMessageData& message)
     wxString names = message.m_param.substr(index + 1);
     m_buffer += names;
 }
-CConnectionEventBase* CIRCParser::createNamesEvent(const CIRCMessageData& message)
+CConnectionEventBase* CIRCParser::createNamesEvent(
+        const CIRCMessageData& message)
 {
     vector<CMemberData*> result;
     vector<wxString> names = CStringUtility::split(m_buffer, " ");
@@ -197,17 +205,20 @@ CConnectionEventBase* CIRCParser::createNamesEvent(const CIRCMessageData& messag
     return event;
 }
 
-CConnectionEventBase* CIRCParser::createTopicEvent(const CIRCMessageData& message) const
+CConnectionEventBase* CIRCParser::createTopicEvent(
+        const CIRCMessageData& message) const
 {
     return NULL;
 }
 
-CConnectionEventBase* CIRCParser::createKickEvent(const CIRCMessageData& message) const
+CConnectionEventBase* CIRCParser::createKickEvent(
+        const CIRCMessageData& message) const
 {
     return NULL;
 }
 
-CConnectionEventBase* CIRCParser::createInviteEvent(const CIRCMessageData& message) const
+CConnectionEventBase* CIRCParser::createInviteEvent(
+        const CIRCMessageData& message) const
 {
     return NULL;
 }

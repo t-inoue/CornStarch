@@ -5,8 +5,9 @@ namespace CornStarch
 {;
 
 // typedef
-typedef void (wxEvtHandler::*MyEventFunction)(CAuthEvent&);
-typedef void (wxEvtHandler::*delPartEvtFunction)(CPartEvent&);
+typedef void (wxEvtHandler::*AuthEventFunction)(CAuthEvent&);
+typedef void (wxEvtHandler::*DisconnectEvtFunc)(CDisconnectEvent&);
+typedef void (wxEvtHandler::*DelPartEvtFunction)(CPartEvent&);
 typedef void (wxEvtHandler::*GetMemberEvtFunc)(CGetMemberEvent&);
 typedef void (wxEvtHandler::*GetChannelEvtFunc)(CGetChannelEvent&);
 typedef void (wxEvtHandler::*GetMessageEvtFunc)(CGetMessageEvent&);
@@ -21,6 +22,7 @@ typedef void (wxEvtHandler::*SelectEvtFunc)(CChannelSelectEvent&);
 
 // define
 wxDEFINE_EVENT(myEVT_THREAD_GET_PING, CAuthEvent);
+wxDEFINE_EVENT(myEVT_THREAD_DISCONNECT,CDisconnectEvent);
 wxDEFINE_EVENT(myEVT_THREAD_GET_CHANNEL, CGetChannelEvent);
 wxDEFINE_EVENT(myEVT_THREAD_GET_MESSAGE, CGetMessageEvent);
 wxDEFINE_EVENT(myEVT_THREAD_GET_MEMBER, CGetMemberEvent);
@@ -37,8 +39,9 @@ wxDEFINE_EVENT(myEVT_SELECT_TREE_NODE, CChannelSelectEvent);
 wxDEFINE_EVENT(myEVT_SELECT_TREE_NODE_RIGHT, CChannelSelectEvent);
 
 // イベントハンドラ
-#define MyEventHandler(func) wxEVENT_HANDLER_CAST(MyEventFunction, func)
-#define delPartEventHandler(func) wxEVENT_HANDLER_CAST(delPartEvtFunction, func)
+#define authEventHandler(func) wxEVENT_HANDLER_CAST(AuthEventFunction, func)
+#define disconnectEventHandler(func) wxEVENT_HANDLER_CAST(DisconnectEvtFunc, func)
+#define delPartEventHandler(func) wxEVENT_HANDLER_CAST(DelPartEvtFunction, func)
 #define getMemberEventHandler(func) wxEVENT_HANDLER_CAST(GetMemberEvtFunc, func)
 #define getChannelEventHandler(func) wxEVENT_HANDLER_CAST(GetChannelEvtFunc, func)
 #define getMessageEventHandler(func) wxEVENT_HANDLER_CAST(GetMessageEvtFunc, func)
@@ -52,7 +55,8 @@ wxDEFINE_EVENT(myEVT_SELECT_TREE_NODE_RIGHT, CChannelSelectEvent);
 #define selectEventHandler(func) wxEVENT_HANDLER_CAST(SelectEvtFunc, func)
 
 #define EVT_DEL_PART(evt, id, func) wx__DECLARE_EVT1(evt, id, delPartEventHandler(func))
-#define EVT_GET_AUTH(evt, id, func) wx__DECLARE_EVT1(evt, id, MyEventHandler(func))
+#define EVT_GET_AUTH(evt, id, func) wx__DECLARE_EVT1(evt, id, authEventHandler(func))
+#define EVT_GET_DISCONNECT(evt, id, func) wx__DECLARE_EVT1(evt, id, disconnectEventHandler(func))
 #define EVT_GET_MEMBER(evt, id, func) wx__DECLARE_EVT1(evt, id, getMemberEventHandler(func))
 #define EVT_GET_CHANNEL(evt, id, func) wx__DECLARE_EVT1(evt, id, getChannelEventHandler(func))
 #define EVT_GET_MESSAGE(evt, id, func) wx__DECLARE_EVT1(evt, id, getMessageEventHandler(func))
@@ -81,6 +85,7 @@ BEGIN_EVENT_TABLE(CMainWindow, wxFrame)
 
     // 通信による結果を受け取ったとき
     EVT_GET_AUTH(myEVT_THREAD_GET_PING, wxID_ANY, CMainWindow::onGetAuth)
+    EVT_GET_DISCONNECT(myEVT_THREAD_DISCONNECT, wxID_ANY, CMainWindow::onDisconnect)
     EVT_DEL_PART(myEVT_THREAD_DELETE_PART, wxID_ANY, CMainWindow::onPartChannel)
     EVT_GET_MEMBER(myEVT_THREAD_GET_MEMBER, wxID_ANY, CMainWindow::onGetMembers)
     EVT_GET_MESSAGE(myEVT_THREAD_GET_MESSAGE, wxID_ANY, CMainWindow::onGetMessages)

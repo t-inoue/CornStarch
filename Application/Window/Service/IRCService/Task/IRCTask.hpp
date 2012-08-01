@@ -3,6 +3,7 @@
 #include <wx/wxprec.h>
 #include <wx/wx.h>
 #include "../IRCClient.hpp"
+#include "../../Event/DisconnectEvent.hpp"
 
 namespace CornStarch
 {;

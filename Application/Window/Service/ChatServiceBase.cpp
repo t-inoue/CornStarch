@@ -6,7 +6,7 @@ namespace CornStarch
 {;
 
 CChatServiceBase::CChatServiceBase(void) : m_handler(NULL), 
-    m_channel(NULL), m_user(NULL), m_nickTable(NULL), m_connect(NULL)
+    m_channel(NULL), m_user(NULL), m_nickTable(NULL), m_connect(NULL),m_isConnected(false)
 {
 }
 
@@ -33,10 +33,8 @@ void CChatServiceBase::init(wxEvtHandler* handler)
     m_channel = new CChannelHolder(); // チャンネル
     m_channel->init();
 
-
     // ニックネームテーブルの初期化
     m_nickTable = new CNickTable();
-
 }
 
 // ユーザがログインしているか

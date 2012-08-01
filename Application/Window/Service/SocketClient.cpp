@@ -91,7 +91,11 @@ int CSocketClient::receive(long waitTimeUsec)
 			// これ以上受信しない
 			break;
 		}
-
+		if( m_socket->Error())
+		{
+		    close();
+		    break;
+		}
 	}
 	return recvSize;
 }

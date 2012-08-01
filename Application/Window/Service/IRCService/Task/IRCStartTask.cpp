@@ -19,8 +19,10 @@ CIRCStartTask::~CIRCStartTask()
 // Run実行時に呼ばれる本体
 wxThread::ExitCode CIRCStartTask::Entry(void)
 {
+    // ソケットの接続
     m_client->setUrl(m_client->getHost());
     m_client->connect();
+
     wxString pass(
             wxString::Format(wxT( "%s %s"), IRCCommand::PASS,
                     getPassword().c_str()));
@@ -30,7 +32,7 @@ wxThread::ExitCode CIRCStartTask::Entry(void)
     wxString user(
             wxString::Format(wxT( "%s %s * 0 :%s"), IRCCommand::USER,
                     getUserName().c_str(), getUserName().c_str()));
-    //　IRCへの接続
+    //　IRCへの接続のためのキューを追加
     m_client->addCommandQueue(pass);
     m_client->addCommandQueue(nick);
     m_client->addCommandQueue(user);

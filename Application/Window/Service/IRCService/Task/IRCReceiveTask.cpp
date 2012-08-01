@@ -3,10 +3,12 @@
 #include "../IRCCommand.hpp"
 #include  "../StringUtility.hpp"
 #include "../../Event/AuthEvent.hpp"
+#include "../../Event/DisconnectEvent.hpp"
 namespace CornStarch
 {
 ;
 
+wxDECLARE_EVENT(myEVT_THREAD_DISCONNECT, CDisconnectEvent);
 wxDECLARE_EVENT(myEVT_THREAD_GET_PING, CAuthEvent);
 namespace IRC
 {
@@ -30,7 +32,9 @@ void CIRCReceiveTask::pong(const wxString& value)
 wxThread::ExitCode CIRCReceiveTask::Entry(void)
 {
     CIRCParser parser;
-    while (m_client->isSocketConnected()){
+    //　ソケットが切断されているか、自分で終了しようとしていればループ終了
+    while (m_client->isSocketConnected()
+            && m_client->isClosing() == false){
         wxString buffer = m_client->recieveData(); //  receive();
         if (buffer != ""){
             std::string str(buffer);
@@ -42,6 +46,7 @@ wxThread::ExitCode CIRCReceiveTask::Entry(void)
                             CStringUtility::split(messages[i], ":")[1];
                     pong(pingValue);
                 } else if (messages[i].find(IRCCommand::ERROR) == 0){
+                    // エラー
                     break;
                 } else{
                     // イベント生成
@@ -55,11 +60,10 @@ wxThread::ExitCode CIRCReceiveTask::Entry(void)
         }
         wxUsleep(100);
     }
-    if (m_client->isClosing() != true){
+    if (m_client->isClosing() == false){
         // 故意でない切断時
-        CAuthEvent* event = new CAuthEvent();
-        event->setAuthResult(false);
-        event->SetEventType(myEVT_THREAD_GET_PING); // イベントの種類をセット
+        CDisconnectEvent* event = new CDisconnectEvent();
+        event->SetEventType(myEVT_THREAD_DISCONNECT); // イベントの種類をセット
         event->setConnectionId(m_connectionId);
         wxQueueEvent(m_handler, event);
     }

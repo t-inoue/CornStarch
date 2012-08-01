@@ -4,6 +4,7 @@
 #include "../SCClient.hpp"
 #include "../SCJsonParser.hpp"
 #include "../../Event/ConnectionEventBase.hpp"
+#include "../../Event/DisconnectEvent.hpp"
 #include "../../Event/PartEvent.hpp"
 #include "../../Event/AuthEvent.hpp"
 #include "../../Event/JoinEvent.hpp"

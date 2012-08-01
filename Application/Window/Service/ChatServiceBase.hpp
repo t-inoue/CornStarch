@@ -32,7 +32,8 @@ protected:
     wxString m_name;
     // ID
     int m_id;
-
+    // 接続されているか
+    bool m_isConnected;
     // チャットの種類
     CHAT_TYPE m_type;
     // 保存されていたチャンネル
@@ -51,6 +52,20 @@ public:
     {
         m_id = id;
     }
+
+    // 接続されているかを取得
+    bool IsConnected() const
+    {
+        return m_isConnected;
+    }
+
+    // 雪族されているかを設定
+    void setConnected(bool isConnected)
+    {
+        m_isConnected = isConnected;
+    }
+
+
     // 保存されていたチャンネルを設定します。
     void setSavedChannels(vector<wxString> savedChannels)
     {

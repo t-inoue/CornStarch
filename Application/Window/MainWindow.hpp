@@ -117,6 +117,9 @@ private:
 	// 認証情報の受信時
 	void onGetAuth(CAuthEvent& event);
 
+	// 切断情報の受信時
+	void onDisconnect(CDisconnectEvent& event);
+
 	// メッセージ一覧受信時
 	void onGetMessages(CGetMessageEvent& event);
 
