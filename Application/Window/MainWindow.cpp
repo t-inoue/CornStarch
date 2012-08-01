@@ -334,7 +334,9 @@ void CMainWindow::onChangeTopic(wxCommandEvent& event)
     if (!contents->isUserLogin()){
         return;
     }
-
+    if (contents->getCurrentChannel() == ""){
+        return;
+    }
     // トピック変更ダイアログを表示
     if (m_view->showModalTopicDlg() != wxID_OK){
         return;
@@ -351,7 +353,7 @@ void CMainWindow::onEnter(wxCommandEvent& event)
 {
     CChatServiceBase* contents = getService(m_currentServiceId);
 
-    if (contents == NULL){
+    if (contents == NULL || contents->getCurrentChannel() == ""){
         return;
     }
 
@@ -390,21 +392,23 @@ void CMainWindow::onMemberSelected(wxCommandEvent& event)
 // チャンネル選択時
 void CMainWindow::onChannelSelected(CChannelSelectEvent& event)
 {
+
+    // 選択したコンテンツを取得
+    CChatServiceBase* contents = getService(m_currentServiceId);
     // 選択したのがサーバ名だったとき
     if (event.isServerSelected()){
         m_currentServiceId = event.getServerId();
         m_view->clearMessages();
         m_view->clearMembers();
         displayTitle("", "", m_currentServiceId);
+
+        contents->selectChannel("");
         return;
     }
 
     // サーバーIDとチャンネル名を取得
     wxString channel = event.getString();
     m_currentServiceId = event.getServerId();
-
-    // 選択したコンテンツを取得
-    CChatServiceBase* contents = getService(m_currentServiceId);
 
     // コンテンツの更新
     contents->selectChannel(channel);
@@ -488,8 +492,9 @@ void CMainWindow::onDisconnect(CDisconnectEvent& event)
     CChatServiceBase* service = getService(event.getConnectionId());
     if (service != NULL){
         service->setConnected(false);
-        wxMessageBox(wxString::Format(wxT("サーバー[%s]切断されました。再接続を行う際は更新してください。"),
-                service->getHost()));
+        wxMessageBox(
+                wxString::Format(wxT("サーバー[%s]切断されました。再接続を行う際は更新してください。"),
+                        service->getHost()));
 
         m_view->displayChannels(m_services);
     }
