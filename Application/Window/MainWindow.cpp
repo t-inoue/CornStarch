@@ -395,7 +395,7 @@ void CMainWindow::onChannelRightClicked(CChannelSelectEvent& event)
 
     enum
     {
-        Id_Part,
+        Id_Part = 100,
     };
     wxMenu menu;
     menu.Append(Id_Part, "サーバの削除");
@@ -441,6 +441,7 @@ void CMainWindow::onGetAuth(CAuthEvent& event)
     } else{
         // コンテンツの更新
         service->onAuthSucceeed();
+        service->setConnected(true);
 
         // 表示の更新
         updateAllView(event.getConnectionId(), service->getCurrentChannel());
@@ -454,7 +455,7 @@ void CMainWindow::onDisconnect(CDisconnectEvent& event)
     CChatServiceBase* service = getService(m_currentServiceId);
     if (service != NULL){
         service->setConnected(false);
-        wxMessageBox( wxString::Format(wxT("サーバー[%s]切断されました。再接続を行う際は更新してください。"),
+        wxMessageBox(wxString::Format(wxT("サーバー[%s]切断されました。再接続を行う際は更新してください。"),
                 service->getHost()));
 
         m_view->displayChannels(m_services);
