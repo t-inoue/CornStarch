@@ -452,7 +452,7 @@ void CMainWindow::onGetAuth(CAuthEvent& event)
 // 切断情報の受信時
 void CMainWindow::onDisconnect(CDisconnectEvent& event)
 {
-    CChatServiceBase* service = getService(m_currentServiceId);
+    CChatServiceBase* service = getService(event.getConnectionId());
     if (service != NULL){
         service->setConnected(false);
         wxMessageBox(wxString::Format(wxT("サーバー[%s]切断されました。再接続を行う際は更新してください。"),
