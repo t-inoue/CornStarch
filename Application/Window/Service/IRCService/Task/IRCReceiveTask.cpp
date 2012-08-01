@@ -41,7 +41,7 @@ wxThread::ExitCode CIRCReceiveTask::Entry(void)
                     wxString pingValue =
                             CStringUtility::split(messages[i], ":")[1];
                     pong(pingValue);
-                } else if (messages[i].find(IRCCommand::ERROR) == 0){
+                } else if (messages[i].find(IRCCommand::_ERROR) == 0){
                     break;
                 } else{
                     // イベント生成

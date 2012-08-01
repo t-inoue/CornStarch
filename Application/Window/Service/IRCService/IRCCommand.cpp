@@ -9,7 +9,7 @@ namespace IRC
 // 一部、文字列とするとウイルス扱いされるため、部分文字列をつなげる形式に
 const wxString IRCCommand::OK = "001";
 const wxString IRCCommand::PASS = "PASS";
-const wxString IRCCommand::ERROR = "ERROR";
+const wxString IRCCommand::_ERROR = "ERROR";
 const wxString IRCCommand::USER = "USER";
 const wxString IRCCommand::PING = wxString("PI") + "NG";
 const wxString IRCCommand::PONG = wxString("PO") + "NG";
