@@ -208,6 +208,9 @@ void CMainWindow::onJoin(wxCommandEvent& event)
 {
 
     CChatServiceBase* contents = getService(m_currentServiceId);
+    if (contents == NULL){
+        return;
+    }
     // 未ログインの時
     if (!contents->isUserLogin()){
         return;
@@ -226,6 +229,7 @@ void CMainWindow::onJoin(wxCommandEvent& event)
 void CMainWindow::onDeleteService(wxCommandEvent& event)
 {
     CChatServiceBase* service = getService(m_currentServiceId);
+
     if (service != NULL){
         wxMessageDialog dialog(this,
                 wxString::Format(wxT("サーバー[%s]の削除をしてもよろしいですか？"),
@@ -246,6 +250,10 @@ void CMainWindow::onDeleteService(wxCommandEvent& event)
 void CMainWindow::onPart(wxCommandEvent& event)
 {
     CChatServiceBase* contents = getService(m_currentServiceId);
+    if (contents == NULL){
+        return;
+    }
+
     // 未ログインの時
     if (!contents->isUserLogin()){
         return;
@@ -285,6 +293,11 @@ void CMainWindow::onNickChange(wxCommandEvent& event)
 {
     // 未ログインの時
     CChatServiceBase* contents = getService(m_currentServiceId);
+
+    if (contents == NULL){
+        return;
+    }
+
     if (!contents->isUserLogin()){
         return;
     }
@@ -303,6 +316,11 @@ void CMainWindow::onChangeTopic(wxCommandEvent& event)
 {
     // 未ログインの時
     CChatServiceBase* contents = getService(m_currentServiceId);
+
+    if (contents == NULL){
+        return;
+    }
+
     if (!contents->isUserLogin()){
         return;
     }
@@ -322,6 +340,11 @@ void CMainWindow::onChangeTopic(wxCommandEvent& event)
 void CMainWindow::onEnter(wxCommandEvent& event)
 {
     CChatServiceBase* contents = getService(m_currentServiceId);
+
+    if (contents == NULL){
+        return;
+    }
+
     // 何も文がないとき
     wxString body = event.GetString();
     if (body == ""){
