@@ -1,15 +1,15 @@
-#include "IRCCommand.hpp"
+ï»¿#include "IRCCommand.hpp"
 #include <string>
 namespace CornStarch
 {
 namespace IRC
 {
 
-// IRC’ÊM‚É•K—v‚ÈƒRƒ}ƒ“ƒh–¼‚ğ’è‹`
-// ˆê•”A•¶š—ñ‚Æ‚·‚é‚ÆƒEƒCƒ‹ƒXˆµ‚¢‚³‚ê‚é‚½‚ßA•”•ª•¶š—ñ‚ğ‚Â‚È‚°‚éŒ`®‚É
+// IRCé€šä¿¡ã«å¿…è¦ãªã‚³ãƒãƒ³ãƒ‰åã‚’å®šç¾©
+// ä¸€éƒ¨ã€æ–‡å­—åˆ—ã¨ã™ã‚‹ã¨ã‚¦ã‚¤ãƒ«ã‚¹æ‰±ã„ã•ã‚Œã‚‹ãŸã‚ã€éƒ¨åˆ†æ–‡å­—åˆ—ã‚’ã¤ãªã’ã‚‹å½¢å¼ã«
 const wxString IRCCommand::OK = "001";
 const wxString IRCCommand::PASS = "PASS";
-const wxString IRCCommand::ERROR = "ERROR";
+const wxString IRCCommand::_ERROR = "ERROR";
 const wxString IRCCommand::USER = "USER";
 const wxString IRCCommand::PING = wxString("PI") + "NG";
 const wxString IRCCommand::PONG = wxString("PO") + "NG";

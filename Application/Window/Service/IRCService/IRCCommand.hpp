@@ -1,4 +1,4 @@
-
+﻿
 #ifndef IRCCOMMAND_HPP_
 #define IRCCOMMAND_HPP_
 
@@ -14,7 +14,7 @@ public:
     //! IRCコマンドステータス名です。
     const static wxString OK;
     const static wxString USER;
-    const static wxString ERROR;
+    const static wxString _ERROR;
     const static wxString PASS;
     const static wxString QUIT;
     const static wxString PING;
