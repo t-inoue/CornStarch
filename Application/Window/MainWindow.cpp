@@ -351,7 +351,7 @@ void CMainWindow::onMemberSelected(wxCommandEvent& event)
     CChatServiceBase* contents = getService(m_currentServiceId);
 
     wxString name = contents->getMemberRealName(event.GetString());
-    wxMessageBox("本名は" + name + "です");
+    wxMessageBox("名前：" + name, event.GetString() + "のユーザ情報");
 }
 
 // チャンネル選択時
@@ -391,17 +391,19 @@ void CMainWindow::onChannelRightClicked(CChannelSelectEvent& event)
         return;
     }
 
+    return;
+
     enum
     {
         Id_Part,
     };
     wxMenu menu;
-    menu.Append(Id_Part, "チャンネルから離脱");
+    menu.Append(Id_Part, "サーバの削除");
 
     // コンテキスト表示
     switch (this->GetPopupMenuSelectionFromUser(menu)) {
     case Id_Part:
-        wxMessageBox("サーバ" + event.getString() + "が選択された。今はまだ未実装");
+        //wxMessageBox("サーバ" + event.getString() + "が選択された。今はまだ未実装");
         return;
     default:
         return;
