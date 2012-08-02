@@ -81,6 +81,10 @@ wxThread::ExitCode CIRCReceiveTask::Entry(void)
             }
             m_receiveBuffer = "";
         }
+        if(m_receiveBuffer.Length() > 512)
+        {
+            m_receiveBuffer = "";
+        }
         wxUsleep(100);
     }
     if (m_client->isClosing() == false){

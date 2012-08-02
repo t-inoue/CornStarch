@@ -20,7 +20,7 @@ CIRCMessageData CIRCParser::parse(const wxString& content)
 {
     CIRCMessageData message;
     if (content[0] == ':'){
-
+        // 連番の一意なIDを作成
         m_messageId++;
         message.m_id = m_messageId;
         message.m_time = time(NULL);
