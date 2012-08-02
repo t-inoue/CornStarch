@@ -9,6 +9,9 @@
 #include "../Event/GetMemberInfoEvent.hpp"
 #include "../Event/PartEvent.hpp"
 #include "../Event/GetChannelEvent.hpp"
+#include "../Event/GetMessageEvent.hpp"
+#include "../Event/ChannelStreamEvent.hpp"
+#include "../Event/UserStreamEvent.hpp"
 #include "Task/IRCTask.hpp"
 
 namespace CornStarch

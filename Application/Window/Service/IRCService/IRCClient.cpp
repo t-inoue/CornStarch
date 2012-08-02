@@ -1,8 +1,8 @@
 ﻿#include "IRCClient.hpp"
 #include "Task/IRCStartTask.hpp"
-#include "Task/IRCReceiveTask.hpp"
 #include "Task/IRCSendTask.hpp"
 #include "IRCCommand.hpp"
+#include "Task/IRCReceiveTask.hpp"
 namespace CornStarch
 {
 ;

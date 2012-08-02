@@ -47,6 +47,9 @@ void CIRCService::reconnect(void)
 
     newConnection->init(m_id, m_handler);
     newConnection->setHost(m_connect->getHost());
+
+    // 前回接続済みのユーザーがサーバー側で切断の完了になってない場合があるので、ユーザー名を変更。
+    m_user->setUserName(m_user->getUserName()+"_");
     this->setSavedChannels(getChannels());
     delete m_connect;
     m_connect = newConnection;
