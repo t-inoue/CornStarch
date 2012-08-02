@@ -101,7 +101,7 @@ void CSCClient::sendChangeTopicRequest(const wxString& channel, const wxString& 
     const wxString& basic)
 {
     sendPutChannelApi(channel);
-    sendPutParticular("topic%5Bbody%5D", topic, basic);
+    sendPutParticular("topic[body]", topic, basic);
 }
 
 // ストリームを取得するリクエストを送る
@@ -200,69 +200,69 @@ bool CSCClient::isCorrectStream(void) const
 // pingを送るAPIを叩く(GET /users/user_name/ping)
 void CSCClient::sendPingApi(const wxString& userName)
 {
-    sendRequestMethod("GET", "/users/" + userName + "/ping");
+    sendRequestMethod("GET", "/users/" + urlEncode(userName) + "/ping");
 }
 
 // メッセージ投稿するAPIを叩く(POST /channels/channel_name/messages)
 void CSCClient::sendPostMstApi(const wxString& channel)
 {
-    sendRequestMethod("POST", "/channels/" + channel + "/messages");
+    sendRequestMethod("POST", "/channels/" + urlEncode(channel) + "/messages");
 }
 
 // チャンネル一覧取得のAPIを叩く(GET /users/user_name/channels)
 void CSCClient::sendGetCnApi(const wxString& userName)
 {
-    sendRequestMethod("GET", "/users/" + userName + "/channels");
+    sendRequestMethod("GET", "/users/" + urlEncode(userName) + "/channels");
 }
 
 // メンバー一覧取得のAPIを叩く(GET /channels/channel_name/users)
 void CSCClient::sendGetMemApi(const wxString& channel)
 {
-    sendRequestMethod("GET", "/channels/" + channel + "/users");
+    sendRequestMethod("GET", "/channels/" + urlEncode(channel) + "/users");
 }
 
 // メッセージ一覧取得(最大100件)のAPIを叩く(GET /channels/channel_name/messages/recent)
 void CSCClient::sendGetMsgApi(const wxString& channel)
 {
-    sendRequestMethod("GET", "/channels/" + channel + "/messages/recent");
+    sendRequestMethod("GET", "/channels/" + urlEncode(channel) + "/messages/recent");
 }
 
 // チャンネル参加APIを叩く//(PUT /subscribings?user_name=user_name;channel_name=channel_name)
 void CSCClient::sendJoinApi(const wxString& channel, const wxString& userName)
 {
-    sendRequestMethod("PUT", "/subscribings?channel_name=" + channel
-        + ";user_name=" + userName);
+    sendRequestMethod("PUT", "/subscribings?channel_name=" + urlEncode(channel)
+        + ";user_name=" + urlEncode(userName));
 }
 
 // チャンネル離脱APIを叩く(DELETE /subscribings?user_name=user_name;channel_name=channel_name)
 void CSCClient::sendPartApi(const wxString& channel, const wxString& userName)
 {
-    sendRequestMethod("DELETE", "/subscribings?channel_name=" + channel
-        + ";user_name=" + userName);
+    sendRequestMethod("DELETE", "/subscribings?channel_name=" + urlEncode(channel)
+        + ";user_name=" + urlEncode(userName));
 }
 
 // メンバー情報取得APIを叩く
 void CSCClient::sendGetMemInfoApi(const wxString& userName)
 {
-    sendRequestMethod("GET", "/users/" + userName);
+    sendRequestMethod("GET", "/users/" + urlEncode(userName));
 }
 
 // ストリーム取得用APIを叩く(GET /users/user_name/stream(?start_message_id=start_message_id))
 void CSCClient::sendStreamApi(const wxString& userName)
 {
-    sendRequestMethod("GET", "/users/" + userName + "/stream");
+    sendRequestMethod("GET", "/users/" + urlEncode(userName) + "/stream");
 }
 
 // ユーザ情報変更APIを叩く
 void CSCClient::sendPutUserApi(const wxString& userName)
 {
-    sendRequestMethod("PUT", "/users/" + userName);
+    sendRequestMethod("PUT", "/users/" + urlEncode(userName));
 }
 
 // チャンネル情報変更APIを叩く
 void CSCClient::sendPutChannelApi(const wxString& channel)
 {
-    sendRequestMethod("PUT", "/channels/" + channel);
+    sendRequestMethod("PUT", "/channels/" + urlEncode(channel));
 }
 
 }
