@@ -90,7 +90,6 @@ void CIRCClient::quitAsync(void)
 void CIRCClient::disconnect(void)
 {
     if (m_isClosing == false){
-        quitAsync();
         m_isClosing = true;
         //スレッドの終了待機
         if (m_conenctTask != NULL && m_conenctTask->IsAlive()){
@@ -108,7 +107,6 @@ void CIRCClient::disconnect(void)
                 m_receiveTask->Wait();
             }
         }
-
         this->close();
     }
 }

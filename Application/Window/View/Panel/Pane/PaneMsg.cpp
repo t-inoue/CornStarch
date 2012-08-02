@@ -1,40 +1,57 @@
 ﻿#include "PaneMsg.hpp"
+#include <sstream>
+#include <string>
+#include <stdio.h>
+#include <stdlib.h>
+#include <locale.h>
 
 using namespace std;
 
 namespace CornStarch
-{;
+{
+;
 
 CPaneMsg::CPaneMsg(void)
 {
 }
 
-
 CPaneMsg::~CPaneMsg(void)
 {
 }
 
-
 //////////////////////////////////////////////////////////////////////
-
 
 // 初期化を行う
 void CPaneMsg::init(wxWindow* parent)
 {
     // 画面の初期化
-    Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, 
-        wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxVSCROLL|wxTE_RICH2/*|wxTE_DONTWRAP*/);
+    Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize,
+            wxTE_MULTILINE | wxTE_READONLY | wxVSCROLL | wxTE_RICH2/*|wxTE_DONTWRAP*/);
 
     // フォント設定
     this->SetFont(wxFont(10, wxDEFAULT, wxNORMAL, wxNORMAL));
 }
 
+bool containsOver4ByteText(const wxString& content)
+{
+    string body = string(content.c_str());
+    int checkIndex = 0;
+    while (checkIndex < body.size()){
+        int length = mblen(&(body[checkIndex]), MB_CUR_MAX);
+        if (length >= 4){
+            return true;
+        }
+        checkIndex += length;
+    }
+    return false;
+}
+
 // メッセージを表示する
 void CPaneMsg::displayMessages(const vector<CMessageData*>& messages,
-    const map<wxString, wxString>& nickTable)
+        const map<wxString, wxString>& nickTable)
 {
     this->Clear();
-    int size = (int)messages.size();
+    int size = (int) messages.size();
     for (int i = 0; i < size; i++){
 
         int index = this->GetLastPosition();
@@ -42,14 +59,14 @@ void CPaneMsg::displayMessages(const vector<CMessageData*>& messages,
         // 時刻
         wxString date = messages[i]->getTime("%H:%M");
         this->AppendText(date);
-        this->SetStyle(index, index+date.length(), wxTextAttr(*wxRED));
+        this->SetStyle(index, index + date.length(), wxTextAttr(*wxRED));
         index += date.size();
 
         // 名前
         wxString nick = getNickName(messages[i]->m_username, nickTable);
         nick = " (" + nick + "):";
         if (messages[i]->m_tempNick != ""){
-            nick +=" (" + messages[i]->m_tempNick + ") ";
+            nick += " (" + messages[i]->m_tempNick + ") ";
         }
         this->AppendText(nick);
         this->SetStyle(index, index + nick.size(), wxTextAttr(*wxBLUE));
@@ -57,22 +74,24 @@ void CPaneMsg::displayMessages(const vector<CMessageData*>& messages,
 
         //本文
         wxString body = messages[i]->m_body;
-        body.Replace("\r", "");
-        this->AppendText(body + "\n");
-        this->SetStyle(index, index + body.size(), wxTextAttr(*wxBLACK));
-
+        if (containsOver4ByteText(body) == false)
+        {
+            this->AppendText(body);
+            this->SetStyle(index, index + body.Length(), wxTextAttr(*wxBLACK));
+        }
+        this->AppendText(" \n");
         if (i < size - 1){
-            drawDateLine(messages[i]->getTime("%Y/%m/%d(%a)"), messages[i + 1]->getTime("%Y/%m/%d(%a)"));
+            drawDateLine(messages[i]->getTime("%Y/%m/%d(%a)"),
+                    messages[i + 1]->getTime("%Y/%m/%d(%a)"));
         }
     }
 }
 
-
 //////////////////////////////////////////////////////////////////////
 
-
 // ユーザ名に対応するニックネームを取得する
-wxString CPaneMsg::getNickName(const wxString& userName, const map<wxString, wxString>& nickTable)
+wxString CPaneMsg::getNickName(const wxString& userName,
+        const map<wxString, wxString>& nickTable)
 {
     // テーブルに存在しない時、本名を返す
     if (nickTable.find(userName) == nickTable.end()){
