@@ -235,7 +235,7 @@ wxString CHttpClient::urlEncode(const wxString& text)
 
         } else if ((*it) == ' '){
             // 半角空白の時
-            result += '+';
+            result += "%20";
 
         } else if (isReservedDelim(*it)){
             // 予約語の時
