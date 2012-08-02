@@ -32,7 +32,7 @@ void CPaneMsg::init(wxWindow* parent)
     this->SetFont(wxFont(10, wxDEFAULT, wxNORMAL, wxNORMAL));
 }
 
-bool containsOver4ByteText(const wxString& content)
+bool CPaneMsg::containsOver4ByteText(const wxString& content) const
 {
     string body = string(content.c_str());
     int checkIndex = 0;
