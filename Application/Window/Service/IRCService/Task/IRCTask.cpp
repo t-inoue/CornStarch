@@ -43,7 +43,7 @@ void CIRCTask::invokeContinueThreads()
 }
 void CIRCTask::OnExit()
 {
-    if (m_client->isClosing() == false){
+    if (this->TestDestroy() == false){
         invokeContinueThreads();
     }
 }

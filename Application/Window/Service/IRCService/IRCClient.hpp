@@ -28,8 +28,6 @@ class CIRCClient: public CSocketClient
     // コネクションIDです。
     int m_connectionId;
 
-    // 切断中かを示します。
-    bool m_isClosing;
     wxEvtHandler* m_handler;
 
     // スレッドを開始します。
@@ -102,10 +100,7 @@ public:
         m_host = host;
     }
 
-    bool isClosing() const
-    {
-        return m_isClosing;
-    }
+
 }
 
 ;

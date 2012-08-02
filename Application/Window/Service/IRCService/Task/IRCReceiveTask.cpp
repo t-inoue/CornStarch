@@ -52,7 +52,7 @@ wxThread::ExitCode CIRCReceiveTask::Entry(void)
 {
     CIRCParser parser;
     //　ソケットが切断されているか、自分で終了しようとしていればループ終了
-    while (m_client->isSocketConnected() && m_client->isClosing() == false){
+    while (m_client->isSocketConnected() && this->TestDestroy() == false){
         m_receiveBuffer += m_client->recieveData();
 
         if (m_receiveBuffer != ""
@@ -81,13 +81,13 @@ wxThread::ExitCode CIRCReceiveTask::Entry(void)
             }
             m_receiveBuffer = "";
         }
-        if(m_receiveBuffer.Length() > 512)
-        {
+        // IRCプロトコルの最大値を超えるメッセージを受信している場合は、バッファをクリアする。
+        if (m_receiveBuffer.Length() > 512){
             m_receiveBuffer = "";
         }
         wxUsleep(100);
     }
-    if (m_client->isClosing() == false){
+    if (this->TestDestroy() == false){
         // 故意でない切断時
         CDisconnectEvent* event = new CDisconnectEvent();
         event->SetEventType(myEVT_THREAD_DISCONNECT); // イベントの種類をセット

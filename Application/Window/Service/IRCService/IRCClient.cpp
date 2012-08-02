@@ -12,7 +12,7 @@ namespace IRC
 using namespace std;
 
 CIRCClient::CIRCClient() :
-        m_receiveTask(NULL), m_sendTask(NULL), m_isClosing(false), m_handler(
+        m_receiveTask(NULL), m_sendTask(NULL),  m_handler(
                 NULL)
 {
     m_commandQueue = new wxMessageQueue<wxString>();
@@ -89,26 +89,23 @@ void CIRCClient::quitAsync(void)
 }
 void CIRCClient::disconnect(void)
 {
-    if (m_isClosing == false){
-        m_isClosing = true;
-        //スレッドの終了待機
-        if (m_conenctTask != NULL && m_conenctTask->IsAlive()){
-                if (m_conenctTask->IsRunning()){
-                    m_conenctTask->Delete();
-                }
-            }
-        if (m_sendTask != NULL && m_sendTask->IsAlive()){
-               if (m_sendTask->IsRunning()){
-                   m_sendTask->Wait();
-               }
-           }
-        if (m_receiveTask != NULL && m_receiveTask->IsAlive()){
-            if (m_receiveTask->IsRunning()){
-                m_receiveTask->Wait();
-            }
+    //スレッドの終了待機
+    if (m_conenctTask != NULL && m_conenctTask->IsAlive()){
+        if (m_conenctTask->IsRunning()){
+            m_conenctTask->Delete();
         }
-        this->close();
     }
+    if (m_sendTask != NULL && m_sendTask->IsAlive()){
+        if (m_sendTask->IsRunning()){
+            m_sendTask->Delete();
+        }
+    }
+    if (m_receiveTask != NULL && m_receiveTask->IsAlive()){
+        if (m_receiveTask->IsRunning()){
+            m_receiveTask->Delete();
+        }
+    }
+    this->close();
 }
 wxString CIRCClient::recieveData()
 {
@@ -119,24 +116,26 @@ wxString CIRCClient::recieveData()
 void CIRCClient::joinAsync(const wxString& channelName)
 {
     wxString content(
-            wxString::Format(wxT("%s %s"),IRCCommand::JOIN, channelName));
+            wxString::Format(wxT("%s %s"), IRCCommand::JOIN, channelName));
     addCommandQueue(content);
 }
 void CIRCClient::partAsync(const wxString& channelName)
 {
     wxString content(
-            wxString::Format(wxT("%s %s"),IRCCommand::PART, channelName));
+            wxString::Format(wxT("%s %s"), IRCCommand::PART, channelName));
     addCommandQueue(content);
 }
 void CIRCClient::getTopicAsync(const wxString& channelName)
 {
-    wxString content(wxString::Format(wxT("%s %s") ,IRCCommand::TOPIC, channelName));
+    wxString content(
+            wxString::Format(wxT("%s %s"), IRCCommand::TOPIC, channelName));
     addCommandQueue(content);
 
 }
 void CIRCClient::getNamesAsync(const wxString& channelName)
 {
-    wxString content(wxString::Format(wxT("%s %s"),IRCCommand::NAMES, channelName));
+    wxString content(
+            wxString::Format(wxT("%s %s"), IRCCommand::NAMES, channelName));
     addCommandQueue(content);
 }
 
@@ -144,7 +143,7 @@ void CIRCClient::sendMessageAsync(const wxString& target,
         const wxString& content)
 {
     wxString contentWxString(
-            wxString::Format(wxT("%s %s %s"),IRCCommand::PRIVMSG, target,
+            wxString::Format(wxT("%s %s %s"), IRCCommand::PRIVMSG, target,
                     content));
     addCommandQueue(contentWxString);
 }
@@ -152,7 +151,8 @@ void CIRCClient::sendNoticeAsync(const wxString& target,
         const wxString& content)
 {
     wxString contentWxString(
-            wxString::Format(wxT("%s %s %s"),IRCCommand::NOTICE, target, content));
+            wxString::Format(wxT("%s %s %s"), IRCCommand::NOTICE, target,
+                    content));
 
     addCommandQueue(contentWxString);
 }
@@ -160,12 +160,14 @@ void CIRCClient::changeTopicAsync(const wxString& channelName,
         const wxString& content)
 {
     wxString contentWxString(
-            wxString::Format(wxT("%s %s %s"),IRCCommand::TOPIC, channelName, content));
+            wxString::Format(wxT("%s %s %s"), IRCCommand::TOPIC, channelName,
+                    content));
     addCommandQueue(contentWxString);
 }
 void CIRCClient::changeNicknameAsync(const wxString& content)
 {
-    wxString contentWxString(wxString::Format(wxT("%s %s"),IRCCommand::NICK, content));
+    wxString contentWxString(
+            wxString::Format(wxT("%s %s"), IRCCommand::NICK, content));
     addCommandQueue(contentWxString);
 }
 }

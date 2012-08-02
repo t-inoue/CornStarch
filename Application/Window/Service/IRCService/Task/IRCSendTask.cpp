@@ -20,7 +20,7 @@ CIRCSendTask::~CIRCSendTask()
 // Run実行時に呼ばれる本体
 wxThread::ExitCode CIRCSendTask::Entry(void)
 {
-    while (m_client->isSocketConnected()&& m_client->isClosing() == false){
+    while (m_client->isSocketConnected()&& this->TestDestroy() == false){
         // Queueから取得
         wxString buffer;
         m_client->getCommandQueue()->ReceiveTimeout(100, buffer);
