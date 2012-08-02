@@ -24,10 +24,10 @@ wxThread::ExitCode CIRCStartTask::Entry(void)
     m_client->connect();
 
     wxString pass(
-            wxString::Format(wxT( "%s %s"), IRCCommand::PASS,
+            wxString::Format(wxT( "%s :%s"), IRCCommand::PASS,
                     getPassword().c_str()));
     wxString nick(
-            wxString::Format(wxT( "%s %s"), IRCCommand::NICK,
+            wxString::Format(wxT( "%s :%s"), IRCCommand::NICK,
                     getUserName().c_str()));
     wxString user(
             wxString::Format(wxT( "%s %s * 0 :%s"), IRCCommand::USER,

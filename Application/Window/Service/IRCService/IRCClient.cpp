@@ -143,7 +143,7 @@ void CIRCClient::sendMessageAsync(const wxString& target,
         const wxString& content)
 {
     wxString contentWxString(
-            wxString::Format(wxT("%s %s %s"), IRCCommand::PRIVMSG, target,
+            wxString::Format(wxT("%s %s :%s"), IRCCommand::PRIVMSG, target,
                     content));
     addCommandQueue(contentWxString);
 }
@@ -151,7 +151,7 @@ void CIRCClient::sendNoticeAsync(const wxString& target,
         const wxString& content)
 {
     wxString contentWxString(
-            wxString::Format(wxT("%s %s %s"), IRCCommand::NOTICE, target,
+            wxString::Format(wxT("%s %s :%s"), IRCCommand::NOTICE, target,
                     content));
 
     addCommandQueue(contentWxString);
@@ -160,14 +160,14 @@ void CIRCClient::changeTopicAsync(const wxString& channelName,
         const wxString& content)
 {
     wxString contentWxString(
-            wxString::Format(wxT("%s %s %s"), IRCCommand::TOPIC, channelName,
+            wxString::Format(wxT("%s %s :%s"), IRCCommand::TOPIC, channelName,
                     content));
     addCommandQueue(contentWxString);
 }
 void CIRCClient::changeNicknameAsync(const wxString& content)
 {
     wxString contentWxString(
-            wxString::Format(wxT("%s %s"), IRCCommand::NICK, content));
+            wxString::Format(wxT("%s :%s"), IRCCommand::NICK, content));
     addCommandQueue(contentWxString);
 }
 }

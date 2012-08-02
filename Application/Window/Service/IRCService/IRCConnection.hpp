@@ -20,6 +20,7 @@ namespace IRC
 {
 class CIRCConnection: public IConnection
 {
+    wxString getValidateChannelName(const wxString& channel);
 	CIRCClient *m_client;
 	wxEvtHandler* m_handler;
 	int m_connectionId;

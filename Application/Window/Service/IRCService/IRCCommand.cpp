@@ -26,7 +26,7 @@ const wxString IRCCommand::NOTICE = wxString("NOT") + "ICE";
 const wxString IRCCommand::NICK = "NICK";
 const wxString IRCCommand::KICK = wxString("KI") + "CK";
 const wxString IRCCommand::INVITE = wxString("INV") + "ITE";
-const wxString IRCCommand::INVALID_USERNAME = "433";
-const wxString IRCCommand::INVALID_CHANNEL = "432";
+const wxString IRCCommand::INVALID_USERNAME = "432";
+const wxString IRCCommand::INVALID_CHANNEL = "433";
 }
 } /* namespace CornStarch */

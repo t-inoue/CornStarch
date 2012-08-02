@@ -30,6 +30,7 @@ void CIRCUser::setUserInfo(const wxString& username, const wxString& password)
 // ニックネームをセット
 void CIRCUser::setNickName(const wxString& nickName)
 {
+    m_username = nickName;
 	m_nick = nickName;
 }
 
