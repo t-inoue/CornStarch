@@ -19,7 +19,6 @@ namespace CornStarch
 {
 ;
 
-
 wxDECLARE_EVENT(myEVT_THREAD_GET_MEMBER, CGetMemberEvent);
 wxDECLARE_EVENT(myEVT_THREAD_GET_MESSAGE, CGetMessageEvent);
 wxDECLARE_EVENT(myEVT_THREAD_GET_PING, CAuthEvent);
@@ -34,7 +33,7 @@ namespace IRC
 {
 ;
 CIRCReceiveTask::CIRCReceiveTask(wxThreadKind kind) :
-        CIRCTask(kind)
+        CIRCTask(kind), m_receiveBuffer(""), m_namesBuffer("")
 {
 
 }
@@ -53,31 +52,34 @@ wxThread::ExitCode CIRCReceiveTask::Entry(void)
 {
     CIRCParser parser;
     //　ソケットが切断されているか、自分で終了しようとしていればループ終了
-    while (m_client->isSocketConnected()
-            && m_client->isClosing() == false){
-        wxString buffer = m_client->recieveData(); //  receive();
-        if (buffer != ""){
-            std::string str(buffer);
-            vector<wxString> messages = CStringUtility::split(str, "\n");
-            for (int i = 0; i < messages.size(); i++){
+    while (m_client->isSocketConnected() && m_client->isClosing() == false){
+        m_receiveBuffer += m_client->recieveData();
+
+        if (m_receiveBuffer != ""
+                && m_receiveBuffer.Find("\n") != wxString::npos){
+            vector<wxString> messages = CStringUtility::split(m_receiveBuffer,
+                    "\n");
+            int messageSize = messages.size();
+            for (int index = 0; index < messages.size(); index++){
                 // PING応答
-                if (messages[i].find(IRCCommand::PING) == 0){
-                    wxString pingValue =
-                            CStringUtility::split(messages[i], ":")[1];
+                if (messages[index].find(IRCCommand::PING) == 0){
+                    wxString pingValue = CStringUtility::split(messages[index],
+                            ":")[1];
                     pong(pingValue);
-                } else if (messages[i].find(IRCCommand::_ERROR) == 0){
+                } else if (messages[index].find(IRCCommand::_ERROR) == 0){
                     // エラー
                     break;
                 } else{
                     // イベント生成
-                    CIRCMessageData message = parser.parse(messages[i]);
-                    CConnectionEventBase* event =createEvent(message);
+                    CIRCMessageData message = parser.parse(messages[index]);
+                    CConnectionEventBase* event = createEvent(message);
                     if (event != NULL){
                         event->setConnectionId(m_connectionId);
                         wxQueueEvent(m_handler, event);
                     }
                 }
             }
+            m_receiveBuffer = "";
         }
         wxUsleep(100);
     }
@@ -92,7 +94,8 @@ wxThread::ExitCode CIRCReceiveTask::Entry(void)
     return (wxThread::ExitCode) 0;
 }
 
-CConnectionEventBase* CIRCReceiveTask::createEvent(const CIRCMessageData& message)
+CConnectionEventBase* CIRCReceiveTask::createEvent(
+        const CIRCMessageData& message)
 {
     if (message.m_statusCode == IRCCommand::PRIVMSG){
         return createPrivateMessageEvent(message);
@@ -124,9 +127,9 @@ CConnectionEventBase* CIRCReceiveTask::createEvent(const CIRCMessageData& messag
     if (message.m_statusCode == IRCCommand::NAMES_REPLY_END){ //ユーザー名羅列終了リプライ
         return createNamesEvent(message);
     }
-    if (message.m_statusCode == IRCCommand::INVALID_USERNAME||
-            message.m_statusCode == IRCCommand::INVALID_CHANNEL){ //　不適切
-        //エラー
+    if (message.m_statusCode == IRCCommand::INVALID_USERNAME
+            || message.m_statusCode == IRCCommand::INVALID_CHANNEL){ //　不適切
+            //エラー
         CAuthEvent* event = new CAuthEvent();
         event->setAuthResult(false);
         event->SetEventType(myEVT_THREAD_GET_PING); // イベントの種類をセット
@@ -203,13 +206,13 @@ void CIRCReceiveTask::addNames(const CIRCMessageData& message)
 {
     int index = message.m_param.find(":");
     wxString names = message.m_param.substr(index + 1);
-    m_buffer += names;
+    m_namesBuffer += names;
 }
 CConnectionEventBase* CIRCReceiveTask::createNamesEvent(
         const CIRCMessageData& message)
 {
     vector<CMemberData*> result;
-    vector<wxString> names = CStringUtility::split(m_buffer, " ");
+    vector<wxString> names = CStringUtility::split(m_namesBuffer, " ");
 
     // 各メンバについてループ
     int size = (int) names.size();
@@ -227,7 +230,7 @@ CConnectionEventBase* CIRCReceiveTask::createNamesEvent(
     CGetMemberEvent* event = new CGetMemberEvent();
     event->setMembers(result); // 値取得
     event->SetEventType(myEVT_THREAD_GET_MEMBER); // イベントの種類をセット
-    m_buffer = "";
+    m_namesBuffer = "";
     return event;
 }
 

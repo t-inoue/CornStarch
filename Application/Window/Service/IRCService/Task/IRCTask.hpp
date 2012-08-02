@@ -11,6 +11,7 @@ namespace IRC
 {;
 class CIRCTask : public wxThread
 {
+
 protected:
     CIRCClient* m_client;
     wxEvtHandler* m_handler; // 処理終了を受け取るハンドラ

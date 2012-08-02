@@ -14,7 +14,10 @@ namespace IRC
 class CIRCReceiveTask: public CIRCTask
 {
 private:
-    wxString m_buffer;
+    // 受信データのバッファ
+    wxString m_receiveBuffer;
+    // 名前一覧のバッファ
+    wxString m_namesBuffer;
     // 名前一覧の名前をバッファに追加します。
     void addNames(const CIRCMessageData& param);
 
