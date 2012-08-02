@@ -69,11 +69,12 @@ string CHttpClient::getResponceBody(const string& str) const
 
 // POST時のデフォルトリクエストヘッダ
 void CHttpClient::sendPostDefault(const wxString& str, const wxString& basic)
-{
-    string s(str.mb_str(wxConvUTF8));
+{    
+    wxString msg = urlEncode(str);
+    string s(msg.mb_str(wxConvUTF8));
     sendCommonHeader((int)s.size(), basic);
     send("");
-    send("body=" + str);
+    send("body=" + msg);
     sendLF();
 }
 
@@ -111,11 +112,16 @@ void CHttpClient::sendStreamDefault(const wxString& basic)
 void CHttpClient::sendPutParticular(const wxString& key, const wxString& value, 
     const wxString& basic)
 {
-    string strValue = (string)value.mb_str(wxConvUTF8);
-    sendCommonHeader(key.size() + strValue.size() - 4, basic);
+    wxString aKey = urlEncode(key);
+    wxString aValue = urlEncode(value);
+
+    string strValue = (string)aValue.mb_str(wxConvUTF8);
+    string strKey = (string)aKey.mb_str(wxConvUTF8);
+
+    sendCommonHeader(strKey.size() + strValue.size() - 4, basic);
     send("Content-Type: application/x-www-form-urlencoded; charset=UTF-8");
     send("");
-    send(key + "=" + value);
+    send(aKey + "=" + aValue);
     sendLF();
 }
 
@@ -211,6 +217,57 @@ void CHttpClient::sendBody(const wxString& body)
 {
     send("body=" + body);
 }
+
+// URLエンコードを行う
+wxString CHttpClient::urlEncode(const wxString& text)
+{
+    // http://tools.ietf.org/html/rfc3986#section-2.4
+
+    string str = (string)text.mb_str(wxConvUTF8);
+    string result = "";
+
+    string::const_iterator it;
+    for (it = str.begin(); it != str.end(); it++){
+
+        if ((*it) == '%'){
+            // %のとき
+            result += "%25";
+
+        } else if ((*it) == ' '){
+            // 半角空白の時
+            result += '+';
+
+        } else if (isReservedDelim(*it)){
+            // 予約語の時
+            char value[4];
+            sprintf(value, "%%%X", (unsigned char)*it);
+            result += value;
+
+        } else {
+            // それ以外
+            result += *it;
+        }
+    }
+    return wxString(result.c_str(), wxConvUTF8);
+}
+
+// 予約文字か判断する
+bool CHttpClient::isReservedDelim(char c)
+{
+    // gen-delims  = ":" / "/" / "?" / "#" / "[" / "]" / "@"
+    // sub-delims  = "!" / "$" / "&" / "'" / "(" / ")"
+    // / "*" / "+" / "," / ";" / "="
+
+    if (c == ':' || c == '/' || c == '?' || c == '#' || c == '[' || 
+        c == ']' || c == '@' || c == '!' || c == '$' || c == '&' || 
+        c == '\'' || c == '(' || c == ')' || c == '*' || c == '+' || 
+        c == ',' || c == ';' || c == '='){
+            return true;
+    }
+
+    return false;
+}
+
 
 }
 }

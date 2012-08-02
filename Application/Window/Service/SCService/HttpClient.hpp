@@ -47,6 +47,9 @@ protected:
 	void sendPutParticular(const wxString& key, const wxString& value, const wxString& basic);
 	bool isCorrectHttpResponse(void) const;
 
+    // URLエンコードを行う
+    wxString urlEncode(const wxString& text);
+
 private:
 	void sendCommonHeader(int length, const wxString& basic);
 
@@ -57,6 +60,9 @@ private:
 	void sendLength(int length);
 	void sendKeepAlive(void);
 	void sendBody(const wxString& body);
+
+    // 予約文字か判断する
+    bool isReservedDelim(char c);
 };
 
 }
