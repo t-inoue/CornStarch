@@ -110,7 +110,11 @@ void CPaneRecord::pushLog(const CJoinLog& joinLog)
 // チャンネル離脱ログを表示
 void CPaneRecord::pushLog(const CPartLog& partLog)
 {
-    pushStringRow(partLog.getNickName() + "が" + partLog.getLog().m_channel + "から離脱しました\n", COLOR_GREEN);
+    if(partLog.getLog().m_channel != ""){
+        pushStringRow(partLog.getNickName() + "が" + partLog.getLog().m_channel + "から離脱しました\n", COLOR_GREEN);
+    }else{
+        pushStringRow(partLog.getNickName() + "が離脱しました\n", COLOR_GREEN);
+    }
 }
 
 // メンバー情報更新ログを表示

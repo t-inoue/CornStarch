@@ -104,7 +104,9 @@ void CMainLogHolder::pushLog(CChatLog* log)
     // 多すぎたら先頭削除
     if (m_logs.size() > MAX_LENGTH){
         vector<CChatLog*>::iterator it = m_logs.begin();
+        delete *it;
         m_logs.erase(it);
+
     }
 }
 

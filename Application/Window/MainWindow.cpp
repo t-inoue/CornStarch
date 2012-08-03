@@ -631,18 +631,21 @@ void CMainWindow::onJoinStream(CJoinStreamEvent& event)
 void CMainWindow::onPartStream(CPartStreamEvent& event)
 {
     CChatServiceBase* contents = getService(event.getConnectionId());
-    CSubscribeData data(event.getChannelName(), event.getUserName());
-    wxString name = event.getUserName();
-    wxString channel = event.getChannelName();
+    if (contents != NULL){
+        CSubscribeData data(event.getChannelName(), event.getUserName());
+        wxString name = event.getUserName();
+        wxString channel = event.getChannelName();
 
-    // データ更新
-    contents->onGetPartStream(channel, name);
-    m_logHolder->pushPartLog(data, contents->getMemberNick(data.m_username));
+        // データ更新
+        contents->onGetPartStream(channel, name);
+        m_logHolder->pushPartLog(data,
+                contents->getMemberNick(data.m_username));
 
-    // 表示の更新
-    m_view->displayLogs(m_logHolder->getLogs()); // ログペイン
-    if (channel == contents->getCurrentChannel()){
-        updateMemberView(event.getConnectionId(), channel);
+        // 表示の更新
+        m_view->displayLogs(m_logHolder->getLogs()); // ログペイン
+        if (channel == contents->getCurrentChannel()|| channel == ""){
+            updateMemberView(event.getConnectionId(), contents->getCurrentChannel());
+        }
     }
 }
 

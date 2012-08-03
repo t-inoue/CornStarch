@@ -350,11 +350,9 @@ void CChatServiceBase::onGetJoinStream(const wxString& channel, const wxString& 
 // チャンネル離脱ストリームを受信
 void CChatServiceBase::onGetPartStream(const wxString& channel, const wxString& name)
 {
-    CSubscribeData data (channel, name);
-
     // データ更新
     wxString nick = m_nickTable->getNickname(name);
-    m_channel->popMember(data.m_username);
+    m_channel->popMember(channel, name);
 
     // ニックネームが未知の時、メンバー情報取得タスクの開始
     if (!m_nickTable->isExist(name)){

@@ -64,7 +64,7 @@ public:
     void setMembers(const wxString& channel, const std::vector<CMemberData*>& members);
 
     // メンバーを消す
-    void popMember(const wxString& userName);
+    void popMember(const wxString& channel, const wxString& userName);
 
     // メンバー情報を更新する
     void updateMember(const CMemberData& member);
