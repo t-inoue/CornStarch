@@ -244,6 +244,7 @@ CConnectionEventBase* CIRCReceiveTask::createNamesEvent(
 
     CGetMemberEvent* event = new CGetMemberEvent();
     event->setMembers(result); // 値取得
+    event->setChannel(message.m_channel);
     event->SetEventType(myEVT_THREAD_GET_MEMBER); // イベントの種類をセット
     m_namesBuffer = "";
     return event;

@@ -32,6 +32,7 @@ CIRCMessageData CIRCParser::parse(const wxString& content)
         index = nextIndex + 1;
         nextIndex = content.find(" ", index);
         message.m_statusCode = content.substr(index, nextIndex - index);
+
         // パラメータ
         index = nextIndex + 1;
         message.m_param = content.substr(index);
@@ -41,9 +42,14 @@ CIRCMessageData CIRCParser::parse(const wxString& content)
             message.m_username = names[0];
         }
         // チャンネル
-        size_t channelIndex = message.m_param.find(" ");
-        if (channelIndex != wxString::npos){
-            message.m_channel = message.m_param.substr(0, channelIndex);
+        if (message.m_statusCode == IRCCommand::NAMES_REPLY_END){
+            vector<wxString> params = CStringUtility::split(message.m_param, " ");
+            message.m_channel =params[1];
+        } else{
+            size_t channelIndex = message.m_param.find(" ");
+            if (channelIndex != wxString::npos){
+                message.m_channel = message.m_param.substr(0, channelIndex);
+            }
         }
         // コンテント
         size_t contentIndex = message.m_param.find(":");

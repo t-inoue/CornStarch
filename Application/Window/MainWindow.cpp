@@ -525,10 +525,12 @@ void CMainWindow::onGetMembers(CGetMemberEvent& event)
     if (contents != NULL){
         // メンバーの追加
         contents->onGetMembers(event.getMembers());
-
-        // 表示の更新
-        updateMemberView(event.getConnectionId(),
-                contents->getCurrentChannel());
+        if (m_currentServiceId == event.getConnectionId()
+                && contents->getCurrentChannel() == event.getChannel()){
+            // 表示の更新
+            updateMemberView(event.getConnectionId(),
+                    contents->getCurrentChannel());
+        }
     }
 }
 

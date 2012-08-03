@@ -47,6 +47,7 @@ CConnectionEventBase* CSCGetMemberTask::parseHttpResponse(const string& response
 
     CSCJsonParser parser;
     event->setMembers(parser.getMembers(responseBody)); // 値取得
+    event->setChannel(m_channel);
     event->SetEventType(myEVT_THREAD_GET_MEMBER); // イベントの種類をセット
     return event;
 }
