@@ -23,7 +23,8 @@ private:
 	// 通信要素
 	map<int, CChatServiceBase*> m_services; // スターチャットのコンテンツを管理
 	void addNewService(CChatServiceBase* service);
-
+	// ダイアログの入力値の検証
+	bool validateRegisterDialogResult();
     // サービスのシリアライズ
     CServiceSerializer* m_serialize;
 

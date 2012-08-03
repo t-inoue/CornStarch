@@ -33,7 +33,8 @@ namespace IRC
 {
 ;
 CIRCReceiveTask::CIRCReceiveTask(wxThreadKind kind) :
-        CIRCTask(kind), m_receiveBuffer(""), m_namesBuffer("")
+        CIRCTask(kind), m_receiveBuffer(""), m_namesBuffer(""), isConnectedToIRCService(
+                false)
 {
 
 }
@@ -87,12 +88,21 @@ wxThread::ExitCode CIRCReceiveTask::Entry(void)
         }
         wxUsleep(100);
     }
+    // 故意でない切断時
     if (this->TestDestroy() == false){
-        // 故意でない切断時
-        CDisconnectEvent* event = new CDisconnectEvent();
-        event->SetEventType(myEVT_THREAD_DISCONNECT); // イベントの種類をセット
-        event->setConnectionId(m_connectionId);
-        wxQueueEvent(m_handler, event);
+        if (isConnectedToIRCService){   // IRCに接続中
+            CDisconnectEvent* event = new CDisconnectEvent();
+            event->SetEventType(myEVT_THREAD_DISCONNECT); // イベントの種類をセット
+            event->setConnectionId(m_connectionId);
+            wxQueueEvent(m_handler, event);
+        } else // IRCに接続できていない
+        {
+            CAuthEvent* event = new CAuthEvent();
+            event->setAuthResult(false);
+            event->SetEventType(myEVT_THREAD_GET_PING); // イベントの種類をセット
+            event->setConnectionId(m_connectionId);
+             wxQueueEvent(m_handler, event);
+        }
     }
     // 成功時
     return (wxThread::ExitCode) 0;
@@ -140,6 +150,7 @@ CConnectionEventBase* CIRCReceiveTask::createEvent(
         return event;
     }
     if (message.m_statusCode == IRCCommand::OK){ // 接続開始リプライ
+        isConnectedToIRCService = true;
         //接続
         CAuthEvent* event = new CAuthEvent();
         event->setAuthResult(true);

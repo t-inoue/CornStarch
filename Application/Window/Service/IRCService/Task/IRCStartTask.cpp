@@ -22,7 +22,6 @@ wxThread::ExitCode CIRCStartTask::Entry(void)
     // ソケットの接続
     m_client->setUrl(m_client->getHost());
     m_client->connect();
-
     wxString pass(
             wxString::Format(wxT( "%s :%s"), IRCCommand::PASS,
                     getPassword().c_str()));

@@ -111,6 +111,10 @@ wxString CIRCConnection::getValidateChannelName(const wxString& channel)
     if (channel.Find("#") != 0 && channel.Find("&") != 0){
         validateChannelName = wxString("#") + channel;
     }
+    // スペースを削除
+    validateChannelName.Replace(" ","");
+    // カンマを削除
+    validateChannelName.Replace(",","");
     return validateChannelName;
 }
 // チャンネルから離脱するタスク(別スレッド)を開始する

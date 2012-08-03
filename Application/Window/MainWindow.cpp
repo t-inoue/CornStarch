@@ -165,7 +165,19 @@ void CMainWindow::onQuit(wxCommandEvent& event)
 {
     Close(true);
 }
-
+bool CMainWindow::validateRegisterDialogResult()
+{
+    if (m_view->getDlgHostName() == ""){
+        wxMessageBox("ホスト名を入力してください");
+        return false;
+    }
+    if (m_view->getDlgUserName().IsAscii() == false
+            || m_view->getDlgHostName().IsAscii() == false){
+        wxMessageBox("半角英数を入力してください");
+        return false;
+    }
+    return true;
+}
 // ユーザ登録(SC)
 void CMainWindow::onSCRegister(wxCommandEvent& event)
 {
@@ -173,14 +185,10 @@ void CMainWindow::onSCRegister(wxCommandEvent& event)
     if (m_view->showModalSCAuthDlg() != wxID_OK){
         return;
     }
-
-    if (m_view->getDlgHostName() == ""){
-        wxMessageBox("ホスト名を入力してください");
-        return;
+    if (validateRegisterDialogResult()){
+        CChatServiceBase* contents = new StarChat::CSCService();
+        addNewService(contents);
     }
-
-    CChatServiceBase* contents = new StarChat::CSCService();
-    addNewService(contents);
 }
 
 // ユーザ登録(IRC)
@@ -191,14 +199,11 @@ void CMainWindow::onIRCRegister(wxCommandEvent& event)
         return;
     }
 
-    if (m_view->getDlgHostName() == ""){
-        wxMessageBox("ホスト名を入力してください");
-        return;
+    if (validateRegisterDialogResult()){
+        // ここでIRCサーバの追加を行う
+        CChatServiceBase* contents = new CornStarch::IRC::CIRCService();
+        addNewService(contents);
     }
-
-    // ここでIRCサーバの追加を行う
-    CChatServiceBase* contents = new CornStarch::IRC::CIRCService();
-    addNewService(contents);
 }
 
 void CMainWindow::addNewService(CChatServiceBase* service)
@@ -466,7 +471,7 @@ void CMainWindow::onGetAuth(CAuthEvent& event)
     // 認証に失敗
     if (!event.isAuthSucceeded()){
 
-        wxMessageBox("認証に失敗しました");
+        wxMessageBox("接続に失敗しました");
 
         // サービスの削除
         m_services.erase(event.getConnectionId());

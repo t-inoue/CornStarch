@@ -14,6 +14,8 @@ namespace IRC
 class CIRCReceiveTask: public CIRCTask
 {
 private:
+    // IRCとの接続が完了しているか
+    bool isConnectedToIRCService;
     // 受信データのバッファ
     wxString m_receiveBuffer;
     // 名前一覧のバッファ
