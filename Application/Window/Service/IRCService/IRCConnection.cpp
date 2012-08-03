@@ -47,7 +47,6 @@ void CIRCConnection::init(int connectionId, wxEvtHandler* handler)
     m_client = new CIRCClient();
     m_client->init(connectionId, handler);
 }
-
 // メッセージを投稿するタスク(別スレッド)を開始する
 void CIRCConnection::startPostMessageTask(const IUser* user,
         const wxString& message, const wxString& channel)
@@ -127,8 +126,8 @@ void CIRCConnection::startPartTask(const IUser* user, const wxString& channel)
     while (it != m_channels.end()){
         wxString channelName = (*it)->m_name;
         if (channelName == validateChannelName){
-            m_channels.erase(it);
             delete *it;
+            m_channels.erase(it);
             break;
         }
         ++it;
