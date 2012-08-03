@@ -111,7 +111,7 @@ wxString CIRCClient::recieveData()
 {
     this->m_buffer = "";
     this->receive(100);
-    return this->m_buffer;
+    return wxString(this->m_buffer.c_str(),wxConvUTF8);
 }
 void CIRCClient::joinAsync(const wxString& channelName)
 {
