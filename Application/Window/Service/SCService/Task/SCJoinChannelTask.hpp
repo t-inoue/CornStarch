@@ -6,6 +6,9 @@ namespace CornStarch
 ;
 
 
+// イベントの宣言
+wxDECLARE_EVENT(myEVT_THREAD_PUT_JOIN, CJoinEvent);
+
 namespace StarChat
 {
 ;

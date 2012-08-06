@@ -4,6 +4,8 @@
 namespace CornStarch
 {
 ;
+// イベントの宣言
+wxDECLARE_EVENT(myEVT_THREAD_GET_MEMBER, CGetMemberEvent);
 
 
 namespace StarChat

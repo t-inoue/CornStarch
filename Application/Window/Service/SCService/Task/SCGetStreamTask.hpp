@@ -5,6 +5,13 @@
 namespace CornStarch
 {
 ;
+// イベントの宣言
+wxDECLARE_EVENT(myEVT_THREAD_STREAM_MSG_ADD, CMsgStreamEvent);
+wxDECLARE_EVENT(myEVT_THREAD_STREAM_CH_JOIN, CJoinStreamEvent);
+wxDECLARE_EVENT(myEVT_THREAD_STREAM_CH_PART, CPartStreamEvent);
+wxDECLARE_EVENT(myEVT_THREAD_STREAM_CH_UPDATE, CChannelStreamEvent);
+wxDECLARE_EVENT(myEVT_THREAD_STREAM_USER_UPDATE, CUserStreamEvent);
+wxDECLARE_EVENT(myEVT_THREAD_DISCONNECT, CDisconnectEvent);
 
 namespace StarChat
 {
