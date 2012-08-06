@@ -26,7 +26,7 @@ private:
 
     CSCAuthTask* m_authTask; // ユーザ認証用タスク
     CSCGetStreamTask* m_getStreamTask; // ストリーム受信タスク
-    int m_connetionId;
+    int m_connectionId;
     wxEvtHandler* m_handler;
     wxString m_host;
 public:
@@ -71,9 +71,6 @@ public:
     // ストリーム通信タスク(別スレッド)を開始
     void startStreamTask(const IUser* user);
 
-    // 認証用タスク(別スレッド)を削除する
-    void deleteAuthTask(void);
-
     // ホストを取得
     wxString getHost() const;
 
@@ -81,16 +78,16 @@ public:
     void setHost(const wxString& host);
 
     // メッセージ取得
-    void onMessageReceived( CMessageData* message);
+    void onMessageReceived(CMessageData* message);
     // 切断時
-    void onDisconnected(){}
+    void onDisconnected();
     // 接続開始時
-    void onConnected(){}
+    void onConnected();
     //　接続失敗時
-    void onConnectionFailed(){}
+    void onConnectionFailed();
 
 private:
-
+    void invokeEvent(CConnectionEventBase* event);
     // 別スレッドでタスクを開始する
     void startThread(CSCTask* task);
 

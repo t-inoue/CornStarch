@@ -3,34 +3,20 @@
 using namespace std;
 
 namespace CornStarch
-{;
+{
+;
 namespace StarChat
-{;
+{
+;
 
-CSCGetStreamTask::CSCGetStreamTask(void) : CSCTask(wxTHREAD_JOINABLE)
+CSCGetStreamTask::CSCGetStreamTask(void) :
+        CSCTask(wxTHREAD_JOINABLE)
 {
 }
-
 
 CSCGetStreamTask::~CSCGetStreamTask(void)
 {
 }
-
-
-//////////////////////////////////////////////////////////////////////
-
-
-// 初期化を行う
-void CSCGetStreamTask::init(int connectionId,wxEvtHandler* handler, const wxString& userName,
-        const wxString& basic)
-{
-    CSCTask::init(connectionId,handler, basic);
-    m_userName = userName;
-}
-
-
-//////////////////////////////////////////////////////////////////////
-
 
 // メインループ
 wxThread::ExitCode CSCGetStreamTask::Entry()
@@ -58,12 +44,8 @@ wxThread::ExitCode CSCGetStreamTask::Entry()
         // 各JSONを解析して、イベントを送信する
         size_t size = jsonVec.size();
         for (size_t i = 0; i < size; i++){
-        	CConnectionEventBase* event = parseStream(jsonVec[i]);
-            // イベントを送信
-            if (event != NULL){
-                event->setConnectionId(m_connectionId);
-                wxQueueEvent(m_handler, event);
-            }
+            CSCMessageData message = parseStream(jsonVec[i]);
+            m_observer->onMessageReceived(&message);
         }
 //        if (client->isSocketConnected() == false){
 //            // 故意でない切断時
@@ -81,67 +63,67 @@ wxThread::ExitCode CSCGetStreamTask::Entry()
     delete client;
 
     // 成功時
-    return (wxThread::ExitCode)0;
+    return (wxThread::ExitCode) 0;
 }
-
 
 //////////////////////////////////////////////////////////////////////
 
-
 // Streamの内容からイベントを作成する
-CConnectionEventBase* CSCGetStreamTask::parseStream(const string& json)
+CSCMessageData CSCGetStreamTask::parseStream(const string& json)
 {
     // JSONのパース
     CSCJsonParser parser;
     CStreamData stream = parser.getStreamData(json);
-
+    CSCMessageData message;
     // ストリームの種類により分岐
-    switch (stream.m_type){
+    switch (stream.m_type) {
     case CStreamData::TYPE_UNKNOWN: // 解析不可
     case CStreamData::TYPE_NOSTREAM: // ストリーム未受信
-
-        return NULL;
-
+    {
+        message.m_type = CSCMessageType::UNKNOWN;
+        break;
+    }
     case CStreamData::TYPE_MESSAGE_ADD: // メッセージ投稿
-        {
-            CMsgStreamEvent* event = new CMsgStreamEvent();
-            event->SetEventType(myEVT_THREAD_STREAM_MSG_ADD);
-            event->setMessage(stream.m_message);
-            return event;
-        }
+    {
+        message.m_type = CSCMessageType::MESSAGE;
+
+        message.m_id = stream.m_message.m_id;
+        message.m_username = stream.m_message.m_username;
+        message.m_body = stream.m_message.m_body;
+        message.m_channel = stream.m_message.m_channel;
+        message.m_time = stream.m_message.m_time;
+        message.m_tempNick = stream.m_message.m_tempNick;
+        break;
+    }
     case CStreamData::TYPE_CHANNEL_MEMBER_ADD: // チャンネルメンバー参加
-        {
-            CJoinStreamEvent* event = new CJoinStreamEvent();
-            event->SetEventType(myEVT_THREAD_STREAM_CH_JOIN);
-            event->setChannelName(stream.m_channel.m_name);
-            event->setUserName(stream.m_member.m_name);
-            return event;
-        }
+    {
+        message.m_type = CSCMessageType::JOIN;
+        message.m_username = stream.m_member.m_name;
+        message.m_channel = stream.m_channel.m_name;
+        break;
+    }
     case CStreamData::TYPE_CHANNEL_MEMBER_SUB: // チャンネルメンバー離脱
-        {
-            CPartStreamEvent* event = new CPartStreamEvent();
-            event->SetEventType(myEVT_THREAD_STREAM_CH_PART);
-            event->setChannelName(stream.m_channel.m_name);
-            event->setUserName(stream.m_member.m_name);
-            return event;
-        }
+    {
+        message.m_type = CSCMessageType::PART;
+        message.m_username = stream.m_member.m_name;
+        message.m_channel = stream.m_channel.m_name;
+        break;
+    }
     case CStreamData::TYPE_CHANNEL_UPDATE: // チャンネル情報更新
-        {
-            CChannelStreamEvent* event = new CChannelStreamEvent();
-            event->SetEventType(myEVT_THREAD_STREAM_CH_UPDATE);
-            event->setChannel(stream.m_channel);
-            return event;
-        }
+    {
+        message.m_type = CSCMessageType::TOPIC;
+        message.m_channelData = stream.m_channel;
+        break;
+    }
     case CStreamData::TYPE_USER_UPDATE: // ユーザ情報更新
-        {
-            CUserStreamEvent* event = new CUserStreamEvent();
-            event->SetEventType(myEVT_THREAD_STREAM_USER_UPDATE);
-            event->setMember(stream.m_member);
-            return event;
-        }
+    {
+        message.m_type = CSCMessageType::NICK;
+        message.m_member = stream.m_member;
+        break;
+    }
     }
 
-    return NULL;
+    return message;
 }
 
 }

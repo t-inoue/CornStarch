@@ -17,22 +17,6 @@ CSCPartChannelTask::~CSCPartChannelTask(void)
 }
 
 
-//////////////////////////////////////////////////////////////////////
-
-
-// 行う処理をセット
-void CSCPartChannelTask::init(int connectionId,wxEvtHandler* handler, const wxString& userName,
-    const wxString& channel, const wxString& basic)
-{
-    CSCTask::init(connectionId,handler, basic);
-    m_userName = userName;
-    m_channel = channel;
-}
-
-
-//////////////////////////////////////////////////////////////////////
-
-
 // StarChatに対してリクエストを送信する
 void CSCPartChannelTask::sendRequestToSC(CSCClient* client)
 {
@@ -40,14 +24,13 @@ void CSCPartChannelTask::sendRequestToSC(CSCClient* client)
 }
 
 // HTTPレスポンスを解析してイベントを作成する
-CConnectionEventBase* CSCPartChannelTask::parseHttpResponse(const string& responseBody)
+void CSCPartChannelTask::notifyMessage(const string& responseBody)
 {
-    // イベントの初期化
-	CConnectionEventBase* event = new CPartEvent();
-    event->SetEventType(myEVT_THREAD_DELETE_PART); // イベントの種類をセット
-    event->SetString(m_channel);
-	event->setConnectionId(m_connectionId);
-    return event;
+    CSCMessageData message;
+    message.m_type = CSCMessageType::PART_REPLY;
+    message.m_channel = m_channel;
+    m_observer->onMessageReceived(&message);
+
 }
 
 }

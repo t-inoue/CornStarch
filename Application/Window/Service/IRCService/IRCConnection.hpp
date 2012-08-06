@@ -40,6 +40,7 @@ class CIRCConnection: public IConnection
 	// IRCのホスト
 	wxString m_host;
 
+	void invokeEvent(CConnectionEventBase* event);
 public:
 	CIRCConnection();
 	virtual ~CIRCConnection(void);
@@ -80,9 +81,6 @@ public:
 
 	//override ストリーム通信タスク(別スレッド)を開始
 	void startStreamTask(const IUser* user);
-
-	//override 認証用タスク(別スレッド)を削除する
-	void deleteAuthTask(void);
 
 	// ホストを取得
     wxString getHost() const;

@@ -2,35 +2,34 @@
 #include "SCTask.hpp"
 
 namespace CornStarch
-{;
-
-// イベントの宣言
-wxDECLARE_EVENT(myEVT_THREAD_GET_MEMBER_INFO, CGetMemberInfoEvent);
-
+{
+;
 namespace StarChat
-{;
-
+{
+;
 // メンバーの情報を取得するためのタスク
-class CSCGetMemberInfoTask : public CSCTask
+class CSCGetMemberInfoTask: public CSCTask
 {
 private:
-    wxString m_username; // ユーザ名
+    wxString m_username;
 
 public:
     CSCGetMemberInfoTask(void);
     ~CSCGetMemberInfoTask(void);
 
-    // 初期化を行う
-    void init(int connectionId,wxEvtHandler* handler, const wxString& username,
-        const wxString& basic);
+    wxString getUsername() const
+    {
+        return m_username;
+    }
+
+    void setUsername(wxString username)
+    {
+        m_username = username;
+    }
 
 private:
-
-    // StarChatに対してリクエストを送信する
     void sendRequestToSC(CSCClient* client);
-
-    // HTTPレスポンスを解析してイベントを作成する
-    CConnectionEventBase* parseHttpResponse(const std::string& responseBody);
+    void notifyMessage(const std::string& responseBody);
 };
 
 }

@@ -17,20 +17,6 @@ CSCJoinChannelTask::~CSCJoinChannelTask(void)
 }
 
 
-//////////////////////////////////////////////////////////////////////
-
-
-// 行う処理をセット
-void CSCJoinChannelTask::init(int connectionId,wxEvtHandler* handler, const wxString& userName,
-    const wxString& channel, const wxString& basic)
-{
-    CSCTask::init(connectionId,handler, basic);
-    m_userName = userName;
-    m_channel = channel;
-}
-
-
-//////////////////////////////////////////////////////////////////////
 
 
 // StarChatに対してリクエストを送信する
@@ -40,13 +26,13 @@ void CSCJoinChannelTask::sendRequestToSC(CSCClient* client)
 }
 
 // HTTPレスポンスを解析してイベントを作成する
-CConnectionEventBase* CSCJoinChannelTask::parseHttpResponse(const string& responseBody)
+void CSCJoinChannelTask::notifyMessage(const string& responseBody)
 {
-    // イベントの初期化
-    CJoinEvent* event = new CJoinEvent();
-    event->SetEventType(myEVT_THREAD_PUT_JOIN); // イベントの種類をセット
-    event->SetString(m_channel); // 新チャンネル名
-    return event;
+     CSCMessageData message;
+     message.m_type = CSCMessageType::JOIN_REPLY;
+     message.m_channel = m_channel;
+     m_observer->onMessageReceived(&message);
+
 }
 
 }

@@ -98,8 +98,8 @@ void CMainWindow::updateMemberView(int connectionId, const wxString& channel)
 
         // メンバーを表示
         m_view->displayMembers(service->getMembers(channel));
-        m_view->displayMessages(service->getMessages(channel),
-                service->getNickTable());
+//        m_view->displayMessages(service->getMessages(channel),
+//                service->getNickTable());
     }
 }
 

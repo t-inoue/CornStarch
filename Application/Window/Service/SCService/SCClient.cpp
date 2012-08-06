@@ -16,7 +16,6 @@ CSCClient::~CSCClient(void)
 {
 }
 
-
 ///////////////////////////////////////////////////////////////////////////
 
 
@@ -140,8 +139,7 @@ int CSCClient::recvStream(long waitTimeUsec)
     m_buffer = "";
 
     // 正しい形式となるまで受信し続ける
-    while(1){
-
+    while(true){
         // 受信
         length += receive(waitTimeUsec);
 

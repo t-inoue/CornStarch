@@ -1,4 +1,5 @@
 ﻿#include "SCJsonParser.hpp"
+#include "SCMessageData.hpp"
 
 using namespace std;
 using namespace picojson;

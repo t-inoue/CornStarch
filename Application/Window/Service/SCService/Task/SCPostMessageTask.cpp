@@ -16,23 +16,16 @@ CSCPostMessageTask::~CSCPostMessageTask(void)
 {
 }
 
-
-//////////////////////////////////////////////////////////////////////
-
-// 初期化を行う
-void CSCPostMessageTask::init(int connectionId,wxEvtHandler* handler, const wxString& channel,
-    const wxString& basic)
-{
-    CSCTask::init(connectionId,handler, basic);
-    m_channel = channel;
-}
-
 // 投稿するメッセージをセット
 void CSCPostMessageTask::setMessage(const wxString& message)
 {
     m_postMessage = message;
 }
-
+// 投稿するチャンネルをセット
+void CSCPostMessageTask::setChannel(const wxString& channel)
+{
+    m_channel = channel;
+}
 
 //////////////////////////////////////////////////////////////////////
 
@@ -44,12 +37,11 @@ void CSCPostMessageTask::sendRequestToSC(CSCClient* client)
 }
 
 // HTTPレスポンスを解析してイベントを作成する
-CConnectionEventBase* CSCPostMessageTask::parseHttpResponse(const string& responseBody)
+void CSCPostMessageTask::notifyMessage(const string& responseBody)
 {
-    // 処理終了イベントを送信
-	CConnectionEventBase* event = new CConnectionEventBase();
-    event->SetEventType(myEVT_THREAD_POST_MESSAGE);
-    return event;
+    CSCMessageData message;
+    message.m_type = CSCMessageType::MESSAGE_REPLY;
+    m_observer->onMessageReceived(&message);
 }
 
 }

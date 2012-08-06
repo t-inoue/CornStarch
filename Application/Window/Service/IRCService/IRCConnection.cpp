@@ -68,8 +68,7 @@ void CIRCConnection::startGetMessageTask(const IUser* user,
         CGetMessageEvent* event = new CGetMessageEvent();
         event->setMessages(result); // 値取得
         event->SetEventType(myEVT_THREAD_GET_MESSAGE); // イベントの種類をセット
-        event->setConnectionId(m_connectionId);
-        wxQueueEvent(m_handler, event);
+        invokeEvent(event);
     }
 }
 
@@ -98,8 +97,7 @@ void CIRCConnection::startGetChannelTask(const IUser* user)
     }
     event->setChannels(channels); // 値取得
     event->SetEventType(myEVT_THREAD_GET_CHANNEL); // イベントの種類をセット
-    event->setConnectionId(m_connectionId);
-    wxQueueEvent(m_handler, event);
+    invokeEvent(event);
 }
 wxString CIRCConnection::getValidateChannelName(const wxString& channel)
 {
@@ -114,6 +112,14 @@ wxString CIRCConnection::getValidateChannelName(const wxString& channel)
     validateChannelName.Replace(",", "");
     return validateChannelName;
 }
+
+void CIRCConnection::invokeEvent(CConnectionEventBase* event)
+{
+    event->setConnectionId(m_connectionId);
+    wxQueueEvent(m_handler, event);
+}
+
+
 // チャンネルから離脱するタスク(別スレッド)を開始する
 void CIRCConnection::startPartTask(const IUser* user, const wxString& channel)
 {
@@ -134,8 +140,7 @@ void CIRCConnection::startPartTask(const IUser* user, const wxString& channel)
     CPartEvent* event = new CPartEvent();
     event->SetEventType(myEVT_THREAD_DELETE_PART); // イベントの種類をセット
     event->SetString(channel);
-    event->setConnectionId(m_connectionId);
-    wxQueueEvent(m_handler, event);
+    invokeEvent(event);
 }
 
 // チャンネルに参加するタスク(別スレッド)を開始する
@@ -154,8 +159,7 @@ void CIRCConnection::startJoinTask(const IUser* user, const wxString& channel)
     CJoinEvent* event = new CJoinEvent();
     event->SetEventType(myEVT_THREAD_PUT_JOIN); // イベントの種類をセット
     event->SetString(channel); // 新チャンネル名
-    event->setConnectionId(m_connectionId);
-    wxQueueEvent(m_handler, event);
+    invokeEvent(event);
 }
 
 // メンバーの情報を取得するタスク(別スレッド)を開始する
@@ -167,8 +171,7 @@ void CIRCConnection::startGetMemberInfoTask(const IUser* user,
     CMemberData member(userName, userName);
     event->setMember(member); // 値取得
     event->SetEventType(myEVT_THREAD_GET_MEMBER_INFO); // イベントの種類をセット
-    event->setConnectionId(m_connectionId);
-    wxQueueEvent(m_handler, event);
+    invokeEvent(event);
 
 }
 
@@ -182,11 +185,6 @@ void CIRCConnection::startAuthTask(const IUser* user)
 
 // ストリーム通信タスク(別スレッド)を開始
 void CIRCConnection::startStreamTask(const IUser* user)
-{
-}
-
-// 認証用タスク(別スレッド)を削除する
-void CIRCConnection::deleteAuthTask(void)
 {
 }
 
@@ -225,8 +223,7 @@ void CIRCConnection::onMessageReceived(CMessageData* message)
 
         CConnectionEventBase* event = m_eventFactory.Create(*ircMessage);
         if (event != NULL){
-            event->setConnectionId(m_connectionId);
-            wxQueueEvent(m_handler, event);
+            invokeEvent(event);
         }
     }
 }
@@ -235,8 +232,7 @@ void CIRCConnection::onDisconnected()
 {
     CDisconnectEvent* event = new CDisconnectEvent();
     event->SetEventType(myEVT_THREAD_DISCONNECT); // イベントの種類をセット
-    event->setConnectionId(m_connectionId);
-    wxQueueEvent(m_handler, event);
+    invokeEvent(event);
 }
 // 接続開始時
 void CIRCConnection::onConnected()
@@ -244,8 +240,7 @@ void CIRCConnection::onConnected()
     CAuthEvent* event = new CAuthEvent();
     event->setAuthResult(true);
     event->SetEventType(myEVT_THREAD_GET_PING); // イベントの種類をセット
-    event->setConnectionId(m_connectionId);
-    wxQueueEvent(m_handler, event);
+    invokeEvent(event);
 }
 //　接続失敗時
 void CIRCConnection::onConnectionFailed()
@@ -253,8 +248,7 @@ void CIRCConnection::onConnectionFailed()
     CAuthEvent* event = new CAuthEvent();
     event->setAuthResult(false);
     event->SetEventType(myEVT_THREAD_GET_PING); // イベントの種類をセット
-    event->setConnectionId(m_connectionId);
-    wxQueueEvent(m_handler, event);
+    invokeEvent(event);
 }
 
 }

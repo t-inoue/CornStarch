@@ -57,9 +57,6 @@ public:
     // ストリーム通信タスク(別スレッド)を開始
     virtual void startStreamTask(const IUser* user)=0;
 
-    // 認証用タスク(別スレッド)を削除する
-    virtual void deleteAuthTask(void) =0;
-
     // ホストを取得
     virtual wxString getHost() const = 0;
 

@@ -81,14 +81,6 @@ CConnectionEventBase* CIRCEventFactory::Create(const CIRCMessageData& message)
         event->SetEventType(myEVT_THREAD_GET_PING); // イベントの種類をセット
         return event;
     }
-//        if (message.m_statusCode == IRCCommand::OK){ // 接続開始リプライ
-//            //isConnectedToIRCService = true;
-//            //接続
-//            CAuthEvent* event = new CAuthEvent();
-//            event->setAuthResult(true);
-//            event->SetEventType(myEVT_THREAD_GET_PING); // イベントの種類をセット
-//            return event;
-//        }
     return NULL;
 
 }
@@ -170,13 +162,12 @@ CConnectionEventBase* CIRCEventFactory::createNamesEvent(
             CMemberData* mem = new CMemberData();
             mem->m_name = names[i]; // 名前(name)
             mem->m_nick = names[i]; // ニックネーム(name)
-            // vectorに追加
             result.push_back(mem);
         }
     }
 
     CGetMemberEvent* event = new CGetMemberEvent();
-    event->setMembers(result); // 値取得
+    event->setMembers(result);
     event->setChannel(message.m_channel);
     event->SetEventType(myEVT_THREAD_GET_MEMBER); // イベントの種類をセット
     m_namesBuffer = "";

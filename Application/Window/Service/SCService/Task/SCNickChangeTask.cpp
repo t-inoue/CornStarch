@@ -17,21 +17,6 @@ CSCNickChangeTask::~CSCNickChangeTask(void)
 }
 
 
-//////////////////////////////////////////////////////////////////////
-
-
-// 初期化を行う
-void CSCNickChangeTask::init(int connectionId, wxEvtHandler* handler, const wxString& nick,
-    const wxString& name, const wxString& basic)
-{
-    CSCTask::init(connectionId, handler, basic);
-    m_nick = nick;
-    m_name = name;
-}
-
-
-//////////////////////////////////////////////////////////////////////
-
 
 // StarChatに対してリクエストを送信する
 void CSCNickChangeTask::sendRequestToSC(CSCClient* client)
@@ -41,9 +26,8 @@ void CSCNickChangeTask::sendRequestToSC(CSCClient* client)
 }
 
 // HTTPレスポンスを解析してイベントを作成する
-CConnectionEventBase* CSCNickChangeTask::parseHttpResponse(const string& responseBody)
+void CSCNickChangeTask::notifyMessage(const string& responseBody)
 {
-    return NULL;
 }
 
 }

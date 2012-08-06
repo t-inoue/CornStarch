@@ -2,32 +2,46 @@
 #include "SCTask.hpp"
 
 namespace CornStarch
-{;
+{
+;
 namespace StarChat
-{;
+{
+;
 
 // ニックネーム変更を行うためのタスク
-class CSCNickChangeTask : public CSCTask
+class CSCNickChangeTask: public CSCTask
 {
 private:
-    wxString m_nick; // ニックネーム
-    wxString m_name; // 本名
+    wxString m_nick;
+    wxString m_name;
 
 public:
     CSCNickChangeTask(void);
     ~CSCNickChangeTask(void);
 
-    // 初期化を行う
-    void init(int connectionId, wxEvtHandler* handler, const wxString& nick, 
-        const wxString& name, const wxString& basic);
+    wxString getName() const
+    {
+        return m_name;
+    }
+
+    void setName(wxString name)
+    {
+        m_name = name;
+    }
+
+    wxString getNick() const
+    {
+        return m_nick;
+    }
+
+    void setNick(wxString nick)
+    {
+        m_nick = nick;
+    }
 
 private:
-
-    // StarChatに対してリクエストを送信する
     void sendRequestToSC(CSCClient* client);
-
-    // HTTPレスポンスを解析してイベントを作成する
-    CConnectionEventBase* parseHttpResponse(const std::string& responseBody);
+    void notifyMessage(const std::string& responseBody);
 };
 
 }

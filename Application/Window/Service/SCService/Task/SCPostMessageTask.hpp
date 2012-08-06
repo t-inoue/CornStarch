@@ -23,10 +23,8 @@ public:
     CSCPostMessageTask(void);
     ~CSCPostMessageTask(void);
 
-    // 初期化を行う
-    void init(int connectionId,wxEvtHandler* handler, const wxString& channel,
-        const wxString& basic);
-
+    // 投稿するチャンネル
+    void setChannel(const wxString& channel);
     // 投稿するメッセージをセット
     void setMessage(const wxString& message);
 
@@ -36,7 +34,7 @@ private:
     void sendRequestToSC(CSCClient* client);
 
     // HTTPレスポンスを解析してイベントを作成する
-    CConnectionEventBase* parseHttpResponse(const std::string& responseBody);
+    void notifyMessage(const std::string& responseBody);
 };
 
 }

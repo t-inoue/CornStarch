@@ -3,21 +3,8 @@
 #include <wx/wx.h>
 #include "../SCClient.hpp"
 #include "../SCJsonParser.hpp"
-#include "../../Event/ConnectionEventBase.hpp"
-#include "../../Event/DisconnectEvent.hpp"
-#include "../../Event/PartEvent.hpp"
-#include "../../Event/AuthEvent.hpp"
-#include "../../Event/JoinEvent.hpp"
-#include "../../Event/MsgStreamEvent.hpp"
-#include "../../Event/ChannelStreamEvent.hpp"
-#include "../../Event/JoinStreamEvent.hpp"
-#include "../../Event/PartStreamEvent.hpp"
-#include "../../Event/UserStreamEvent.hpp"
-#include "../../Event/GetMessageEvent.hpp"
-#include "../../Event/GetMemberEvent.hpp"
-#include "../../Event/GetMemberInfoEvent.hpp"
-#include "../../Event/GetChannelEvent.hpp"
-#include "../../IMessageConnectionObserver.hpp"
+#include "../SCMessageData.hpp"
+
 
 namespace CornStarch
 {;
@@ -30,9 +17,7 @@ class CSCTask : public wxThread
 protected:
     IMessageConnectionObserver* m_observer;
 
-    wxEvtHandler* m_handler; // 処理終了を受け取るハンドラ
     wxString m_basic; // basic認証用文字列
-    int m_connectionId; // コネクションのID
     wxString m_host;
 public:
     CSCTask(wxThreadKind king = wxTHREAD_DETACHED);
@@ -48,10 +33,9 @@ public:
 	{
 		m_host = host;
 	}
-protected:
-
     // 初期化を行う
-    void init(int connectionId,wxEvtHandler* handler, const wxString& basic);
+    void init(IMessageConnectionObserver* observer, const wxString& basic);
+
 
 protected:
 
@@ -61,8 +45,8 @@ protected:
     // StarChatに対してリクエストを送信する
     virtual void sendRequestToSC(CSCClient* client) {};
 
-    // HTTPレスポンスを解析してイベントを作成する
-    virtual CConnectionEventBase* parseHttpResponse(const std::string& responseBody) {return NULL;};
+    // HTTPレスポンスを解析してメッセージを通知する
+    virtual void notifyMessage(const std::string& responseBody) {};
 };
 
 }

@@ -17,20 +17,6 @@ CSCGetMemberTask::~CSCGetMemberTask(void)
 }
 
 
-//////////////////////////////////////////////////////////////////////
-
-
-// 初期化を行う
-void CSCGetMemberTask::init(int connectionId,wxEvtHandler* handler, const wxString& channel,
-    const wxString& basic)
-{
-    CSCTask::init(connectionId,handler, basic);
-    m_channel = channel;
-}
-
-
-//////////////////////////////////////////////////////////////////////
-
 
 // StarChatに対してリクエストを送信する
 void CSCGetMemberTask::sendRequestToSC(CSCClient* client)
@@ -40,16 +26,16 @@ void CSCGetMemberTask::sendRequestToSC(CSCClient* client)
 }
 
 // HTTPレスポンスを解析してイベントを作成する
-CConnectionEventBase* CSCGetMemberTask::parseHttpResponse(const string& responseBody)
+void CSCGetMemberTask::notifyMessage(const string& responseBody)
 {
-    // イベントの初期化
-    CGetMemberEvent* event = new CGetMemberEvent();
 
     CSCJsonParser parser;
-    event->setMembers(parser.getMembers(responseBody)); // 値取得
-    event->setChannel(m_channel);
-    event->SetEventType(myEVT_THREAD_GET_MEMBER); // イベントの種類をセット
-    return event;
+    CSCMessageData message;
+    message.m_type = CSCMessageType::GET_MEMBERS;
+    message.m_members= parser.getMembers(responseBody);
+    message.m_channel = m_channel;
+    m_observer->onMessageReceived(&message);
+
 }
 
 }

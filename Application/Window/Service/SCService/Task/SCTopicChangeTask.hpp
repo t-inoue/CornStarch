@@ -2,32 +2,46 @@
 #include "SCTask.hpp"
 
 namespace CornStarch
-{;
+{
+;
 namespace StarChat
-{;
+{
+;
 
 // トピックを変更するためのタスク
-class CSCTopicChangeTask : public CSCTask
+class CSCTopicChangeTask: public CSCTask
 {
 private:
-    wxString m_channel; // チャンネル名
-    wxString m_topic; // 新トピック
+    wxString m_channel;
+    wxString m_topic;
 
 public:
     CSCTopicChangeTask(void);
     ~CSCTopicChangeTask(void);
 
-    // 初期化を行う
-    void init(int connectionId, wxEvtHandler* handler, const wxString& channel,
-        const wxString& topic, const wxString& basic);
+    wxString getChannel() const
+    {
+        return m_channel;
+    }
+
+    void setChannel(wxString channel)
+    {
+        m_channel = channel;
+    }
+
+    wxString getTopic() const
+    {
+        return m_topic;
+    }
+
+    void setTopic(wxString topic)
+    {
+        m_topic = topic;
+    }
 
 private:
-
-    // StarChatに対してリクエストを送信する
     void sendRequestToSC(CSCClient* client);
-
-    // HTTPレスポンスを解析してイベントを作成する
-    CConnectionEventBase* parseHttpResponse(const std::string& responseBody);
+    void notifyMessage(const std::string& responseBody);
 };
 
 }
