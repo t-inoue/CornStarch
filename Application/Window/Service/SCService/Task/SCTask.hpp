@@ -17,6 +17,7 @@
 #include "../../Event/GetMemberEvent.hpp"
 #include "../../Event/GetMemberInfoEvent.hpp"
 #include "../../Event/GetChannelEvent.hpp"
+#include "../../IMessageConnectionObserver.hpp"
 
 namespace CornStarch
 {;
@@ -27,6 +28,7 @@ namespace StarChat
 class CSCTask : public wxThread
 {
 protected:
+    IMessageConnectionObserver* m_observer;
 
     wxEvtHandler* m_handler; // 処理終了を受け取るハンドラ
     wxString m_basic; // basic認証用文字列

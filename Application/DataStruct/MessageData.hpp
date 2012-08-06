@@ -21,6 +21,7 @@ public:
     wxString m_tempNick; // 一時ニックネーム
 
     CMessageData(){}
+    virtual ~CMessageData(){}
     CMessageData(int id, const wxString& name, const wxString& body,
         const wxString& channel, const time_t& t)
         : m_id(id), m_username(name), m_channel(channel), m_time(t), m_body(body){}

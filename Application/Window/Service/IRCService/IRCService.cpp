@@ -6,7 +6,6 @@ namespace IRC
 {;
 CIRCService::CIRCService()
 {
-
 }
 
 CIRCService::~CIRCService()

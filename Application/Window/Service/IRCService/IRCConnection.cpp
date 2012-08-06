@@ -1,16 +1,13 @@
-﻿/*
- * IRCConnection.cpp
- *
- *  Created on: 2012/07/13
- */
-
-#include "IRCConnection.hpp"
+﻿#include "IRCConnection.hpp"
+#include "IRCEventFactory.hpp"
+#include "IRCMessageData.hpp"
 
 namespace CornStarch
 {
 ;
 
 // イベントの宣言
+wxDECLARE_EVENT(myEVT_THREAD_GET_PING, CAuthEvent);
 wxDECLARE_EVENT(myEVT_THREAD_PUT_JOIN, CJoinEvent);
 wxDECLARE_EVENT(myEVT_THREAD_GET_CHANNEL, CGetChannelEvent);
 wxDECLARE_EVENT(myEVT_THREAD_POST_MESSAGE, wxThreadEvent);
@@ -19,7 +16,7 @@ wxDECLARE_EVENT(myEVT_THREAD_GET_MEMBER_INFO, CGetMemberInfoEvent);
 wxDECLARE_EVENT(myEVT_THREAD_DELETE_PART, CPartEvent);
 wxDECLARE_EVENT(myEVT_THREAD_STREAM_CH_UPDATE, CChannelStreamEvent);
 wxDECLARE_EVENT(myEVT_THREAD_STREAM_USER_UPDATE, CUserStreamEvent);
-
+wxDECLARE_EVENT(myEVT_THREAD_DISCONNECT, CDisconnectEvent);
 namespace IRC
 {
 ;
@@ -45,7 +42,8 @@ void CIRCConnection::init(int connectionId, wxEvtHandler* handler)
     m_connectionId = connectionId;
     m_handler = handler;
     m_client = new CIRCClient();
-    m_client->init(connectionId, handler);
+    m_client->init(this);
+
 }
 // メッセージを投稿するタスク(別スレッド)を開始する
 void CIRCConnection::startPostMessageTask(const IUser* user,
@@ -106,20 +104,20 @@ void CIRCConnection::startGetChannelTask(const IUser* user)
 wxString CIRCConnection::getValidateChannelName(const wxString& channel)
 {
     //先頭が#か&でなければ追加。
-    wxString validateChannelName =channel;
+    wxString validateChannelName = channel;
     if (channel.Find("#") != 0 && channel.Find("&") != 0){
         validateChannelName = wxString("#") + channel;
     }
     // スペースを削除
-    validateChannelName.Replace(" ","");
+    validateChannelName.Replace(" ", "");
     // カンマを削除
-    validateChannelName.Replace(",","");
+    validateChannelName.Replace(",", "");
     return validateChannelName;
 }
 // チャンネルから離脱するタスク(別スレッド)を開始する
 void CIRCConnection::startPartTask(const IUser* user, const wxString& channel)
 {
-    wxString validateChannelName =getValidateChannelName(channel);
+    wxString validateChannelName = getValidateChannelName(channel);
     m_client->partAsync(validateChannelName);
 
     vector<CChannelData*>::iterator it = m_channels.begin();
@@ -143,7 +141,7 @@ void CIRCConnection::startPartTask(const IUser* user, const wxString& channel)
 // チャンネルに参加するタスク(別スレッド)を開始する
 void CIRCConnection::startJoinTask(const IUser* user, const wxString& channel)
 {
-    wxString validateChannelName =getValidateChannelName(channel);
+    wxString validateChannelName = getValidateChannelName(channel);
     m_client->joinAsync(validateChannelName);
     m_client->getTopicAsync(validateChannelName);
 
@@ -215,6 +213,48 @@ void CIRCConnection::startChangeTopicTask(const IUser* user,
         const wxString& topic)
 {
     m_client->changeTopicAsync(user->getChannelString(), topic);
+}
+
+// メッセージ取得
+void CIRCConnection::onMessageReceived(CMessageData* message)
+{
+    CIRCMessageData* ircMessage = dynamic_cast<CIRCMessageData*>(message);
+    if (ircMessage->m_statusCode == IRCCommand::PING){
+        m_client->pong(ircMessage->m_body);
+    } else{
+
+        CConnectionEventBase* event = m_eventFactory.Create(*ircMessage);
+        if (event != NULL){
+            event->setConnectionId(m_connectionId);
+            wxQueueEvent(m_handler, event);
+        }
+    }
+}
+// 切断時
+void CIRCConnection::onDisconnected()
+{
+    CDisconnectEvent* event = new CDisconnectEvent();
+    event->SetEventType(myEVT_THREAD_DISCONNECT); // イベントの種類をセット
+    event->setConnectionId(m_connectionId);
+    wxQueueEvent(m_handler, event);
+}
+// 接続開始時
+void CIRCConnection::onConnected()
+{
+    CAuthEvent* event = new CAuthEvent();
+    event->setAuthResult(true);
+    event->SetEventType(myEVT_THREAD_GET_PING); // イベントの種類をセット
+    event->setConnectionId(m_connectionId);
+    wxQueueEvent(m_handler, event);
+}
+//　接続失敗時
+void CIRCConnection::onConnectionFailed()
+{
+    CAuthEvent* event = new CAuthEvent();
+    event->setAuthResult(false);
+    event->SetEventType(myEVT_THREAD_GET_PING); // イベントの種類をセット
+    event->setConnectionId(m_connectionId);
+    wxQueueEvent(m_handler, event);
 }
 
 }

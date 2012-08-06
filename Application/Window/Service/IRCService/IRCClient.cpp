@@ -12,8 +12,7 @@ namespace IRC
 using namespace std;
 
 CIRCClient::CIRCClient() :
-        m_receiveTask(NULL), m_sendTask(NULL),  m_handler(
-                NULL)
+        m_receiveTask(NULL), m_sendTask(NULL)
 {
     m_commandQueue = new wxMessageQueue<wxString>();
 }
@@ -25,11 +24,10 @@ CIRCClient::~CIRCClient(void)
     delete m_receiveTask;
     delete m_sendTask;
 }
-void CIRCClient::init(int connectionId, wxEvtHandler* handler)
+void CIRCClient::init(IMessageConnectionObserver* observer )
 {
     CSocketClient::init();
-    m_connectionId = connectionId;
-    m_handler = handler;
+    m_observer = observer;
 }
 void CIRCClient::startAsync(const wxString& userName, const wxString& password)
 {
@@ -39,19 +37,19 @@ void CIRCClient::startAsync(const wxString& userName, const wxString& password)
 
     // 通信開始用スレッド
     CIRCStartTask *task = new CIRCStartTask(wxTHREAD_JOINABLE);
-    task->init(m_connectionId, m_handler, this);
+    task->init(this);
     task->setUserName(userName);
     task->setPassword(password);
     m_conenctTask = task;
 
     // 送信用スレッド
     CIRCSendTask *sendTask = new CIRCSendTask(wxTHREAD_JOINABLE);
-    sendTask->init(m_connectionId, m_handler, this);
+    sendTask->init(this);
     m_sendTask = sendTask;
 
     //　受信用スレッド
     CIRCReceiveTask *receiveTask = new CIRCReceiveTask(wxTHREAD_JOINABLE);
-    receiveTask->init(m_connectionId, m_handler, this);
+    receiveTask->init(this);
     m_receiveTask = receiveTask;
 
     task->continueWith(sendTask);
@@ -85,6 +83,11 @@ void CIRCClient::startThread(wxThread* task)
 void CIRCClient::quitAsync(void)
 {
     wxString content(IRCCommand::QUIT);
+    addCommandQueue(content);
+}
+void CIRCClient::pong(const wxString& value)
+{
+    wxString content(wxString::Format(wxT("%s %s"), IRCCommand::PONG, value));
     addCommandQueue(content);
 }
 void CIRCClient::disconnect(void)

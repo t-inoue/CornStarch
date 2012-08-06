@@ -23,7 +23,8 @@ CSCConnection::~CSCConnection(void)
 		}
 	}
 }
-
+// メッセージ取得
+void CSCConnection::onMessageReceived( CMessageData* message){}
 ///////////////////////////////////////////////////////////////////////////
 
 // 初期化を行う

@@ -1,11 +1,4 @@
-﻿//
-//  StringUtility.cpp
-//  testtest
-//
-//  Created by  on 12/07/18.
-//  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
-//
-
+﻿
 #include <iostream>
 #include "StringUtility.hpp"
 using namespace std;

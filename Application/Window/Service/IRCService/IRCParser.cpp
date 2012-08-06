@@ -1,6 +1,7 @@
 ﻿#include "IRCParser.hpp"
 #include "IRCMessageData.hpp"
 #include "IRCCommand.hpp"
+#include "StringUtility.hpp"
 namespace CornStarch
 {
 ;
@@ -19,6 +20,11 @@ CIRCParser::~CIRCParser()
 CIRCMessageData CIRCParser::parse(const wxString& content)
 {
     CIRCMessageData message;
+
+    if (content.find(IRCCommand::PING) == 0){
+        message.m_statusCode = IRCCommand::PING;
+        message.m_body =  CStringUtility::split(content,":")[1];
+    }
     if (content[0] == ':'){
         // 連番の一意なIDを作成
         m_messageId++;
@@ -43,8 +49,9 @@ CIRCMessageData CIRCParser::parse(const wxString& content)
         }
         // チャンネル
         if (message.m_statusCode == IRCCommand::NAMES_REPLY_END){
-            vector<wxString> params = CStringUtility::split(message.m_param, " ");
-            message.m_channel =params[1];
+            vector<wxString> params = CStringUtility::split(message.m_param,
+                    " ");
+            message.m_channel = params[1];
         } else{
             size_t channelIndex = message.m_param.find(" ");
             if (channelIndex != wxString::npos){

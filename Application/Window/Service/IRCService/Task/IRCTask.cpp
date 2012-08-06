@@ -15,10 +15,8 @@ CIRCTask::~CIRCTask()
 {
 }
 
-void CIRCTask::init(int connectionId, wxEvtHandler* handler, CIRCClient* client)
+void CIRCTask::init(CIRCClient* client)
 {
-    m_connectionId = connectionId;
-    m_handler = handler;
     m_client = client;
 }
 void CIRCTask::continueWith(wxThread* thread)

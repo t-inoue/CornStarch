@@ -4,6 +4,7 @@
 #include "../SocketClient.hpp"
 #include "IRCParser.hpp"
 #include "../../../header.hpp"
+#include "../IMessageConnectionObserver.hpp"
 #include <wx/wxprec.h>
 #include <wx/wx.h>
 #include <wx/msgqueue.h>
@@ -25,26 +26,31 @@ class CIRCClient: public CSocketClient
     wxThread *m_sendTask;
     // ホスト名です。
     wxString m_host;
-    // コネクションIDです。
-    int m_connectionId;
+
+    //メッセージオブザーバー
+    IMessageConnectionObserver* m_observer;
 
     wxEvtHandler* m_handler;
 
     // スレッドを開始します。
     void startThread(wxThread* task);
-public:
 
+
+public:
+    // Queueに送信コマンドを追加します。
+    void addCommandQueue(const wxString& target);
     CIRCClient();
     virtual ~CIRCClient(void);
     // 初期化します。
-    void init(int connectionId, wxEvtHandler* handler);
+    void init(IMessageConnectionObserver* observer);
     // 通信を開始します。
     void startAsync(const wxString& userName, const wxString& password);
-
+    // pong応答を返します。
+    void pong(const wxString& value);
     // コマンドをスレッドセーフで送信します。
     void sendCommand(const wxString& command);
 
-    void addCommandQueue(const wxString& target);
+
     // 受信ループです。
     void receiveLoop(void);
 
@@ -74,6 +80,10 @@ public:
     // ソケットからデータを受信します。
     wxString recieveData();
 
+    IMessageConnectionObserver* getObserver() const
+    {
+        return m_observer;
+    }
     wxMessageQueue<wxString>* getCommandQueue() const
      {
          return m_commandQueue;
@@ -99,7 +109,6 @@ public:
     {
         m_host = host;
     }
-
 
 }
 

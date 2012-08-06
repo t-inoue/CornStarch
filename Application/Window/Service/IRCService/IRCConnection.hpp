@@ -4,6 +4,7 @@
 #include "../IConnection.hpp"
 #include "IRCClient.hpp"
 #include "IRCUser.hpp"
+#include "../Event/AuthEvent.hpp"
 #include "../Event/JoinEvent.hpp"
 #include "../Event/GetChannelEvent.hpp"
 #include "../Event/GetMemberInfoEvent.hpp"
@@ -12,7 +13,10 @@
 #include "../Event/GetMessageEvent.hpp"
 #include "../Event/ChannelStreamEvent.hpp"
 #include "../Event/UserStreamEvent.hpp"
+#include "../Event/DisconnectEvent.hpp"
 #include "Task/IRCTask.hpp"
+#include "IRCCommand.hpp"
+#include "IRCEventFactory.hpp"
 
 namespace CornStarch
 {
@@ -20,12 +24,22 @@ namespace IRC
 {
 class CIRCConnection: public IConnection
 {
+    // イベントファクトリー
+    CIRCEventFactory m_eventFactory;
+    // チャンネル名の検証
     wxString getValidateChannelName(const wxString& channel);
+    // IRCクライアント
 	CIRCClient *m_client;
+	// イベントハンドラ
 	wxEvtHandler* m_handler;
+	// サービスID
 	int m_connectionId;
+	// チャンネル参加済みの一覧
 	vector<CChannelData*> m_channels;
+
+	// IRCのホスト
 	wxString m_host;
+
 public:
 	CIRCConnection();
 	virtual ~CIRCConnection(void);
@@ -75,6 +89,15 @@ public:
 
     // ホストを設定
     void setHost(const wxString& host);
+
+    // メッセージ取得
+    void onMessageReceived( CMessageData* message);
+    // 切断時
+    void onDisconnected();
+    // 接続開始時
+    void onConnected();
+    //　接続失敗時
+    void onConnectionFailed();
 
 };
 }

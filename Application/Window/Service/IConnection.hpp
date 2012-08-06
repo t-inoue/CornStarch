@@ -3,6 +3,7 @@
 #include <wx/wxprec.h>
 #include <wx/wx.h>
 #include "IUser.hpp"
+#include "IMessageConnectionObserver.hpp"
 
 using namespace std;
 
@@ -10,7 +11,7 @@ namespace CornStarch
 {;
 
 // 通信部分のインターフェース
-class IConnection
+class IConnection : public IMessageConnectionObserver
 {
 
 public:
