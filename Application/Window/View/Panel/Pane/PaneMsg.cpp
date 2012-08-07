@@ -45,7 +45,35 @@ bool CPaneMsg::containsOver4ByteText(const wxString& content) const
     }
     return false;
 }
+void CPaneMsg::addMessage(const CMessageData* message,
+        const map<wxString, wxString>& nickTable)
+{
+    int index = this->GetLastPosition();
 
+    // 時刻
+    wxString date = message->getTime("%H:%M");
+    this->AppendText(date);
+    this->SetStyle(index, index + date.length(), wxTextAttr(*wxRED));
+    index += date.size();
+
+    // 名前
+    wxString nick = getNickName(message->m_username, nickTable);
+    nick = " (" + nick + "):";
+    if (message->m_tempNick != ""){
+        nick += " (" + message->m_tempNick + ") ";
+    }
+    this->AppendText(nick);
+    this->SetStyle(index, index + nick.size(), wxTextAttr(*wxBLUE));
+    index += nick.size();
+
+    //本文
+    wxString body = message->m_body;
+    if (containsOver4ByteText(body) == false){
+        this->AppendText(body);
+        this->SetStyle(index, index + body.Length(), wxTextAttr(*wxBLACK));
+    }
+    this->AppendText(" \n");
+}
 // メッセージを表示する
 void CPaneMsg::displayMessages(const vector<CMessageData*>& messages,
         const map<wxString, wxString>& nickTable)
@@ -53,34 +81,8 @@ void CPaneMsg::displayMessages(const vector<CMessageData*>& messages,
     this->Clear();
     int size = (int) messages.size();
     for (int i = 0; i < size; i++){
-
-        int index = this->GetLastPosition();
-
-        // 時刻
-        wxString date = messages[i]->getTime("%H:%M");
-        this->AppendText(date);
-        this->SetStyle(index, index + date.length(), wxTextAttr(*wxRED));
-        index += date.size();
-
-        // 名前
-        wxString nick = getNickName(messages[i]->m_username, nickTable);
-        nick = " (" + nick + "):";
-        if (messages[i]->m_tempNick != ""){
-            nick += " (" + messages[i]->m_tempNick + ") ";
-        }
-        this->AppendText(nick);
-        this->SetStyle(index, index + nick.size(), wxTextAttr(*wxBLUE));
-        index += nick.size();
-
-        //本文
-        wxString body = messages[i]->m_body;
-        if (containsOver4ByteText(body) == false)
-        {
-            this->AppendText(body);
-            this->SetStyle(index, index + body.Length(), wxTextAttr(*wxBLACK));
-        }
-        this->AppendText(" \n");
         if (i < size - 1){
+            addMessage(messages[i],nickTable);
             drawDateLine(messages[i]->getTime("%Y/%m/%d(%a)"),
                     messages[i + 1]->getTime("%Y/%m/%d(%a)"));
         }

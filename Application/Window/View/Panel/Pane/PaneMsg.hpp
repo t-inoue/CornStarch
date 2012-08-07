@@ -22,7 +22,8 @@ public:
     // メッセージを表示する
     void displayMessages(const std::vector<CMessageData*>& messages, 
         const std::map<wxString, wxString>& nickTable);
-
+    void addMessage(const CMessageData* message,
+            const std::map<wxString, wxString>& nickTable);
 private:
 
     // ユーザ名に対応するニックネームを取得する

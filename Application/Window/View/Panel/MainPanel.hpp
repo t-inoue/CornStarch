@@ -30,6 +30,9 @@ public:
     // メッセージペインにメッセージを表示
     void displayMessages(const std::vector<CMessageData*>& messages,
         const std::map<wxString, wxString>& nickTable);
+    // メッセージペインにメッセージを表示
+     void addMessage(const CMessageData* message,
+         const std::map<wxString, wxString>& nickTable);
 
     // メンバーペインにメンバーを表示
     void displayMembers(const std::vector<CMemberData*>& members);

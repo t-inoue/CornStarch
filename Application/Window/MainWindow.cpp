@@ -315,7 +315,8 @@ void CMainWindow::onEnter(wxCommandEvent& event)
     // 表示の更新
     m_view->clearPostPaneText();
     m_view->displayLogs(m_logHolder->getLogs());
-    updateMessageView(m_currentServiceId, contents->getCurrentChannel());
+
+    m_view->addMessage(&message,contents->getNickTable());
 }
 
 // メンバーがダブルクリック
@@ -533,24 +534,26 @@ void CMainWindow::onGetMemberInfo(CGetMemberInfoEvent& event)
 // メッセージストリーム受信時
 void CMainWindow::onMsgStream(CMsgStreamEvent& event)
 {
-    CChatServiceBase* contents = getService(event.getConnectionId());
+    CChatServiceBase* service = getService(event.getConnectionId());
     CMessageData data = event.getMessage();
-    bool myPost = contents->isPostedThisClient(data);
+    bool myPost = service->isPostedThisClient(data);
 
-    contents->onGetMessageStream(data);
+    service->onGetMessageStream(data);
     if (!myPost){
         m_logHolder->pushMessageLog(data,
-                contents->getMemberNick(data.m_username));
+                service->getMemberNick(data.m_username));
     }
 
     // メッセージをログ一覧に表示
     m_view->displayLogs(m_logHolder->getLogs()); // ログペイン
-    if (contents->getCurrentChannel() == data.m_channel){
-        updateMessageView(event.getConnectionId(), data.m_channel);
+    if (service->getCurrentChannel() == data.m_channel){
+        // メッセージを表示
+        m_view->addMessage(&data,service->getNickTable());
+        //updateMessageView(event.getConnectionId(), data.m_channel);
     }
 
     // 通知があったとき && 自分以外の人から
-    if (contents->isUserCalled(data.m_body) && !myPost){
+    if (service->isUserCalled(data.m_body) && !myPost){
         m_view->messageNotify("通知", "呼ばれました");
     }
 }

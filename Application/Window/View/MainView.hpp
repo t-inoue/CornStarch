@@ -41,6 +41,9 @@ public: // 各ペインに関するメソッド
     // メッセージ一覧を表示する
     void displayMessages(const std::vector<CMessageData*>& messages,
         const std::map<wxString, wxString>& nickTable);
+    // メッセージ一覧を表示する
+      void addMessage(const CMessageData* message,
+          const std::map<wxString, wxString>& nickTable);
 
     // メンバー一覧を表示する
     void displayMembers(const std::vector<CMemberData*>& members);

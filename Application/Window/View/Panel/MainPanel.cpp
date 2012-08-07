@@ -67,7 +67,11 @@ void CMainPanel::displayMessages(const vector<CMessageData*>& messages,
 	m_msgPane->Show(true);
 
 }
-
+void CMainPanel::addMessage(const CMessageData* message,
+      const std::map<wxString, wxString>& nickTable)
+{
+    m_msgPane->addMessage(message,nickTable);
+}
 // メンバーペインにメンバーを表示
 void CMainPanel::displayMembers(const vector<CMemberData*>& members)
 {
