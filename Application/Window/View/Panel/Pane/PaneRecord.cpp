@@ -3,7 +3,8 @@
 using namespace std;
 
 namespace CornStarch
-{;
+{
+;
 
 const wxColour CPaneRecord::COLOR_BLACK = wxColour(0, 0, 0);
 const wxColour CPaneRecord::COLOR_BLUE = wxColour(0, 0, 200);
@@ -14,21 +15,19 @@ CPaneRecord::CPaneRecord(void)
 {
 }
 
-
 CPaneRecord::~CPaneRecord(void)
 {
 }
 
-
 //////////////////////////////////////////////////////////////////////
-
 
 // 初期化を行う
 void CPaneRecord::init(wxWindow* parent)
 {
     // テキスト領域の作成
-    Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, 
-        wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxVSCROLL|wxTE_RICH2 | wxTE_CHARWRAP);
+    Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize,
+            wxTE_MULTILINE | wxTE_READONLY | wxVSCROLL | wxTE_RICH2
+                    | wxTE_CHARWRAP);
 
     // フォントの設定(個人的にこれが好き)
     this->SetFont(wxFont(10, wxDEFAULT, wxNORMAL, wxNORMAL));
@@ -42,36 +41,40 @@ void CPaneRecord::displayLogs(const vector<CChatLog*>& logs)
 
     size_t size = logs.size();
     for (size_t i = 0; i < size; i++){
-        switch (logs[i]->getLogType()){
+        switch (logs[i]->getLogType()) {
         case CChatLog::LOG_MESSAGE:
-            pushLog(*(CMessageLog*)logs[i]);
+            pushLog(*(CMessageLog*) logs[i]);
             break;
         case CChatLog::LOG_JOIN:
-            pushLog(*(CJoinLog*)logs[i]);
+            pushLog(*(CJoinLog*) logs[i]);
             break;
         case CChatLog::LOG_PART:
-            pushLog(*(CPartLog*)logs[i]);
+            pushLog(*(CPartLog*) logs[i]);
             break;
         case CChatLog::LOG_TOPIC:
-            pushLog(*(CTopicLog*)logs[i]);
+            pushLog(*(CTopicLog*) logs[i]);
             break;
         case CChatLog::LOG_USER:
-            pushLog(*(CMemberLog*)logs[i]);
+            pushLog(*(CMemberLog*) logs[i]);
+            break;
+        case CChatLog::LOG_INVITE:
+            pushLog(*(CInviteLog*) logs[i]);
+            break;
+        case CChatLog::LOG_KICK:
+            pushLog(*(CKickLog*) logs[i]);
             break;
         }
     }
 }
 
-
 //////////////////////////////////////////////////////////////////////
-
 
 // 単色で文字列を追加する
 void CPaneRecord::pushStringRow(const wxString& str, const wxColour& colour)
 {
     // 文字色変更位置
-    int first = (int)this->GetValue().size();
-    int second = first + (int)str.size();
+    int first = (int) this->GetValue().size();
+    int second = first + (int) str.size();
 
     // 文字列の挿入
     this->AppendText(str);
@@ -91,7 +94,7 @@ void CPaneRecord::pushLog(const CMessageLog& messageLog)
     wxString t = message.getTime("%H:%M");
 
     // temporary_nickがあれば、本文の先頭に表示
-    wxString nick= message.m_tempNick;
+    wxString nick = message.m_tempNick;
     if (nick != ""){
         p = "(" + nick + ") " + p;
     }
@@ -104,15 +107,19 @@ void CPaneRecord::pushLog(const CMessageLog& messageLog)
 // チャンネル参加ログを表示
 void CPaneRecord::pushLog(const CJoinLog& joinLog)
 {
-    pushStringRow(joinLog.getNickName() + "が" + joinLog.getLog().m_channel + "に参加しました\n", COLOR_GREEN);
+    pushStringRow(
+            joinLog.getNickName() + "が" + joinLog.getLog().m_channel
+                    + "に参加しました\n", COLOR_GREEN);
 }
 
 // チャンネル離脱ログを表示
 void CPaneRecord::pushLog(const CPartLog& partLog)
 {
-    if(partLog.getLog().m_channel != ""){
-        pushStringRow(partLog.getNickName() + "が" + partLog.getLog().m_channel + "から離脱しました\n", COLOR_GREEN);
-    }else{
+    if (partLog.getLog().m_channel != ""){
+        pushStringRow(
+                partLog.getNickName() + "が" + partLog.getLog().m_channel
+                        + "から離脱しました\n", COLOR_GREEN);
+    } else{
         pushStringRow(partLog.getNickName() + "が離脱しました\n", COLOR_GREEN);
     }
 }
@@ -121,14 +128,28 @@ void CPaneRecord::pushLog(const CPartLog& partLog)
 void CPaneRecord::pushLog(const CMemberLog& memberLog)
 {
     CMemberData member = memberLog.getLog();
-    pushStringRow(member.m_name + "がニックネームを" + member.m_nick + "に変更しました\n", COLOR_GREEN);
+    pushStringRow(member.m_name + "がニックネームを" + member.m_nick + "に変更しました\n",
+            COLOR_GREEN);
 }
 
 // トピック変更ログを表示
 void CPaneRecord::pushLog(const CTopicLog& topicLog)
 {
     CChannelData channel = topicLog.getLog();
-    pushStringRow(channel.m_name + "のトピックが" + channel.m_topic + "に変更されました\n", COLOR_GREEN);
+    pushStringRow(channel.m_name + "のトピックが" + channel.m_topic + "に変更されました\n",
+            COLOR_GREEN);
 }
 
+// 招待ログを表示
+void CPaneRecord::pushLog(const CInviteLog& inviteLog)
+{
+    pushStringRow(inviteLog.getChannel() + "に招待されました\n", COLOR_GREEN);
+}
+// キックログを表示
+void CPaneRecord::pushLog(const CKickLog& kickLog)
+{
+    pushStringRow(
+            kickLog.getUsername() + "が" + kickLog.getChannel() + "からキックされました\n",
+            COLOR_GREEN);
+}
 }

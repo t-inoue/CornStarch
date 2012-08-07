@@ -643,8 +643,9 @@ void CMainWindow::onPartStream(CPartStreamEvent& event)
 
         // 表示の更新
         m_view->displayLogs(m_logHolder->getLogs()); // ログペイン
-        if (channel == contents->getCurrentChannel()|| channel == ""){
-            updateMemberView(event.getConnectionId(), contents->getCurrentChannel());
+        if (channel == contents->getCurrentChannel() || channel == ""){
+            updateMemberView(event.getConnectionId(),
+                    contents->getCurrentChannel());
         }
     }
 }
@@ -685,5 +686,46 @@ void CMainWindow::onUserStream(CUserStreamEvent& event)
     updateMessageView(event.getConnectionId(), contents->getCurrentChannel()); // メッセージペイン
     m_view->displayLogs(m_logHolder->getLogs()); // ログペイン
 }
+// チャンネル更新ストリーム受信時
+void CMainWindow::onInvite(CInviteEvent& event)
+{
 
+    CChatServiceBase* service = getService(event.getConnectionId());
+    if (service != NULL){
+        m_logHolder->pushInviteLog(event.getChannel(),event.getUser());
+        // 表示の更新
+        m_view->displayLogs(m_logHolder->getLogs()); // ログペイン
+
+        wxMessageDialog dialog(this,
+                wxString::Format(wxT("チャンネル[%s]に招待されました。参加しますか？"),
+                        event.getChannel()), "確認", wxOK | wxCANCEL);
+        if (dialog.ShowModal() == wxID_OK){
+            service->joinChannel(event.getChannel());
+        }
+    }
+
+}
+
+// ユーザ情報更新ストリーム受信時
+void CMainWindow::onKick(CKickEvent& event)
+{
+    CChatServiceBase* service = getService(event.getConnectionId());
+    if (service != NULL){
+        if (event.getUser() == service->getUserName()){
+            wxMessageDialog dialog(this,
+                    wxString::Format(wxT("チャンネル[%s]からキックされました。"),
+                            event.getChannel()), "確認", wxOK);
+            if (dialog.ShowModal() == wxID_OK){
+                service->partChannel(event.getChannel());
+            }
+        } else{
+            service->onGetPartStream(event.getChannel(), event.getUser());
+               m_logHolder->pushKickLog(event.getChannel(),
+                       service->getMemberNick(event.getUser()));
+            updateMemberView(event.getConnectionId(), event.getChannel());
+            // 表示の更新
+            m_view->displayLogs(m_logHolder->getLogs()); // ログペイン
+        }
+    }
+}
 }

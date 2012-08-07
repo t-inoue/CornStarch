@@ -18,6 +18,8 @@
 #include "../../Event/GetMemberEvent.hpp"
 #include "../../Event/GetMemberInfoEvent.hpp"
 #include "../../Event/GetChannelEvent.hpp"
+#include "../../Event/InviteEvent.hpp"
+#include "../../Event/KickEvent.hpp"
 #include "../../IMessageConnectionObserver.hpp"
 
 

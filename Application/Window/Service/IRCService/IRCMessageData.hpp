@@ -18,6 +18,7 @@ public:
     wxString m_host;
     wxString m_param;
     wxString m_statusCode;
+    wxString m_target;
 };
 }
 } /* namespace CornStarch */

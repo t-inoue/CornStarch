@@ -19,6 +19,8 @@ public:
         LOG_PART,
         LOG_TOPIC,
         LOG_USER,
+        LOG_INVITE,
+        LOG_KICK
     };
 
 protected:

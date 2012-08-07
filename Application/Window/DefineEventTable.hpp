@@ -6,6 +6,8 @@ namespace CornStarch
 
 // typedef
 typedef void (wxEvtHandler::*AuthEventFunction)(CAuthEvent&);
+typedef void (wxEvtHandler::*InviteEvtFunc)(CInviteEvent&);
+typedef void (wxEvtHandler::*KickEvtFunc)(CKickEvent&);
 typedef void (wxEvtHandler::*DisconnectEvtFunc)(CDisconnectEvent&);
 typedef void (wxEvtHandler::*DelPartEvtFunction)(CPartEvent&);
 typedef void (wxEvtHandler::*GetMemberEvtFunc)(CGetMemberEvent&);
@@ -37,6 +39,8 @@ wxDEFINE_EVENT(myEVT_THREAD_DELETE_PART, CPartEvent);
 wxDEFINE_EVENT(myEVT_THREAD_POST_MESSAGE, wxThreadEvent);
 wxDEFINE_EVENT(myEVT_SELECT_TREE_NODE, CChannelSelectEvent);
 wxDEFINE_EVENT(myEVT_SELECT_TREE_NODE_RIGHT, CChannelSelectEvent);
+wxDEFINE_EVENT(myEVT_THREAD_INVITE, CInviteEvent);
+wxDEFINE_EVENT(myEVT_THREAD_KICK, CKickEvent);
 
 // イベントハンドラ
 #define authEventHandler(func) wxEVENT_HANDLER_CAST(AuthEventFunction, func)
@@ -53,6 +57,8 @@ wxDEFINE_EVENT(myEVT_SELECT_TREE_NODE_RIGHT, CChannelSelectEvent);
 #define getChPartStreamEventHandler(func) wxEVENT_HANDLER_CAST(GetChPartStreamEvtFunc, func)
 #define joinEventHandler(func) wxEVENT_HANDLER_CAST(JoinEvtFunc, func)
 #define selectEventHandler(func) wxEVENT_HANDLER_CAST(SelectEvtFunc, func)
+#define inviteEventHandler(func) wxEVENT_HANDLER_CAST(InviteEvtFunc, func)
+#define kickEventHandler(func) wxEVENT_HANDLER_CAST(KickEvtFunc, func)
 
 #define EVT_DEL_PART(evt, id, func) wx__DECLARE_EVT1(evt, id, delPartEventHandler(func))
 #define EVT_GET_AUTH(evt, id, func) wx__DECLARE_EVT1(evt, id, authEventHandler(func))
@@ -68,6 +74,8 @@ wxDEFINE_EVENT(myEVT_SELECT_TREE_NODE_RIGHT, CChannelSelectEvent);
 #define EVT_GET_PART_STREAM(evt, id, func) wx__DECLARE_EVT1(evt, id, getChPartStreamEventHandler(func))
 #define EVT_PUT_JOIN(evt, id, func) wx__DECLARE_EVT1(evt, id, joinEventHandler(func))
 #define EVT_SELECT_TREE_NODE(evt, id, func) wx__DECLARE_EVT1(evt, id, selectEventHandler(func))
+#define EVT_INVITE(evt, id, func) wx__DECLARE_EVT1(evt, id, inviteEventHandler(func))
+#define EVT_KICK(evt, id, func) wx__DECLARE_EVT1(evt, id, kickEventHandler(func))
 
 // イベントテーブルの登録
 BEGIN_EVENT_TABLE(CMainWindow, wxFrame)
@@ -97,6 +105,8 @@ BEGIN_EVENT_TABLE(CMainWindow, wxFrame)
     EVT_GET_JOIN_STREAM(myEVT_THREAD_STREAM_CH_JOIN, wxID_ANY, CMainWindow::onJoinStream)
     EVT_GET_PART_STREAM(myEVT_THREAD_STREAM_CH_PART, wxID_ANY, CMainWindow::onPartStream)
     EVT_PUT_JOIN(myEVT_THREAD_PUT_JOIN, wxID_ANY, CMainWindow::onJoinChannel)
+    EVT_KICK(myEVT_THREAD_KICK, wxID_ANY, CMainWindow::onKick)
+    EVT_INVITE(myEVT_THREAD_INVITE, wxID_ANY, CMainWindow::onInvite)
         
     // チャンネルツリーの項目を選択
     EVT_SELECT_TREE_NODE(myEVT_SELECT_TREE_NODE, wxID_ANY, CMainWindow::onChannelSelected)

@@ -1,9 +1,5 @@
 ﻿#pragma once
-#include "MessageLog.hpp"
-#include "MemberLog.hpp"
-#include "JoinLog.hpp"
-#include "PartLog.hpp"
-#include "TopicLog.hpp"
+#include "ChatLog.hpp"
 #include <vector>
 
 namespace CornStarch
@@ -37,6 +33,12 @@ public:
 
     // トピック変更ログを追加する
     void pushTopicLog(const CChannelData& channel);
+
+    // 招待ログを追加する
+    void pushInviteLog(const wxString& channel,const wxString& userName);
+
+    // キックログを追加する
+    void pushKickLog(const wxString& channel,const wxString& userName);
 
     // ニックネームの更新を行う
     void onUpdateNickName(const CMemberData& member);

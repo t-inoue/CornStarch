@@ -1,4 +1,11 @@
 ﻿#include "MainLogHolder.hpp"
+#include "MessageLog.hpp"
+#include "MemberLog.hpp"
+#include "JoinLog.hpp"
+#include "PartLog.hpp"
+#include "TopicLog.hpp"
+#include "InviteLog.hpp"
+#include "KickLog.hpp"
 
 using namespace std;
 
@@ -64,6 +71,22 @@ void CMainLogHolder::pushChangeNickLog(const CMemberData& member)
     CMemberLog* log = new CMemberLog();
     log->init(member);
 
+    // ログの追加
+    pushLog(log);
+}
+// トピック変更ログを追加する
+void CMainLogHolder::pushKickLog(const wxString& channel,const wxString& userName)
+{
+    CKickLog* log = new CKickLog();
+    log->init(userName, channel);
+    // ログの追加
+    pushLog(log);
+}
+// トピック変更ログを追加する
+void CMainLogHolder::pushInviteLog(const wxString& channel,const wxString& userName)
+{
+    CInviteLog* log = new CInviteLog();
+    log->init(userName, channel);
     // ログの追加
     pushLog(log);
 }

@@ -11,6 +11,8 @@
 #include "../Event/PartStreamEvent.hpp"
 #include "../Event/UserStreamEvent.hpp"
 #include "../Event/AuthEvent.hpp"
+#include "../Event/KickEvent.hpp"
+#include "../Event/InviteEvent.hpp"
 #include "../Event/ConnectionEventBase.hpp"
 #include "IRCCommand.hpp"
 #include <vector>
@@ -29,6 +31,9 @@ wxDECLARE_EVENT(myEVT_THREAD_STREAM_CH_UPDATE, CChannelStreamEvent);
 wxDECLARE_EVENT(myEVT_THREAD_STREAM_USER_UPDATE, CUserStreamEvent);
 wxDECLARE_EVENT(myEVT_THREAD_DISCONNECT, CDisconnectEvent);
 wxDECLARE_EVENT(myEVT_THREAD_GET_PING, CAuthEvent);
+
+wxDECLARE_EVENT(myEVT_THREAD_INVITE, CInviteEvent);
+wxDECLARE_EVENT(myEVT_THREAD_KICK, CKickEvent);
 namespace IRC
 {
 ;
@@ -168,7 +173,7 @@ CConnectionEventBase* CIRCEventFactory::createNamesEvent(
 
     CGetMemberEvent* event = new CGetMemberEvent();
     event->setMembers(result);
-    event->setChannel(message.m_channel);
+    event->setChannel(message.m_target);
     event->SetEventType(myEVT_THREAD_GET_MEMBER); // イベントの種類をセット
     m_namesBuffer = "";
     return event;
@@ -183,13 +188,22 @@ CConnectionEventBase* CIRCEventFactory::createTopicEvent(
 CConnectionEventBase* CIRCEventFactory::createKickEvent(
         const CIRCMessageData& message) const
 {
-    return NULL;
+    CKickEvent* event = new CKickEvent();
+    event->setUser(message.m_target);
+    event->setChannel(message.m_channel);
+    event->SetEventType(myEVT_THREAD_KICK); // イベントの種類をセット
+    return event;
+
 }
 
 CConnectionEventBase* CIRCEventFactory::createInviteEvent(
         const CIRCMessageData& message) const
 {
-    return NULL;
+    CInviteEvent* event = new CInviteEvent();
+    event->setUser(message.m_username);
+    event->setChannel(message.m_body);
+    event->SetEventType(myEVT_THREAD_INVITE); // イベントの種類をセット
+    return event;
 }
 }
 }

@@ -48,16 +48,22 @@ CIRCMessageData CIRCParser::parse(const wxString& content)
             message.m_username = names[0];
         }
         // チャンネル
-        if (message.m_statusCode == IRCCommand::NAMES_REPLY_END){
-            vector<wxString> params = CStringUtility::split(message.m_param,
-                    " ");
-            message.m_channel = params[1];
-        } else{
+//        if (message.m_statusCode == IRCCommand::NAMES_REPLY_END){
+//            vector<wxString> params = CStringUtility::split(message.m_param,
+//                    " ");
+//            message.m_channel = params[1];
+//        } else{
             size_t channelIndex = message.m_param.find(" ");
             if (channelIndex != wxString::npos){
                 message.m_channel = message.m_param.substr(0, channelIndex);
+
+                size_t targetIndex = message.m_param.find(" ", channelIndex);
+                if(targetIndex != wxString::npos)
+                {
+                    message.m_target = message.m_param.substr(channelIndex+1, targetIndex+1);
+                }
             }
-        }
+//        }
         // コンテント
         size_t contentIndex = message.m_param.find(":");
         if (contentIndex != wxString::npos){

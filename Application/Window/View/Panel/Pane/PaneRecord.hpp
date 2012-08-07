@@ -4,6 +4,8 @@
 #include "../../../LogHolder/JoinLog.hpp"
 #include "../../../LogHolder/PartLog.hpp"
 #include "../../../LogHolder/TopicLog.hpp"
+#include "../../../LogHolder/InviteLog.hpp"
+#include "../../../LogHolder/KickLog.hpp"
 #include <wx/wxprec.h>
 #include <wx/wx.h>
 #include <vector>
@@ -52,6 +54,10 @@ private:
 
     // トピック変更ログを表示
     void pushLog(const CTopicLog& topicLog);
+    // 招待ログを表示
+    void pushLog(const CInviteLog& inviteLog);
+    // キックログを表示
+    void pushLog(const CKickLog& kickLog);
 };
 
 }

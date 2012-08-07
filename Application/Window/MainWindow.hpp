@@ -153,6 +153,11 @@ private:
 
 	// ユーザ情報更新ストリーム受信時
 	void onUserStream(CUserStreamEvent& event);
+    // チャンネル更新ストリーム受信時
+    void onInvite(CInviteEvent& event);
+
+    // ユーザ情報更新ストリーム受信時
+    void onKick(CKickEvent& event);
 
 };
 
