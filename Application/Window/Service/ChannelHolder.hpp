@@ -23,7 +23,7 @@ public:
     void setChannels(const std::vector<CChannelData*>& channels);
 
     // チャンネル一覧を取得する
-    std::vector<wxString> getChannels(void) const;
+    std::vector<CChannelStatus*> getChannels(void) const;
 
     // 既にチャンネル一覧を取得したか
     bool hasReceivedChannel(void) const;

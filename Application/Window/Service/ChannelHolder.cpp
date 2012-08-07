@@ -45,20 +45,21 @@ void CChannelHolder::setChannels(const vector<CChannelData*>& channels)
             CChannelStatus* data = new CChannelStatus();
             data->init();
             data->setTopic(topic);
+            data->setChannelName(channel);
             m_channels[channel] = data;
         }
     }
 }
 
 // チャンネル一覧を取得する
-vector<wxString> CChannelHolder::getChannels(void) const
+vector<CChannelStatus*> CChannelHolder::getChannels(void) const
 {
     map<wxString, CChannelStatus*>::const_iterator it;
-    vector<wxString> result;
+    vector<CChannelStatus*> result;
 
     // チャンネル一覧を作成
     for (it = m_channels.begin(); it != m_channels.end(); it++){
-        result.push_back(it->first);
+        result.push_back(it->second);
     }
 
     return result;
@@ -86,6 +87,7 @@ void CChannelHolder::setChannel(const CChannelData& channel)
     CChannelStatus* data = new CChannelStatus();
     data->init();
     data->setTopic(topic);
+    data->setChannelName(name);
     m_channels[name] = data;
 }
 

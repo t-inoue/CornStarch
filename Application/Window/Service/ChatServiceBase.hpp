@@ -158,7 +158,7 @@ public:
     void selectChannel(const wxString& channel);
 
     // チャンネル一覧を取得
-    std::vector<wxString> getChannels(void) const;
+    std::vector<CChannelStatus*> getChannels(void) const;
 
     // メッセージ一覧を取得
     std::vector<CMessageData*> getMessages(const wxString& channel) const;

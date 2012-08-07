@@ -167,13 +167,13 @@ void CServiceSerializer::addServiceToRoot(wxXmlNode* root,
 
         wxXmlNode* server4 = new wxXmlNode(serverRoot, wxXML_ELEMENT_NODE,
                 "channels");
-        vector<wxString> channels = service->getChannels();
-        vector<wxString>::iterator it = channels.begin();
+        vector<CChannelStatus*> channels = service->getChannels();
+        vector<CChannelStatus*>::iterator it = channels.begin();
         while (it != channels.end()){
             wxXmlNode* channel = new wxXmlNode(server4, wxXML_ELEMENT_NODE,
                     "channel");
             wxXmlNode* channleText = new wxXmlNode(channel, wxXML_TEXT_NODE,
-                    "text", (*it));
+                    "text", (*it)->getChannelName());
             it++;
         }
     }

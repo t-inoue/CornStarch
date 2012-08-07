@@ -49,7 +49,15 @@ void CIRCService::reconnect(void)
 
     // 前回接続済みのユーザーがサーバー側で切断の完了になってない場合があるので、ユーザー名を変更。
     m_user->setUserName(m_user->getUserName()+"_");
-    this->setSavedChannels(getChannels());
+
+    vector<wxString> channelNames;
+    vector<CChannelStatus*> channels = getChannels();
+    vector<CChannelStatus*>::iterator it = channels.begin();
+    while (it != channels.end())
+    {
+        channelNames.push_back((*it)->getChannelName());
+    }
+    this->setSavedChannels(channelNames);
     delete m_connect;
     m_connect = newConnection;
     regUser(m_user->getUserName(),m_user->getBasic());

@@ -120,7 +120,7 @@ void CChatServiceBase::selectChannel(const wxString& channel)
 }
 
 // チャンネル一覧を取得
-vector<wxString> CChatServiceBase::getChannels(void) const
+vector<CChannelStatus*> CChatServiceBase::getChannels(void) const
 {
     return m_channel->getChannels();
 }

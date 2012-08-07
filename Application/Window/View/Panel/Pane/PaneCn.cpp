@@ -53,12 +53,12 @@ void CPaneCn::displayChannels(const map<int,CChatServiceBase*>& connections)
         wxTreeItemId id = AppendItem(rootId, (*it).second->getHost(), -1, -1, data);
 
         // 各チャンネルについてループ
-        vector<wxString>::const_iterator cit;
-        vector<wxString> vec = (*it).second->getChannels();
-        for (cit = vec.begin(); cit != vec.end(); cit++){
+        vector<CChannelStatus*>::const_iterator cit;
+        vector<CChannelStatus*> channels = (*it).second->getChannels();
+        for (cit = channels.begin(); cit != channels.end(); cit++){
 
             // チャンネルをセット
-            AppendItem(id, *cit);
+            AppendItem(id, (*cit)->getChannelName());
         }
 
         Expand(id);
