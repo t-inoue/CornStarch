@@ -137,7 +137,7 @@ CChannelSelectEvent* CPaneCn::newSelectEvent(const wxTreeItemId& id)
     }
 
     // イベントを返す
-    chEvent->setText(itemName);
+    chEvent->setChannelName(itemName);
     return chEvent;
 }
 

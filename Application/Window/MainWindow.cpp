@@ -221,44 +221,13 @@ void CMainWindow::addNewService(CChatServiceBase* service)
 // チャンネルに参加メニュー
 void CMainWindow::onJoin(wxCommandEvent& event)
 {
-
-    CChatServiceBase* contents = getService(m_currentServiceId);
-    if (contents == NULL){
-        return;
-    }
-    // 未ログインの時
-    if (!contents->isUserLogin()){
-        return;
-    }
-
-    // ダイアログを表示
-    if (m_view->showModalChannelDlg() != wxID_OK){
-        return;
-    }
-
-    // チャンネル参加タスクの開始
-    contents->joinChannel(m_view->getDlgChannelName());
+    showAddChannleDialog(m_currentServiceId);
 }
 
 // サーバー削除
 void CMainWindow::onDeleteService(wxCommandEvent& event)
 {
-    CChatServiceBase* service = getService(m_currentServiceId);
-
-    if (service != NULL){
-        wxMessageDialog dialog(this,
-                wxString::Format(wxT("サーバー[%s]の削除をしてもよろしいですか？"),
-                        service->getHost()), "確認", wxOK | wxCANCEL);
-
-        if (dialog.ShowModal() == wxID_OK){
-
-            delete service;
-            m_services.erase(m_currentServiceId);
-            // 画面表示の更新
-            clearAllView();
-            m_view->displayChannels(m_services);
-        }
-    }
+    deleteService(m_currentServiceId);
 }
 
 // チャンネルから離脱メニュー
@@ -306,49 +275,13 @@ void CMainWindow::onUpdateDisplay(wxCommandEvent& event)
 // ニックネーム変更
 void CMainWindow::onNickChange(wxCommandEvent& event)
 {
-    // 未ログインの時
-    CChatServiceBase* contents = getService(m_currentServiceId);
-
-    if (contents == NULL){
-        return;
-    }
-
-    if (!contents->isUserLogin()){
-        return;
-    }
-
-    // ニックネーム変更ダイアログを表示
-    if (m_view->showModalNickDlg() != wxID_OK){
-        return;
-    }
-
-    // データ更新
-    contents->onNickChange(m_view->getNickName());
+    showChangeNicknameDialog(m_currentServiceId);
 }
 
 // トピック変更
 void CMainWindow::onChangeTopic(wxCommandEvent& event)
 {
-    // 未ログインの時
-    CChatServiceBase* contents = getService(m_currentServiceId);
-
-    if (contents == NULL){
-        return;
-    }
-
-    if (!contents->isUserLogin()){
-        return;
-    }
-    if (contents->getCurrentChannel() == ""){
-        return;
-    }
-    // トピック変更ダイアログを表示
-    if (m_view->showModalTopicDlg() != wxID_OK){
-        return;
-    }
-
-    // データ更新
-    contents->onChangeTopic(m_view->getTopic());
+    showChangeTopicDialog(m_currentServiceId);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -412,7 +345,7 @@ void CMainWindow::onChannelSelected(CChannelSelectEvent& event)
     }
 
     // サーバーIDとチャンネル名を取得
-    wxString channel = event.getString();
+    wxString channel = event.getChannelName();
     m_currentServiceId = event.getServerId();
 
     // コンテンツの更新
@@ -428,27 +361,39 @@ void CMainWindow::onChannelSelected(CChannelSelectEvent& event)
 // チャンネルペインを右クリック時
 void CMainWindow::onChannelRightClicked(CChannelSelectEvent& event)
 {
-    // チャンネル名がクリックされた
-    if (!event.isServerSelected()){
-        return;
-    }
-
-    return;
-
     enum
     {
-        Id_Part = 100,
+        Id_DeleteServer = 1, Id_AddChannel = 2, Id_DeleteChannel = 3,
+        Id_ChangeTopic = 4, Id_ChangeNickname = 5
     };
     wxMenu menu;
-    menu.Append(Id_Part, "サーバの削除");
+    menu.Append(Id_DeleteServer, "サーバの削除");
+    menu.Append(Id_AddChannel, "チャンネルの追加");
+    if (event.isServerSelected() == false){
+        menu.Append(Id_DeleteChannel, "チャンネルの削除");
+        menu.Append(Id_ChangeTopic, "トピックの変更");
+    }
+    menu.Append(Id_ChangeNickname, "ニックネームの変更");
 
-    // コンテキスト表示
+    int serviceId = event.getServerId();
+
+    wxString channel = event.getChannelName();
     switch (this->GetPopupMenuSelectionFromUser(menu)) {
-    case Id_Part:
-        //wxMessageBox("サーバ" + event.getString() + "が選択された。今はまだ未実装");
-        return;
-    default:
-        return;
+    case Id_DeleteServer:
+        deleteService(serviceId);
+        break;
+    case Id_AddChannel:
+        showAddChannleDialog(serviceId);
+        break;
+    case Id_DeleteChannel:
+        deleteChannel(serviceId, channel);
+        break;
+    case Id_ChangeTopic:
+        showChangeTopicDialog(serviceId);
+        break;
+    case Id_ChangeNickname:
+        showChangeNicknameDialog(serviceId);
+        break;
     }
 }
 
@@ -692,7 +637,7 @@ void CMainWindow::onInvite(CInviteEvent& event)
 
     CChatServiceBase* service = getService(event.getConnectionId());
     if (service != NULL){
-        m_logHolder->pushInviteLog(event.getChannel(),event.getUser());
+        m_logHolder->pushInviteLog(event.getChannel(), event.getUser());
         // 表示の更新
         m_view->displayLogs(m_logHolder->getLogs()); // ログペイン
 
@@ -720,12 +665,107 @@ void CMainWindow::onKick(CKickEvent& event)
             }
         } else{
             service->onGetPartStream(event.getChannel(), event.getUser());
-               m_logHolder->pushKickLog(event.getChannel(),
-                       service->getMemberNick(event.getUser()));
+            m_logHolder->pushKickLog(event.getChannel(),
+                    service->getMemberNick(event.getUser()));
             updateMemberView(event.getConnectionId(), event.getChannel());
             // 表示の更新
             m_view->displayLogs(m_logHolder->getLogs()); // ログペイン
         }
     }
 }
+
+// サービスを削除する。
+void CMainWindow::deleteService(int serviceId)
+{
+    CChatServiceBase* service = getService(serviceId);
+    if (service != NULL){
+        wxMessageDialog dialog(this,
+                wxString::Format(wxT("サーバー[%s]の削除をしてもよろしいですか？"),
+                        service->getHost()), "確認", wxOK | wxCANCEL);
+
+        if (dialog.ShowModal() == wxID_OK){
+            delete service;
+            m_services.erase(serviceId);
+            // 画面表示の更新
+            clearAllView();
+            m_view->displayChannels(m_services);
+        }
+    }
+}
+
+// チャンネルを削除する
+void CMainWindow::deleteChannel(int serviceId, wxString channel)
+{
+    CChatServiceBase* contents = getService(serviceId);
+    if (contents != NULL){
+        contents->partChannel(channel);
+    }
+}
+
+// チャンネル追加ダイアログを表示する
+void CMainWindow::showAddChannleDialog(int serviceId)
+{
+    CChatServiceBase* contents = getService(serviceId);
+    if (contents == NULL){
+        return;
+    }
+    // 未ログインの時
+    if (!contents->isUserLogin()){
+        return;
+    }
+
+    // ダイアログを表示
+    if (m_view->showModalChannelDlg() != wxID_OK){
+        return;
+    }
+
+    // チャンネル参加タスクの開始
+    contents->joinChannel(m_view->getDlgChannelName());
+}
+
+// トピック変更ダイアログを表示する
+void CMainWindow::showChangeTopicDialog(int serviceId)
+{
+    // 未ログインの時
+    CChatServiceBase* contents = getService(m_currentServiceId);
+
+    if (contents == NULL){
+        return;
+    }
+
+    if (!contents->isUserLogin()){
+        return;
+    }
+    if (contents->getCurrentChannel() == ""){
+        return;
+    }
+    // トピック変更ダイアログを表示
+    if (m_view->showModalTopicDlg() != wxID_OK){
+        return;
+    }
+
+    // データ更新
+    contents->onChangeTopic(m_view->getTopic());
+}
+
+// ニックネーム変更ダイアログを表示する。
+void CMainWindow::showChangeNicknameDialog(int serviceId)
+{ // 未ログインの時
+    CChatServiceBase* contents = getService(serviceId);
+    if (contents == NULL){
+        return;
+    }
+    if (!contents->isUserLogin()){
+        return;
+    }
+
+    // ニックネーム変更ダイアログを表示
+    if (m_view->showModalNickDlg() != wxID_OK){
+        return;
+    }
+
+    // データ更新
+    contents->onNickChange(m_view->getNickName());
+}
+
 }

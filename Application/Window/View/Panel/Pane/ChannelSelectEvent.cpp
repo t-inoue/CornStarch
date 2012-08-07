@@ -17,9 +17,9 @@ CChannelSelectEvent::~CChannelSelectEvent(void)
 
 
 // 項目名をセット
-void CChannelSelectEvent::setText(const wxString& text)
+void CChannelSelectEvent::setChannelName(const wxString& channel)
 {
-    m_text = text;
+    m_channelName = channel;
 }
 
 // サーバ名をセット
@@ -41,9 +41,9 @@ void CChannelSelectEvent::setServerOrNot(bool isServer)
 }
 
 // 項目名を取得
-wxString CChannelSelectEvent::getString(void) const
+wxString CChannelSelectEvent::getChannelName(void) const
 {
-    return m_text;
+    return m_channelName;
 }
 
 // サーバ名を取得

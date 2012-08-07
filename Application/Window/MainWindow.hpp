@@ -61,6 +61,21 @@ private:
 	// すべての画面をクリアする。
 	void clearAllView();
 
+	// サービスを削除する。
+	void deleteService(int serviceId);
+
+	// チャンネルを削除する
+	void deleteChannel(int serviceId,wxString channel);
+
+	// チャンネル追加ダイアログを表示する
+	void showAddChannleDialog(int serviceId);
+
+	// トピック変更ダイアログを表示する
+	void showChangeTopicDialog(int serviceId);
+
+	// ニックネーム変更ダイアログを表示する。
+	void showChangeNicknameDialog(int serviceId);
+
 	// IDからサービスを取得する
 	CChatServiceBase* getService(int serviceId);
 

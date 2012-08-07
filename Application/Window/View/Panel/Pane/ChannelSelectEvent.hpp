@@ -8,7 +8,7 @@ namespace CornStarch
 class CChannelSelectEvent : public wxTreeEvent
 {
 private:
-    wxString m_text; // 項目名
+    wxString m_channelName; // 項目名
     wxString m_server; // サーバ名
     int m_serverId; // サーバID
     bool m_isServer; // サーバ名か否か
@@ -18,7 +18,7 @@ public:
     ~CChannelSelectEvent(void);
 
     // 項目名をセット
-    void setText(const wxString& text);
+    void setChannelName(const wxString& text);
 
     // サーバ名をセット
     void setServer(const wxString& server);
@@ -30,7 +30,7 @@ public:
     void setServerOrNot(bool isServer);
 
     // 項目名を取得
-    wxString getString(void) const;
+    wxString getChannelName(void) const;
 
     // サーバ名を取得
     wxString getServer(void) const;
