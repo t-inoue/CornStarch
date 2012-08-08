@@ -67,7 +67,7 @@ int CSocketClient::receive(long waitTimeUsec)
 	while (1){
 
 		// waitTimeUsecの間、受信可能か調べる
-		if (waitRecv(waitTimeUsec) == 0){
+		if (waitRecv(waitTimeUsec) == false){
 			break;
 		}
 		// 受信
@@ -143,7 +143,7 @@ void CSocketClient::sendLF(void)
 }
 
 // 指定された時間受信待機する(デフォルト1msec)
-int CSocketClient::waitRecv(int usec, int sec)
+bool CSocketClient::waitRecv(int usec, int sec)
 {
 	// ソケットの登録
 	if (m_socket->WaitForRead((long) sec, usec / 1000)){

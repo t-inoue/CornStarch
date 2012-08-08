@@ -23,7 +23,7 @@ CIRCMessageData CIRCParser::parse(const wxString& content)
 
     if (content.find(IRCCommand::PING) == 0){
         message.m_statusCode = IRCCommand::PING;
-        message.m_body =  CStringUtility::split(content,":")[1];
+        message.m_body = CStringUtility::split(content, ":")[1];
     }
     if (content[0] == ':'){
         // 連番の一意なIDを作成
@@ -47,23 +47,17 @@ CIRCMessageData CIRCParser::parse(const wxString& content)
         if (names.size() > 1){
             message.m_username = names[0];
         }
-        // チャンネル
-//        if (message.m_statusCode == IRCCommand::NAMES_REPLY_END){
-//            vector<wxString> params = CStringUtility::split(message.m_param,
-//                    " ");
-//            message.m_channel = params[1];
-//        } else{
-            size_t channelIndex = message.m_param.find(" ");
-            if (channelIndex != wxString::npos){
-                message.m_channel = message.m_param.substr(0, channelIndex);
+        // 対象（チャンネルやユーザー）
+        size_t channelIndex = message.m_param.find(" ");
+        if (channelIndex != wxString::npos){
+            message.m_channel = message.m_param.substr(0, channelIndex);
 
-                size_t targetIndex = message.m_param.find(" ", channelIndex);
-                if(targetIndex != wxString::npos)
-                {
-                    message.m_target = message.m_param.substr(channelIndex+1, targetIndex+1);
-                }
+            size_t targetIndex = message.m_param.find(" ", channelIndex);
+            if (targetIndex != wxString::npos){
+                message.m_target = message.m_param.substr(channelIndex + 1,
+                        targetIndex).Trim();
             }
-//        }
+        }
         // コンテント
         size_t contentIndex = message.m_param.find(":");
         if (contentIndex != wxString::npos){

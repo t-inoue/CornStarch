@@ -24,11 +24,5 @@ void CSCTopicChangeTask::sendRequestToSC(CSCClient* client)
     // GETリクエストの送信
     client->sendChangeTopicRequest(m_channel, m_topic, m_basic);
 }
-
-// HTTPレスポンスを解析してイベントを作成する
-void CSCTopicChangeTask::notifyMessage(const string& responseBody)
-{
-}
-
 }
 }

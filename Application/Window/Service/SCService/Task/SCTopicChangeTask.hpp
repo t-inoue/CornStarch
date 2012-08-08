@@ -41,7 +41,6 @@ public:
 
 private:
     void sendRequestToSC(CSCClient* client);
-    void notifyMessage(const std::string& responseBody);
 };
 
 }

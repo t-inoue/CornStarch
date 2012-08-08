@@ -36,8 +36,6 @@ void CSCAuthTask::notifyMessage(const string& responseBody)
     {
         m_observer->onConnectionFailed();
     }
-
 }
-
 }
 }

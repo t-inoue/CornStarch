@@ -19,9 +19,10 @@ public:
     // 初期化を行う
     void init(wxWindow* parent);
     bool containsOver4ByteText(const wxString& content) const;
-    // メッセージを表示する
+    // メッセージを再描画する
     void displayMessages(const std::vector<CMessageData*>& messages, 
         const std::map<wxString, wxString>& nickTable);
+    // メッセージを追加する
     void addMessage(const CMessageData* message,
             const std::map<wxString, wxString>& nickTable);
 private:

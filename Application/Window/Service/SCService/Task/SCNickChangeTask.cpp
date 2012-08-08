@@ -25,10 +25,6 @@ void CSCNickChangeTask::sendRequestToSC(CSCClient* client)
     client->sendChangeNickRequest(m_name, m_nick, m_basic);
 }
 
-// HTTPレスポンスを解析してイベントを作成する
-void CSCNickChangeTask::notifyMessage(const string& responseBody)
-{
-}
 
 }
 }

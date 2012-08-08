@@ -30,8 +30,6 @@ class CIRCClient: public CSocketClient
     //メッセージオブザーバー
     IMessageConnectionObserver* m_observer;
 
-    wxEvtHandler* m_handler;
-
     // スレッドを開始します。
     void startThread(wxThread* task);
 

@@ -36,8 +36,8 @@ public:
     void setUrl(const wxString& url);
 
     // 指定された時間受信待機する。
-    // 受信可能なら正の値(1)、不可なら0
-    int waitRecv(int usec = 1000, int sec = 0);
+    // 受信可能ならTrue、不可ならFalse
+    bool waitRecv(int usec = 1000, int sec = 0);
 
 protected:
 

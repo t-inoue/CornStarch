@@ -98,8 +98,6 @@ void CMainWindow::updateMemberView(int connectionId, const wxString& channel)
 
         // メンバーを表示
         m_view->displayMembers(service->getMembers(channel));
-//        m_view->displayMessages(service->getMessages(channel),
-//                service->getNickTable());
     }
 }
 
@@ -669,7 +667,7 @@ void CMainWindow::onKick(CKickEvent& event)
         } else{
             service->onGetPartStream(event.getChannel(), event.getUser());
             m_logHolder->pushKickLog(event.getChannel(),
-                    service->getMemberNick(event.getUser()));
+                    event.getUser());
             updateMemberView(event.getConnectionId(), event.getChannel());
             // 表示の更新
             m_view->displayLogs(m_logHolder->getLogs()); // ログペイン
