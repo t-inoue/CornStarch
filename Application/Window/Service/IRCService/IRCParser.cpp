@@ -52,10 +52,10 @@ CIRCMessageData CIRCParser::parse(const wxString& content)
         if (channelIndex != wxString::npos){
             message.m_channel = message.m_param.substr(0, channelIndex);
 
-            size_t targetIndex = message.m_param.find(" ", channelIndex);
+            size_t targetIndex = message.m_param.find(" ", channelIndex+ 1);
             if (targetIndex != wxString::npos){
                 message.m_target = message.m_param.substr(channelIndex + 1,
-                        targetIndex).Trim();
+                        targetIndex - channelIndex -1);
             }
         }
         // コンテント
