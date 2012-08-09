@@ -31,7 +31,7 @@ public:
         int& serviceId);
 
 private:
-
+    void createNode(wxXmlNode* parent,wxString name,wxString content);
     // XMLNodeからサービスを作成する
     CChatServiceBase* newService(wxXmlNode* node, wxEvtHandler* handler, 
         int& serviceId);

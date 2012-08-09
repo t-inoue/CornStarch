@@ -163,19 +163,7 @@ void CMainWindow::onQuit(wxCommandEvent& event)
 {
     Close(true);
 }
-bool CMainWindow::validateRegisterDialogResult()
-{
-//    if (m_view->getDlgHostName() == ""){
-//        wxMessageBox("ホスト名を入力してください");
-//        return false;
-//    }
-//    if (m_view->getDlgUserName().IsAscii() == false
-//            || m_view->getDlgHostName().IsAscii() == false){
-//        wxMessageBox("半角英数を入力してください");
-//        return false;
-//    }
-    return true;
-}
+
 // サービス登録
 void CMainWindow::onServiceRegister(wxCommandEvent& event)
 {

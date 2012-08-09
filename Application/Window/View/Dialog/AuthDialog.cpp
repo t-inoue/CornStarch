@@ -185,17 +185,32 @@ wxString CAuthDialog::getServiceTypeName(void) const
 
 CChatServiceBase* CAuthDialog::getNewService(void) const
 {
-    CChatServiceBase* service;
-    if (getServiceTypeName() == "IRC"){
-        service = new IRC::CIRCService();
-    } else{
-        service = new StarChat::CSCService();
+    if (validateRegisterDialogResult()){
+        CChatServiceBase* service;
+        if (getServiceTypeName() == "IRC"){
+            service = new IRC::CIRCService();
+        } else{
+            service = new StarChat::CSCService();
+        }
+        service->setName(getServiceName());
+        service->setHost(getHostName());
+        service->setPort(getPort());
+        service->registerUser(getName(), getPass());
+        return service;
     }
-    service->setName(getServiceName());
-    service->setHost(getHostName());
-    service->setPort(getPort());
-    service->registerUser(getName(), getPass());
-    return service;
+    return NULL;
+}
+bool CAuthDialog::validateRegisterDialogResult() const
+{
+    if (getHostName() == ""){
+        wxMessageBox("ホスト名を入力してください");
+        return false;
+    }
+    if (getName().IsAscii() == false || getHostName().IsAscii() == false){
+        wxMessageBox("半角英数を入力してください");
+        return false;
+    }
+    return true;
 }
 }
 

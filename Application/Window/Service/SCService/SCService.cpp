@@ -39,6 +39,7 @@ void CSCService::reconnect(void)
         // 通信を初期化
         CSCConnection *newConnection = new CSCConnection();
         newConnection->setHost(m_connect->getHost());
+        newConnection->setPort(m_connect->getPort());
         newConnection->init(m_id, m_handler);
 
         delete m_connect;

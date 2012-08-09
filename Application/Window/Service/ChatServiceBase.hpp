@@ -110,7 +110,7 @@ public:
         m_connect->setHost(value);
     }
     // ホストを取得
-      int getHPort() const
+      int getPort() const
       {
           return m_connect->getPort();
       }
@@ -136,14 +136,6 @@ public:
         return m_user->getBasic();
     }
 
-//    void regUser(const wxString& name, const wxString& basic)
-//    {
-//        m_user->setBasic(basic);
-//        m_user->setUserName(name);
-//        m_state =CONNECTING;
-//        m_connect->startAuthTask(m_user);
-//    }
-
     // 初期化を行う
     virtual void init(wxEvtHandler* handler) = 0;
 
@@ -152,6 +144,9 @@ public:
 
     // ユーザ登録を行った際のデータ更新
     void registerUser(const wxString& userName, const wxString& pass);
+
+    // ユーザ登録を行った際のデータ更新
+    void registerUserBasiscEncoded(const wxString& userName, const wxString& pass);
 
     // チャンネルに参加を行う際
     void joinChannel(const wxString& channel);

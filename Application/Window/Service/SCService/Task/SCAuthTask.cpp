@@ -41,5 +41,6 @@ void CSCAuthTask::notifyMessage(const string& responseBody)
         m_observer->onDisconnected();
     }
 }
+
 }
 }

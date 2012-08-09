@@ -55,6 +55,12 @@ void CChatServiceBase::registerUser(const wxString& userName,
     m_user->setUserInfo(userName, pass);
 }
 
+// ユーザ登録を行った際のデータ更新
+void CChatServiceBase::registerUserBasiscEncoded(const wxString& userName, const wxString& pass)
+{
+    m_user->setBasic(pass);
+    m_user->setUserName(userName);
+}
 void  CChatServiceBase::connect(void){
     // 認証タスクの開始
 

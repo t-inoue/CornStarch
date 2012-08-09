@@ -93,18 +93,23 @@ CChatServiceBase* CServiceSerializer::newService(wxXmlNode* node,
 
     // 各タグの情報を取得
     wxXmlNode* status = node->GetChildren();
-    wxString nick, name, pass, host;
+    wxString nick, name, pass, host, user;
+    long port;
     vector<wxString> channels;
     while (status){
 
         // タグ情報の読み込み
         wxString tag = status->GetName();
-        if (tag == "name"){
-            name = status->GetNodeContent();
+        if (tag == "user"){
+            user = status->GetNodeContent();
         } else if (tag == "pass"){
             pass = status->GetNodeContent();
+        } else if (tag == "name"){
+            name = status->GetNodeContent();
         } else if (tag == "host"){
             host = status->GetNodeContent();
+        } else if (tag == "port"){
+            status->GetNodeContent().ToLong(&port);
         }
         if (tag == "channels"){
             wxXmlNode* channel = status->GetChildren();
@@ -112,7 +117,6 @@ CChatServiceBase* CServiceSerializer::newService(wxXmlNode* node,
                 channels.push_back(channel->GetNodeContent());
                 channel = channel->GetNext();
             }
-
         }
         // 次のタグへ
         status = status->GetNext();
@@ -121,50 +125,45 @@ CChatServiceBase* CServiceSerializer::newService(wxXmlNode* node,
     // サービスのパラメータを代入
     service->setId(serviceId);
     service->init(handler);
+    service->setName(name);
+    service->setPort(port);
     service->setHost(host);
     service->setSavedChannels(channels);
-    service->registerUser(name, pass);
+    service->registerUserBasiscEncoded(user, pass);
     service->connect();
     return service;
 }
-
+void CServiceSerializer::createNode(wxXmlNode* parent, wxString name,
+        wxString content)
+{
+    wxXmlNode* server1 = new wxXmlNode(parent, wxXML_ELEMENT_NODE, name);
+    new wxXmlNode(server1, wxXML_TEXT_NODE, "text", content);
+}
 // サービス情報をRootノードに追加
 void CServiceSerializer::addServiceToRoot(wxXmlNode* root,
         const CChatServiceBase* service)
 {
+    wxXmlNode* serverRoot;
     if (service->getChatType() == CChatServiceBase::STAR_CHAT){
 
         // StarChatのとき
-        wxXmlNode* serverRoot = new wxXmlNode(root, wxXML_ELEMENT_NODE,
-                "StarChat");
-        wxXmlNode* server1 = new wxXmlNode(serverRoot, wxXML_ELEMENT_NODE,
-                "host");
-        wxXmlNode* child1 = new wxXmlNode(server1, wxXML_TEXT_NODE, "text",
-                service->getHost());
-        wxXmlNode* server3 = new wxXmlNode(serverRoot, wxXML_ELEMENT_NODE,
-                "pass");
-        wxXmlNode* child3 = new wxXmlNode(server3, wxXML_TEXT_NODE, "text",
-                service->getBasic());
-        wxXmlNode* server2 = new wxXmlNode(serverRoot, wxXML_ELEMENT_NODE,
-                "name");
-        wxXmlNode* child2 = new wxXmlNode(server2, wxXML_TEXT_NODE, "text",
-                service->getUserName());
-    } else{
+        serverRoot = new wxXmlNode(root, wxXML_ELEMENT_NODE, "StarChat");
 
+    } else{
         // IRCのとき
-        wxXmlNode* serverRoot = new wxXmlNode(root, wxXML_ELEMENT_NODE, "IRC");
-        wxXmlNode* server1 = new wxXmlNode(serverRoot, wxXML_ELEMENT_NODE,
-                "host");
-        wxXmlNode* child1 = new wxXmlNode(server1, wxXML_TEXT_NODE, "text",
-                service->getHost());
-        wxXmlNode* server2 = new wxXmlNode(serverRoot, wxXML_ELEMENT_NODE,
-                "name");
-        wxXmlNode* child2 = new wxXmlNode(server2, wxXML_TEXT_NODE, "text",
-                service->getUserName());
-        wxXmlNode* server3 = new wxXmlNode(serverRoot, wxXML_ELEMENT_NODE,
-                "nick");
-        wxXmlNode* child3 = new wxXmlNode(server3, wxXML_TEXT_NODE, "text",
-                service->getUserName());
+        serverRoot = new wxXmlNode(root, wxXML_ELEMENT_NODE, "IRC");
+    }
+    createNode(serverRoot, "name", service->getName());
+    createNode(serverRoot, "host", service->getHost());
+    wxString portString;
+    portString<<service->getPort();
+    createNode(serverRoot, "port", portString);
+
+    createNode(serverRoot, "user", service->getUserName());
+    createNode(serverRoot, "pass", service->getBasic());
+    createNode(serverRoot, "nick", service->getUserName());
+
+    if (service->getChatType() == CChatServiceBase::IRC){
 
         wxXmlNode* server4 = new wxXmlNode(serverRoot, wxXML_ELEMENT_NODE,
                 "channels");
@@ -173,11 +172,12 @@ void CServiceSerializer::addServiceToRoot(wxXmlNode* root,
         while (it != channels.end()){
             wxXmlNode* channel = new wxXmlNode(server4, wxXML_ELEMENT_NODE,
                     "channel");
-            wxXmlNode* channleText = new wxXmlNode(channel, wxXML_TEXT_NODE,
-                    "text", (*it)->getChannelName());
+            new wxXmlNode(channel, wxXML_TEXT_NODE, "text",
+                    (*it)->getChannelName());
             it++;
         }
     }
+
 }
 
 }

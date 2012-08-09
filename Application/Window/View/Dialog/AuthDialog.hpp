@@ -13,6 +13,7 @@ namespace CornStarch
 // ユーザ名登録用ダイアログ
 class CAuthDialog : public wxDialog
 {
+    bool validateRegisterDialogResult() const;
 protected:
 
     wxStaticText* m_staticText1;

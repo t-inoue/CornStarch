@@ -49,7 +49,7 @@ void CIRCService::reconnect(void)
 
         newConnection->init(m_id, m_handler);
         newConnection->setHost(m_connect->getHost());
-
+        newConnection->setPort(m_connect->getPort());
         // 前回接続済みのユーザーがサーバー側で切断の完了になってない場合があるので、ユーザー名を変更。
         m_user->setUserName(m_user->getUserName() + "_");
 
@@ -58,6 +58,7 @@ void CIRCService::reconnect(void)
         vector<CChannelStatus*>::iterator it = channels.begin();
         while (it != channels.end()){
             channelNames.push_back((*it)->getChannelName());
+            it++;
         }
         this->setSavedChannels(channelNames);
         delete m_connect;
