@@ -90,10 +90,10 @@ private:
 	void onQuit(wxCommandEvent& event);
 
 	// ユーザ登録(SC)
-	void onSCRegister(wxCommandEvent& event);
+	void onServiceRegister(wxCommandEvent& event);
 
-	// ユーザ登録(IRC)
-	void onIRCRegister(wxCommandEvent& event);
+//	// ユーザ登録(IRC)
+//	void onIRCRegister(wxCommandEvent& event);
 
 	// サーバー削除
 	void onDeleteService(wxCommandEvent& event);

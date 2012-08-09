@@ -8,7 +8,7 @@ namespace StarChat
 {;
 
 const wxString CHttpClient::HTTP_VER = "HTTP/1.1";
-const wxString CHttpClient::HTTP_PORT = "80";
+//const wxString CHttpClient::HTTP_PORT = "80";
 
 
 CHttpClient::CHttpClient(void)
@@ -28,7 +28,7 @@ void CHttpClient::init(void)
     CSocketClient::init();
 
     m_socket->SetTimeout(5);
-    setPort(HTTP_PORT); // 80番ポート
+    //setPort(HTTP_PORT); // 80番ポート
 }
 
 // HTTPレスポンスを受信して、Bodyを返す

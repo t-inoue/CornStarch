@@ -17,7 +17,12 @@ public:
     {
         STAR_CHAT = 0, IRC,
     };
-
+    enum CONNECTION_STATE
+    {
+        CONNECTED = 0,
+        CONNECTING = 1,
+        DISCONNECT = 2
+    };
 protected:
     // イベントハンドラ
     wxEvtHandler* m_handler;
@@ -32,10 +37,13 @@ protected:
     wxString m_name;
     // ID
     int m_id;
+
     // 接続されているか
-    bool m_isConnected;
+    //bool m_isConnected;
     // チャットの種類
     CHAT_TYPE m_type;
+    // 接続状態
+    CONNECTION_STATE m_state;
     // 保存されていたチャンネル
     vector<wxString> savedChannels;
 public:
@@ -56,13 +64,20 @@ public:
     // 接続されているかを取得
     bool IsConnected() const
     {
-        return m_isConnected;
+        return  m_state == CChatServiceBase::CONNECTED;
     }
 
     // 雪族されているかを設定
     void setConnected(bool isConnected)
     {
-        m_isConnected = isConnected;
+        if(isConnected)
+        {
+            m_state =CChatServiceBase::CONNECTED;
+        }
+        else
+        {
+        m_state =CChatServiceBase::DISCONNECT;
+        }
     }
 
 
@@ -94,7 +109,17 @@ public:
     {
         m_connect->setHost(value);
     }
+    // ホストを取得
+      int getHPort() const
+      {
+          return m_connect->getPort();
+      }
 
+      // ホストを設定
+      void setPort(int value)
+      {
+          m_connect->setPort(value);
+      }
     // チャットの種類を取得
     CHAT_TYPE getChatType(void) const
     {
@@ -111,12 +136,13 @@ public:
         return m_user->getBasic();
     }
 
-    void regUser(const wxString& name, const wxString& basic)
-    {
-        m_user->setBasic(basic);
-        m_user->setUserName(name);
-        m_connect->startAuthTask(m_user);
-    }
+//    void regUser(const wxString& name, const wxString& basic)
+//    {
+//        m_user->setBasic(basic);
+//        m_user->setUserName(name);
+//        m_state =CONNECTING;
+//        m_connect->startAuthTask(m_user);
+//    }
 
     // 初期化を行う
     virtual void init(wxEvtHandler* handler) = 0;
@@ -133,6 +159,7 @@ public:
     // チャンネルから離脱する際
     void partChannel(const wxString& channel);
 
+    void connect(void);
     // 再接続を行う
     virtual void reconnect(void) = 0;
     // 切断を行う。

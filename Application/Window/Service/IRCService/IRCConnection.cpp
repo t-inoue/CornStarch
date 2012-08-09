@@ -185,7 +185,7 @@ void CIRCConnection::startGetMemberInfoTask(const IUser* user,
 // ユーザが正規の人かどうか判断するタスク(別スレッド)を開始する
 void CIRCConnection::startAuthTask(const IUser* user)
 {
-    m_client->setPort("6667");
+    m_client->setPort(m_port);
     m_client->setHost(m_host);
     m_client->startAsync(user->getUserName(), "");
 }
@@ -205,7 +205,16 @@ void CIRCConnection::setHost(const wxString& host)
 {
     m_host = host;
 }
-
+// ポートを設定
+void CIRCConnection::setPort(int port)
+{
+    m_port = port;
+}
+// ポートを取得
+int CIRCConnection::getPort() const
+{
+    return m_port;
+}
 //override ニックネームを変更するタスク(別スレッド)を開始する
 void CIRCConnection::startNickChangeTask(const IUser* user,
         const wxString& nick)

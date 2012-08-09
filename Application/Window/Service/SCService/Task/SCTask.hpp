@@ -22,48 +22,63 @@
 #include "../../Event/KickEvent.hpp"
 #include "../../IMessageConnectionObserver.hpp"
 
-
 namespace CornStarch
-{;
+{
+;
 namespace StarChat
-{;
+{
+;
 
 // スターチャットと通信を行うためのクラス
-class CSCTask : public wxThread
+class CSCTask: public wxThread
 {
 protected:
     IMessageConnectionObserver* m_observer;
 
-    wxString m_basic; // basic認証用文字列
+    wxString m_basic;
     wxString m_host;
+    int m_port;
+
 public:
     CSCTask(wxThreadKind king = wxTHREAD_DETACHED);
     virtual ~CSCTask(void);
 
-    // ホストを取得します。
-	wxString getHost() const
-	{
-		return m_host;
-	}
-	// ホストを設定します。
-	void setHost(wxString host)
-	{
-		m_host = host;
-	}
-    // 初期化を行う
+    wxString getHost() const
+    {
+        return m_host;
+    }
+
+    void setHost(wxString host)
+    {
+        m_host = host;
+    }
+
     void init(IMessageConnectionObserver* observer, const wxString& basic);
 
+    int getPort() const
+    {
+        return m_port;
+    }
+
+    void setPort(int port)
+    {
+        m_port = port;
+    }
 
 protected:
-
-    // Run実行時に呼ばれる本体
     virtual ExitCode Entry(void);
 
-    // StarChatに対してリクエストを送信する
-    virtual void sendRequestToSC(CSCClient* client) {};
+    virtual void sendRequestToSC(CSCClient* client)
+    {
+    }
 
-    // HTTPレスポンスを解析してメッセージを通知する
-    virtual void notifyMessage(const std::string& responseBody) {};
+    ;
+
+    virtual void notifyMessage(const std::string& responseBody)
+    {
+    }
+
+    ;
 };
 
 }

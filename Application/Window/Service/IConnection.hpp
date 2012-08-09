@@ -65,6 +65,11 @@ public:
 
     // ホストを設定
     virtual void setHost(const wxString& host) = 0;
+
+    // ポートを設定
+    virtual void setPort(int port) =0;
+    // ポートを取得
+    virtual int getPort() const = 0;
 };
 
 }

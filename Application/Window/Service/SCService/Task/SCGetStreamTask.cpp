@@ -25,7 +25,7 @@ wxThread::ExitCode CSCGetStreamTask::Entry()
     CSCClient* client = new CSCClient();
     client->init();
     client->setHost(m_host);
-
+    client->setPort(m_port);
     client->connect();
     client->sendGetStreamRequest(m_userName, m_basic);
     client->recvHttpResponseBody();

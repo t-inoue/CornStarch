@@ -39,6 +39,8 @@ class CIRCConnection: public IConnection
 
 	// IRCのホスト
 	wxString m_host;
+	// IRCのポート
+	int m_port;
 
 	void invokeEvent(CConnectionEventBase* event);
 public:
@@ -87,6 +89,11 @@ public:
 
     // ホストを設定
     void setHost(const wxString& host);
+
+    // ポートを設定
+    void setPort(int port);
+    // ポートを取得
+    int getPort() const;
 
     // 切断します
     void disconnect();

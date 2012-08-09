@@ -1,21 +1,19 @@
 ﻿#include "ViewDialog.hpp"
 
 namespace CornStarch
-{;
+{
+;
 
-CViewDialog::CViewDialog(void)
-    : m_authDlg(NULL), m_channelDlg(NULL), m_cancelAuthDlg(NULL)
+CViewDialog::CViewDialog(void) :
+        m_authDlg(NULL), m_channelDlg(NULL)//, m_cancelAuthDlg(NULL)
 {
 }
-
 
 CViewDialog::~CViewDialog(void)
 {
 }
 
-
 //////////////////////////////////////////////////////////////////////
-
 
 // 初期化を行う
 void CViewDialog::init(wxWindow* parent)
@@ -31,28 +29,28 @@ int CViewDialog::showModalChannelDlg(void)
     return m_channelDlg->ShowModal();
 }
 
-// ユーザ認証ダイアログを表示(SC)
-int CViewDialog::showModalSCAuthDlg(void)
+// サーバー追加ダイアログを表示(SC)
+int CViewDialog::showModalAuthDlg(void)
 {
-    m_authDlg = new CSCAuthDialog();
-    m_authDlg->init(m_parent, "ユーザ認証(SC)");
+    m_authDlg = new CAuthDialog();
+    m_authDlg->init(m_parent, "サーバー登録");
     return m_authDlg->ShowModal();
 }
 
-// ユーザ認証ダイアログを表示(IRC)
-int CViewDialog::showModalIRCAuthDlg(void)
-{
-    m_authDlg = new CIRCAuthDialog();
-    m_authDlg->init(m_parent, "ユーザ認証(IRC)");
-    return m_authDlg->ShowModal();
-}
+//// ユーザ認証ダイアログを表示(IRC)
+//int CViewDialog::showModalIRCAuthDlg(void)
+//{
+//    m_authDlg = new CIRCAuthDialog();
+//    m_authDlg->init(m_parent, "ユーザ認証(IRC)");
+//    return m_authDlg->ShowModal();
+//}
 
 // ユーザ認証キャンセル用ダイアログを表示
-int CViewDialog::showModalAuthCancelDlg(void)
-{
-    m_cancelAuthDlg = new wxDialog(m_parent, wxID_ANY, "ユーザ認証をキャンセル");
-    return m_cancelAuthDlg->ShowModal();
-}
+//int CViewDialog::showModalAuthCancelDlg(void)
+//{
+//    m_cancelAuthDlg = new wxDialog(m_parent, wxID_ANY, "ユーザ認証をキャンセル");
+//    return m_cancelAuthDlg->ShowModal();
+//}
 
 // ニックネーム変更ダイアログを表示
 int CViewDialog::showModalNickDlg(void)
@@ -69,15 +67,18 @@ int CViewDialog::showModalTopicDlg(void)
     m_topicDlg->init(m_parent, "トピックを指定");
     return m_topicDlg->ShowModal();
 }
-
-// ユーザ認証キャンセル用ダイアログを消す
-void CViewDialog::destroyAuthCancelDlg(void)
+CChatServiceBase* CViewDialog::getNewServiceFromDialog(void) const
 {
-    if (m_cancelAuthDlg != NULL){
-        m_cancelAuthDlg->Destroy();
-        m_cancelAuthDlg = NULL;
-    }
+    return m_authDlg->getNewService();
 }
+//// ユーザ認証キャンセル用ダイアログを消す
+//void CViewDialog::destroyAuthCancelDlg(void)
+//{
+//    if (m_cancelAuthDlg != NULL){
+//        m_cancelAuthDlg->Destroy();
+//        m_cancelAuthDlg = NULL;
+//    }
+//}
 
 // チャンネル名を取得
 wxString CViewDialog::getChannelName(void) const
@@ -85,23 +86,23 @@ wxString CViewDialog::getChannelName(void) const
     return m_channelDlg->getChannelName();
 }
 
-// ユーザ名を取得
-wxString CViewDialog::getUserName(void) const
-{
-    return m_authDlg->getName();
-}
-
-// パスワードを取得
-wxString CViewDialog::getPassword(void) const
-{
-    return m_authDlg->getPass();
-}
-
-// ホスト名を取得
-wxString CViewDialog::getHostName(void) const
-{
-    return m_authDlg->getHostName();
-}
+//// ユーザ名を取得
+//wxString CViewDialog::getUserName(void) const
+//{
+//    return m_authDlg->getName();
+//}
+//
+//// パスワードを取得
+//wxString CViewDialog::getPassword(void) const
+//{
+//    return m_authDlg->getPass();
+//}
+//
+//// ホスト名を取得
+//wxString CViewDialog::getHostName(void) const
+//{
+//    return m_authDlg->getHostName();
+//}
 
 // ニックネームを取得
 wxString CViewDialog::getNickName(void) const

@@ -1,5 +1,6 @@
 ﻿#include "SocketClient.hpp"
-
+#include <sstream>
+#include <string>
 using namespace std;
 
 namespace CornStarch
@@ -41,9 +42,11 @@ void CSocketClient::close(void)
 }
 
 // ポート番号をセット
-void CSocketClient::setPort(const wxString& port)
+void CSocketClient::setPort(int port)
 {
-	m_address->Service(port);
+    stringstream ss;
+    ss << port;
+	m_address->Service(ss.str());
 }
 
 // ホスト名からIPアドレスをセット
@@ -105,7 +108,6 @@ int CSocketClient::receive(long waitTimeUsec)
 void CSocketClient::send(const wxString& message)
 {
 	int sendSize = 0; // 送信済みサイズ
-	int result; // send関数の戻り値
 	string msg(message.mb_str(wxConvUTF8));
 
 	// 送信するデータ長
@@ -121,7 +123,7 @@ void CSocketClient::send(const wxString& message)
 		m_socket->Write(buffer.c_str(), length - sendSize);
 
 		// 送信が失敗したら
-		if (m_socket->LastError() == wxSOCKET_IOERR){
+		if (m_socket->Error()){
 
 			// 接続を閉じる
 			close();
@@ -129,8 +131,7 @@ void CSocketClient::send(const wxString& message)
 		}
 
 		// 送信済みサイズを足す
-		result = m_socket->LastCount();
-		sendSize += result;
+		sendSize += m_socket->LastCount();
 	}
 
 	// 改行コードを送信する

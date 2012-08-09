@@ -30,7 +30,7 @@ public:
     void close(void);
 
     // ポート番号をセット
-    void setPort(const wxString& port);
+    void setPort(int port);
 
     // ホスト名からIPアドレスをセット
     void setUrl(const wxString& url);

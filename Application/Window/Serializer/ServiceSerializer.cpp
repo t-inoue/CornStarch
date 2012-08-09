@@ -123,7 +123,8 @@ CChatServiceBase* CServiceSerializer::newService(wxXmlNode* node,
     service->init(handler);
     service->setHost(host);
     service->setSavedChannels(channels);
-    service->regUser(name, pass);
+    service->registerUser(name, pass);
+    service->connect();
     return service;
 }
 

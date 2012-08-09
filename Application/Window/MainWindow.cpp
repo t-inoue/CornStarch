@@ -165,55 +165,58 @@ void CMainWindow::onQuit(wxCommandEvent& event)
 }
 bool CMainWindow::validateRegisterDialogResult()
 {
-    if (m_view->getDlgHostName() == ""){
-        wxMessageBox("ホスト名を入力してください");
-        return false;
-    }
-    if (m_view->getDlgUserName().IsAscii() == false
-            || m_view->getDlgHostName().IsAscii() == false){
-        wxMessageBox("半角英数を入力してください");
-        return false;
-    }
+//    if (m_view->getDlgHostName() == ""){
+//        wxMessageBox("ホスト名を入力してください");
+//        return false;
+//    }
+//    if (m_view->getDlgUserName().IsAscii() == false
+//            || m_view->getDlgHostName().IsAscii() == false){
+//        wxMessageBox("半角英数を入力してください");
+//        return false;
+//    }
     return true;
 }
-// ユーザ登録(SC)
-void CMainWindow::onSCRegister(wxCommandEvent& event)
+// サービス登録
+void CMainWindow::onServiceRegister(wxCommandEvent& event)
 {
     // 認証ダイアログを表示
-    if (m_view->showModalSCAuthDlg() != wxID_OK){
+    if (m_view->showModalAuthDlg() != wxID_OK){
         return;
     }
-    if (validateRegisterDialogResult()){
-        CChatServiceBase* contents = new StarChat::CSCService();
+    // ここでIRCサーバの追加を行う
+    CChatServiceBase* contents = m_view->getNewServiceFromDialog();
+    if (contents != NULL){
         addNewService(contents);
     }
 }
-
-// ユーザ登録(IRC)
-void CMainWindow::onIRCRegister(wxCommandEvent& event)
-{
-    // 認証ダイアログを表示
-    if (m_view->showModalIRCAuthDlg() != wxID_OK){
-        return;
-    }
-
-    if (validateRegisterDialogResult()){
-        // ここでIRCサーバの追加を行う
-        CChatServiceBase* contents = new CornStarch::IRC::CIRCService();
-        addNewService(contents);
-    }
-}
+//
+//// ユーザ登録(IRC)
+//void CMainWindow::onIRCRegister(wxCommandEvent& event)
+//{
+//    // 認証ダイアログを表示
+//    if (m_view->showModalIRCAuthDlg() != wxID_OK){
+//        return;
+//    }
+//    // ここでIRCサーバの追加を行う
+//    CChatServiceBase* contents = m_view->getNewServiceFromDialog();
+//    if (contents != NULL){
+//        addNewService(contents);
+//    }
+//}
 
 void CMainWindow::addNewService(CChatServiceBase* service)
 {
     service->setId(m_uniqueServiceId);
     m_uniqueServiceId++;
     service->init(GetEventHandler());
-    service->setHost(m_view->getDlgHostName());
+
+//    service->setHost(m_view->getDlgHostName());
+//    service->registerUser(m_view->getDlgUserName(), m_view->getDlgPassword());
+
     m_services.insert(
             map<int, CChatServiceBase*>::value_type(service->getId(), service));
 
-    service->registerUser(m_view->getDlgUserName(), m_view->getDlgPassword());
+    service->connect();
 }
 
 // チャンネルに参加メニュー

@@ -29,6 +29,7 @@ private:
     int m_connectionId;
     wxEvtHandler* m_handler;
     wxString m_host;
+    int m_port;
    const IUser* m_user;
 public:
 
@@ -78,7 +79,10 @@ public:
 
     // ホストを設定
     void setHost(const wxString& host);
-
+    // ポートを設定
+    void setPort(int port);
+    // ポートを取得
+    int getPort() const;
     // メッセージ取得
     void onMessageReceived(CMessageData* message);
     // 切断時

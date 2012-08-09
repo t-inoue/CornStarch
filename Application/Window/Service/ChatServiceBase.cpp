@@ -8,7 +8,7 @@ namespace CornStarch
 
 CChatServiceBase::CChatServiceBase(void) :
         m_handler(NULL), m_channel(NULL), m_user(NULL), m_nickTable(NULL), m_connect(
-                NULL), m_isConnected(false)
+                NULL),m_state(DISCONNECT)
 {
 }
 
@@ -39,7 +39,7 @@ void CChatServiceBase::init(wxEvtHandler* handler)
 void CChatServiceBase::disconnect(void)
 {
     m_connect->disconnect();
-    m_isConnected = false;
+    m_state =DISCONNECT;
 }
 // ユーザがログインしているか
 bool CChatServiceBase::isUserLogin(void) const
@@ -53,11 +53,14 @@ void CChatServiceBase::registerUser(const wxString& userName,
 {
     // ユーザ情報をセット
     m_user->setUserInfo(userName, pass);
-
-    // 認証タスクの開始
-    m_connect->startAuthTask(m_user);
 }
 
+void  CChatServiceBase::connect(void){
+    // 認証タスクの開始
+
+    m_state =CONNECTING;
+    m_connect->startAuthTask(m_user);
+}
 // チャンネルに参加を行う際
 void CChatServiceBase::joinChannel(const wxString& channel)
 {

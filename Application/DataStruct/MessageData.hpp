@@ -19,12 +19,13 @@ public:
     time_t m_time; // UNIX時間
     wxString m_channel; // チャンネル名
     wxString m_tempNick; // 一時ニックネーム
+    bool m_isReaded;
 
     CMessageData(){}
     virtual ~CMessageData(){}
     CMessageData(int id, const wxString& name, const wxString& body,
         const wxString& channel, const time_t& t)
-        : m_id(id), m_username(name), m_channel(channel), m_time(t), m_body(body){}
+        : m_id(id), m_username(name), m_channel(channel), m_time(t), m_body(body),m_isReaded(true){}
 
     // 指定の形式で時刻を取得
     wxString getTime(const wxString& format) const

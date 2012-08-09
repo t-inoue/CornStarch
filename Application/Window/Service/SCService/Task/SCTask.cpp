@@ -36,7 +36,7 @@ wxThread::ExitCode CSCTask::Entry(void)
     CSCClient* client = new CSCClient();
     client->init();
     client->setHost(m_host);
-
+    client->setPort(m_port);
     // 接続
     string body;
     if (client->connect()){

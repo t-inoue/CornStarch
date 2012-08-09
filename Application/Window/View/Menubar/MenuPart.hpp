@@ -11,8 +11,7 @@ public:
     // メニュー番号
     enum MENU{
         MENU_FILE_QUIT = 100,
-        MENU_SERVER_SC_ADD,
-        MENU_SERVER_IRC_ADD,
+        MENU_SERVER_ADD,
         MENU_SERVER_DELETE,
         MENU_SERVER_NICK_CHANGE,
         MENU_UPDATE,

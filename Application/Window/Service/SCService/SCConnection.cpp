@@ -197,6 +197,7 @@ void CSCConnection::setHost(const wxString& host)
 void CSCConnection::startThread(CSCTask* task)
 {
     task->setHost(getHost());
+    task->setPort(getPort());
     // 別スレッドを作る
     if (task->Create() != wxTHREAD_NO_ERROR){
         delete task;
@@ -261,6 +262,16 @@ void CSCConnection::onCheckServiceStatus()
     task->setUserName(m_user->getUserName());
     // 別スレッドでの開始
     startThread(task);
+}
+// ポートを設定
+void CSCConnection::setPort(int port)
+{
+    m_port = port;
+}
+// ポートを取得
+int CSCConnection::getPort() const
+{
+    return m_port;
 }
 }
 }
