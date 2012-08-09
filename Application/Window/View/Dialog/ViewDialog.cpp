@@ -37,20 +37,6 @@ int CViewDialog::showModalAuthDlg(void)
     return m_authDlg->ShowModal();
 }
 
-//// ユーザ認証ダイアログを表示(IRC)
-//int CViewDialog::showModalIRCAuthDlg(void)
-//{
-//    m_authDlg = new CIRCAuthDialog();
-//    m_authDlg->init(m_parent, "ユーザ認証(IRC)");
-//    return m_authDlg->ShowModal();
-//}
-
-// ユーザ認証キャンセル用ダイアログを表示
-//int CViewDialog::showModalAuthCancelDlg(void)
-//{
-//    m_cancelAuthDlg = new wxDialog(m_parent, wxID_ANY, "ユーザ認証をキャンセル");
-//    return m_cancelAuthDlg->ShowModal();
-//}
 
 // ニックネーム変更ダイアログを表示
 int CViewDialog::showModalNickDlg(void)
@@ -71,14 +57,6 @@ CChatServiceBase* CViewDialog::getNewServiceFromDialog(void) const
 {
     return m_authDlg->getNewService();
 }
-//// ユーザ認証キャンセル用ダイアログを消す
-//void CViewDialog::destroyAuthCancelDlg(void)
-//{
-//    if (m_cancelAuthDlg != NULL){
-//        m_cancelAuthDlg->Destroy();
-//        m_cancelAuthDlg = NULL;
-//    }
-//}
 
 // チャンネル名を取得
 wxString CViewDialog::getChannelName(void) const
@@ -86,23 +64,6 @@ wxString CViewDialog::getChannelName(void) const
     return m_channelDlg->getChannelName();
 }
 
-//// ユーザ名を取得
-//wxString CViewDialog::getUserName(void) const
-//{
-//    return m_authDlg->getName();
-//}
-//
-//// パスワードを取得
-//wxString CViewDialog::getPassword(void) const
-//{
-//    return m_authDlg->getPass();
-//}
-//
-//// ホスト名を取得
-//wxString CViewDialog::getHostName(void) const
-//{
-//    return m_authDlg->getHostName();
-//}
 
 // ニックネームを取得
 wxString CViewDialog::getNickName(void) const

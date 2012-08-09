@@ -88,29 +88,16 @@ public: // ダイアログに関するメソッド
     // チャンネル名指定用ダイアログを表示する
     int showModalChannelDlg(void);
 
-//    // 認証中止ダイアログを表示する
-//    int showModalAuthCancelDlg(void);
-
     // ニックネーム変更ダイアログを表示
     int showModalNickDlg(void);
 
     // トピック変更ダイアログを表示
     int showModalTopicDlg(void);
 
-//    // 認証中止ダイアログを消す
-//    void clearAuthCancelDlg(void);
-//
-//    // ユーザ名をwxStringで取得する
-//    wxString getDlgUserName(void) const;
-//
-//    // パスワードをwxStringで取得する
-//    wxString getDlgPassword(void) const;
-//
     // チャンネル名を取得する
     wxString getDlgChannelName(void) const;
-//
-//    // ホスト名を取得
-//    wxString getDlgHostName(void) const;
+
+    // ダイアログからサービスを取得
     CChatServiceBase* getNewServiceFromDialog(void) const;
     // ニックネームを取得
     wxString getNickName(void) const;

@@ -8,7 +8,7 @@ namespace CornStarch
 {
 ;
 
-CAuthDialog::CAuthDialog(void) //: m_nameText(NULL), m_passText(NULL)
+CAuthDialog::CAuthDialog(void)
 {
 }
 

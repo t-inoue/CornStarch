@@ -189,30 +189,12 @@ void CMainWindow::onServiceRegister(wxCommandEvent& event)
         addNewService(contents);
     }
 }
-//
-//// ユーザ登録(IRC)
-//void CMainWindow::onIRCRegister(wxCommandEvent& event)
-//{
-//    // 認証ダイアログを表示
-//    if (m_view->showModalIRCAuthDlg() != wxID_OK){
-//        return;
-//    }
-//    // ここでIRCサーバの追加を行う
-//    CChatServiceBase* contents = m_view->getNewServiceFromDialog();
-//    if (contents != NULL){
-//        addNewService(contents);
-//    }
-//}
 
 void CMainWindow::addNewService(CChatServiceBase* service)
 {
     service->setId(m_uniqueServiceId);
     m_uniqueServiceId++;
     service->init(GetEventHandler());
-
-//    service->setHost(m_view->getDlgHostName());
-//    service->registerUser(m_view->getDlgUserName(), m_view->getDlgPassword());
-
     m_services.insert(
             map<int, CChatServiceBase*>::value_type(service->getId(), service));
 

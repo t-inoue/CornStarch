@@ -14,7 +14,6 @@ class CViewDialog
 private:
     CAuthDialog* m_authDlg; // ユーザ認証ダイアログ
     CChannelDialog* m_channelDlg; // チャンネル名指定用ダイアログ
-    //wxDialog* m_cancelAuthDlg; // ユーザ認証キャンセル用ダイアログ
     CNickChangeDialog* m_nickDlg; // ニックネーム変更用ダイアログ
     CChangeTopicDialog* m_topicDlg; // トピック変更用ダイアログ
 
@@ -33,11 +32,6 @@ public:
     // ユーザ認証ダイアログを表示(SC)
     int showModalAuthDlg(void);
 
-    // ユーザ認証ダイアログを表示(IRC)
-//    int showModalIRCAuthDlg(void);
-
-//    // ユーザ認証キャンセル用ダイアログを表示
-//    int showModalAuthCancelDlg(void);
 
     // ニックネーム変更ダイアログを表示
     int showModalNickDlg(void);
@@ -45,23 +39,11 @@ public:
     // トピック変更ダイアログを表示
     int showModalTopicDlg(void);
 
-//    // ユーザ認証キャンセル用ダイアログを消す
-//    void destroyAuthCancelDlg(void);
-
     // チャンネル名を取得
     wxString getChannelName(void) const;
 
     // サービスを取得
     CChatServiceBase* getNewServiceFromDialog(void) const;
-//
-//    // ユーザ名を取得
-//    wxString getUserName(void) const;
-//
-//    // パスワードを取得
-//    wxString getPassword(void) const;
-//
-//    // ホスト名を取得
-//    wxString getHostName(void) const;
 
     // ニックネームを取得
     wxString getNickName(void) const;
