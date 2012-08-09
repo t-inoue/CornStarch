@@ -53,7 +53,7 @@ void CSplitPanel::init(wxWindow* parent)
 void CSplitPanel::setSplitParam(void)
 {
     // sash位置の調整
-    this->SetSashGravity(0.8); // 左右のバランス
+    this->SetSashGravity(0.7); // 左右のバランス
     m_spHorR->SetSashGravity(0.6); // 右画面上下のバランス
     m_spHorL->SetSashGravity(0.6); // 左画面上下のバランス
 }
