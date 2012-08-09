@@ -28,6 +28,7 @@ void CSCService::init(wxEvtHandler* handler)
     // チャットのタイプ
     m_type = CChatServiceBase::STAR_CHAT;
 }
+
 // 再接続を行う
 void CSCService::reconnect(void)
 {
@@ -35,11 +36,13 @@ void CSCService::reconnect(void)
     CSCConnection *newConnection =new CSCConnection();
     newConnection->setHost(m_connect->getHost());
     newConnection->init(m_id, m_handler);
+
     delete m_connect;
+    m_connect = NULL;
     m_connect =newConnection;
 
     regUser(m_user->getUserName(),m_user->getBasic());
-    //m_connect->registerUser( m_user);
 }
+
 }
 }

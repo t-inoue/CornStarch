@@ -3,7 +3,8 @@
 using namespace std;
 
 namespace CornStarch
-{;
+{
+;
 
 CPaneCn::CPaneCn(void)
 {
@@ -13,16 +14,14 @@ CPaneCn::~CPaneCn(void)
 {
 }
 
-
 //////////////////////////////////////////////////////////////////////
-
 
 // 初期化を行う
 void CPaneCn::init(wxWindow* parent)
 {
     // スクロールバー(水平、垂直を必要に応じて)、ソート
-    Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, 
-        wxTR_HIDE_ROOT | wxTR_NO_BUTTONS);
+    Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize,
+            wxTR_HIDE_ROOT | wxTR_NO_BUTTONS);
 
     // Rootノードを追加
     AddRoot("Root");
@@ -35,14 +34,14 @@ void CPaneCn::setStringSelection(const wxString& channel)
 }
 
 // 所属チャンネル一覧を表示
-void CPaneCn::displayChannels(const map<int,CChatServiceBase*>& connections)
+void CPaneCn::displayChannels(const map<int, CChatServiceBase*>& connections)
 {
     // 項目を削除
     wxTreeItemId rootId = GetRootItem();
     DeleteChildren(rootId);
 
     // 各サーバについてループ
-    map<int,CChatServiceBase*>::const_iterator it;
+    map<int, CChatServiceBase*>::const_iterator it;
     for (it = connections.begin(); it != connections.end(); it++){
 
         // サーバ情報をセット
@@ -50,24 +49,28 @@ void CPaneCn::displayChannels(const map<int,CChatServiceBase*>& connections)
         data->setServerId((*it).second->getId());
 
         // サーバ名をセット
-        wxTreeItemId id = AppendItem(rootId, (*it).second->getHost(), -1, -1, data);
-
+        wxTreeItemId id = AppendItem(rootId, (*it).second->getHost(), -1, -1,
+                data);
+        if ((*it).second->IsConnected() == false){
+            this->SetItemTextColour(id, *wxLIGHT_GREY);
+        }
         // 各チャンネルについてループ
         vector<CChannelStatus*>::const_iterator cit;
         vector<CChannelStatus*> channels = (*it).second->getChannels();
         for (cit = channels.begin(); cit != channels.end(); cit++){
 
             // チャンネルをセット
-            AppendItem(id, (*cit)->getChannelName());
+            wxTreeItemId childId =  AppendItem(id, (*cit)->getChannelName());
+            if ((*it).second->IsConnected() == false){
+                   this->SetItemTextColour(childId, *wxLIGHT_GREY);
+               }
         }
 
         Expand(id);
     }
 }
 
-
 //////////////////////////////////////////////////////////////////////
-
 
 // チャンネルが選択された際のイベント処理
 void CPaneCn::onChannelSelected(wxTreeEvent& event)
@@ -81,7 +84,8 @@ void CPaneCn::onChannelSelected(wxTreeEvent& event)
 
     // イベント送信
     chEvent->SetEventType(myEVT_SELECT_TREE_NODE); // イベントタイプ
-    wxQueueEvent(GetParent()->GetParent()->GetParent()->GetEventHandler(), chEvent);
+    wxQueueEvent(GetParent()->GetParent()->GetParent()->GetEventHandler(),
+            chEvent);
 }
 
 // 項目が右クリックされた際のイベント処理
@@ -97,7 +101,8 @@ void CPaneCn::onItemRightClicked(wxTreeEvent& event)
 
     // イベント送信
     chEvent->SetEventType(myEVT_SELECT_TREE_NODE_RIGHT); // イベントタイプ
-    wxQueueEvent(GetParent()->GetParent()->GetParent()->GetEventHandler(), chEvent);
+    wxQueueEvent(GetParent()->GetParent()->GetParent()->GetEventHandler(),
+            chEvent);
 }
 
 // チャンネルを選択したというイベントを返す
@@ -121,15 +126,16 @@ CChannelSelectEvent* CPaneCn::newSelectEvent(const wxTreeItemId& id)
     if (parentId != GetRootItem()){
 
         // イベントの初期化
-        int serverId = ((CTreeServerItem*)GetItemData(parentId))->getServerId();
+        int serverId =
+                ((CTreeServerItem*) GetItemData(parentId))->getServerId();
         chEvent->setServerOrNot(false);
         chEvent->setServerId(serverId);
         chEvent->setServer(GetItemText(parentId));
 
-    } else {
+    } else{
 
         // 選択されたのがサーバなら
-        int serverId = ((CTreeServerItem*)GetItemData(id))->getServerId();
+        int serverId = ((CTreeServerItem*) GetItemData(id))->getServerId();
         chEvent->setServerId(serverId);
 
         // イベントの初期化

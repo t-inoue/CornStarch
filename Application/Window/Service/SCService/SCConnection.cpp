@@ -17,15 +17,24 @@ CSCConnection::CSCConnection(void) :
 
 CSCConnection::~CSCConnection(void)
 {
+    disconnect();
+}
+
+// 切断します
+void CSCConnection::disconnect()
+{
     if (m_getStreamTask != NULL){
         if (m_getStreamTask->IsRunning()){
             m_getStreamTask->Delete();
             delete m_getStreamTask;
+
         } else{
             delete m_getStreamTask;
         }
+        m_getStreamTask = NULL;
     }
 }
+
 ///////////////////////////////////////////////////////////////////////////
 
 // 初期化を行う
@@ -151,6 +160,7 @@ void CSCConnection::startAuthTask(const IUser* user)
     m_authTask->setUserName(user->getUserName());
     // 別スレッドでの開始
     startThread(m_authTask);
+    m_user = user;
 }
 
 // ストリーム通信タスク(別スレッド)を開始
@@ -242,6 +252,15 @@ void CSCConnection::onConnectionFailed()
     invokeEvent(event);
 
 }
-
+// サービスのステータスを調べます。
+void CSCConnection::onCheckServiceStatus()
+{
+    CSCAuthTask *task = new CSCAuthTask();
+    task->init(this,m_user->getBasic());
+    task->setPing(true);
+    task->setUserName(m_user->getUserName());
+    // 別スレッドでの開始
+    startThread(task);
+}
 }
 }

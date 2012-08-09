@@ -88,6 +88,9 @@ public:
     // ホストを設定
     void setHost(const wxString& host);
 
+    // 切断します
+    void disconnect();
+
     // メッセージ取得
     void onMessageReceived( CMessageData* message);
     // 切断時
@@ -96,7 +99,8 @@ public:
     void onConnected();
     //　接続失敗時
     void onConnectionFailed();
-
+    // サービスのステータスを調べます。
+    void onCheckServiceStatus();
 };
 }
 } /* namespace CornStarch */

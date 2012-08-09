@@ -29,6 +29,7 @@ private:
     int m_connectionId;
     wxEvtHandler* m_handler;
     wxString m_host;
+   const IUser* m_user;
 public:
 
     CSCConnection(void);
@@ -36,7 +37,8 @@ public:
 
     // 初期化を行う
     void init(int connectionId, wxEvtHandler* handler);
-
+    // 切断します
+    void disconnect();
     // メッセージを投稿するタスク(別スレッド)を開始する
     void startPostMessageTask(const IUser* user, const wxString& message,
             const wxString& channel);
@@ -85,7 +87,8 @@ public:
     void onConnected();
     //　接続失敗時
     void onConnectionFailed();
-
+    // サービスのステータスを調べます。
+    void onCheckServiceStatus();
 private:
     void invokeEvent(CConnectionEventBase* event);
     // 別スレッドでタスクを開始する

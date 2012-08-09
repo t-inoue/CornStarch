@@ -135,7 +135,8 @@ public:
 
     // 再接続を行う
     virtual void reconnect(void) = 0;
-
+    // 切断を行う。
+    void disconnect(void);
     // 各チャンネルの情報を破棄
     void clearChannels(void);
 

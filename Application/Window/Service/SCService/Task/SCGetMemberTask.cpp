@@ -28,14 +28,12 @@ void CSCGetMemberTask::sendRequestToSC(CSCClient* client)
 // HTTPレスポンスを解析してイベントを作成する
 void CSCGetMemberTask::notifyMessage(const string& responseBody)
 {
-
     CSCJsonParser parser;
     CSCMessageData message;
     message.m_type = CSCMessageType::GET_MEMBERS;
     message.m_members= parser.getMembers(responseBody);
     message.m_channel = m_channel;
     m_observer->onMessageReceived(&message);
-
 }
 
 }

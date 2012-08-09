@@ -3,23 +3,22 @@
 using namespace std;
 
 namespace CornStarch
-{;
+{
+;
 namespace StarChat
-{;
+{
+;
 
-
-CSCTask::CSCTask(wxThreadKind kind) : wxThread(kind)
+CSCTask::CSCTask(wxThreadKind kind) :
+        wxThread(kind)
 {
 }
-
 
 CSCTask::~CSCTask(void)
 {
 }
 
-
 //////////////////////////////////////////////////////////////////////
-
 
 // 初期化を行う
 void CSCTask::init(IMessageConnectionObserver* observer, const wxString& basic)
@@ -28,9 +27,7 @@ void CSCTask::init(IMessageConnectionObserver* observer, const wxString& basic)
     m_observer = observer;
 }
 
-
 //////////////////////////////////////////////////////////////////////
-
 
 // Run実行時に呼ばれる本体
 wxThread::ExitCode CSCTask::Entry(void)
@@ -48,16 +45,12 @@ wxThread::ExitCode CSCTask::Entry(void)
         sendRequestToSC(client);
 
         // 通信が可能となるまで待機
-        while(!client->waitRecv()){
-
-            // スレッド廃棄要求が来たら終了
-            if (TestDestroy()){
-
-                // 通信クライアントを消す
-                client->close();
-                delete client;
-                return (wxThread::ExitCode)-1;
-            }
+        if (client->waitRecv(5000, 5) == false){
+            m_observer->onDisconnected();
+            // 通信クライアントを消す
+            client->close();
+            delete client;
+            return (wxThread::ExitCode) -1;
         }
 
         // レスポンスボディを受信する
@@ -70,12 +63,12 @@ wxThread::ExitCode CSCTask::Entry(void)
 
     // スレッドが停止されていたら終了
     if (TestDestroy()){
-        return (wxThread::ExitCode)-1;
+        return (wxThread::ExitCode) -1;
     }
     notifyMessage(body);
 
     // 成功時
-    return (wxThread::ExitCode)0;
+    return (wxThread::ExitCode) 0;
 }
 
 }

@@ -27,6 +27,7 @@ void CHttpClient::init(void)
 {
     CSocketClient::init();
 
+    m_socket->SetTimeout(5);
     setPort(HTTP_PORT); // 80番ポート
 }
 

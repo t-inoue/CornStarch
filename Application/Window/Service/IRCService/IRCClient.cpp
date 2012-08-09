@@ -12,7 +12,7 @@ namespace IRC
 using namespace std;
 
 CIRCClient::CIRCClient() :
-        m_receiveTask(NULL), m_sendTask(NULL)
+        m_receiveTask(NULL), m_sendTask(NULL), m_isConnectedToIRCService(false)
 {
     m_commandQueue = new wxMessageQueue<wxString>();
 }
@@ -24,10 +24,11 @@ CIRCClient::~CIRCClient(void)
     delete m_receiveTask;
     delete m_sendTask;
 }
-void CIRCClient::init(IMessageConnectionObserver* observer )
+void CIRCClient::init(IMessageConnectionObserver* observer)
 {
     CSocketClient::init();
     m_observer = observer;
+    m_socket->SetTimeout(5);
 }
 void CIRCClient::startAsync(const wxString& userName, const wxString& password)
 {
@@ -64,6 +65,13 @@ void CIRCClient::addCommandQueue(const wxString& content)
 void CIRCClient::sendCommand(const wxString& command)
 {
     send(command);
+    if (m_socket->Error()){
+        if (m_isConnectedToIRCService){ // IRCに接続中
+            getObserver()->onDisconnected();
+        } else{ // IRCに接続できていない
+            getObserver()->onConnectionFailed();
+        }
+    }
 }
 void CIRCClient::startThread(wxThread* task)
 {
@@ -114,7 +122,7 @@ wxString CIRCClient::recieveData()
 {
     this->m_buffer = "";
     this->receive(100);
-    return wxString(this->m_buffer.c_str(),wxConvUTF8);
+    return wxString(this->m_buffer.c_str(), wxConvUTF8);
 }
 void CIRCClient::joinAsync(const wxString& channelName)
 {

@@ -76,6 +76,10 @@ private:
 	// ニックネーム変更ダイアログを表示する。
 	void showChangeNicknameDialog(int serviceId);
 
+	// サービスを再読み込みする。
+	void updateService(int serviceId);
+	// サービスを切断する
+	void disconnect(int serviceId);
 	// IDからサービスを取得する
 	CChatServiceBase* getService(int serviceId);
 

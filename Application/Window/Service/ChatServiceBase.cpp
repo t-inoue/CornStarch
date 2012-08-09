@@ -3,13 +3,14 @@
 using namespace std;
 
 namespace CornStarch
-{;
+{
+;
 
-CChatServiceBase::CChatServiceBase(void) : m_handler(NULL), 
-    m_channel(NULL), m_user(NULL), m_nickTable(NULL), m_connect(NULL),m_isConnected(false)
+CChatServiceBase::CChatServiceBase(void) :
+        m_handler(NULL), m_channel(NULL), m_user(NULL), m_nickTable(NULL), m_connect(
+                NULL), m_isConnected(false)
 {
 }
-
 
 CChatServiceBase::~CChatServiceBase(void)
 {
@@ -19,9 +20,7 @@ CChatServiceBase::~CChatServiceBase(void)
     delete m_nickTable;
 }
 
-
 //////////////////////////////////////////////////////////////////////
-
 
 // 初期化を行う
 void CChatServiceBase::init(wxEvtHandler* handler)
@@ -36,7 +35,12 @@ void CChatServiceBase::init(wxEvtHandler* handler)
     // ニックネームテーブルの初期化
     m_nickTable = new CNickTable();
 }
-
+// 切断を行う。
+void CChatServiceBase::disconnect(void)
+{
+    m_connect->disconnect();
+    m_isConnected = false;
+}
 // ユーザがログインしているか
 bool CChatServiceBase::isUserLogin(void) const
 {
@@ -44,7 +48,8 @@ bool CChatServiceBase::isUserLogin(void) const
 }
 
 // ユーザ登録を行った際のデータ更新
-void CChatServiceBase::registerUser(const wxString& userName, const wxString& pass)
+void CChatServiceBase::registerUser(const wxString& userName,
+        const wxString& pass)
 {
     // ユーザ情報をセット
     m_user->setUserInfo(userName, pass);
@@ -92,7 +97,8 @@ wxString CChatServiceBase::getCurrentChannel(void) const
 // メッセージを生成
 CMessageData CChatServiceBase::generateMessage(const wxString& body)
 {
-    return CMessageData(-1, m_user->getUserName(), body, m_user->getChannelString(), time(NULL));
+    return CMessageData(-1, m_user->getUserName(), body,
+            m_user->getChannelString(), time(NULL));
 }
 
 // ニックネームを取得
@@ -106,10 +112,11 @@ void CChatServiceBase::postMessage(const CMessageData& message)
 {
     // メッセージ投稿タスクの開始
     wxString channel = m_user->getChannelString();
-    m_connect->startPostMessageTask(m_user, message.m_body, channel );
+    m_connect->startPostMessageTask(m_user, message.m_body, channel);
 
     // メッセージを保存
-    CMessageData data(-1, m_user->getUserName(), message.m_body, channel, time(NULL));
+    CMessageData data(-1, m_user->getUserName(), message.m_body, channel,
+            time(NULL));
     m_channel->pushMessage(data.m_channel, data);
 }
 
@@ -126,7 +133,8 @@ vector<CChannelStatus*> CChatServiceBase::getChannels(void) const
 }
 
 // メッセージ一覧を取得
-vector<CMessageData*> CChatServiceBase::getMessages(const wxString& channel) const
+vector<CMessageData*> CChatServiceBase::getMessages(
+        const wxString& channel) const
 {
     return m_channel->getMessages(channel);
 }
@@ -170,7 +178,8 @@ wxString CChatServiceBase::getTopic(const wxString& channel)
 // このクライアントから投稿されたメッセージか
 bool CChatServiceBase::isPostedThisClient(const CMessageData& message)
 {
-    return m_channel->hasSameMessage(message) && message.m_username == m_user->getUserName();
+    return m_channel->hasSameMessage(message)
+            && message.m_username == m_user->getUserName();
 }
 
 // メッセージ表示を行う際
@@ -202,7 +211,7 @@ void CChatServiceBase::onUpdateChannelView(void)
     if (!m_channel->hasReceivedChannel()){
 
         // チャンネル取得タスクを開始
-        m_connect->startGetChannelTask( m_user);
+        m_connect->startGetChannelTask(m_user);
     }
 }
 
@@ -222,18 +231,17 @@ void CChatServiceBase::onChangeTopic(const wxString& topic)
     m_connect->startChangeTopicTask(m_user, topic);
 }
 
-
 /////////////////////////////////////////
-
 
 // 認証が成功した場合
 void CChatServiceBase::onAuthSucceeed(void)
 {
+    this->setConnected(true);
     // ユーザをログイン状態にする
     m_user->setLogin(true);
 
     // ニックネーム取得タスク
-    m_connect->startGetMemberInfoTask(m_user,m_user->getUserName());
+    m_connect->startGetMemberInfoTask(m_user, m_user->getUserName());
 
     // ストリーム受信タスク
     m_connect->startStreamTask(m_user);
@@ -269,8 +277,7 @@ void CChatServiceBase::onJoinChannel(const wxString& channel)
     m_user->setChannel(channel);
 
     // チャンネル一覧取得タスクの開始
-    m_connect->startGetChannelTask(
-    		m_user);
+    m_connect->startGetChannelTask(m_user);
 }
 
 // チャンネル離脱成功時
@@ -300,7 +307,8 @@ void CChatServiceBase::onGetMemberStatus(const CMemberData& member)
 void CChatServiceBase::onGetMessageStream(const CMessageData& message)
 {
     // 別クライアントからのメッセージだったら、データ更新のみ
-    if (m_channel->hasSameMessage(message)&& message.m_username == m_user->getUserName()){
+    if (m_channel->hasSameMessage(message)
+            && message.m_username == m_user->getUserName()){
         m_channel->onUpdateMessageId(message);
         return;
     }
@@ -320,35 +328,36 @@ void CChatServiceBase::onGetMessageStream(const CMessageData& message)
 }
 
 // チャンネル参加ストリームを受信
-void CChatServiceBase::onGetJoinStream(const wxString& channel, const wxString& name)
+void CChatServiceBase::onGetJoinStream(const wxString& channel,
+        const wxString& name)
 {
     // 処理待ちに追加
-    CSubscribeData data (channel, name);
+    CSubscribeData data(channel, name);
 
     wxString nick = m_nickTable->getNickname(data.m_username);
 
     // ニックネームが未知の場合、メンバー情報取得タスクの開始
     if (!m_nickTable->isExist(data.m_username)){
-        m_connect->startGetMemberInfoTask(m_user,
-            name);
+        m_connect->startGetMemberInfoTask(m_user, name);
     }
 
     // 既に受信を行っていたチャンネルであればメンバーを追加
     if (m_channel->hasReceivedMember(channel)){
-        m_channel->pushMember(data.m_channel, CMemberData(data.m_username, nick));
+        m_channel->pushMember(data.m_channel,
+                CMemberData(data.m_username, nick));
     }
 
     // 自分が参加したとき(別クライアントソフトから)
     if (data.m_username == m_user->getUserName()){
 
         // チャンネル情報取得タスクの開始
-        m_connect->startGetChannelTask(
-        		m_user);
+        m_connect->startGetChannelTask(m_user);
     }
 }
 
 // チャンネル離脱ストリームを受信
-void CChatServiceBase::onGetPartStream(const wxString& channel, const wxString& name)
+void CChatServiceBase::onGetPartStream(const wxString& channel,
+        const wxString& name)
 {
     // データ更新
     wxString nick = m_nickTable->getNickname(name);

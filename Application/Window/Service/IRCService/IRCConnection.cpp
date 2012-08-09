@@ -28,14 +28,22 @@ CIRCConnection::CIRCConnection()
 
 CIRCConnection::~CIRCConnection()
 {
-    m_client->disconnect();
-    delete m_client;
+    disconnect();
     int size = (int) m_channels.size();
     for (int i = 0; i < size; i++){
         delete m_channels[i];
     }
 }
 
+// 切断します
+void CIRCConnection::disconnect()
+{
+    if (m_client != NULL){
+        m_client->disconnect();
+        delete m_client;
+        m_client = NULL;
+    }
+}
 // 初期化を行う
 void CIRCConnection::init(int connectionId, wxEvtHandler* handler)
 {
@@ -118,7 +126,6 @@ void CIRCConnection::invokeEvent(CConnectionEventBase* event)
     event->setConnectionId(m_connectionId);
     wxQueueEvent(m_handler, event);
 }
-
 
 // チャンネルから離脱するタスク(別スレッド)を開始する
 void CIRCConnection::startPartTask(const IUser* user, const wxString& channel)
@@ -218,6 +225,7 @@ void CIRCConnection::onMessageReceived(CMessageData* message)
 {
     CIRCMessageData* ircMessage = dynamic_cast<CIRCMessageData*>(message);
     if (ircMessage->m_statusCode == IRCCommand::PING){
+        printf("pong");
         m_client->pong(ircMessage->m_body);
     } else{
 
@@ -250,6 +258,10 @@ void CIRCConnection::onConnectionFailed()
     event->SetEventType(myEVT_THREAD_GET_PING); // イベントの種類をセット
     invokeEvent(event);
 }
-
+// サービスのステータスを調べます。
+void CIRCConnection::onCheckServiceStatus()
+{
+    m_client->pong("");
+}
 }
 } /* namespace CornStarch */

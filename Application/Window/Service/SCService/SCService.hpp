@@ -20,6 +20,7 @@ public:
 
 	//再接続します。
 	void reconnect(void);
+
 };
 
 }

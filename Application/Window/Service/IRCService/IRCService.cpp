@@ -62,5 +62,7 @@ void CIRCService::reconnect(void)
     m_connect = newConnection;
     regUser(m_user->getUserName(),m_user->getBasic());
 }
+
+
 }
 }

@@ -24,6 +24,7 @@ public:
 
 	//override 接続できたときの処理
 	void onAuthSucceeed(void);
+
 };
 }
 }

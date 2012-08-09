@@ -81,8 +81,8 @@ void CPaneMsg::displayMessages(const vector<CMessageData*>& messages,
     this->Clear();
     int size = (int) messages.size();
     for (int i = 0; i < size; i++){
+        addMessage(messages[i],nickTable);
         if (i < size - 1){
-            addMessage(messages[i],nickTable);
             drawDateLine(messages[i]->getTime("%Y/%m/%d(%a)"),
                     messages[i + 1]->getTime("%Y/%m/%d(%a)"));
         }

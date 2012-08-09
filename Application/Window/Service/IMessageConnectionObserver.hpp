@@ -16,7 +16,7 @@ public:
     virtual ~IMessageConnectionObserver()
     {
     }
-
+    virtual void onCheckServiceStatus()=0;
     virtual void onMessageReceived(CMessageData* message) = 0;
     virtual void onDisconnected() = 0;
     virtual void onConnected() = 0;

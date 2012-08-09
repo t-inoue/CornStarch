@@ -23,6 +23,9 @@ public:
     // 初期化を行う
     virtual void init(int connectionId,wxEvtHandler* handler) = 0;
 
+    // 切断を行う。
+    virtual void disconnect() = 0;
+
     // メッセージを投稿するタスク(別スレッド)を開始する
     virtual void startPostMessageTask(const IUser* user, const wxString& message,
         const wxString& channel)=0;

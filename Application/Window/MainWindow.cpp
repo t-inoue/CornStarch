@@ -253,23 +253,35 @@ void CMainWindow::onPart(wxCommandEvent& event)
 // 表示を更新
 void CMainWindow::onUpdateDisplay(wxCommandEvent& event)
 {
-    map<int, CChatServiceBase*>::iterator it = m_services.begin();
-    while (it != m_services.end()){
-
-        // 保持しているデータを初期化
-        (*it).second->reconnect();
-        (*it).second->clearChannels();
-        (*it).second->clearNickTable();
-        ++it;
-    }
-
-    CChatServiceBase* service = getService(m_currentServiceId);
-    if (service != NULL){
-        // 表示を更新
-        updateAllView(m_currentServiceId, service->getCurrentChannel());
-    }
+    updateService(m_currentServiceId);
 }
 
+void CMainWindow::updateService(int serviceId)
+{
+    CChatServiceBase* service = getService(serviceId);
+    if (service != NULL){
+        //　再接続
+        service->reconnect();
+        service->clearChannels();
+        service->clearNickTable();
+
+        // 表示を更新
+        if (serviceId == m_currentServiceId){
+            updateAllView(m_currentServiceId, service->getCurrentChannel());
+        } else{
+            m_view->displayChannels(m_services);
+        }
+    }
+}
+// サービスを切断する
+void CMainWindow::disconnect(int serviceId)
+{
+    CChatServiceBase* service = getService(serviceId);
+    if (service != NULL){
+        service->disconnect();
+        m_view->displayChannels(m_services);
+    }
+}
 // ニックネーム変更
 void CMainWindow::onNickChange(wxCommandEvent& event)
 {
@@ -289,7 +301,8 @@ void CMainWindow::onEnter(wxCommandEvent& event)
 {
     CChatServiceBase* contents = getService(m_currentServiceId);
 
-    if (contents == NULL || contents->getCurrentChannel() == ""){
+    if (contents == NULL || contents->getCurrentChannel() == ""
+            || contents->IsConnected() == false){
         return;
     }
 
@@ -314,7 +327,7 @@ void CMainWindow::onEnter(wxCommandEvent& event)
     m_view->clearPostPaneText();
     m_view->displayLogs(m_logHolder->getLogs());
 
-    m_view->addMessage(&message,contents->getNickTable());
+    m_view->addMessage(&message, contents->getNickTable());
 }
 
 // メンバーがダブルクリック
@@ -363,18 +376,26 @@ void CMainWindow::onChannelRightClicked(CChannelSelectEvent& event)
     enum
     {
         Id_DeleteServer = 1, Id_AddChannel = 2, Id_DeleteChannel = 3,
-        Id_ChangeTopic = 4, Id_ChangeNickname = 5
+        Id_ChangeTopic = 4, Id_ChangeNickname = 5, Id_Refresh = 6,
+        Id_Disconnect = 7
     };
-    wxMenu menu;
-    menu.Append(Id_DeleteServer, "サーバの削除");
-    menu.Append(Id_AddChannel, "チャンネルの追加");
-    if (event.isServerSelected() == false){
-        menu.Append(Id_DeleteChannel, "チャンネルの削除");
-        menu.Append(Id_ChangeTopic, "トピックの変更");
-    }
-    menu.Append(Id_ChangeNickname, "ニックネームの変更");
 
     int serviceId = event.getServerId();
+    CChatServiceBase* service = getService(serviceId);
+
+    wxMenu menu;
+    menu.Append(Id_DeleteServer, "サーバの削除");
+    menu.Append(Id_Refresh, "サーバの再読み込み");
+    if (service->IsConnected()){
+        menu.Append(Id_Disconnect, "サーバの切断");
+        menu.AppendSeparator();
+        menu.Append(Id_AddChannel, "チャンネルの追加");
+        if (event.isServerSelected() == false){
+            menu.Append(Id_DeleteChannel, "チャンネルの削除");
+            menu.Append(Id_ChangeTopic, "トピックの変更");
+        }
+        menu.Append(Id_ChangeNickname, "ニックネームの変更");
+    }
 
     wxString channel = event.getChannelName();
     switch (this->GetPopupMenuSelectionFromUser(menu)) {
@@ -392,6 +413,12 @@ void CMainWindow::onChannelRightClicked(CChannelSelectEvent& event)
         break;
     case Id_ChangeNickname:
         showChangeNicknameDialog(serviceId);
+        break;
+    case Id_Refresh:
+        updateService(serviceId);
+        break;
+    case Id_Disconnect:
+        disconnect(serviceId);
         break;
     }
 }
@@ -440,12 +467,11 @@ void CMainWindow::onDisconnect(CDisconnectEvent& event)
 {
     CChatServiceBase* service = getService(event.getConnectionId());
     if (service != NULL){
-        service->setConnected(false);
+        disconnect(event.getConnectionId());
         wxMessageBox(
                 wxString::Format(wxT("サーバー[%s]切断されました。再接続を行う際は更新してください。"),
                         service->getHost()));
 
-        m_view->displayChannels(m_services);
     }
 }
 // メッセージ一覧受信時
@@ -546,7 +572,7 @@ void CMainWindow::onMsgStream(CMsgStreamEvent& event)
     m_view->displayLogs(m_logHolder->getLogs()); // ログペイン
     if (service->getCurrentChannel() == data.m_channel){
         // メッセージを表示
-        m_view->addMessage(&data,service->getNickTable());
+        m_view->addMessage(&data, service->getNickTable());
         //updateMessageView(event.getConnectionId(), data.m_channel);
     }
 
@@ -666,8 +692,7 @@ void CMainWindow::onKick(CKickEvent& event)
             }
         } else{
             service->onGetPartStream(event.getChannel(), event.getUser());
-            m_logHolder->pushKickLog(event.getChannel(),
-                    event.getUser());
+            m_logHolder->pushKickLog(event.getChannel(), event.getUser());
             updateMemberView(event.getConnectionId(), event.getChannel());
             // 表示の更新
             m_view->displayLogs(m_logHolder->getLogs()); // ログペイン

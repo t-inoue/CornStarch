@@ -19,11 +19,21 @@ class CSCAuthTask: public CSCTask
 private:
 
     wxString m_userName;
-    ;
+    bool m_isPing;
 
 public:
     CSCAuthTask(void);
     ~CSCAuthTask(void);
+
+    bool isPing() const
+    {
+        return m_isPing;
+    }
+
+    void setPing(bool isPing)
+    {
+        m_isPing = isPing;
+    }
 
     wxString getUserName() const
     {

@@ -9,7 +9,8 @@ namespace StarChat
 {
 ;
 
-CSCAuthTask::CSCAuthTask(void)
+CSCAuthTask::CSCAuthTask(void) :
+        m_isPing(false)
 {
 }
 
@@ -27,14 +28,17 @@ void CSCAuthTask::sendRequestToSC(CSCClient* client)
 // HTTPレスポンスを解析してイベントを作成する
 void CSCAuthTask::notifyMessage(const string& responseBody)
 {
+
     CSCJsonParser parser;
     bool isSucceed = parser.isPingSucceeded(responseBody);
-    if (isSucceed){
-        m_observer->onConnected();
-    }
-    else
-    {
-        m_observer->onConnectionFailed();
+    if (m_isPing == false){
+        if (isSucceed){
+            m_observer->onConnected();
+        } else{
+            m_observer->onConnectionFailed();
+        }
+    } else if(isSucceed == false){
+        m_observer->onDisconnected();
     }
 }
 }

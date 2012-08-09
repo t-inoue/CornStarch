@@ -16,6 +16,8 @@ namespace IRC
 // IRCと接続するためのクライントクラスです。
 class CIRCClient: public CSocketClient
 {
+    // IRCとの接続が完了しているか
+    bool m_isConnectedToIRCService;
     // 送信用コマンドキュー
     wxMessageQueue<wxString> *m_commandQueue;
     // 接続用のスレッドです。
@@ -87,6 +89,14 @@ public:
          return m_commandQueue;
      }
 
+    bool isConnectedToIrcService() const
+    {
+        return m_isConnectedToIRCService;
+    }
+    void setConnectedToIrcService(bool value)
+    {
+        m_isConnectedToIRCService = value;
+    }
      void setCommandQueue(wxMessageQueue<wxString>* commandQueue)
      {
          m_commandQueue = commandQueue;

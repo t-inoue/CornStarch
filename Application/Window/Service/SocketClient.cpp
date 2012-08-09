@@ -64,7 +64,8 @@ int CSocketClient::receive(long waitTimeUsec)
 	int recvSize = 0; // 受信済みサイズ
 	int result; // recv関数の戻り値
 
-	while (1){
+	// 最大長まで読み取るか、読み取るものがなくなったら繰り返し終了。
+	while (true){
 
 		// waitTimeUsecの間、受信可能か調べる
 		if (waitRecv(waitTimeUsec) == false){

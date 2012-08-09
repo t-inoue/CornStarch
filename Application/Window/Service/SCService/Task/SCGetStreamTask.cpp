@@ -1,7 +1,7 @@
 ﻿#include "SCGetStreamTask.hpp"
 
 using namespace std;
-
+#include "../../ConnectionStatusChecker.h"
 namespace CornStarch
 {
 ;
@@ -30,6 +30,8 @@ wxThread::ExitCode CSCGetStreamTask::Entry()
     client->sendGetStreamRequest(m_userName, m_basic);
     client->recvHttpResponseBody();
 
+    // Statusチェックの間隔計測
+    CConnectionStatusChecker checker(m_observer);
     // Deleteされるまでループ
     while (!TestDestroy()){
 
@@ -43,19 +45,15 @@ wxThread::ExitCode CSCGetStreamTask::Entry()
 
         // 各JSONを解析して、イベントを送信する
         size_t size = jsonVec.size();
-        for (size_t i = 0; i < size; i++){
-            CSCMessageData message = parseStream(jsonVec[i]);
-            m_observer->onMessageReceived(&message);
+        if (size != 0){
+            for (size_t i = 0; i < size; i++){
+                CSCMessageData message = parseStream(jsonVec[i]);
+                m_observer->onMessageReceived(&message);
+            }
+            // サーバーのステータスチェック計測のリセット
+            checker.refreshCount();
         }
-//        if (client->isSocketConnected() == false){
-//            // 故意でない切断時
-//            CDisconnectEvent* event = new CDisconnectEvent();
-//            event->SetEventType(myEVT_THREAD_DISCONNECT); // イベントの種類をセット
-//            event->setConnectionId(m_connectionId);
-//            wxQueueEvent(m_handler, event);
-//
-//            break;
-//        }
+        checker.tick();
     }
 
     // 後処理
