@@ -72,6 +72,11 @@ void CMainPanel::addMessage(const CMessageData* message,
 {
     m_msgPane->addMessage(message,nickTable);
 }
+
+void CMainPanel::addUnreadMessage(const CMessageData* message)
+{
+    m_cnBox->addUnreadMessage(message);
+}
 // メンバーペインにメンバーを表示
 void CMainPanel::displayMembers(const vector<CMemberData*>& members)
 {

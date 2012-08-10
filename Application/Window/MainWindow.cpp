@@ -294,7 +294,8 @@ void CMainWindow::onEnter(wxCommandEvent& event)
     // コンテンツの更新
     CMessageData message = contents->generateMessage(body);
     contents->postMessage(message);
-    m_logHolder->pushMessageLog(message,contents->getName(), contents->getNickName());
+    m_logHolder->pushMessageLog(message, contents->getName(),
+            contents->getNickName());
 
     // 表示の更新
     m_view->clearPostPaneText();
@@ -442,8 +443,8 @@ void CMainWindow::onDisconnect(CDisconnectEvent& event)
     if (service != NULL){
         disconnect(event.getConnectionId());
         wxMessageBox(
-                wxString::Format(wxT("サーバー[%s]切断されました。再接続を行う際は更新してください。"),
-                        service->getHost()));
+                wxString::Format(wxT("サーバー[%s(%s)]切断されました。再接続を行う際は更新してください。"),
+                        service->getName(), service->getHost()));
 
     }
 }
@@ -533,20 +534,24 @@ void CMainWindow::onMsgStream(CMsgStreamEvent& event)
 {
     CChatServiceBase* service = getService(event.getConnectionId());
     CMessageData data = event.getMessage();
+    data.m_serviceId = event.getConnectionId();
     bool myPost = service->isPostedThisClient(data);
-
     service->onGetMessageStream(data);
     if (!myPost){
-        m_logHolder->pushMessageLog(data,service->getName(),
+        m_logHolder->pushMessageLog(data, service->getName(),
                 service->getMemberNick(data.m_username));
     }
 
     // メッセージをログ一覧に表示
     m_view->displayLogs(m_logHolder->getLogs()); // ログペイン
-    if (service->getCurrentChannel() == data.m_channel){
+    if (event.getConnectionId() == m_currentServiceId
+            && service->getCurrentChannel() == data.m_channel){
         // メッセージを表示
+        data.m_isReaded = true;
         m_view->addMessage(&data, service->getNickTable());
-        //updateMessageView(event.getConnectionId(), data.m_channel);
+    } else{
+        data.m_isReaded = false;
+        m_view->addUnreadMessage(&data);
     }
 
     // 通知があったとき && 自分以外の人から
@@ -563,7 +568,8 @@ void CMainWindow::onJoinStream(CJoinStreamEvent& event)
     // 処理待ちに追加
     CSubscribeData data(event.getChannelName(), event.getUserName());
     contents->onGetJoinStream(data.m_channel, data.m_username);
-    m_logHolder->pushJoinLog(data,contents->getName(), contents->getMemberNick(data.m_username));
+    m_logHolder->pushJoinLog(data, contents->getName(),
+            contents->getMemberNick(data.m_username));
 
     // 表示の更新
     m_view->displayLogs(m_logHolder->getLogs()); // ログペイン
@@ -583,7 +589,7 @@ void CMainWindow::onPartStream(CPartStreamEvent& event)
 
         // データ更新
         contents->onGetPartStream(channel, name);
-        m_logHolder->pushPartLog(data,contents->getName(),
+        m_logHolder->pushPartLog(data, contents->getName(),
                 contents->getMemberNick(data.m_username));
 
         // 表示の更新
@@ -603,7 +609,7 @@ void CMainWindow::onChannelStream(CChannelStreamEvent& event)
     // データ更新
     CChannelData channel = event.getChannel();
     contents->onGetChannelStream(channel);
-    m_logHolder->pushTopicLog(channel,contents->getName());
+    m_logHolder->pushTopicLog(channel, contents->getName());
 
     // 表示の更新
     m_view->displayLogs(m_logHolder->getLogs()); // ログペイン
@@ -622,7 +628,7 @@ void CMainWindow::onUserStream(CUserStreamEvent& event)
     // データ更新
     CMemberData member = event.getMember();
     contents->onGetUserStream(member);
-    m_logHolder->pushChangeNickLog(member,contents->getName());
+    m_logHolder->pushChangeNickLog(member, contents->getName());
 
     // 表示の更新
     wxString ch = contents->getCurrentChannel();
@@ -637,13 +643,15 @@ void CMainWindow::onInvite(CInviteEvent& event)
 
     CChatServiceBase* service = getService(event.getConnectionId());
     if (service != NULL){
-        m_logHolder->pushInviteLog(event.getChannel(),service->getName(), event.getUser());
+        m_logHolder->pushInviteLog(event.getChannel(), service->getName(),
+                event.getUser());
         // 表示の更新
         m_view->displayLogs(m_logHolder->getLogs()); // ログペイン
 
         wxMessageDialog dialog(this,
                 wxString::Format(wxT("%s-チャンネル[%s]に招待されました。参加しますか？"),
-                       service->getName(), event.getChannel()), "確認", wxOK | wxCANCEL);
+                        service->getName(), event.getChannel()), "確認",
+                wxOK | wxCANCEL);
         if (dialog.ShowModal() == wxID_OK){
             service->joinChannel(event.getChannel());
         }
@@ -656,11 +664,13 @@ void CMainWindow::onKick(CKickEvent& event)
 {
     CChatServiceBase* service = getService(event.getConnectionId());
     if (service != NULL){
-        m_logHolder->pushKickLog(event.getChannel(),service->getName(), event.getUser());
+        m_logHolder->pushKickLog(event.getChannel(), service->getName(),
+                event.getUser());
         if (event.getUser() == service->getUserName()){
             wxMessageDialog dialog(this,
                     wxString::Format(wxT("%s-チャンネル[%s]からキックされました。"),
-                            service->getName(),  event.getChannel()), "確認", wxOK);
+                            service->getName(), event.getChannel()), "確認",
+                    wxOK);
             if (dialog.ShowModal() == wxID_OK){
                 service->partChannel(event.getChannel());
             }
@@ -679,8 +689,9 @@ void CMainWindow::deleteService(int serviceId)
     CChatServiceBase* service = getService(serviceId);
     if (service != NULL){
         wxMessageDialog dialog(this,
-                wxString::Format(wxT("サーバー[%s]の削除をしてもよろしいですか？"),
-                        service->getHost()), "確認", wxOK | wxCANCEL);
+                wxString::Format(wxT("サーバー[%s(%s)]の削除をしてもよろしいですか？"),
+                        service->getName(), service->getHost()), "確認",
+                wxOK | wxCANCEL);
 
         if (dialog.ShowModal() == wxID_OK){
             delete service;

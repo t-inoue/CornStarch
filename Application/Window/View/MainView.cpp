@@ -84,6 +84,12 @@ void CMainView::addMessage(const CMessageData* message,
 {
     m_panel->addMessage(message, nickTable);
 }
+
+void CMainView::addUnreadMessage(const CMessageData* message)
+{
+    m_panel->addUnreadMessage(message);
+}
+
 // メンバー一覧を表示する
 void CMainView::displayMembers(const vector<CMemberData*>& members)
 {
@@ -149,7 +155,6 @@ int CMainView::showModalAuthDlg(void)
     return m_dialog->showModalAuthDlg();
 }
 
-
 // チャンネル名指定用ダイアログを表示する
 int CMainView::showModalChannelDlg(void)
 {
@@ -176,7 +181,6 @@ wxString CMainView::getDlgChannelName(void) const
 {
     return m_dialog->getChannelName();
 }
-
 
 // ニックネームを取得
 wxString CMainView::getNickName(void) const

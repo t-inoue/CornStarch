@@ -32,6 +32,8 @@ public:
     // 所属チャンネル一覧を表示
     void displayChannels(const std::map<int, CChatServiceBase*>& services);
 
+    // 選択してないチャンネルにMessageが追加された時に呼ばれます。
+    void addUnreadMessage(const CMessageData* message);
 private:
     
     // チャンネルが選択された際のイベント処理
@@ -42,6 +44,7 @@ private:
 
     // チャンネルを選択したというイベントを返す
     CChannelSelectEvent* newSelectEvent(const wxTreeItemId& id);
+
 
     // アクティベートされた
     void onActivated(wxTreeEvent& event);

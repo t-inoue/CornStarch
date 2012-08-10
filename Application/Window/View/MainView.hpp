@@ -7,7 +7,8 @@
 #include <map>
 
 namespace CornStarch
-{;
+{
+;
 
 // ビュー部分(メニューバー、画面、ダイアログ)を管理
 class CMainView
@@ -25,7 +26,8 @@ public:
     // 初期化を行う
     void init(wxWindow* parent);
 
-public: // 各ペインに関するメソッド
+public:
+    // 各ペインに関するメソッド
 
     // 投稿ペインのIDを取得する
     wxWindowID getPostPaneID(void) const;
@@ -41,16 +43,18 @@ public: // 各ペインに関するメソッド
 
     // メッセージ一覧を表示する
     void displayMessages(const std::vector<CMessageData*>& messages,
-        const std::map<wxString, wxString>& nickTable);
+            const std::map<wxString, wxString>& nickTable);
     // メッセージ一覧を表示する
-      void addMessage(const CMessageData* message,
-          const std::map<wxString, wxString>& nickTable);
+    void addMessage(const CMessageData* message,
+            const std::map<wxString, wxString>& nickTable);
+    // 読み込んでないメッセージを通知する。
+    void addUnreadMessage(const CMessageData* message);
 
     // メンバー一覧を表示する
     void displayMembers(const std::vector<CMemberData*>& members);
 
     // チャンネル一覧を表示する
-    void displayChannels(const std::map<int,CChatServiceBase*>& services);
+    void displayChannels(const std::map<int, CChatServiceBase*>& services);
 
     // メッセージ一覧をクリアする。
     void clearMessages(void);
@@ -61,29 +65,26 @@ public: // 各ペインに関するメソッド
     // チャンネル一覧をクリアする
     void clearChannels(void);
 
-
-
     // 投稿用ペインの文字を消す
     void clearPostPaneText(void);
 
     // ログ一覧にログを表示する
     void displayLogs(const std::vector<CChatLog*>& logs);
 
-public: // メニューバーに関するメソッド
+public:
+    // メニューバーに関するメソッド
 
     // メニューバーを取得する
     CMainMenuBar* getMenuBar(void) const;
 
-public: // ダイアログに関するメソッド
+public:
+    // ダイアログに関するメソッド
 
     // メッセージボックスを表示する
     void showMsgBox(const wxString& message);
 
     // 認証ダイアログを表示する(SC)
     int showModalAuthDlg(void);
-
-    // 認証ダイアログを表示する(IRC)
-    //int showModalIRCAuthDlg(void);
 
     // チャンネル名指定用ダイアログを表示する
     int showModalChannelDlg(void);
@@ -105,7 +106,8 @@ public: // ダイアログに関するメソッド
     // トピック名を取得
     wxString getTopic(void) const;
 
-public: // 通知に関するメソッド
+public:
+    // 通知に関するメソッド
 
     // メッセージを通知する
     void messageNotify(const wxString& title, const wxString& message);

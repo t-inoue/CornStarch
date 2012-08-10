@@ -114,6 +114,8 @@ CChannelSelectEvent* CPaneCn::newSelectEvent(const wxTreeItemId& id)
     // 自分と親のツリーIDを取得
     wxTreeItemId parentId = GetItemParent(id);
 
+    //　背景を白に戻す。
+    this->SetItemBackgroundColour(id, *wxWHITE);
     // アイテム名の取得
     wxString itemName = GetItemText(id);
 
@@ -155,5 +157,29 @@ void CPaneCn::onActivated(wxTreeEvent& event)
 {
     return;
 }
-
+// Messageが追加された時に呼ばれます。
+void CPaneCn::addUnreadMessage(const CMessageData* message)
+{
+    wxTreeItemIdValue cookie;
+    wxTreeItemId root = GetRootItem();
+    wxTreeItemId server = GetFirstChild(root, cookie);
+    ;
+    while (server.IsOk()) // サーバーノードを探索
+    {
+        if (((CTreeServerItem*) GetItemData(server))->getServerId()
+                == message->m_serviceId){
+            wxTreeItemId channel = this->GetFirstChild(server, cookie);
+            while (channel.IsOk()) // チャンネルノードを探索
+            {
+                if (GetItemText(channel) == message->m_channel){
+                    //　背景を色を返る。
+                    this->SetItemBackgroundColour(channel, *wxLIGHT_GREY);
+                    return;
+                }
+                channel = this->GetNextSibling(channel);
+            }
+        }
+        server = this->GetNextSibling(server);
+    }
+}
 }

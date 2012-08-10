@@ -19,6 +19,7 @@ public:
     time_t m_time; // UNIX時間
     wxString m_channel; // チャンネル名
     wxString m_tempNick; // 一時ニックネーム
+    int m_serviceId;
     bool m_isReaded;
 
     CMessageData(){}

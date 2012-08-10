@@ -34,6 +34,9 @@ public:
      void addMessage(const CMessageData* message,
          const std::map<wxString, wxString>& nickTable);
 
+     // 選択してないチャンネルにMessageが追加された時に呼ばれます。
+     void addUnreadMessage(const CMessageData* message);
+
     // メンバーペインにメンバーを表示
     void displayMembers(const std::vector<CMemberData*>& members);
 
