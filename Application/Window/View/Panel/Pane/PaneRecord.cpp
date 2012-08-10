@@ -41,6 +41,7 @@ void CPaneRecord::displayLogs(const vector<CChatLog*>& logs)
 
     size_t size = logs.size();
     for (size_t i = 0; i < size; i++){
+        pushLog(*logs[i]);
         switch (logs[i]->getLogType()) {
         case CChatLog::LOG_MESSAGE:
             pushLog(*(CMessageLog*) logs[i]);
@@ -68,7 +69,14 @@ void CPaneRecord::displayLogs(const vector<CChatLog*>& logs)
 }
 
 //////////////////////////////////////////////////////////////////////
+// メッセージログを表示
+void CPaneRecord::pushLog(const CChatLog& messageLog)
+{
+    wxString content = wxString::Format(wxT("(%s)"),
+            messageLog.getServiceName());
+    pushStringRow(content, COLOR_BLACK); // 本文を黒で表示
 
+}
 // 単色で文字列を追加する
 void CPaneRecord::pushStringRow(const wxString& str, const wxColour& colour)
 {

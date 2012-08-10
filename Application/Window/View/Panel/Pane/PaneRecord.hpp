@@ -41,6 +41,9 @@ private:
     void pushStringRow(const wxString& str, const wxColour& colour);
 
     // メッセージログを表示
+    void pushLog(const CChatLog& messageLog);
+
+    // メッセージログを表示
     void pushLog(const CMessageLog& messageLog);
 
     // チャンネル参加ログを表示

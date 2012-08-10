@@ -294,7 +294,7 @@ void CMainWindow::onEnter(wxCommandEvent& event)
     // コンテンツの更新
     CMessageData message = contents->generateMessage(body);
     contents->postMessage(message);
-    m_logHolder->pushMessageLog(message, contents->getNickName());
+    m_logHolder->pushMessageLog(message,contents->getName(), contents->getNickName());
 
     // 表示の更新
     m_view->clearPostPaneText();
@@ -537,7 +537,7 @@ void CMainWindow::onMsgStream(CMsgStreamEvent& event)
 
     service->onGetMessageStream(data);
     if (!myPost){
-        m_logHolder->pushMessageLog(data,
+        m_logHolder->pushMessageLog(data,service->getName(),
                 service->getMemberNick(data.m_username));
     }
 
@@ -563,7 +563,7 @@ void CMainWindow::onJoinStream(CJoinStreamEvent& event)
     // 処理待ちに追加
     CSubscribeData data(event.getChannelName(), event.getUserName());
     contents->onGetJoinStream(data.m_channel, data.m_username);
-    m_logHolder->pushJoinLog(data, contents->getMemberNick(data.m_username));
+    m_logHolder->pushJoinLog(data,contents->getName(), contents->getMemberNick(data.m_username));
 
     // 表示の更新
     m_view->displayLogs(m_logHolder->getLogs()); // ログペイン
@@ -583,7 +583,7 @@ void CMainWindow::onPartStream(CPartStreamEvent& event)
 
         // データ更新
         contents->onGetPartStream(channel, name);
-        m_logHolder->pushPartLog(data,
+        m_logHolder->pushPartLog(data,contents->getName(),
                 contents->getMemberNick(data.m_username));
 
         // 表示の更新
@@ -603,7 +603,7 @@ void CMainWindow::onChannelStream(CChannelStreamEvent& event)
     // データ更新
     CChannelData channel = event.getChannel();
     contents->onGetChannelStream(channel);
-    m_logHolder->pushTopicLog(channel);
+    m_logHolder->pushTopicLog(channel,contents->getName());
 
     // 表示の更新
     m_view->displayLogs(m_logHolder->getLogs()); // ログペイン
@@ -622,7 +622,7 @@ void CMainWindow::onUserStream(CUserStreamEvent& event)
     // データ更新
     CMemberData member = event.getMember();
     contents->onGetUserStream(member);
-    m_logHolder->pushChangeNickLog(member);
+    m_logHolder->pushChangeNickLog(member,contents->getName());
 
     // 表示の更新
     wxString ch = contents->getCurrentChannel();
@@ -637,13 +637,13 @@ void CMainWindow::onInvite(CInviteEvent& event)
 
     CChatServiceBase* service = getService(event.getConnectionId());
     if (service != NULL){
-        m_logHolder->pushInviteLog(event.getChannel(), event.getUser());
+        m_logHolder->pushInviteLog(event.getChannel(),service->getName(), event.getUser());
         // 表示の更新
         m_view->displayLogs(m_logHolder->getLogs()); // ログペイン
 
         wxMessageDialog dialog(this,
-                wxString::Format(wxT("チャンネル[%s]に招待されました。参加しますか？"),
-                        event.getChannel()), "確認", wxOK | wxCANCEL);
+                wxString::Format(wxT("%s-チャンネル[%s]に招待されました。参加しますか？"),
+                       service->getName(), event.getChannel()), "確認", wxOK | wxCANCEL);
         if (dialog.ShowModal() == wxID_OK){
             service->joinChannel(event.getChannel());
         }
@@ -656,16 +656,16 @@ void CMainWindow::onKick(CKickEvent& event)
 {
     CChatServiceBase* service = getService(event.getConnectionId());
     if (service != NULL){
+        m_logHolder->pushKickLog(event.getChannel(),service->getName(), event.getUser());
         if (event.getUser() == service->getUserName()){
             wxMessageDialog dialog(this,
-                    wxString::Format(wxT("チャンネル[%s]からキックされました。"),
-                            event.getChannel()), "確認", wxOK);
+                    wxString::Format(wxT("%s-チャンネル[%s]からキックされました。"),
+                            service->getName(),  event.getChannel()), "確認", wxOK);
             if (dialog.ShowModal() == wxID_OK){
                 service->partChannel(event.getChannel());
             }
         } else{
             service->onGetPartStream(event.getChannel(), event.getUser());
-            m_logHolder->pushKickLog(event.getChannel(), event.getUser());
             updateMemberView(event.getConnectionId(), event.getChannel());
             // 表示の更新
             m_view->displayLogs(m_logHolder->getLogs()); // ログペイン

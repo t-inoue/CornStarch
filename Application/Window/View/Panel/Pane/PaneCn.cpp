@@ -49,8 +49,11 @@ void CPaneCn::displayChannels(const map<int, CChatServiceBase*>& connections)
         data->setServerId((*it).second->getId());
 
         // サーバ名をセット
-        wxTreeItemId id = AppendItem(rootId, (*it).second->getHost(), -1, -1,
-                data);
+
+        wxString name(
+                wxString::Format(wxT("%s[%s]"), (*it).second->getName(),
+                        (*it).second->getHost()));
+        wxTreeItemId id = AppendItem(rootId, name, -1, -1, data);
         if ((*it).second->IsConnected() == false){
             this->SetItemTextColour(id, *wxLIGHT_GREY);
         }
@@ -60,10 +63,10 @@ void CPaneCn::displayChannels(const map<int, CChatServiceBase*>& connections)
         for (cit = channels.begin(); cit != channels.end(); cit++){
 
             // チャンネルをセット
-            wxTreeItemId childId =  AppendItem(id, (*cit)->getChannelName());
+            wxTreeItemId childId = AppendItem(id, (*cit)->getChannelName());
             if ((*it).second->IsConnected() == false){
-                   this->SetItemTextColour(childId, *wxLIGHT_GREY);
-               }
+                this->SetItemTextColour(childId, *wxLIGHT_GREY);
+            }
         }
 
         Expand(id);

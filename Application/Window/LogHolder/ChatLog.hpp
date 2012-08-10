@@ -6,20 +6,18 @@
 #include "../../DataStruct/ChannelData.hpp"
 
 namespace CornStarch
-{;
+{
+;
 
 // チャットのログを管理
 class CChatLog
 {
+    wxString m_ServiceName;
 public:
     // チャットログのタイプ
-    enum LOG_TYPE{
-        LOG_MESSAGE,
-        LOG_JOIN,
-        LOG_PART,
-        LOG_TOPIC,
-        LOG_USER,
-        LOG_INVITE,
+    enum LOG_TYPE
+    {
+        LOG_MESSAGE, LOG_JOIN, LOG_PART, LOG_TOPIC, LOG_USER, LOG_INVITE,
         LOG_KICK
     };
 
@@ -38,6 +36,16 @@ public:
 
     // ニックネームを更新する
     virtual void updateNick(const wxString& nick);
+
+    wxString getServiceName() const
+    {
+        return m_ServiceName;
+    }
+
+    void setServiceName(wxString serviceName)
+    {
+        m_ServiceName = serviceName;
+    }
 };
 
 }

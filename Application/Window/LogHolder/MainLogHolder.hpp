@@ -20,25 +20,25 @@ public:
     std::vector<CChatLog*> getLogs(void) const;
 
     // メッセージログを追加する
-    void pushMessageLog(const CMessageData& message, const wxString& nick = "");
+    void pushMessageLog(const CMessageData& message,const wxString& serviceName, const wxString& nick = "");
 
     // チャンネル参加ログを追加する
-    void pushJoinLog(const CSubscribeData& sub, const wxString& nick = "");
+    void pushJoinLog(const CSubscribeData& sub,const wxString& serviceName, const wxString& nick = "");
 
     // チャンネル退出ログを追加する
-    void pushPartLog(const CSubscribeData& sub, const wxString& nick = "");
+    void pushPartLog(const CSubscribeData& sub,const wxString& serviceName, const wxString& nick = "");
 
     // ニックネーム変更ログを追加する
-    void pushChangeNickLog(const CMemberData& member);
+    void pushChangeNickLog(const CMemberData& member,const wxString& serviceName);
 
     // トピック変更ログを追加する
-    void pushTopicLog(const CChannelData& channel);
+    void pushTopicLog(const CChannelData& channel,const wxString& serviceName);
 
     // 招待ログを追加する
-    void pushInviteLog(const wxString& channel,const wxString& userName);
+    void pushInviteLog(const wxString& channel,const wxString& serviceName,const wxString& userName);
 
     // キックログを追加する
-    void pushKickLog(const wxString& channel,const wxString& userName);
+    void pushKickLog(const wxString& channel,const wxString& serviceName,const wxString& userName);
 
     // ニックネームの更新を行う
     void onUpdateNickName(const CMemberData& member);
@@ -46,7 +46,7 @@ public:
 private:
 
     // ログを追加する
-    void pushLog(CChatLog* log);
+    void pushLog(CChatLog* log,const wxString& serviceName);
 };
 
 }
