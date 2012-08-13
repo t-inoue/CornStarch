@@ -12,6 +12,7 @@ namespace CornStarch
 // メッセージ表示用ペイン
 class CPaneMsg : public wxTextCtrl
 {
+    static const wxColour COLOR_LIGHT_YELLOW;
 public:
     CPaneMsg(void);
     ~CPaneMsg(void);

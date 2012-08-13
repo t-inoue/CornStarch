@@ -332,10 +332,7 @@ void CMainWindow::onChannelSelected(CChannelSelectEvent& event)
     // サーバーIDとチャンネル名を取得
     wxString channel = event.getChannelName();
     m_currentServiceId = event.getServerId();
-    // 未読リセット
-    CChannelStatus* channelStatus = service->getChannel(channel);
-    channelStatus->setUnreadCount(0)
-            ;
+
     // コンテンツの更新
     service->selectChannel(channel);
 
@@ -343,6 +340,12 @@ void CMainWindow::onChannelSelected(CChannelSelectEvent& event)
     displayTitle(channel, service->getTopic(channel), event.getServerId());
     updateMessageView(m_currentServiceId, service->getCurrentChannel());
     updateMemberView(m_currentServiceId, service->getCurrentChannel());
+
+    // 未読リセット
+    CChannelStatus* channelStatus = service->getChannel(channel);
+    if (channelStatus != NULL){
+        channelStatus->clearUnreadCount();
+    }
 }
 
 // チャンネルペインを右クリック時
@@ -536,12 +539,6 @@ void CMainWindow::onMsgStream(CMsgStreamEvent& event)
     CChatServiceBase* service = getService(event.getConnectionId());
     CMessageData data = event.getMessage();
     data.m_serviceId = event.getConnectionId();
-    bool myPost = service->isPostedThisClient(data);
-    service->onGetMessageStream(data);
-    if (!myPost){
-        m_logHolder->pushMessageLog(data, service->getName(),
-                service->getMemberNick(data.m_username));
-    }
 
     // メッセージをログ一覧に表示
     m_view->displayLogs(m_logHolder->getLogs()); // ログペイン
@@ -557,7 +554,12 @@ void CMainWindow::onMsgStream(CMsgStreamEvent& event)
         data.m_isReaded = false;
         m_view->addUnreadMessage(&data);
     }
-
+    bool myPost = service->isPostedThisClient(data);
+    service->onGetMessageStream(data);
+    if (!myPost){
+        m_logHolder->pushMessageLog(data, service->getName(),
+                service->getMemberNick(data.m_username));
+    }
     // 通知があったとき && 自分以外の人から
     if (service->isUserCalled(data.m_body) && !myPost){
         m_view->messageNotify("通知", "呼ばれました");

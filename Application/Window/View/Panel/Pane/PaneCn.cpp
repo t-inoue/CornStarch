@@ -50,7 +50,6 @@ void CPaneCn::displayChannels(const map<int, CChatServiceBase*>& connections)
         data->setServerId((*it).second->getId());
 
         // サーバ名をセット
-
         wxString name(
                 wxString::Format(wxT("%s[%s]"), (*it).second->getName(),
                         (*it).second->getHost()));
@@ -62,6 +61,7 @@ void CPaneCn::displayChannels(const map<int, CChatServiceBase*>& connections)
         vector<CChannelStatus*>::const_iterator cit;
         vector<CChannelStatus*> channels = (*it).second->getChannels();
         for (cit = channels.begin(); cit != channels.end(); cit++){
+
             CTreeChannelItem* channel = new CTreeChannelItem();
             channel->setUnreadCount((*cit)->getUnreadCount());
             channel->setChannelName((*cit)->getChannelName());
@@ -92,12 +92,19 @@ void CPaneCn::displayChannels(const map<int, CChatServiceBase*>& connections)
 void CPaneCn::onChannelSelected(wxTreeEvent& event)
 {
     wxTreeItemId id = event.GetItem();
+    // 未読数の初期化
+    CTreeChannelItem* channel = dynamic_cast<CTreeChannelItem*>(GetItemData(id));//
+    if (channel != NULL){
+        channel->setUnreadCount(0);
+        wxString channelText = channel->getChannelName();
+        this->SetItemText(id, channelText);
+    }
+
     CChannelSelectEvent* chEvent = newSelectEvent(id);
 
     if (chEvent == NULL){
         return;
     }
-
     // イベント送信
     chEvent->SetEventType(myEVT_SELECT_TREE_NODE); // イベントタイプ
     wxQueueEvent(GetParent()->GetParent()->GetParent()->GetEventHandler(),
@@ -149,11 +156,7 @@ CChannelSelectEvent* CPaneCn::newSelectEvent(const wxTreeItemId& id)
         chEvent->setServerOrNot(false);
         chEvent->setServerId(serverId);
         chEvent->setServer(GetItemText(parentId));
-        CTreeChannelItem* channel = ((CTreeChannelItem*) GetItemData(id)); //
-        channel->setUnreadCount(0);
-        wxString channelText = channel->getChannelName();
-        this->SetItemText(id, channelText);
-        itemName = channelText;
+
     } else{
 
         // 選択されたのがサーバなら
@@ -198,7 +201,7 @@ void CPaneCn::addUnreadMessage(const CMessageData* message)
                             channleItem->getChannelName(),
                             channleItem->getUnreadCount());
                     this->SetItemText(channel, channelText);
-                    //　背景を色を返る。
+                    //　背景を色を変更。
                     this->SetItemBackgroundColour(channel, *wxLIGHT_GREY);
                     return;
                 }

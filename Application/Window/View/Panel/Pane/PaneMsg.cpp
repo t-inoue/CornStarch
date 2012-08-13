@@ -11,6 +11,7 @@ namespace CornStarch
 {
 ;
 
+const wxColour CPaneMsg::COLOR_LIGHT_YELLOW = wxColour(255, 255, 180);
 CPaneMsg::CPaneMsg(void)
 {
 }
@@ -54,23 +55,31 @@ void CPaneMsg::addMessage(const CMessageData* message,
     wxString date = message->getTime("%H:%M");
     this->AppendText(date);
     this->SetStyle(index, index + date.length(), wxTextAttr(*wxRED));
-    index += date.size();
 
     // 名前
+    int nickIndex = index + date.size();
     wxString nick = getNickName(message->m_username, nickTable);
     nick = " (" + nick + "):";
     if (message->m_tempNick != ""){
         nick += " (" + message->m_tempNick + ") ";
     }
     this->AppendText(nick);
-    this->SetStyle(index, index + nick.size(), wxTextAttr(*wxBLUE));
-    index += nick.size();
+    this->SetStyle(nickIndex, nickIndex + nick.size(), wxTextAttr(*wxBLUE));
 
     //本文
+    int bodyIndex = nickIndex += nick.size();
     wxString body = message->m_body;
+
+    // 4byte文字を非表示にする。
     if (containsOver4ByteText(body) == false){
         this->AppendText(body);
-        this->SetStyle(index, index + body.Length(), wxTextAttr(*wxBLACK));
+        this->SetStyle(bodyIndex, bodyIndex + body.Length(),
+                wxTextAttr(*wxBLACK));
+        // 未読の背景色設定
+        if (message->m_isReaded == false){
+            this->SetStyle(index, bodyIndex + body.Length(),
+                    wxTextAttr(wxNullColour, COLOR_LIGHT_YELLOW));
+        }
     }
     this->AppendText(" \n");
 }
@@ -81,7 +90,7 @@ void CPaneMsg::displayMessages(const vector<CMessageData*>& messages,
     this->Clear();
     int size = (int) messages.size();
     for (int i = 0; i < size; i++){
-        addMessage(messages[i],nickTable);
+        addMessage(messages[i], nickTable);
         if (i < size - 1){
             drawDateLine(messages[i]->getTime("%Y/%m/%d(%a)"),
                     messages[i + 1]->getTime("%Y/%m/%d(%a)"));

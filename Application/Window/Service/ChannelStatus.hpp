@@ -65,24 +65,27 @@ public:
     // メンバー情報を消す
     void popMember(const wxString& userName);
 
+    // 未読をクリア
+    void clearUnreadCount();
+
+    // チャンネル名の取得
     wxString getChannelName() const
     {
         return m_channelName;
     }
 
+    // チャンネル名の設定
     void setChannelName(wxString channelName)
     {
         m_channelName = channelName;
     }
+    // 未読数の取得
     int getUnreadCount() const
     {
         return m_unreadCount;
     }
 
-    void setUnreadCount(int unreadCount)
-    {
-        m_unreadCount = unreadCount;
-    }
+    // 未読数の追加
     void addUnreadCount()
     {
         m_unreadCount++;

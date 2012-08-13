@@ -3,12 +3,13 @@
 using namespace std;
 
 namespace CornStarch
-{;
+{
+;
 
-CChannelStatus::CChannelStatus(void):m_unreadCount(0)
+CChannelStatus::CChannelStatus(void) :
+        m_unreadCount(0)
 {
 }
-
 
 CChannelStatus::~CChannelStatus(void)
 {
@@ -16,9 +17,7 @@ CChannelStatus::~CChannelStatus(void)
     delete m_members;
 }
 
-
 //////////////////////////////////////////////////////////////////////
-
 
 // 初期化を行う
 void CChannelStatus::init(void)
@@ -112,6 +111,16 @@ void CChannelStatus::updateMember(const CMemberData& member)
 void CChannelStatus::popMember(const wxString& userName)
 {
     m_members->pop(userName);
+}
+// 未読をクリア
+void CChannelStatus::clearUnreadCount()
+{
+    m_unreadCount = 0;
+    CMessageVec::iterator it = m_messages->begin();
+    while (it != m_messages->end()){
+        (*it)->m_isReaded = true;
+        it++;
+    }
 }
 
 }
