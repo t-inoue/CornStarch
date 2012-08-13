@@ -180,9 +180,11 @@ public:
     // チャンネルを選択した際
     void selectChannel(const wxString& channel);
 
-    // チャンネル一覧を取得
+    // チャンネルを取得
     std::vector<CChannelStatus*> getChannels(void) const;
 
+    // チャンネル一覧を取得
+    CChannelStatus* getChannel(const wxString& channel);
     // メッセージ一覧を取得
     std::vector<CMessageData*> getMessages(const wxString& channel) const;
 
@@ -228,7 +230,7 @@ public:
     virtual void onAuthSucceeed(void);
 
     // メッセージ一覧を取得した場合
-    void onGetMessages(const std::vector<CMessageData*>& messages);
+    void onGetMessages(const wxString channleName,const std::vector<CMessageData*>& messages);
 
     // メンバー一覧を取得した場合
     void onGetMembers(const std::vector<CMemberData*>& members);

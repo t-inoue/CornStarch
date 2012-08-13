@@ -1,4 +1,5 @@
 ﻿#include "PaneCn.hpp"
+#include "TreeChannelItem.hpp"
 
 using namespace std;
 
@@ -61,11 +62,23 @@ void CPaneCn::displayChannels(const map<int, CChatServiceBase*>& connections)
         vector<CChannelStatus*>::const_iterator cit;
         vector<CChannelStatus*> channels = (*it).second->getChannels();
         for (cit = channels.begin(); cit != channels.end(); cit++){
+            CTreeChannelItem* channel = new CTreeChannelItem();
+            channel->setUnreadCount((*cit)->getUnreadCount());
+            channel->setChannelName((*cit)->getChannelName());
 
+            wxString channelText = (*cit)->getChannelName();
+            if ((*cit)->getUnreadCount() != 0){
+                channelText = wxString::Format(wxT("%s (%d)"),
+                        (*cit)->getChannelName(), (*cit)->getUnreadCount());
+            }
             // チャンネルをセット
-            wxTreeItemId childId = AppendItem(id, (*cit)->getChannelName());
+            wxTreeItemId childId = AppendItem(id, channelText, -1, -1, channel);
             if ((*it).second->IsConnected() == false){
                 this->SetItemTextColour(childId, *wxLIGHT_GREY);
+            }
+            //　背景を色を返る。
+            if ((*cit)->getUnreadCount() != 0){
+                this->SetItemBackgroundColour(channel, *wxLIGHT_GREY);
             }
         }
 
@@ -136,7 +149,11 @@ CChannelSelectEvent* CPaneCn::newSelectEvent(const wxTreeItemId& id)
         chEvent->setServerOrNot(false);
         chEvent->setServerId(serverId);
         chEvent->setServer(GetItemText(parentId));
-
+        CTreeChannelItem* channel = ((CTreeChannelItem*) GetItemData(id)); //
+        channel->setUnreadCount(0);
+        wxString channelText = channel->getChannelName();
+        this->SetItemText(id, channelText);
+        itemName = channelText;
     } else{
 
         // 選択されたのがサーバなら
@@ -171,7 +188,16 @@ void CPaneCn::addUnreadMessage(const CMessageData* message)
             wxTreeItemId channel = this->GetFirstChild(server, cookie);
             while (channel.IsOk()) // チャンネルノードを探索
             {
-                if (GetItemText(channel) == message->m_channel){
+
+                CTreeChannelItem* channleItem =
+                        ((CTreeChannelItem*) GetItemData(channel));
+                if (channleItem->getChannelName() == message->m_channel){
+                    // 未読数を追加。
+                    channleItem->addUnreadCount();
+                    wxString channelText = wxString::Format(wxT("%s (%d)"),
+                            channleItem->getChannelName(),
+                            channleItem->getUnreadCount());
+                    this->SetItemText(channel, channelText);
                     //　背景を色を返る。
                     this->SetItemBackgroundColour(channel, *wxLIGHT_GREY);
                     return;

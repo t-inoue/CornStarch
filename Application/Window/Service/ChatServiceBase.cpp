@@ -63,7 +63,6 @@ void CChatServiceBase::registerUserBasiscEncoded(const wxString& userName, const
 }
 void  CChatServiceBase::connect(void){
     // 認証タスクの開始
-
     m_state =CONNECTING;
     m_connect->startAuthTask(m_user);
 }
@@ -140,7 +139,11 @@ vector<CChannelStatus*> CChatServiceBase::getChannels(void) const
 {
     return m_channel->getChannels();
 }
-
+// チャンネルを取得
+CChannelStatus* CChatServiceBase::getChannel(const wxString& channelName)
+{
+    return m_channel->getChannel(channelName);
+}
 // メッセージ一覧を取得
 vector<CMessageData*> CChatServiceBase::getMessages(
         const wxString& channel) const
@@ -257,9 +260,9 @@ void CChatServiceBase::onAuthSucceeed(void)
 }
 
 // メッセージ一覧を取得した場合
-void CChatServiceBase::onGetMessages(const vector<CMessageData*>& messages)
+void CChatServiceBase::onGetMessages(const wxString channleName, const vector<CMessageData*>& messages)
 {
-    m_channel->setMessages(m_user->getChannelString(), messages);
+    m_channel->setMessages(channleName, messages);
 }
 
 // メンバー一覧を取得した場合

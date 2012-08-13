@@ -5,7 +5,7 @@ using namespace std;
 namespace CornStarch
 {;
 
-CChannelStatus::CChannelStatus(void)
+CChannelStatus::CChannelStatus(void):m_unreadCount(0)
 {
 }
 

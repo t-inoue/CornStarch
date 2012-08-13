@@ -95,7 +95,8 @@ void CServiceSerializer::saveReg(const CChatServiceBase* service, int id)
     if (!reg.Exists()){
         reg.Create();
     }
-
+    wxString portString;
+    portString<<service->getPort();
     if (service->getChatType() == CChatServiceBase::STAR_CHAT){
 
         // StarChatのとき
@@ -103,9 +104,11 @@ void CServiceSerializer::saveReg(const CChatServiceBase* service, int id)
         if (!scReg.Exists()){
             scReg.Create();
         }
+        scReg.SetValue("NAME", service->getName()));
         scReg.SetValue("HOST", service->getHost());
         scReg.SetValue("PASS", service->getBasic());
-        scReg.SetValue("NAME", service->getUserName());
+        scReg.SetValue("USER", service->getUserName());
+        scReg.SetValue("PORT", portString);
 
     } else {
 
@@ -114,9 +117,11 @@ void CServiceSerializer::saveReg(const CChatServiceBase* service, int id)
         if (!ircReg.Exists()){
             ircReg.Create();
         }
+        ircReg.SetValue("NAME", service->getName()));
         ircReg.SetValue("HOST", service->getHost());
         ircReg.SetValue("NICK", service->getUserName());
-        ircReg.SetValue("NAME", service->getUserName());
+        ircReg.SetValue("USER", service->getUserName());
+        ircReg.SetValue("PORT", portString);
 
         // チャンネルを保存
         vector<wxString> channels = service->getChannels();
@@ -164,7 +169,8 @@ CChatServiceBase* CServiceSerializer::newService(wxEvtHandler* handler,
     }
 
     // レジストリからパラメータの読み込み
-    wxString nick, name, pass, host;
+    wxString nick, name, pass, host,user,portString;
+    long port;
     wxString prop;
     long idx;
     reg.GetFirstValue(prop, idx);
@@ -176,8 +182,13 @@ CChatServiceBase* CServiceSerializer::newService(wxEvtHandler* handler,
             reg.QueryValue(prop, name);
         } else if (prop == "PASS"){
             reg.QueryValue(prop, pass);
+        } else if (prop == "USER"){
+                   reg.QueryValue(prop, user);
         } else if (prop == "HOST"){
             reg.QueryValue(prop, host);
+        } else if (prop == "PORT"){
+                 reg.QueryValue(prop, portString);
+                 portString.ToLong(&port);
         }
 
         // 次の要素へ
@@ -206,9 +217,12 @@ CChatServiceBase* CServiceSerializer::newService(wxEvtHandler* handler,
     // サービスのパラメータ注入
     service->setId(serviceId);
     service->init(handler);
-    service->setHost(host);
-    service->setSavedChannels(channels);
-    service->regUser(name, pass);
+    service->setName(name);
+     service->setPort(port);
+     service->setHost(host);
+     service->setSavedChannels(channels);
+     service->registerUserBasiscEncoded(user, pass);
+     service->connect();
 
     return service;
 }

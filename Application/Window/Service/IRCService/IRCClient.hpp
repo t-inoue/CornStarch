@@ -1,5 +1,4 @@
-﻿
-#ifndef _IRCClient_h
+﻿#ifndef _IRCClient_h
 #define _IRCClient_h
 #include "../SocketClient.hpp"
 #include "IRCParser.hpp"
@@ -14,8 +13,13 @@ namespace CornStarch
 namespace IRC
 {
 // IRCと接続するためのクライントクラスです。
-class CIRCClient: public CSocketClient
+class CIRCClient: public CSocketClient, wxEvtHandler
 {
+DECLARE_EVENT_TABLE()
+    enum
+    {
+        SOCKET_ID
+    };
     // IRCとの接続が完了しているか
     bool m_isConnectedToIRCService;
     // 送信用コマンドキュー
@@ -35,7 +39,6 @@ class CIRCClient: public CSocketClient
     // スレッドを開始します。
     void startThread(wxThread* task);
 
-
 public:
     // Queueに送信コマンドを追加します。
     void addCommandQueue(const wxString& target);
@@ -50,7 +53,7 @@ public:
     // コマンドをスレッドセーフで送信します。
     void sendCommand(const wxString& command);
 
-
+    void onSocketEvent(wxSocketEvent &event);
     // 受信ループです。
     void receiveLoop(void);
 
@@ -85,9 +88,9 @@ public:
         return m_observer;
     }
     wxMessageQueue<wxString>* getCommandQueue() const
-     {
-         return m_commandQueue;
-     }
+    {
+        return m_commandQueue;
+    }
 
     bool isConnectedToIrcService() const
     {
@@ -97,10 +100,10 @@ public:
     {
         m_isConnectedToIRCService = value;
     }
-     void setCommandQueue(wxMessageQueue<wxString>* commandQueue)
-     {
-         m_commandQueue = commandQueue;
-     }
+    void setCommandQueue(wxMessageQueue<wxString>* commandQueue)
+    {
+        m_commandQueue = commandQueue;
+    }
 
     bool isSocketConnected() const
     {

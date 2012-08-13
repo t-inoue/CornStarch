@@ -66,6 +66,7 @@ CConnectionEventBase* CSCEventFactory::Create(CSCMessageData message)
     if (message.m_type == CSCMessageType::GET_MESSAGES){
         CGetMessageEvent* event = new CGetMessageEvent();
         event->setMessages(message.m_messages); // 値取得
+        event->setChannel(message.m_channel); // チャンネル
         event->SetEventType(myEVT_THREAD_GET_MESSAGE); // イベントの種類をセット
         return event;
     }

@@ -316,9 +316,8 @@ void CMainWindow::onMemberSelected(wxCommandEvent& event)
 // チャンネル選択時
 void CMainWindow::onChannelSelected(CChannelSelectEvent& event)
 {
-
     // 選択したコンテンツを取得
-    CChatServiceBase* contents = getService(event.getServerId());
+    CChatServiceBase* service = getService(event.getServerId());
     // 選択したのがサーバ名だったとき
     if (event.isServerSelected()){
         m_currentServiceId = event.getServerId();
@@ -326,22 +325,24 @@ void CMainWindow::onChannelSelected(CChannelSelectEvent& event)
         m_view->clearMembers();
         displayTitle("", "", m_currentServiceId);
 
-        contents->selectChannel("");
+        service->selectChannel("");
         return;
     }
 
     // サーバーIDとチャンネル名を取得
     wxString channel = event.getChannelName();
     m_currentServiceId = event.getServerId();
-
+    // 未読リセット
+    CChannelStatus* channelStatus = service->getChannel(channel);
+    channelStatus->setUnreadCount(0)
+            ;
     // コンテンツの更新
-    contents->selectChannel(channel);
+    service->selectChannel(channel);
 
     // 画面表示を更新
-    wxString ch = channel;
-    displayTitle(ch, contents->getTopic(ch), event.getServerId());
-    updateMessageView(m_currentServiceId, contents->getCurrentChannel());
-    updateMemberView(m_currentServiceId, contents->getCurrentChannel());
+    displayTitle(channel, service->getTopic(channel), event.getServerId());
+    updateMessageView(m_currentServiceId, service->getCurrentChannel());
+    updateMemberView(m_currentServiceId, service->getCurrentChannel());
 }
 
 // チャンネルペインを右クリック時
@@ -454,7 +455,7 @@ void CMainWindow::onGetMessages(CGetMessageEvent& event)
     CChatServiceBase* contents = getService(event.getConnectionId());
     if (contents != NULL){
         // メッセージを追加
-        contents->onGetMessages(event.getMessages());
+        contents->onGetMessages(event.getChannel(), event.getMessages());
 
         // 表示の更新
         updateMessageView(event.getConnectionId(),
@@ -550,6 +551,9 @@ void CMainWindow::onMsgStream(CMsgStreamEvent& event)
         data.m_isReaded = true;
         m_view->addMessage(&data, service->getNickTable());
     } else{
+        // 未読追加。
+        CChannelStatus* channelStatus = service->getChannel(data.m_channel);
+        channelStatus->addUnreadCount();
         data.m_isReaded = false;
         m_view->addUnreadMessage(&data);
     }

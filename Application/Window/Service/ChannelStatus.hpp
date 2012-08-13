@@ -14,6 +14,7 @@ private:
     CMessageVec* m_messages; // メッセージ一覧
     CMemberVec* m_members; // メンバー一覧
     wxString m_channelName;
+    int m_unreadCount;
 
 public:
     CChannelStatus(void);
@@ -73,6 +74,20 @@ public:
     {
         m_channelName = channelName;
     }
+    int getUnreadCount() const
+    {
+        return m_unreadCount;
+    }
+
+    void setUnreadCount(int unreadCount)
+    {
+        m_unreadCount = unreadCount;
+    }
+    void addUnreadCount()
+    {
+        m_unreadCount++;
+    }
+
 };
 
 }

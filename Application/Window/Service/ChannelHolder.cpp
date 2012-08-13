@@ -64,7 +64,14 @@ vector<CChannelStatus*> CChannelHolder::getChannels(void) const
 
     return result;
 }
-
+// チャンネルを取得する
+CChannelStatus* CChannelHolder::getChannel(const wxString& channel)
+{
+    if (m_channels.find(channel) != m_channels.end()){
+        return m_channels[channel];
+    }
+    return NULL;
+}
 // 既にチャンネル一覧を取得したか
 bool CChannelHolder::hasReceivedChannel(void) const
 {

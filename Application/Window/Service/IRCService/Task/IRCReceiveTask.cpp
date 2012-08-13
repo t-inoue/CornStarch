@@ -24,7 +24,7 @@ CIRCReceiveTask::~CIRCReceiveTask()
 wxThread::ExitCode CIRCReceiveTask::Entry(void)
 {
     // Statusチェックの間隔計測
-    CConnectionStatusChecker checker(m_client->getObserver());
+    //CConnectionStatusChecker checker(m_client->getObserver());
     CIRCParser parser;
     //　ソケットが切断されているか、自分で終了しようとしていればループ終了
     while (m_client->isSocketConnected() && this->TestDestroy() == false){
@@ -50,7 +50,7 @@ wxThread::ExitCode CIRCReceiveTask::Entry(void)
             m_receiveBuffer = "";
 
             // サーバーのステータスチェック計測のリセット
-            checker.refreshCount();
+            //checker.refreshCount();
         }
         // IRCプロトコルの最大値を超えるメッセージを受信している場合は、バッファをクリアする。
         if (m_receiveBuffer.Length() > 512){
@@ -58,7 +58,7 @@ wxThread::ExitCode CIRCReceiveTask::Entry(void)
         }
 
         // サーバーのステータスチェック
-        checker.tick();
+        //checker.tick();
         wxUsleep(100);
     }
     if (this->TestDestroy() == false){

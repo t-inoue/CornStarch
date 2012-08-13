@@ -31,7 +31,7 @@ wxThread::ExitCode CSCGetStreamTask::Entry()
     client->recvHttpResponseBody();
 
     // Statusチェックの間隔計測
-    CConnectionStatusChecker checker(m_observer);
+    //CConnectionStatusChecker checker(m_observer);
     // Deleteされるまでループ
     while (!TestDestroy()){
 
@@ -51,9 +51,9 @@ wxThread::ExitCode CSCGetStreamTask::Entry()
                 m_observer->onMessageReceived(&message);
             }
             // サーバーのステータスチェック計測のリセット
-            checker.refreshCount();
+            //checker.refreshCount();
         }
-        checker.tick();
+        //checker.tick();
     }
 
     // 後処理

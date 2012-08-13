@@ -75,6 +75,7 @@ void CIRCConnection::startGetMessageTask(const IUser* user,
         vector<CMessageData*> result;
         CGetMessageEvent* event = new CGetMessageEvent();
         event->setMessages(result); // 値取得
+        event->setChannel(channel);
         event->SetEventType(myEVT_THREAD_GET_MESSAGE); // イベントの種類をセット
         invokeEvent(event);
     }
@@ -106,6 +107,10 @@ void CIRCConnection::startGetChannelTask(const IUser* user)
     event->setChannels(channels); // 値取得
     event->SetEventType(myEVT_THREAD_GET_CHANNEL); // イベントの種類をセット
     invokeEvent(event);
+
+    for (int i = 0; i < size; i++){
+        startGetMessageTask(user, m_channels[i]->m_name);
+    }
 }
 wxString CIRCConnection::getValidateChannelName(const wxString& channel)
 {
@@ -161,6 +166,7 @@ void CIRCConnection::startJoinTask(const IUser* user, const wxString& channel)
     CChannelData *channelData = new CChannelData();
     channelData->m_name = validateChannelName;
     channelData->m_topic = "";
+
     m_channels.push_back(channelData);
 
     CJoinEvent* event = new CJoinEvent();
@@ -234,7 +240,6 @@ void CIRCConnection::onMessageReceived(CMessageData* message)
 {
     CIRCMessageData* ircMessage = dynamic_cast<CIRCMessageData*>(message);
     if (ircMessage->m_statusCode == IRCCommand::PING){
-        printf("pong");
         m_client->pong(ircMessage->m_body);
     } else{
 

@@ -9,14 +9,23 @@ namespace CornStarch
 namespace IRC
 {
 ;
-using namespace std;
 
+using namespace std;
+BEGIN_EVENT_TABLE(CIRCClient, wxEvtHandler)
+EVT_SOCKET(SOCKET_ID, CIRCClient::onSocketEvent)
+END_EVENT_TABLE()
 CIRCClient::CIRCClient() :
         m_receiveTask(NULL), m_sendTask(NULL), m_isConnectedToIRCService(false)
 {
     m_commandQueue = new wxMessageQueue<wxString>();
 }
-
+void CIRCClient::onSocketEvent(wxSocketEvent &event)
+{
+    if(event.GetSocketEvent() == wxSOCKET_LOST)
+    {
+        disconnect();
+    }
+}
 CIRCClient::~CIRCClient(void)
 {
     delete m_conenctTask;
@@ -28,7 +37,14 @@ void CIRCClient::init(IMessageConnectionObserver* observer)
 {
     CSocketClient::init();
     m_observer = observer;
-    m_socket->SetTimeout(5);
+    m_socket->SetTimeout(2);
+
+    m_socket->SetNotify(
+            wxSOCKET_INPUT_FLAG | wxSOCKET_CONNECTION_FLAG
+                    | wxSOCKET_LOST_FLAG);
+
+    m_socket->SetEventHandler(*this, SOCKET_ID);
+    m_socket->Notify(true);
 }
 void CIRCClient::startAsync(const wxString& userName, const wxString& password)
 {

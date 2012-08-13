@@ -46,7 +46,7 @@ void CSCService::reconnect(void)
         m_connect = NULL;
         m_connect = newConnection;
 
-        registerUser(m_user->getUserName(), m_user->getBasic());
+        registerUserBasiscEncoded(m_user->getUserName(), m_user->getBasic());
         connect();
     }
 }

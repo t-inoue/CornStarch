@@ -45,6 +45,8 @@ public:
 
     /////////////////////////////////////////////////////////////
 
+
+
     // チャンネルのメッセージ一覧を取得する
     std::vector<CMessageData*> getMessages(const wxString& channel);
 
@@ -80,6 +82,10 @@ public:
 
     // 同じメッセージ内容のものがあるか
     bool hasSameMessage(const CMessageData& message);
+
+    // チャンネルを取得する。
+    CChannelStatus* getChannel(const wxString& channel) ;
+
 };
 
 }
