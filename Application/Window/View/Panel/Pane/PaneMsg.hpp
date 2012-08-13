@@ -26,6 +26,7 @@ public:
     // メッセージを追加する
     void addMessage(const CMessageData* message,
             const std::map<wxString, wxString>& nickTable);
+    void clearUnreadBackgroundColor();
 private:
 
     // ユーザ名に対応するニックネームを取得する

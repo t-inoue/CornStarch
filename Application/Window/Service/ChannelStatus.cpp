@@ -66,6 +66,10 @@ void CChannelStatus::pushMember(const CMemberData& member)
 void CChannelStatus::setMessages(const vector<CMessageData*>& messages)
 {
     m_messages->setMessages(messages);
+    int size = m_messages->size() -1;
+    for (int i = 0; i < m_unreadCount; i++){
+        (*m_messages)[size - i ]->m_isReaded = false;
+    }
 }
 
 // メンバー一覧をセットする
@@ -115,11 +119,14 @@ void CChannelStatus::popMember(const wxString& userName)
 // 未読をクリア
 void CChannelStatus::clearUnreadCount()
 {
-    m_unreadCount = 0;
-    CMessageVec::iterator it = m_messages->begin();
-    while (it != m_messages->end()){
-        (*it)->m_isReaded = true;
-        it++;
+    if (m_messages->hasSetMessage()){
+        m_unreadCount = 0;
+        CMessageVec::iterator it = m_messages->begin();
+        while (it != m_messages->end()){
+            (*it)->m_isReaded = true;
+            it++;
+        }
+
     }
 }
 

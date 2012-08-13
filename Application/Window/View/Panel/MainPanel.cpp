@@ -71,6 +71,7 @@ void CMainPanel::addMessage(const CMessageData* message,
       const std::map<wxString, wxString>& nickTable)
 {
     m_msgPane->addMessage(message,nickTable);
+    m_msgPane->clearUnreadBackgroundColor();
 }
 
 void CMainPanel::addUnreadMessage(const CMessageData* message)

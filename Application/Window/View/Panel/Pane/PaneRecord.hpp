@@ -35,13 +35,13 @@ public:
     // ログ一覧を表示
     void displayLogs(const std::vector<CChatLog*>& logs);
 
+    // メッセージログを表示
+    void pushLog(const CChatLog& messageLog);
 private:
 
     // 単色で文字列を追加する
     void pushStringRow(const wxString& str, const wxColour& colour);
 
-    // メッセージログを表示
-    void pushLog(const CChatLog& messageLog);
 
     // メッセージログを表示
     void pushLog(const CMessageLog& messageLog);

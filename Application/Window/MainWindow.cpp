@@ -86,6 +86,12 @@ void CMainWindow::updateMessageView(int connectionId, const wxString& channel)
         // メッセージを表示
         m_view->displayMessages(service->getMessages(channel),
                 service->getNickTable());
+
+        // 未読リセット
+        CChannelStatus* channelStatus = service->getChannel(channel);
+        if (channelStatus != NULL){
+            channelStatus->clearUnreadCount();
+        }
     }
 }
 
@@ -341,11 +347,7 @@ void CMainWindow::onChannelSelected(CChannelSelectEvent& event)
     updateMessageView(m_currentServiceId, service->getCurrentChannel());
     updateMemberView(m_currentServiceId, service->getCurrentChannel());
 
-    // 未読リセット
-    CChannelStatus* channelStatus = service->getChannel(channel);
-    if (channelStatus != NULL){
-        channelStatus->clearUnreadCount();
-    }
+
 }
 
 // チャンネルペインを右クリック時
@@ -540,8 +542,6 @@ void CMainWindow::onMsgStream(CMsgStreamEvent& event)
     CMessageData data = event.getMessage();
     data.m_serviceId = event.getConnectionId();
 
-    // メッセージをログ一覧に表示
-    m_view->displayLogs(m_logHolder->getLogs()); // ログペイン
     if (event.getConnectionId() == m_currentServiceId
             && service->getCurrentChannel() == data.m_channel){
         // メッセージを表示
@@ -560,6 +560,8 @@ void CMainWindow::onMsgStream(CMsgStreamEvent& event)
         m_logHolder->pushMessageLog(data, service->getName(),
                 service->getMemberNick(data.m_username));
     }
+    // メッセージをログ一覧に表示
+    m_view->displayLogs(m_logHolder->getLogs()); // ログペイン
     // 通知があったとき && 自分以外の人から
     if (service->isUserCalled(data.m_body) && !myPost){
         m_view->messageNotify("通知", "呼ばれました");

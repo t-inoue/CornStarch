@@ -19,10 +19,10 @@ public:
     time_t m_time; // UNIX時間
     wxString m_channel; // チャンネル名
     wxString m_tempNick; // 一時ニックネーム
-    int m_serviceId;
-    bool m_isReaded;
+    int m_serviceId; // サービスID
+    bool m_isReaded; // 既読か
 
-    CMessageData(){}
+    CMessageData():m_isReaded(true){}
     virtual ~CMessageData(){}
     CMessageData(int id, const wxString& name, const wxString& body,
         const wxString& channel, const time_t& t)

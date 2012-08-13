@@ -46,6 +46,12 @@ bool CPaneMsg::containsOver4ByteText(const wxString& content) const
     }
     return false;
 }
+void CPaneMsg::clearUnreadBackgroundColor()
+{
+    int index = this->GetLastPosition();
+    this->SetStyle(0, index,
+            wxTextAttr(wxNullColour, *wxWHITE));
+}
 void CPaneMsg::addMessage(const CMessageData* message,
         const map<wxString, wxString>& nickTable)
 {
